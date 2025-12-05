@@ -131,6 +131,16 @@ export default function RoleBriefPanel({
                       const cursorPosition = input.selectionStart ?? jobTitle.length;
                       const textBeforeCursor = jobTitle.substring(0, cursorPosition);
                       const textAfterCursor = jobTitle.substring(cursorPosition);
+                      
+                      // Safety check: Don't insert if suggestion would create duplicates or invalid text
+                      const wouldCreateDuplicate = textBeforeCursor.toLowerCase().endsWith(jobTitleSuggestion.toLowerCase()) ||
+                                                   textAfterCursor.toLowerCase().startsWith(jobTitleSuggestion.toLowerCase());
+                      
+                      if (wouldCreateDuplicate || jobTitleSuggestion.length < 2) {
+                        setJobTitleSuggestion('');
+                        return;
+                      }
+                      
                       // Store suggestion length before clearing
                       const suggestionLength = jobTitleSuggestion.length;
                       // Insert suggestion at cursor position
