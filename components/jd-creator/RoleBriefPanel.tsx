@@ -121,11 +121,21 @@ export default function RoleBriefPanel({
                   onKeyDown={(e) => {
                     if (e.key === 'Tab' && jobTitleSuggestion) {
                       e.preventDefault();
-                      const newValue = jobTitle + jobTitleSuggestion;
+                      const input = e.currentTarget;
+                      const cursorPosition = input.selectionStart;
+                      const textBeforeCursor = jobTitle.substring(0, cursorPosition);
+                      const textAfterCursor = jobTitle.substring(cursorPosition);
+                      // Store suggestion length before clearing
+                      const suggestionLength = jobTitleSuggestion.length;
+                      // Insert suggestion at cursor position
+                      const newValue = textBeforeCursor + jobTitleSuggestion + textAfterCursor;
                       setJobTitle(newValue);
                       setJobTitleSuggestion('');
                       setTimeout(() => {
                         if (jobTitleInputRef.current) {
+                          const newPosition = cursorPosition + suggestionLength;
+                          jobTitleInputRef.current.selectionStart = newPosition;
+                          jobTitleInputRef.current.selectionEnd = newPosition;
                           jobTitleInputRef.current.focus();
                         }
                       }, 0);

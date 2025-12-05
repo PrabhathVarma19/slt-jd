@@ -235,17 +235,16 @@ export default function JDPreview({ jd, onCopy, onRegenerate }: JDPreviewProps) 
       const cursorPosition = textarea.selectionStart;
       const textBeforeCursor = rawResponsibilitiesText.substring(0, cursorPosition);
       const textAfterCursor = rawResponsibilitiesText.substring(cursorPosition);
-      const linesBefore = textBeforeCursor.split('\n');
-      const currentLine = linesBefore[linesBefore.length - 1];
-      const newLine = currentLine + (currentLine.endsWith(' ') ? '' : ' ') + responsibilitiesSuggestion;
-      const newText = textBeforeCursor.substring(0, textBeforeCursor.length - currentLine.length) + newLine + textAfterCursor;
+      // Insert suggestion at cursor position (add space if needed)
+      const needsSpace = textBeforeCursor.length > 0 && !textBeforeCursor.endsWith(' ') && !textBeforeCursor.endsWith('\n') && !textBeforeCursor.endsWith('•');
+      const newText = textBeforeCursor + (needsSpace ? ' ' : '') + responsibilitiesSuggestion + textAfterCursor;
       setRawResponsibilitiesText(newText);
       updateResponsibilities(newText);
       setResponsibilitiesSuggestion('');
       
       setTimeout(() => {
         if (responsibilitiesTextareaRef.current) {
-          const newPosition = cursorPosition + responsibilitiesSuggestion.length + 1;
+          const newPosition = cursorPosition + responsibilitiesSuggestion.length + (needsSpace ? 1 : 0);
           responsibilitiesTextareaRef.current.selectionStart = newPosition;
           responsibilitiesTextareaRef.current.selectionEnd = newPosition;
           responsibilitiesTextareaRef.current.focus();
@@ -287,17 +286,18 @@ export default function JDPreview({ jd, onCopy, onRegenerate }: JDPreviewProps) 
       const cursorPosition = textarea.selectionStart;
       const textBeforeCursor = rawRequiredSkillsText.substring(0, cursorPosition);
       const textAfterCursor = rawRequiredSkillsText.substring(cursorPosition);
-      const linesBefore = textBeforeCursor.split('\n');
-      const currentLine = linesBefore[linesBefore.length - 1];
-      const newLine = currentLine + (currentLine.endsWith(' ') ? '' : ' ') + requiredSkillsSuggestion;
-      const newText = textBeforeCursor.substring(0, textBeforeCursor.length - currentLine.length) + newLine + textAfterCursor;
+      // Insert suggestion at cursor position (add space if needed)
+      const needsSpace = textBeforeCursor.length > 0 && !textBeforeCursor.endsWith(' ') && !textBeforeCursor.endsWith('\n') && !textBeforeCursor.endsWith('•');
+      // Store suggestion length before clearing
+      const suggestionLength = requiredSkillsSuggestion.length;
+      const newText = textBeforeCursor + (needsSpace ? ' ' : '') + requiredSkillsSuggestion + textAfterCursor;
       setRawRequiredSkillsText(newText);
       updateRequiredSkills(newText);
       setRequiredSkillsSuggestion('');
       
       setTimeout(() => {
         if (requiredSkillsTextareaRef.current) {
-          const newPosition = cursorPosition + requiredSkillsSuggestion.length + 1;
+          const newPosition = cursorPosition + suggestionLength + (needsSpace ? 1 : 0);
           requiredSkillsTextareaRef.current.selectionStart = newPosition;
           requiredSkillsTextareaRef.current.selectionEnd = newPosition;
           requiredSkillsTextareaRef.current.focus();
