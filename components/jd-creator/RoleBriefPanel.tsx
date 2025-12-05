@@ -48,14 +48,17 @@ export default function RoleBriefPanel({
 
       if (response.ok) {
         const data = await response.json();
-        if (data.suggestion && data.suggestion.trim().length > 0) {
-          // Only show if suggestion is different from what's already typed
-          const fullSuggestion = currentValue + data.suggestion;
-          if (fullSuggestion.toLowerCase() !== currentValue.toLowerCase()) {
-            setJobTitleSuggestion(data.suggestion.trim());
-          } else {
-            setJobTitleSuggestion('');
-          }
+        const suggestion = data.suggestion?.trim() || '';
+        
+        // Filter out bad suggestions:
+        // 1. Must have content
+        // 2. Must be at least 2 characters (avoid single letters like "O")
+        // 3. Should not be already in the current value
+        // 4. Should make sense as a completion
+        if (suggestion.length >= 2 && 
+            !currentValue.toLowerCase().includes(suggestion.toLowerCase()) &&
+            !suggestion.toLowerCase().includes(currentValue.toLowerCase())) {
+          setJobTitleSuggestion(suggestion);
         } else {
           setJobTitleSuggestion('');
         }

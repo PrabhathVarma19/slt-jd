@@ -87,8 +87,16 @@ export default function JDPreview({ jd, onCopy, onRegenerate }: JDPreviewProps) 
 
       if (response.ok) {
         const data = await response.json();
-        if (data.suggestion && !currentLine.toLowerCase().includes(data.suggestion.toLowerCase())) {
-          setResponsibilitiesSuggestion(data.suggestion || '');
+        const suggestion = data.suggestion?.trim() || '';
+        
+        // Filter out bad suggestions:
+        // 1. Must have content
+        // 2. Should not be already in the current line
+        // 3. Should not be too short (at least 3 characters for meaningful completion)
+        if (suggestion.length >= 3 && 
+            !currentLine.toLowerCase().includes(suggestion.toLowerCase()) &&
+            !suggestion.toLowerCase().includes(currentLine.toLowerCase().trim())) {
+          setResponsibilitiesSuggestion(suggestion);
         } else {
           setResponsibilitiesSuggestion('');
         }
