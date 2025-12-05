@@ -278,19 +278,21 @@ export async function autocompleteJobTitle(partialTitle: string): Promise<string
 You respond with only the suggested completion text, no quotes, no extra text.
 If you notice an obvious typo (like "enginner" → "engineer", "direc" → "director"), suggest the corrected completion.
 Keep suggestions concise - only the remaining part of the job title.
-IMPORTANT: If the input is already a complete, common job title or acronym (like "CIO", "CEO", "CTO", "VP", "Director", "Manager"), return an empty string.
-Only suggest completions for incomplete titles.
+IMPORTANT: Only return an empty string if the input is a complete, well-known acronym (like "CIO", "CEO", "CTO") with exactly 3 letters.
+For partial inputs like "CI", "CD", "SO", etc., suggest meaningful completions.
 Examples:
 - Input: "software engin" → Output: "eer"
 - Input: "senior direc" → Output: "tor"
 - Input: "product manag" → Output: "er"
 - Input: "cloud architec" → Output: "t"
-- Input: "CIO" → Output: "" (already complete)
-- Input: "CEO" → Output: "" (already complete)`;
+- Input: "CI" → Output: "O" (for CIO) or "/CD" (for CI/CD)
+- Input: "CD" → Output: " Engineer" or similar
+- Input: "CIO" → Output: "" (already complete 3-letter acronym)
+- Input: "CEO" → Output: "" (already complete 3-letter acronym)`;
 
   const userPrompt = `Complete or correct this job title: "${partialTitle}"
 
-If this is already a complete, common job title or acronym, return an empty string.
+If this is a complete 3-letter acronym (like "CIO", "CEO", "CTO"), return an empty string.
 Otherwise, suggest the remaining part of a common job title, correcting any typos.
 Only return the completion text, not the full title.`;
 

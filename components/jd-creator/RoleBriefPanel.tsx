@@ -52,15 +52,12 @@ export default function RoleBriefPanel({
         
         // Filter out bad suggestions:
         // 1. Must have content
-        // 2. Must be at least 2 characters (avoid single letters like "O")
-        // 3. Should not be already in the current value
-        // 4. Should not be a single character or whitespace
-        // 5. Should make sense as a completion
-        if (suggestion.length >= 2 && 
-            suggestion.length > 0 &&
-            !currentValue.toLowerCase().includes(suggestion.toLowerCase()) &&
-            !suggestion.toLowerCase().includes(currentValue.toLowerCase()) &&
-            suggestion.trim().length >= 2) {
+        // 2. Must be at least 1 character (allow single letters if they make sense)
+        // 3. Should not be exactly the same as what's already typed
+        // 4. Should not be a duplicate (if current value already ends with the suggestion)
+        if (suggestion.length >= 1 && 
+            suggestion.toLowerCase() !== currentValue.toLowerCase() &&
+            !currentValue.toLowerCase().endsWith(suggestion.toLowerCase())) {
           setJobTitleSuggestion(suggestion);
         } else {
           setJobTitleSuggestion('');
