@@ -122,7 +122,7 @@ export default function RoleBriefPanel({
                     if (e.key === 'Tab' && jobTitleSuggestion) {
                       e.preventDefault();
                       const input = e.currentTarget;
-                      const cursorPosition = input.selectionStart;
+                      const cursorPosition = input.selectionStart ?? jobTitle.length;
                       const textBeforeCursor = jobTitle.substring(0, cursorPosition);
                       const textAfterCursor = jobTitle.substring(cursorPosition);
                       // Store suggestion length before clearing
