@@ -29,8 +29,8 @@ An AI-powered Job Description Creator that helps SLT/CXOs generate professional 
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
-cd roledraft
+git clone https://github.com/PrabhathVarma19/slt-jd.git
+cd slt-jd
 ```
 
 2. Install dependencies:
@@ -45,11 +45,7 @@ cp .env.example .env
 
 Edit `.env` and add your credentials:
 ```env
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
-
-# At least one AI provider required
+DATABASE_URL=postgresql://postgres:[YOUR_PASSWORD]@db.eglycarrtfnjcnqfkvyd.supabase.co:5432/postgres
 OPENAI_API_KEY=your_openai_api_key
 ANTHROPIC_API_KEY=your_anthropic_api_key
 ```
@@ -64,6 +60,44 @@ npm run dev
 ```
 
 6. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Deployment to Vercel
+
+### Quick Deploy
+
+1. **Push to GitHub** (already done):
+   ```bash
+   git push origin main
+   ```
+
+2. **Deploy to Vercel**:
+   - Go to [vercel.com](https://vercel.com)
+   - Click "Add New Project"
+   - Import repository: `PrabhathVarma19/slt-jd`
+   - Vercel will auto-detect Next.js
+
+3. **Add Environment Variables** in Vercel Dashboard:
+   - Go to Project Settings → Environment Variables
+   - Add:
+     - `DATABASE_URL` - Your Supabase PostgreSQL connection string
+     - `OPENAI_API_KEY` - Your OpenAI API key
+     - `ANTHROPIC_API_KEY` - Your Anthropic API key (optional)
+
+4. **Deploy**:
+   - Click "Deploy"
+   - Wait for build to complete
+   - Your app will be live at `your-project.vercel.app`
+
+5. **Run Database Migration**:
+   - Go to Supabase Dashboard → SQL Editor
+   - Copy and run the SQL from `supabase/migrations/001_create_jds_table.sql`
+
+### Important Notes
+
+- **No separate backend needed** - Next.js API routes run automatically on Vercel
+- **Environment variables** must be set in Vercel dashboard (not in code)
+- **Database** must be accessible from Vercel (Supabase allows external connections)
+- **API routes** work automatically: `/api/generate-jd`, `/api/autocomplete`, etc.
 
 ## Project Structure
 
