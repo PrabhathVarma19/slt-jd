@@ -232,7 +232,7 @@ export default function JDPreview({ jd, onCopy, onRegenerate }: JDPreviewProps) 
     if (e.key === 'Tab' && responsibilitiesSuggestion) {
       e.preventDefault();
       const textarea = e.currentTarget;
-      const cursorPosition = textarea.selectionStart;
+      const cursorPosition = textarea.selectionStart ?? rawResponsibilitiesText.length;
       const textBeforeCursor = rawResponsibilitiesText.substring(0, cursorPosition);
       const textAfterCursor = rawResponsibilitiesText.substring(cursorPosition);
       // Insert suggestion at cursor position (add space if needed)
@@ -257,7 +257,7 @@ export default function JDPreview({ jd, onCopy, onRegenerate }: JDPreviewProps) 
 
     if (e.key === 'Enter') {
       const textarea = e.currentTarget;
-      const cursorPosition = textarea.selectionStart;
+      const cursorPosition = textarea.selectionStart ?? rawResponsibilitiesText.length;
       const textBeforeCursor = rawResponsibilitiesText.substring(0, cursorPosition);
       const textAfterCursor = rawResponsibilitiesText.substring(cursorPosition);
       const linesBefore = textBeforeCursor.split('\n');
@@ -285,7 +285,7 @@ export default function JDPreview({ jd, onCopy, onRegenerate }: JDPreviewProps) 
     if (e.key === 'Tab' && requiredSkillsSuggestion) {
       e.preventDefault();
       const textarea = e.currentTarget;
-      const cursorPosition = textarea.selectionStart;
+      const cursorPosition = textarea.selectionStart ?? rawRequiredSkillsText.length;
       const textBeforeCursor = rawRequiredSkillsText.substring(0, cursorPosition);
       const textAfterCursor = rawRequiredSkillsText.substring(cursorPosition);
       // Insert suggestion at cursor position (add space if needed)
@@ -310,7 +310,7 @@ export default function JDPreview({ jd, onCopy, onRegenerate }: JDPreviewProps) 
 
     if (e.key === 'Enter') {
       const textarea = e.currentTarget;
-      const cursorPosition = textarea.selectionStart;
+      const cursorPosition = textarea.selectionStart ?? rawRequiredSkillsText.length;
       const textBeforeCursor = rawRequiredSkillsText.substring(0, cursorPosition);
       const textAfterCursor = rawRequiredSkillsText.substring(cursorPosition);
       
