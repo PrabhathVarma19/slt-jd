@@ -237,6 +237,8 @@ export default function JDPreview({ jd, onCopy, onRegenerate }: JDPreviewProps) 
       const textAfterCursor = rawResponsibilitiesText.substring(cursorPosition);
       // Insert suggestion at cursor position (add space if needed)
       const needsSpace = textBeforeCursor.length > 0 && !textBeforeCursor.endsWith(' ') && !textBeforeCursor.endsWith('\n') && !textBeforeCursor.endsWith('•');
+      // Store suggestion length before clearing
+      const suggestionLength = responsibilitiesSuggestion.length;
       const newText = textBeforeCursor + (needsSpace ? ' ' : '') + responsibilitiesSuggestion + textAfterCursor;
       setRawResponsibilitiesText(newText);
       updateResponsibilities(newText);
@@ -244,7 +246,7 @@ export default function JDPreview({ jd, onCopy, onRegenerate }: JDPreviewProps) 
       
       setTimeout(() => {
         if (responsibilitiesTextareaRef.current) {
-          const newPosition = cursorPosition + responsibilitiesSuggestion.length + (needsSpace ? 1 : 0);
+          const newPosition = cursorPosition + suggestionLength + (needsSpace ? 1 : 0);
           responsibilitiesTextareaRef.current.selectionStart = newPosition;
           responsibilitiesTextareaRef.current.selectionEnd = newPosition;
           responsibilitiesTextareaRef.current.focus();
