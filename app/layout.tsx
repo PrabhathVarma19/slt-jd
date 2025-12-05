@@ -1,0 +1,59 @@
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import { Inter } from 'next/font/google';
+import './globals.css';
+
+const inter = Inter({ 
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+});
+
+export const metadata: Metadata = {
+  title: 'RoleDraft',
+  description: 'From job title to ready-to-send JD in seconds',
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en" className={inter.variable}>
+      <body className="font-sans antialiased">
+        <div className="min-h-screen bg-white">
+          <header className="border-b border-gray-200 bg-white/95 backdrop-blur-sm sticky top-0 z-50">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <div className="flex h-16 items-center justify-between">
+                <div className="flex items-center">
+                  <Link href="/" className="text-xl font-semibold tracking-tight text-gray-900">
+                    RoleDraft
+                  </Link>
+                </div>
+                <nav className="flex items-center gap-6">
+                  <Link
+                    href="/"
+                    className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+                  >
+                    Create JD
+                  </Link>
+                  <Link
+                    href="/library"
+                    className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+                  >
+                    My JDs
+                  </Link>
+                </nav>
+              </div>
+            </div>
+          </header>
+          <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+            {children}
+          </main>
+        </div>
+      </body>
+    </html>
+  );
+}
+
