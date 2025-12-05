@@ -278,15 +278,20 @@ export async function autocompleteJobTitle(partialTitle: string): Promise<string
 You respond with only the suggested completion text, no quotes, no extra text.
 If you notice an obvious typo (like "enginner" → "engineer", "direc" → "director"), suggest the corrected completion.
 Keep suggestions concise - only the remaining part of the job title.
+IMPORTANT: If the input is already a complete, common job title or acronym (like "CIO", "CEO", "CTO", "VP", "Director", "Manager"), return an empty string.
+Only suggest completions for incomplete titles.
 Examples:
 - Input: "software engin" → Output: "eer"
 - Input: "senior direc" → Output: "tor"
 - Input: "product manag" → Output: "er"
-- Input: "cloud architec" → Output: "t"`;
+- Input: "cloud architec" → Output: "t"
+- Input: "CIO" → Output: "" (already complete)
+- Input: "CEO" → Output: "" (already complete)`;
 
   const userPrompt = `Complete or correct this job title: "${partialTitle}"
 
-Suggest the remaining part of a common job title, correcting any typos.
+If this is already a complete, common job title or acronym, return an empty string.
+Otherwise, suggest the remaining part of a common job title, correcting any typos.
 Only return the completion text, not the full title.`;
 
   // Try OpenAI first
