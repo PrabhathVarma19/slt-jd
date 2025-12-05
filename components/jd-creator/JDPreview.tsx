@@ -174,7 +174,7 @@ export default function JDPreview({ jd, onCopy, onRegenerate }: JDPreviewProps) 
     return (
       <div className="rounded-lg border-2 border-dashed border-gray-200 bg-gray-50 p-16 text-center">
         <p className="text-base font-medium text-gray-900">Generated JD will appear here</p>
-        <p className="mt-1 text-sm text-gray-500">Fill in the form above and click "Generate JD"</p>
+        <p className="mt-1 text-sm text-gray-500">Fill in the form above and click &quot;Generate JD&quot;</p>
       </div>
     );
   }

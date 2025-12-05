@@ -76,6 +76,7 @@ export default function EditableTextarea({
     } else {
       setSuggestion('');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, isFocused, jobTitle, context, tone, seniority]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {

@@ -78,7 +78,7 @@ export default function LibraryPage() {
         <div>
           <h1 className="text-2xl font-semibold text-gray-900">My JDs</h1>
           <p className="mt-1 text-sm text-gray-600">
-            Reuse, edit, or share any JD you've generated.
+            Reuse, edit, or share any JD you&apos;ve generated.
           </p>
         </div>
         <JDList onOpenJD={handleOpenJD} onCopyJD={handleCopyJD} onDeleteJD={handleDeleteJD} />
