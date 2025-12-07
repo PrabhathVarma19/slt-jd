@@ -20,16 +20,16 @@ Avrio:
 Avrio is an enterprise AI-powered data platform that empowers companies to leverage their data and drive intelligent decision-making at scale. Avrio generates real-time analytics, insights, opportunities, risks, and recommendations from all your data through intuitive conversations. Avrio is purpose-built to accelerate digital transformation by streamlining complex processes, reducing costs, and speeding up delivery of insights.
 
 Pulse:
-Recognizing that workforces will be distributed, mobile, and fluid, Trianz has built a "future of work" digital workplace platform called Pulse.
+Recognizing that workforces will be distributed, mobile, and fluid, Trianz has built a "future of work" digital workplace platform called Pulse.`;
+
+// Fixed Diversity & Inclusion Statement content - used in all JDs
+export const DIVERSITY_INCLUSION_STATEMENT = `At Trianz, we believe that diversity and inclusion are fundamental to our success. We are committed to creating an environment where all individuals are valued, respected, and empowered to contribute their unique perspectives and experiences.
 
 Equal Employment Opportunity
 Trianz is an Equal Opportunity Employer and does not discriminate on the basis of race, color, creed, national or ethnic origin, gender, religion, disability, age, political affiliation or belief, disabled veteran, veterans (except in those special circumstances permitted or mandated by law).
 
 Trianz Privacy Notice
 Trianz respects your privacy and wants to ensure we comply with the applicable Data Privacy Regulations as per local regulator's laws. Please review our privacy policy.`;
-
-// Fixed Diversity & Inclusion Statement content - used in all JDs
-export const DIVERSITY_INCLUSION_STATEMENT = `At Trianz, we believe that diversity and inclusion are fundamental to our success. We are committed to creating an environment where all individuals are valued, respected, and empowered to contribute their unique perspectives and experiences.`;
 
 interface GenerateJDParams {
   job_title: string;
