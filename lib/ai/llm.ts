@@ -13,24 +13,19 @@ export const ABOUT_TRIANZ_CONTENT = `Trianz is a leading-edge technology platfor
 
 Trianz platforms are changing the way companies approach various transformation disciplines:
 
-Concierto: 
+Concierto:
+A fully automated platform to Migrate, Manage, and Maximize the multi & hybrid cloud. A zero code and SaaS platform, Concierto allows teams to migrate to AWS, Azure, and GCP and manage them efficiently from a single pane of glass.
 
-A fully automated platform to Migrate, Manage, and Maximize the multi & hybrid cloud. A zero code and SaaS platform, Concierto allows teams to migrate to AWS, Azure, and GCP and manage them efficiently from a single pane of glass. Visit Learn more about Concierto.
-
-Avrio 
-
+Avrio:
 Avrio is an enterprise AI-powered data platform that empowers companies to leverage their data and drive intelligent decision-making at scale. Avrio generates real-time analytics, insights, opportunities, risks, and recommendations from all your data through intuitive conversations. Avrio is purpose-built to accelerate digital transformation by streamlining complex processes, reducing costs, and speeding up delivery of insights.
 
-Pulse: 
-
-Recognizing that workforces will be distributed, mobile, and fluid, Trianz has built a "future of work" digital workplace platform called Pulse. Visit Learn more about Pulse.
+Pulse:
+Recognizing that workforces will be distributed, mobile, and fluid, Trianz has built a "future of work" digital workplace platform called Pulse.
 
 Equal Employment Opportunity
-
 Trianz is an Equal Opportunity Employer and does not discriminate on the basis of race, color, creed, national or ethnic origin, gender, religion, disability, age, political affiliation or belief, disabled veteran, veterans (except in those special circumstances permitted or mandated by law).
 
 Trianz Privacy Notice
-
 Trianz respects your privacy and wants to ensure we comply with the applicable Data Privacy Regulations as per local regulator's laws. Please review our privacy policy.`;
 
 // Fixed Diversity & Inclusion Statement content - used in all JDs
