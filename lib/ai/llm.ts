@@ -8,6 +8,31 @@ const anthropicApiKey = process.env.ANTHROPIC_API_KEY;
 const openai = openaiApiKey ? new OpenAI({ apiKey: openaiApiKey }) : null;
 const anthropic = anthropicApiKey ? new Anthropic({ apiKey: anthropicApiKey }) : null;
 
+// Fixed About Trianz content - used in all JDs
+export const ABOUT_TRIANZ_CONTENT = `Trianz is a leading-edge technology platforms and services company that accelerates digital transformations in data & analytics, digital experiences, cloud infrastructure, and security. The company's "IP Led Transformations" vision, strategy, and business models are based on insights from a recent global study spanning 20+ industries and 5000+ companies worldwide. Trianz believes that companies around the world face three challenges in their digital transformation journeys - shrinking "time to transform" due to competition & AI, lack of digital-ready talent, and uncertain economic conditions. To help clients leapfrog over these challenges, Trianz has built IP and platforms that have transformed the adoption of the cloud, data, analytics & insights AI.
+
+Trianz platforms are changing the way companies approach various transformation disciplines:
+
+Concierto: 
+
+A fully automated platform to Migrate, Manage, and Maximize the multi & hybrid cloud. A zero code and SaaS platform, Concierto allows teams to migrate to AWS, Azure, and GCP and manage them efficiently from a single pane of glass. Visit Learn more about Concierto.
+
+Avrio 
+
+Avrio is an enterprise AI-powered data platform that empowers companies to leverage their data and drive intelligent decision-making at scale. Avrio generates real-time analytics, insights, opportunities, risks, and recommendations from all your data through intuitive conversations. Avrio is purpose-built to accelerate digital transformation by streamlining complex processes, reducing costs, and speeding up delivery of insights.
+
+Pulse: 
+
+Recognizing that workforces will be distributed, mobile, and fluid, Trianz has built a "future of work" digital workplace platform called Pulse. Visit Learn more about Pulse.
+
+Equal Employment Opportunity
+
+Trianz is an Equal Opportunity Employer and does not discriminate on the basis of race, color, creed, national or ethnic origin, gender, religion, disability, age, political affiliation or belief, disabled veteran, veterans (except in those special circumstances permitted or mandated by law).
+
+Trianz Privacy Notice
+
+Trianz respects your privacy and wants to ensure we comply with the applicable Data Privacy Regulations as per local regulator's laws. Please review our privacy policy.`;
+
 interface GenerateJDParams {
   job_title: string;
   context?: string;
@@ -203,8 +228,11 @@ Always include these sections:
 - Required Skills & Qualifications
 - Preferred Skills
 - Behavioral Competencies
-- About Trianz (keep it generic and reusable)
+- About Trianz (use the exact content provided below)
 - Diversity & Inclusion Statement
+
+CRITICAL: For the "About Trianz" section, you MUST use this EXACT content (do not modify, summarize, or change it):
+${ABOUT_TRIANZ_CONTENT}
 
 Output JSON only, matching this schema exactly:
 {
@@ -234,6 +262,8 @@ Output JSON only, matching this schema exactly:
       const content = completion.choices[0]?.message?.content;
       if (content) {
         const parsed = JSON.parse(content);
+        // Force use the exact About Trianz content
+        parsed.about_company = ABOUT_TRIANZ_CONTENT;
         return parsed as JDSections;
       }
     } catch (error) {
@@ -263,6 +293,8 @@ Output JSON only, matching this schema exactly:
         // Remove markdown code blocks if present
         const jsonText = text.replace(/^```json\n?/i, '').replace(/\n?```$/i, '');
         const parsed = JSON.parse(jsonText);
+        // Force use the exact About Trianz content
+        parsed.about_company = ABOUT_TRIANZ_CONTENT;
         return parsed as JDSections;
       }
     } catch (error) {
