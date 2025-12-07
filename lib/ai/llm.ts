@@ -169,7 +169,7 @@ Return JSON object: {"items": ["formatted sentence 1", "formatted sentence 2", .
 }
 
 export async function generateJD(params: GenerateJDParams): Promise<JDSections> {
-  const { job_title, context, tone, seniority, length, edited_responsibilities, edited_required_skills } = params;
+  const { job_title, context, tone, seniority, length, edited_responsibilities, edited_required_skills, edited_preferred_skills } = params;
 
   // Note: User edits should be pre-formatted before calling this function
   // This function assumes edited_responsibilities and edited_required_skills are already formatted
