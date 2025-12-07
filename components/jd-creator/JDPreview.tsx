@@ -443,6 +443,11 @@ export default function JDPreview({ jd, onCopy, onRegenerate }: JDPreviewProps) 
         </section>
 
         <section>
+          <h2 className="mb-3 text-lg font-semibold text-gray-900">About Trianz</h2>
+          <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">{jd.sections.about_company}</p>
+        </section>
+
+        <section>
           <h2 className="mb-3 text-lg font-semibold text-gray-900">
             Key Responsibilities
           </h2>
@@ -548,11 +553,6 @@ export default function JDPreview({ jd, onCopy, onRegenerate }: JDPreviewProps) 
               <li key={index}>{comp}</li>
             ))}
           </ul>
-        </section>
-
-        <section>
-          <h2 className="mb-3 text-lg font-semibold text-gray-900">About Trianz</h2>
-          <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">{jd.sections.about_company}</p>
         </section>
 
         <section>

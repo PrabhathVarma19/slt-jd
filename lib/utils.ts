@@ -23,11 +23,11 @@ export function formatJDText(sections: {
 }): string {
   let text = `${sections.job_title}\n\n`;
   text += `Job Summary\n${sections.summary}\n\n`;
+  text += `About Trianz\n${sections.about_company}\n\n`;
   text += `Key Responsibilities\n${sections.key_responsibilities.map(r => `• ${r}`).join('\n')}\n\n`;
   text += `Required Skills & Qualifications\n${sections.required_skills.map(s => `• ${s}`).join('\n')}\n\n`;
   text += `Preferred Skills\n${sections.preferred_skills.map(s => `• ${s}`).join('\n')}\n\n`;
   text += `Behavioral Competencies\n${sections.behavioral_competencies.map(c => `• ${c}`).join('\n')}\n\n`;
-  text += `About Trianz\n${sections.about_company}\n\n`;
   text += `Diversity & Inclusion Statement\n${sections.diversity_statement}`;
   return text;
 }
