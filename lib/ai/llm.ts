@@ -201,17 +201,25 @@ User's edited skills (use these EXACTLY):
 ${edited_required_skills.map((s, i) => `${i + 1}. ${s}`).join('\n')}`;
   }
 
+  if (edited_preferred_skills && edited_preferred_skills.length > 0) {
+    userPrompt += `\n\nCRITICAL: The user has manually edited the Preferred Skills section. You MUST use EXACTLY these skills (already formatted) in your response.
+    
+User's edited preferred skills (use these EXACTLY):
+${edited_preferred_skills.map((s, i) => `${i + 1}. ${s}`).join('\n')}`;
+  }
+
   userPrompt += `\n\nBased on this, generate a complete job description for a consulting / technology environment.`;
   
-  if (edited_responsibilities || edited_required_skills) {
+  if (edited_responsibilities || edited_required_skills || edited_preferred_skills) {
     userPrompt += `\n\nREGENERATION INSTRUCTIONS:
 - Key Responsibilities: Use EXACTLY the edited responsibilities provided above. Do not modify, remove, or add to them.
 - Required Skills: Use EXACTLY the edited skills provided above. Do not modify, remove, or add to them.
+- Preferred Skills: Use EXACTLY the edited preferred skills provided above. Do not modify, remove, or add to them.
 - CROSS-SECTION UPDATES: 
   * If responsibilities were edited, you SHOULD update Required Skills to align with the new responsibilities (add/remove/modify skills to match).
   * If skills were edited, you SHOULD update Key Responsibilities to align with the new skills (add/remove/modify responsibilities to match).
   * This ensures consistency between responsibilities and skills.
-- Other sections: Generate new content (summary, preferred skills, behavioral competencies, etc.) that aligns with the edited responsibilities/skills.
+- Other sections: Generate new content (summary, behavioral competencies, etc.) that aligns with the edited responsibilities/skills.
 - DO NOT skip or remove any edited items - use them exactly as provided.`;
   }
   
