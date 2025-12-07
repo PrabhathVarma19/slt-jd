@@ -33,6 +33,9 @@ Trianz Privacy Notice
 
 Trianz respects your privacy and wants to ensure we comply with the applicable Data Privacy Regulations as per local regulator's laws. Please review our privacy policy.`;
 
+// Fixed Diversity & Inclusion Statement content - used in all JDs
+export const DIVERSITY_INCLUSION_STATEMENT = `At Trianz, we believe that diversity and inclusion are fundamental to our success. We are committed to creating an environment where all individuals are valued, respected, and empowered to contribute their unique perspectives and experiences.`;
+
 interface GenerateJDParams {
   job_title: string;
   context?: string;
@@ -41,6 +44,7 @@ interface GenerateJDParams {
   length: 'short' | 'standard' | 'detailed';
   edited_responsibilities?: string[];
   edited_required_skills?: string[];
+  edited_preferred_skills?: string[];
 }
 
 /**
@@ -229,10 +233,13 @@ Always include these sections:
 - Preferred Skills
 - Behavioral Competencies
 - About Trianz (use the exact content provided below)
-- Diversity & Inclusion Statement
+- Diversity & Inclusion Statement (use the exact content provided below)
 
 CRITICAL: For the "About Trianz" section, you MUST use this EXACT content (do not modify, summarize, or change it):
 ${ABOUT_TRIANZ_CONTENT}
+
+CRITICAL: For the "Diversity & Inclusion Statement" section, you MUST use this EXACT content (do not modify, summarize, or change it):
+${DIVERSITY_INCLUSION_STATEMENT}
 
 Output JSON only, matching this schema exactly:
 {
@@ -264,6 +271,8 @@ Output JSON only, matching this schema exactly:
         const parsed = JSON.parse(content);
         // Force use the exact About Trianz content
         parsed.about_company = ABOUT_TRIANZ_CONTENT;
+        // Force use the exact Diversity & Inclusion Statement
+        parsed.diversity_statement = DIVERSITY_INCLUSION_STATEMENT;
         return parsed as JDSections;
       }
     } catch (error) {
@@ -295,6 +304,8 @@ Output JSON only, matching this schema exactly:
         const parsed = JSON.parse(jsonText);
         // Force use the exact About Trianz content
         parsed.about_company = ABOUT_TRIANZ_CONTENT;
+        // Force use the exact Diversity & Inclusion Statement
+        parsed.diversity_statement = DIVERSITY_INCLUSION_STATEMENT;
         return parsed as JDSections;
       }
     } catch (error) {

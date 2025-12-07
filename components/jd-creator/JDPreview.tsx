@@ -9,31 +9,38 @@ import { formatDate, debounce } from '@/lib/utils';
 
 interface JDPreviewProps {
   jd: JDRecord | null;
-  onCopy: (sections?: { responsibilities: string[]; requiredSkills: string[] }) => void;
-  onRegenerate?: (sections?: { responsibilities: string[]; requiredSkills: string[] }) => void;
+  onCopy: (sections?: { responsibilities: string[]; requiredSkills: string[]; preferredSkills: string[] }) => void;
+  onRegenerate?: (sections?: { responsibilities: string[]; requiredSkills: string[]; preferredSkills: string[] }) => void;
 }
 
 export default function JDPreview({ jd, onCopy, onRegenerate }: JDPreviewProps) {
   const [editableSections, setEditableSections] = useState<{
     responsibilities: string[];
     requiredSkills: string[];
+    preferredSkills: string[];
   } | null>(null);
   const [rawResponsibilitiesText, setRawResponsibilitiesText] = useState('');
   const [rawRequiredSkillsText, setRawRequiredSkillsText] = useState('');
+  const [rawPreferredSkillsText, setRawPreferredSkillsText] = useState('');
   const [responsibilitiesSuggestion, setResponsibilitiesSuggestion] = useState('');
   const [requiredSkillsSuggestion, setRequiredSkillsSuggestion] = useState('');
+  const [preferredSkillsSuggestion, setPreferredSkillsSuggestion] = useState('');
   const [isResponsibilitiesFocused, setIsResponsibilitiesFocused] = useState(false);
   const [isRequiredSkillsFocused, setIsRequiredSkillsFocused] = useState(false);
+  const [isPreferredSkillsFocused, setIsPreferredSkillsFocused] = useState(false);
   const responsibilitiesTextareaRef = useRef<HTMLTextAreaElement>(null);
   const requiredSkillsTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const preferredSkillsTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     if (jd) {
       const responsibilities = [...jd.sections.key_responsibilities];
       const requiredSkills = [...jd.sections.required_skills];
+      const preferredSkills = [...jd.sections.preferred_skills];
       setEditableSections({
         responsibilities,
         requiredSkills,
+        preferredSkills,
       });
       // Initialize raw text with bullets
       setRawResponsibilitiesText(
@@ -48,10 +55,17 @@ export default function JDPreview({ jd, onCopy, onRegenerate }: JDPreviewProps) 
           return trimmed.startsWith('•') ? trimmed : `• ${trimmed}`;
         }).join('\n')
       );
+      setRawPreferredSkillsText(
+        preferredSkills.map(s => {
+          const trimmed = s.trim();
+          return trimmed.startsWith('•') ? trimmed : `• ${trimmed}`;
+        }).join('\n')
+      );
     } else {
       setEditableSections(null);
       setRawResponsibilitiesText('');
       setRawRequiredSkillsText('');
+      setRawPreferredSkillsText('');
     }
   }, [jd]);
 
@@ -163,6 +177,60 @@ export default function JDPreview({ jd, onCopy, onRegenerate }: JDPreviewProps) 
     }
   }, 600);
 
+  // Autocomplete for preferred skills
+  const fetchPreferredSkillsSuggestion = debounce(async (currentLine: string) => {
+    if (!jd || !isPreferredSkillsFocused) {
+      setPreferredSkillsSuggestion('');
+      return;
+    }
+    
+    const trimmed = currentLine.trim();
+    // Only fetch if there's meaningful text (at least 2 characters) and not ending with space
+    if (!trimmed || trimmed.length < 2 || currentLine.endsWith(' ')) {
+      setPreferredSkillsSuggestion('');
+      return;
+    }
+
+    try {
+      const request: AutocompleteRequest = {
+        field: 'skill',
+        current_line: currentLine.replace(/^•\s*/, '').trim(),
+        job_title: jd.job_title,
+        context: jd.brief_context || undefined,
+        tone: jd.tone,
+        seniority: jd.seniority,
+      };
+
+      const response = await fetch('/api/autocomplete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(request),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const suggestion = data.suggestion?.trim() || '';
+        
+        // Filter out bad suggestions:
+        // 1. Must have content
+        // 2. Should not be already in the current line
+        // 3. Should not be too short (at least 3 characters for meaningful completion)
+        if (suggestion.length >= 3 && 
+            !currentLine.toLowerCase().includes(suggestion.toLowerCase()) &&
+            !suggestion.toLowerCase().includes(currentLine.toLowerCase().trim())) {
+          setPreferredSkillsSuggestion(suggestion);
+        } else {
+          setPreferredSkillsSuggestion('');
+        }
+      } else {
+        setPreferredSkillsSuggestion('');
+      }
+    } catch (error) {
+      console.error('Autocomplete error:', error);
+      setPreferredSkillsSuggestion('');
+    }
+  }, 600);
+
   // Update autocomplete suggestions when text changes
   useEffect(() => {
     if (isResponsibilitiesFocused && jd) {
@@ -186,6 +254,17 @@ export default function JDPreview({ jd, onCopy, onRegenerate }: JDPreviewProps) 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rawRequiredSkillsText, isRequiredSkillsFocused, jd?.job_title, jd?.brief_context, jd?.tone, jd?.seniority]);
 
+  useEffect(() => {
+    if (isPreferredSkillsFocused && jd) {
+      const lines = rawPreferredSkillsText.split('\n');
+      const currentLine = lines[lines.length - 1] || '';
+      fetchPreferredSkillsSuggestion(currentLine);
+    } else {
+      setPreferredSkillsSuggestion('');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rawPreferredSkillsText, isPreferredSkillsFocused, jd?.job_title, jd?.brief_context, jd?.tone, jd?.seniority]);
+
   if (!jd) {
     return (
       <div className="rounded-lg border-2 border-dashed border-gray-200 bg-gray-50 p-16 text-center">
@@ -202,7 +281,9 @@ export default function JDPreview({ jd, onCopy, onRegenerate }: JDPreviewProps) 
     const editedResps = editableSections.responsibilities.join('\n');
     const originalSkills = jd.sections.required_skills.join('\n');
     const editedSkills = editableSections.requiredSkills.join('\n');
-    return originalResps !== editedResps || originalSkills !== editedSkills;
+    const originalPreferredSkills = jd.sections.preferred_skills.join('\n');
+    const editedPreferredSkills = editableSections.preferredSkills.join('\n');
+    return originalResps !== editedResps || originalSkills !== editedSkills || originalPreferredSkills !== editedPreferredSkills;
   };
 
   // Update responsibilities text (preserve user input, add bullets if missing)
@@ -239,6 +320,25 @@ export default function JDPreview({ jd, onCopy, onRegenerate }: JDPreviewProps) 
       setEditableSections({
         ...editableSections,
         requiredSkills: processedLines,
+      });
+    }
+  };
+
+  // Update preferred skills text (preserve user input, add bullets if missing)
+  const updatePreferredSkills = (text: string) => {
+    setRawPreferredSkillsText(text);
+    // Process and update editable sections
+    const lines = text.split('\n');
+    const processedLines = lines.map(line => {
+      const trimmed = line.trim();
+      if (!trimmed) return '';
+      return trimmed.startsWith('•') ? trimmed.replace(/^•\s*/, '') : trimmed;
+    }).filter(line => line.length > 0);
+    
+    if (editableSections) {
+      setEditableSections({
+        ...editableSections,
+        preferredSkills: processedLines,
       });
     }
   };
@@ -348,6 +448,57 @@ export default function JDPreview({ jd, onCopy, onRegenerate }: JDPreviewProps) 
     }
   };
 
+  const handlePreferredSkillsKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Tab' && preferredSkillsSuggestion) {
+      e.preventDefault();
+      const textarea = e.currentTarget;
+      const cursorPosition = textarea.selectionStart ?? rawPreferredSkillsText.length;
+      const textBeforeCursor = rawPreferredSkillsText.substring(0, cursorPosition);
+      const textAfterCursor = rawPreferredSkillsText.substring(cursorPosition);
+      // Insert suggestion at cursor position (add space if needed)
+      const needsSpace = textBeforeCursor.length > 0 && !textBeforeCursor.endsWith(' ') && !textBeforeCursor.endsWith('\n') && !textBeforeCursor.endsWith('•');
+      // Store suggestion length before clearing
+      const suggestionLength = preferredSkillsSuggestion.length;
+      const newText = textBeforeCursor + (needsSpace ? ' ' : '') + preferredSkillsSuggestion + textAfterCursor;
+      setRawPreferredSkillsText(newText);
+      updatePreferredSkills(newText);
+      setPreferredSkillsSuggestion('');
+      
+      setTimeout(() => {
+        if (preferredSkillsTextareaRef.current) {
+          const newPosition = cursorPosition + suggestionLength + (needsSpace ? 1 : 0);
+          preferredSkillsTextareaRef.current.selectionStart = newPosition;
+          preferredSkillsTextareaRef.current.selectionEnd = newPosition;
+          preferredSkillsTextareaRef.current.focus();
+        }
+      }, 0);
+      return;
+    }
+
+    if (e.key === 'Enter') {
+      const textarea = e.currentTarget;
+      const cursorPosition = textarea.selectionStart ?? rawPreferredSkillsText.length;
+      const textBeforeCursor = rawPreferredSkillsText.substring(0, cursorPosition);
+      const textAfterCursor = rawPreferredSkillsText.substring(cursorPosition);
+      
+      // Always add bullet on new line
+      const newText = textBeforeCursor + '\n• ' + textAfterCursor;
+      setRawPreferredSkillsText(newText);
+      updatePreferredSkills(newText);
+      
+      // Set cursor position after the bullet
+      setTimeout(() => {
+        if (preferredSkillsTextareaRef.current) {
+          const newPosition = cursorPosition + 3;
+          preferredSkillsTextareaRef.current.selectionStart = newPosition;
+          preferredSkillsTextareaRef.current.selectionEnd = newPosition;
+          preferredSkillsTextareaRef.current.focus();
+        }
+      }, 0);
+      e.preventDefault();
+    }
+  };
+
   return (
     <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
       {/* Header */}
@@ -403,22 +554,31 @@ export default function JDPreview({ jd, onCopy, onRegenerate }: JDPreviewProps) 
                       .map(line => line.trim().replace(/^•\s*/, '').trim())
                       .filter(line => line.length > 0);
                     
+                    const preferredSkillsText = rawPreferredSkillsText || '';
+                    const currentPreferredSkills = preferredSkillsText
+                      .split('\n')
+                      .map(line => line.trim().replace(/^•\s*/, '').trim())
+                      .filter(line => line.length > 0);
+                    
                     // Compare with original to detect changes
                     const originalResps = jd.sections.key_responsibilities.join('\n');
                     const editedResps = currentResps.join('\n');
                     const originalSkills = jd.sections.required_skills.join('\n');
                     const editedSkills = currentSkills.join('\n');
+                    const originalPreferredSkills = jd.sections.preferred_skills.join('\n');
+                    const editedPreferredSkills = currentPreferredSkills.join('\n');
                     
-                    const hasEdits = originalResps !== editedResps || originalSkills !== editedSkills;
+                    const hasEdits = originalResps !== editedResps || originalSkills !== editedSkills || originalPreferredSkills !== editedPreferredSkills;
                     
                     console.log('Regenerating with:', {
                       hasEdits,
                       respCount: currentResps.length,
                       skillsCount: currentSkills.length,
+                      preferredSkillsCount: currentPreferredSkills.length,
                       sampleResp: currentResps[0]?.substring(0, 50)
                     });
                     
-                    onRegenerate(hasEdits ? { responsibilities: currentResps, requiredSkills: currentSkills } : undefined);
+                    onRegenerate(hasEdits ? { responsibilities: currentResps, requiredSkills: currentSkills, preferredSkills: currentPreferredSkills } : undefined);
                   }} 
                   variant="secondary"
                   size="sm"
@@ -536,12 +696,47 @@ export default function JDPreview({ jd, onCopy, onRegenerate }: JDPreviewProps) 
         </section>
 
         <section>
-          <h2 className="mb-3 text-lg font-semibold text-gray-900">Preferred Skills</h2>
-          <ul className="list-disc list-inside space-y-2 text-gray-700 leading-relaxed">
-            {jd.sections.preferred_skills.map((skill, index) => (
-              <li key={index}>{skill}</li>
-            ))}
-          </ul>
+          <h2 className="mb-3 text-lg font-semibold text-gray-900">
+            Preferred Skills
+          </h2>
+          <div className="relative">
+            <Textarea
+              ref={preferredSkillsTextareaRef}
+              value={rawPreferredSkillsText}
+              onChange={(e) => {
+                const newValue = e.target.value;
+                setRawPreferredSkillsText(newValue);
+                updatePreferredSkills(newValue);
+                // Don't clear suggestion here - let useEffect handle it
+              }}
+              onKeyDown={handlePreferredSkillsKeyDown}
+              onFocus={() => setIsPreferredSkillsFocused(true)}
+              onBlur={(e) => {
+                setIsPreferredSkillsFocused(false);
+                // Format with bullets on blur - ensure all non-empty lines have bullets
+                const lines = e.target.value.split('\n');
+                const formatted = lines.map(line => {
+                  const trimmed = line.trim();
+                  if (!trimmed) return '';
+                  return trimmed.startsWith('•') ? trimmed : `• ${trimmed}`;
+                }).join('\n');
+                setRawPreferredSkillsText(formatted);
+                setTimeout(() => setPreferredSkillsSuggestion(''), 200);
+              }}
+              placeholder="• Enter skills, one per line..."
+              rows={Math.max(8, (rawPreferredSkillsText.split('\n').length || 1) + 2)}
+              className="w-full font-normal"
+            />
+            {preferredSkillsSuggestion && isPreferredSkillsFocused && (
+              <div className="mt-2 rounded-md bg-blue-50 border border-blue-200 px-3 py-2 text-xs text-gray-700">
+                <span className="font-medium">Suggestion:</span>{' '}
+                <span className="text-blue-700 font-medium">{preferredSkillsSuggestion}</span>
+                {' '}
+                <span className="text-gray-500">(Press <kbd className="px-1.5 py-0.5 text-xs font-semibold text-gray-700 bg-white border border-gray-300 rounded">Tab</kbd> to accept)</span>
+              </div>
+            )}
+          </div>
+          <p className="mt-2 text-xs text-gray-500">Enter one skill per line (bullet points added automatically)</p>
         </section>
 
         <section>

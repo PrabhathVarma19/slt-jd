@@ -19,6 +19,7 @@ export async function POST(request: NextRequest) {
     // Step 1: Format user edits BEFORE generating JD
     let formattedResponsibilities = body.edited_responsibilities;
     let formattedSkills = body.edited_required_skills;
+    let formattedPreferredSkills = body.edited_preferred_skills;
 
     if (body.edited_responsibilities && body.edited_responsibilities.length > 0) {
       console.log('API: Formatting user responsibilities...', body.edited_responsibilities.length, 'items');
@@ -48,6 +49,19 @@ export async function POST(request: NextRequest) {
       console.log('API: Formatted skills:', formattedSkills.length);
     }
 
+    if (body.edited_preferred_skills && body.edited_preferred_skills.length > 0) {
+      console.log('API: Formatting user preferred skills...', body.edited_preferred_skills.length, 'items');
+      formattedPreferredSkills = await formatPhrasesIntoSentences(
+        body.edited_preferred_skills,
+        body.job_title,
+        body.context,
+        body.tone,
+        body.seniority,
+        'skill'
+      );
+      console.log('API: Formatted preferred skills:', formattedPreferredSkills.length);
+    }
+
     // Step 2: Generate JD using AI (with formatted edits)
     const sections = await generateJD({
       job_title: body.job_title,
@@ -57,6 +71,7 @@ export async function POST(request: NextRequest) {
       length: body.length,
       edited_responsibilities: formattedResponsibilities,
       edited_required_skills: formattedSkills,
+      edited_preferred_skills: formattedPreferredSkills,
     });
 
     // Step 3: CRITICAL - Force-replace sections with formatted user edits to ensure they're always included
@@ -75,6 +90,11 @@ export async function POST(request: NextRequest) {
       console.log('API: Force-replacing skills with formatted user edits');
       sections.required_skills = formattedSkills;
       // AI will update responsibilities to align with new skills
+    }
+
+    if (formattedPreferredSkills && formattedPreferredSkills.length > 0) {
+      console.log('API: Force-replacing preferred skills with formatted user edits');
+      sections.preferred_skills = formattedPreferredSkills;
     }
 
     // Assemble full text

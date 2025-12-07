@@ -35,6 +35,7 @@ export interface GenerateJDRequest {
   length: LengthOption;
   edited_responsibilities?: string[];
   edited_required_skills?: string[];
+  edited_preferred_skills?: string[];
 }
 
 export interface GenerateJDResponse {

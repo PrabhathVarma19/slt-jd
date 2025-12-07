@@ -60,7 +60,7 @@ function HomeContent() {
     }
   };
 
-  const handleCopy = async (editedSections?: { responsibilities: string[]; requiredSkills: string[] }) => {
+  const handleCopy = async (editedSections?: { responsibilities: string[]; requiredSkills: string[]; preferredSkills: string[] }) => {
     if (!jd) return;
 
     // Use edited sections if provided, otherwise use original
@@ -69,6 +69,7 @@ function HomeContent() {
           ...jd.sections,
           key_responsibilities: editedSections.responsibilities,
           required_skills: editedSections.requiredSkills,
+          preferred_skills: editedSections.preferredSkills,
         }
       : jd.sections;
 
@@ -82,7 +83,7 @@ function HomeContent() {
     }
   };
 
-  const handleRegenerate = async (editedSections?: { responsibilities: string[]; requiredSkills: string[] }) => {
+  const handleRegenerate = async (editedSections?: { responsibilities: string[]; requiredSkills: string[]; preferredSkills: string[] }) => {
     if (!jd) return;
 
     setIsGenerating(true);
@@ -101,9 +102,11 @@ function HomeContent() {
       if (editedSections) {
         params.edited_responsibilities = editedSections.responsibilities;
         params.edited_required_skills = editedSections.requiredSkills;
+        params.edited_preferred_skills = editedSections.preferredSkills;
         console.log('Regenerating with edited content:', {
           responsibilities: editedSections.responsibilities.length,
-          skills: editedSections.requiredSkills.length
+          skills: editedSections.requiredSkills.length,
+          preferredSkills: editedSections.preferredSkills.length
         });
       } else {
         console.log('Regenerating without edited content');
