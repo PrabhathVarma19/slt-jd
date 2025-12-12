@@ -22,12 +22,6 @@ const features = [
     link: '/comms-hub',
     action: 'Open Comms Hub',
   },
-  {
-    title: 'My JDs Library',
-    description: 'Browse, search, copy, and manage all generated JDs.',
-    link: '/library',
-    action: 'Go to Library',
-  },
 ];
 
 export default function Home() {
