@@ -506,7 +506,9 @@ Do not add trailing colons to headings. Only include sections you can meaningful
 
   const defaultSections =
     template === 'change_notice'
-      ? ['Context', "What's changing", 'Impacted teams/systems', 'When', 'Actions required', 'Links/Resources', 'Contacts']
+      ? mode === 'newsletter'
+        ? ['Topline summary', "What's changing", 'Impact', 'Actions required', 'Key dates', 'Links/Resources', 'Contacts']
+        : ['Context', "What's changing", 'Impacted teams/systems', 'When', 'Actions required', 'Links/Resources', 'Contacts']
       : mode === 'newsletter'
         ? ['Top Updates', 'AI/Tech Highlights', 'Company News', 'Risks & Actions', 'Upcoming Dates', 'Resources & Links']
         : ['Context', "What's changing", "Who is impacted", 'When', 'Actions required', 'Contacts'];

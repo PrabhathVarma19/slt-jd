@@ -25,12 +25,39 @@ const defaultNewsletterSections = [
 
 const defaultTeamSections = [
   'Context',
-  "What’s changing",
+  "What's changing",
   'Who is impacted',
   'When',
   'Actions required',
   'Contacts',
 ];
+
+const defaultChangeNoticeNewsletter = [
+  'Topline summary',
+  "What's changing",
+  'Impact',
+  'Actions required',
+  'Key dates',
+  'Links/Resources',
+  'Contacts',
+];
+
+const defaultChangeNoticeTeam = [
+  'Context',
+  "What's changing",
+  'Impacted teams/systems',
+  'When',
+  'Actions required',
+  'Links/Resources',
+  'Contacts',
+];
+
+const getDefaultSections = (mode: CommsMode, template: CommsTemplate) => {
+  if (template === 'change_notice') {
+    return mode === 'newsletter' ? defaultChangeNoticeNewsletter : defaultChangeNoticeTeam;
+  }
+  return mode === 'newsletter' ? defaultNewsletterSections : defaultTeamSections;
+};
 
 export default function CommsHubPage() {
   const [mode, setMode] = useState<CommsMode>('newsletter');
@@ -44,7 +71,7 @@ export default function CommsHubPage() {
   const [links, setLinks] = useState('');
   const [includeLinks, setIncludeLinks] = useState(true);
   const [includeDeltas, setIncludeDeltas] = useState(false);
-  const [sections, setSections] = useState<string[]>(defaultNewsletterSections);
+  const [sections, setSections] = useState<string[]>(getDefaultSections('newsletter', 'default'));
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [output, setOutput] = useState<GeneratedOutput | null>(null);
@@ -53,10 +80,6 @@ export default function CommsHubPage() {
     setSections((prev) =>
       prev.includes(section) ? prev.filter((s) => s !== section) : [...prev, section]
     );
-  };
-
-  const resetSections = (nextMode: CommsMode) => {
-    setSections(nextMode === 'newsletter' ? defaultNewsletterSections : defaultTeamSections);
   };
 
   const handleSubmit = async () => {
@@ -141,8 +164,7 @@ export default function CommsHubPage() {
                     size="sm"
                     onClick={() => {
                       setTemplate(t);
-                      setSections(t === 'change_notice' ? defaultTeamSections : defaultNewsletterSections);
-                      if (t === 'change_notice') setMode('team');
+                      setSections(getDefaultSections(mode, t));
                     }}
                   >
                     {t === 'default' ? 'Default' : 'Change Notice'}
@@ -161,7 +183,7 @@ export default function CommsHubPage() {
                     size="sm"
                     onClick={() => {
                       setMode(m);
-                      resetSections(m);
+                      setSections(getDefaultSections(m, template));
                     }}
                   >
                     {m === 'newsletter' ? 'Newsletter' : 'Single Team Email'}
@@ -292,7 +314,7 @@ export default function CommsHubPage() {
           <div className="space-y-2">
             <label className="text-sm font-medium text-gray-700">Sections</label>
             <div className="flex flex-wrap gap-2">
-              {(mode === 'newsletter' ? defaultNewsletterSections : defaultTeamSections).map((sec) => (
+              {getDefaultSections(mode, template).map((sec) => (
                 <Button
                   key={sec}
                   variant={sections.includes(sec) ? 'primary' : 'secondary'}
