@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Button from '@/components/ui/button';
 import Input from '@/components/ui/input';
 import Textarea from '@/components/ui/textarea';
-import { CommsMode, CommsAudience, Formality } from '@/types/comms';
+import { CommsMode, CommsAudience, Formality, CommsTemplate } from '@/types/comms';
 
 interface GeneratedOutput {
   subject: string;
@@ -34,6 +34,7 @@ const defaultTeamSections = [
 
 export default function CommsHubPage() {
   const [mode, setMode] = useState<CommsMode>('newsletter');
+  const [template, setTemplate] = useState<CommsTemplate>('default');
   const [audience, setAudience] = useState<CommsAudience>('org');
   const [formality, setFormality] = useState<Formality>('medium');
   const [subjectSeed, setSubjectSeed] = useState('');
@@ -73,6 +74,7 @@ export default function CommsHubPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           mode,
+          template,
           audience,
           formality,
           subject_seed: subjectSeed || undefined,
@@ -129,6 +131,26 @@ export default function CommsHubPage() {
           )}
 
           <div className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">Template</label>
+              <div className="flex flex-wrap gap-2">
+                {(['default', 'change_notice'] as CommsTemplate[]).map((t) => (
+                  <Button
+                    key={t}
+                    variant={template === t ? 'primary' : 'secondary'}
+                    size="sm"
+                    onClick={() => {
+                      setTemplate(t);
+                      setSections(t === 'change_notice' ? defaultTeamSections : defaultNewsletterSections);
+                      if (t === 'change_notice') setMode('team');
+                    }}
+                  >
+                    {t === 'default' ? 'Default' : 'Change Notice'}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-700">Mode</label>
               <div className="flex flex-wrap gap-2">
@@ -385,3 +407,4 @@ export default function CommsHubPage() {
     </div>
   );
 }
+

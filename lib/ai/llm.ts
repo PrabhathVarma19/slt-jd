@@ -1,7 +1,7 @@
 import OpenAI from 'openai';
 import Anthropic from '@anthropic-ai/sdk';
 import { JDSections, Tone, Seniority, AutocompleteRequest } from '@/types/jd';
-import { CommsRequest, CommsSections } from '@/types/comms';
+import { CommsRequest, CommsSections, CommsTemplate } from '@/types/comms';
 import { WeeklyBriefRequest, WeeklyBrief } from '@/types/weekly';
 
 const openaiApiKey = process.env.OPENAI_API_KEY;
@@ -482,6 +482,7 @@ Reply with only the skill phrase, no bullet or punctuation.`;
 export async function generateCommsOutput(request: CommsRequest): Promise<CommsSections> {
   const {
     mode,
+    template = 'default',
     audience,
     formality,
     subject_seed,
@@ -504,9 +505,11 @@ Do not add trailing colons to headings. Only include sections you can meaningful
   const formalityLabel = formality === 'high' ? 'Formal' : formality === 'low' ? 'Casual' : 'Neutral';
 
   const defaultSections =
-    mode === 'newsletter'
-      ? ['Top Updates', 'AI/Tech Highlights', 'Company News', 'Risks & Actions', 'Upcoming Dates', 'Resources & Links']
-      : ['Context', "What's changing", "Who is impacted", 'When', 'Actions required', 'Contacts'];
+    template === 'change_notice'
+      ? ['Context', "What's changing", 'Impacted teams/systems', 'When', 'Actions required', 'Links/Resources', 'Contacts']
+      : mode === 'newsletter'
+        ? ['Top Updates', 'AI/Tech Highlights', 'Company News', 'Risks & Actions', 'Upcoming Dates', 'Resources & Links']
+        : ['Context', "What's changing", "Who is impacted", 'When', 'Actions required', 'Contacts'];
 
   const userPrompt = `Mode: ${modeLabel}
 Audience: ${audienceLabel}
@@ -517,6 +520,8 @@ Actions required: ${actions_required || 'None'}
 Links/resources: ${links || 'None'}
 Include deltas vs last issue: ${include_deltas ? 'Yes' : 'No'}
 Requested sections: ${(sections && sections.length > 0 ? sections : defaultSections).join(', ')}
+
+Template: ${template === 'change_notice' ? 'Change Notice (org/team rollout)' : 'Default'}
 
 Source content:
 ${content}

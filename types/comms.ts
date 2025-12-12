@@ -1,4 +1,5 @@
 export type CommsMode = 'newsletter' | 'team';
+export type CommsTemplate = 'default' | 'change_notice';
 
 export type CommsAudience = 'exec' | 'org' | 'team';
 
@@ -6,6 +7,7 @@ export type Formality = 'low' | 'medium' | 'high';
 
 export interface CommsRequest {
   mode: CommsMode;
+  template?: CommsTemplate;
   audience: CommsAudience;
   formality: Formality;
   subject_seed?: string;
