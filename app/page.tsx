@@ -11,10 +11,10 @@ const features = [
     action: 'Open JD Creator',
   },
   {
-    title: 'Weekly Brief (CIO)',
-    description: 'Ingest team updates, get a digest, run-of-show, and action register for the Thursday call.',
+    title: 'Weekly Initiatives (CIO)',
+    description: 'Ingest team updates, get a digest, run-of-show, and action register for the weekly initiatives call.',
     link: '/weekly-brief',
-    action: 'Open Weekly Brief',
+    action: 'Open Weekly Initiatives',
   },
   {
     title: 'Comms Hub',
@@ -42,7 +42,7 @@ export default function Home() {
                 <Button>Open JD Creator</Button>
               </Link>
               <Link href="/weekly-brief">
-                <Button variant="secondary">Weekly Brief</Button>
+                <Button variant="secondary">Weekly Initiatives</Button>
               </Link>
             </div>
           </div>

@@ -2,6 +2,7 @@ import OpenAI from 'openai';
 import Anthropic from '@anthropic-ai/sdk';
 import { JDSections, Tone, Seniority, AutocompleteRequest } from '@/types/jd';
 import { CommsRequest, CommsSections } from '@/types/comms';
+import { WeeklyBriefRequest, WeeklyBrief } from '@/types/weekly';
 
 const openaiApiKey = process.env.OPENAI_API_KEY;
 const anthropicApiKey = process.env.ANTHROPIC_API_KEY;
@@ -629,5 +630,112 @@ Instructions:
   }
 
   throw new Error('No AI provider available. Please set OPENAI_API_KEY or ANTHROPIC_API_KEY.');
+}
+
+export async function generateWeeklyBriefDraft(request: WeeklyBriefRequest): Promise<WeeklyBrief> {
+  const { week_start, agenda, raw_updates } = request;
+
+  const systemPrompt = `You are an ops chief of staff. Given weekly team updates, produce a concise weekly initiatives brief with:
+- digest: array of sections (title, body) covering top wins, top risks, asks/decisions, dependencies.
+- run_of_show: array of sections (title, body) covering team order and questions.
+- action_register: array of actions with id, team, description, owner, due_date, status (open/closed).
+Return clean JSON only.`;
+
+  const userPrompt = `Week start: ${week_start || 'not provided'}
+Agenda: ${agenda || 'not provided'}
+Updates:
+${raw_updates}
+
+Return JSON with keys: digest (array of {title, body}), run_of_show (array of {title, body}), action_register (array of {id, team, description, owner, due_date, status}). Status must be "open" or "closed".`;
+
+  // Try OpenAI first
+  if (openai) {
+    try {
+      const completion = await openai.chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt },
+        ],
+        response_format: { type: 'json_object' },
+        temperature: 0.5,
+      });
+      const contentStr = completion.choices[0]?.message?.content;
+      if (contentStr) {
+        const parsed = JSON.parse(contentStr);
+        return {
+          id: 'draft',
+          week_start: week_start || new Date().toISOString().slice(0, 10),
+          agenda: agenda || '',
+          raw_updates,
+          digest: parsed.digest || [],
+          run_of_show: parsed.run_of_show || [],
+          action_register: parsed.action_register || [],
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        };
+      }
+    } catch (error) {
+      console.error('OpenAI weekly brief error:', error);
+    }
+  }
+
+  // Fallback to Anthropic
+  if (anthropic) {
+    try {
+      const message = await anthropic.messages.create({
+        model: 'claude-3-haiku-20240307',
+        max_tokens: 2000,
+        system: systemPrompt,
+        messages: [
+          {
+            role: 'user',
+            content: userPrompt + '\n\nRespond with valid JSON only, no markdown formatting.',
+          },
+        ],
+      });
+
+      const contentObj = message.content[0];
+      if (contentObj.type === 'text') {
+        const text = contentObj.text.trim();
+        const jsonText = text.replace(/^```json\n?/i, '').replace(/\n?```$/i, '');
+        const parsed = JSON.parse(jsonText);
+        return {
+          id: 'draft',
+          week_start: week_start || new Date().toISOString().slice(0, 10),
+          agenda: agenda || '',
+          raw_updates,
+          digest: parsed.digest || [],
+          run_of_show: parsed.run_of_show || [],
+          action_register: parsed.action_register || [],
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        };
+      }
+    } catch (error) {
+      console.error('Anthropic weekly brief error:', error);
+    }
+  }
+
+  // Fallback stub if no providers
+  return {
+    id: 'draft',
+    week_start: week_start || new Date().toISOString().slice(0, 10),
+    agenda: agenda || '',
+    raw_updates,
+    digest: [
+      { title: 'Top Wins', body: 'Sample: summarize wins here.' },
+      { title: 'Top Risks', body: 'Sample: summarize risks here.' },
+    ],
+    run_of_show: [
+      { title: 'Team A (5 min)', body: 'Sample run-of-show item.' },
+      { title: 'Team B (5 min)', body: 'Sample run-of-show item.' },
+    ],
+    action_register: [
+      { id: 'A-1', team: 'Team', description: 'Sample action', owner: 'Owner', due_date: '', status: 'open' },
+    ],
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  };
 }
 

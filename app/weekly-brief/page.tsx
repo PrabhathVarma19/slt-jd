@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Button from '@/components/ui/button';
 import Input from '@/components/ui/input';
 import Textarea from '@/components/ui/textarea';
+import { WeeklyBrief } from '@/types/weekly';
 
 type BriefSection = { title: string; body: string };
 type ActionItem = { id: string; team?: string; description: string; owner?: string; due?: string; status: 'open' | 'closed' };
@@ -37,13 +38,48 @@ export default function WeeklyBriefPage() {
   const [runOfShow, setRunOfShow] = useState<BriefSection[] | null>(null);
   const [actions, setActions] = useState<ActionItem[] | null>(null);
   const [message, setMessage] = useState<string | null>('Generation and persistence are in progress. This is a UI scaffold.');
+  const [isGenerating, setIsGenerating] = useState(false);
 
-  const generateDraft = () => {
-    // Placeholder: use sample data until LLM + persistence are wired.
-    setDigest(sampleDigest);
-    setRunOfShow(sampleRunOfShow);
-    setActions(sampleActions);
-    setMessage(mode === 'prep' ? 'Prep draft generated (placeholder).' : 'Publish draft generated (placeholder).');
+  const generateDraft = async () => {
+    if (!rawUpdates.trim()) return;
+    setIsGenerating(true);
+    setMessage(null);
+    try {
+      const res = await fetch('/api/weekly-brief', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          week_start: weekStart || undefined,
+          agenda: agenda || undefined,
+          raw_updates: rawUpdates,
+        }),
+      });
+      const data: WeeklyBrief | { error: string } = await res.json();
+      if (!res.ok || (data as any).error) {
+        throw new Error((data as any).error || 'Failed to generate weekly initiatives');
+      }
+      const brief = data as WeeklyBrief;
+      setDigest(brief.digest);
+      setRunOfShow(brief.run_of_show);
+      setActions(
+        brief.action_register.map((a, idx) => ({
+          id: a.id || `A-${idx + 1}`,
+          team: a.team,
+          description: a.description,
+          owner: a.owner,
+          due: a.due_date,
+          status: a.status as 'open' | 'closed',
+        }))
+      );
+      setMessage(mode === 'prep' ? 'Prep draft generated.' : 'Publish draft generated.');
+    } catch (err: any) {
+      setDigest(null);
+      setRunOfShow(null);
+      setActions(null);
+      setMessage(err.message || 'Failed to generate.');
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const toggleAction = (id: string) => {
@@ -61,10 +97,10 @@ export default function WeeklyBriefPage() {
       <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm space-y-6">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-1">
-            <p className="text-sm font-semibold uppercase tracking-wide text-blue-700">CIO Weekly Brief</p>
-            <h1 className="text-2xl font-semibold text-gray-900">Prep and publish the Thursday call.</h1>
-            <p className="text-sm text-gray-600">Paste updates, set the week, and generate digest/run-of-show/actions.</p>
-          </div>
+          <p className="text-sm font-semibold uppercase tracking-wide text-blue-700">Weekly Initiatives</p>
+          <h1 className="text-2xl font-semibold text-gray-900">Prep and publish the weekly initiatives.</h1>
+          <p className="text-sm text-gray-600">Paste updates, set the week, and generate digest/run-of-show/actions.</p>
+        </div>
           <Link href="/">
             <Button variant="secondary" size="sm">Back to Home</Button>
           </Link>
@@ -123,8 +159,12 @@ export default function WeeklyBriefPage() {
         </div>
 
         <div className="flex items-center gap-3">
-          <Button onClick={generateDraft} disabled={!rawUpdates.trim()}>
-            {mode === 'prep' ? 'Generate prep draft (placeholder)' : 'Generate publish draft (placeholder)'}
+          <Button onClick={generateDraft} disabled={!rawUpdates.trim() || isGenerating}>
+            {isGenerating
+              ? 'Generating...'
+              : mode === 'prep'
+              ? 'Generate prep draft'
+              : 'Generate publish draft'}
           </Button>
           <Button variant="secondary" disabled>Save/Publish (pending wiring)</Button>
         </div>

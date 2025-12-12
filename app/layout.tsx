@@ -54,7 +54,7 @@ export default function RootLayout({
                     href="/weekly-brief"
                     className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
                   >
-                    Weekly Brief
+                    Weekly Initiatives
                   </Link>
                   <Link
                     href="/comms-hub"

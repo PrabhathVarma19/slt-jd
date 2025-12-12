@@ -21,8 +21,8 @@ export interface WeeklyBrief {
   week_start: string;
   agenda?: string;
   raw_updates: string;
-  digest: any;
-  run_of_show: any;
+  digest: { title: string; body: string }[];
+  run_of_show: { title: string; body: string }[];
   action_register: WeeklyAction[];
   created_at: string;
   updated_at: string;
