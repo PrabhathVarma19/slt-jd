@@ -44,12 +44,12 @@ export default function Home() {
               Choose a tool to start: generate JDs, prep the weekly CIO brief, or craft exec-ready newsletters and team updates.
             </p>
             <div className="flex flex-wrap gap-3">
-              <Button asChild>
-                <Link href="/jd">Open JD Creator</Link>
-              </Button>
-              <Button variant="secondary" asChild>
-                <Link href="/weekly-brief">Weekly Brief</Link>
-              </Button>
+              <Link href="/jd">
+                <Button>Open JD Creator</Button>
+              </Link>
+              <Link href="/weekly-brief">
+                <Button variant="secondary">Weekly Brief</Button>
+              </Link>
             </div>
           </div>
           <div className="rounded-xl border border-gray-200 bg-gray-50 px-6 py-5 text-sm text-gray-700 shadow-inner">
@@ -77,9 +77,9 @@ export default function Home() {
                 <p className="text-sm text-gray-600">{feature.description}</p>
               </div>
               <div className="mt-4">
-                <Button asChild size="md">
-                  <Link href={feature.link}>{feature.action}</Link>
-                </Button>
+                <Link href={feature.link}>
+                  <Button size="md">{feature.action}</Button>
+                </Link>
               </div>
             </div>
           ))}

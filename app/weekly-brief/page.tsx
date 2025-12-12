@@ -15,12 +15,12 @@ export default function WeeklyBriefPage() {
           </p>
         </div>
         <div className="mt-4 flex items-center gap-3">
-          <Button asChild>
-            <Link href="/weekly-brief">Start Weekly Brief</Link>
-          </Button>
-          <Button variant="secondary" asChild>
-            <Link href="/">Back to Home</Link>
-          </Button>
+          <Link href="/weekly-brief">
+            <Button>Start Weekly Brief</Button>
+          </Link>
+          <Link href="/">
+            <Button variant="secondary">Back to Home</Button>
+          </Link>
         </div>
       </div>
 
