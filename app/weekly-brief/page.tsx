@@ -28,9 +28,11 @@ const sampleActions: ActionItem[] = [
 ];
 
 export default function WeeklyBriefPage() {
+  const [mode, setMode] = useState<'prep' | 'publish'>('prep');
   const [weekStart, setWeekStart] = useState('');
   const [agenda, setAgenda] = useState('');
   const [rawUpdates, setRawUpdates] = useState('');
+  const [lastWeekSummary] = useState('Last week: published digest/actions will appear here (placeholder).');
   const [digest, setDigest] = useState<BriefSection[] | null>(null);
   const [runOfShow, setRunOfShow] = useState<BriefSection[] | null>(null);
   const [actions, setActions] = useState<ActionItem[] | null>(null);
@@ -41,7 +43,7 @@ export default function WeeklyBriefPage() {
     setDigest(sampleDigest);
     setRunOfShow(sampleRunOfShow);
     setActions(sampleActions);
-    setMessage('Draft generated (placeholder). Wiring to backend/LLM pending.');
+    setMessage(mode === 'prep' ? 'Prep draft generated (placeholder).' : 'Publish draft generated (placeholder).');
   };
 
   const toggleAction = (id: string) => {
@@ -68,6 +70,23 @@ export default function WeeklyBriefPage() {
           </Link>
         </div>
 
+        <div className="flex flex-wrap items-center gap-2">
+          <Button
+            variant={mode === 'prep' ? 'primary' : 'secondary'}
+            size="sm"
+            onClick={() => setMode('prep')}
+          >
+            Prep (before call)
+          </Button>
+          <Button
+            variant={mode === 'publish' ? 'primary' : 'secondary'}
+            size="sm"
+            onClick={() => setMode('publish')}
+          >
+            Publish (after call)
+          </Button>
+        </div>
+
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-2">
             <label className="text-sm font-medium text-gray-700">Week start</label>
@@ -83,19 +102,31 @@ export default function WeeklyBriefPage() {
           </div>
         </div>
 
+        {mode === 'prep' && (
+          <div className="space-y-2 rounded-md border border-gray-100 bg-gray-50 p-4">
+            <div className="text-sm font-semibold text-gray-900">Last week (published)</div>
+            <p className="text-sm text-gray-700">{lastWeekSummary}</p>
+            <p className="text-xs text-gray-500">When wired, this will load last week’s published digest/actions to inform prep.</p>
+          </div>
+        )}
+
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700">Paste consolidated updates</label>
+          <label className="text-sm font-medium text-gray-700">
+            {mode === 'prep' ? 'PM notes / prep inputs' : 'Paste consolidated updates (team emails)'}
+          </label>
           <Textarea
             rows={8}
             value={rawUpdates}
             onChange={(e) => setRawUpdates(e.target.value)}
-            placeholder="Paste team updates or the PM's consolidated email here..."
+            placeholder={mode === 'prep' ? 'PM notes, agenda tweaks, reminders...' : "Paste team updates or the PM's consolidated email here..."}
           />
         </div>
 
         <div className="flex items-center gap-3">
-          <Button onClick={generateDraft} disabled={!rawUpdates.trim()}>Generate draft (placeholder)</Button>
-          <Button variant="secondary" disabled>Publish (pending wiring)</Button>
+          <Button onClick={generateDraft} disabled={!rawUpdates.trim()}>
+            {mode === 'prep' ? 'Generate prep draft (placeholder)' : 'Generate publish draft (placeholder)'}
+          </Button>
+          <Button variant="secondary" disabled>Save/Publish (pending wiring)</Button>
         </div>
 
         {message && (
