@@ -483,7 +483,8 @@ export async function generateCommsOutput(request: CommsRequest): Promise<CommsS
 
   const systemPrompt = `You are an executive communications writer for a consulting/technology firm.
 You create concise, structured emails/newsletters that are ready to send.
-Always return valid JSON with subject, summary, sections array, html_body, text_body.`;
+Always return valid JSON with subject, summary, sections array, html_body, text_body.
+Do not add trailing colons to headings. Only include sections you can meaningfully populate.`;
 
   const modeLabel = mode === 'newsletter' ? 'Newsletter' : 'Single Team Update';
   const audienceLabel = audience === 'exec' ? 'CIO/SLT' : audience === 'org' ? 'Org-wide' : 'Team-level';
@@ -510,7 +511,7 @@ ${content}
 Instructions:
 - Produce a concise subject line.
 - Write a short exec-ready summary (2-3 sentences).
-- Populate the sections with crisp bullets/paragraphs.
+- Populate the sections with crisp bullets/paragraphs. If you cannot populate a section, omit it rather than leaving it blank.
 - Return both HTML (basic tags, no inline CSS) and plain text variants.
 - Keep tone aligned to the audience and formality.
 - If include deltas is Yes, call out new vs ongoing vs resolved items where possible.`;

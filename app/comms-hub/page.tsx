@@ -296,12 +296,21 @@ export default function CommsHubPage() {
               </div>
 
               <div className="space-y-4">
-                {output.sections?.map((sec, idx) => (
-                  <div key={idx} className="rounded-md border border-gray-200 p-4">
-                    <h3 className="text-sm font-semibold text-gray-900">{sec.heading}</h3>
-                    <p className="mt-1 text-sm text-gray-700 whitespace-pre-wrap">{sec.body}</p>
-                  </div>
-                ))}
+                {output.sections
+                  ?.filter((sec) => (sec.heading && sec.heading.trim()) || (sec.body && sec.body.trim()))
+                  .map((sec, idx) => {
+                    const cleanHeading = sec.heading ? sec.heading.replace(/[:\s]+$/, '') : '';
+                    return (
+                      <div key={idx} className="rounded-md border border-gray-200 p-4">
+                        {cleanHeading && (
+                          <h3 className="text-sm font-semibold text-gray-900">{cleanHeading}</h3>
+                        )}
+                        {sec.body && (
+                          <p className="mt-1 text-sm text-gray-700 whitespace-pre-wrap">{sec.body}</p>
+                        )}
+                      </div>
+                    );
+                  })}
               </div>
 
               <div className="space-y-2">
