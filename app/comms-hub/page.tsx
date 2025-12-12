@@ -296,6 +296,12 @@ export default function CommsHubPage() {
               </div>
 
               <div className="space-y-4">
+                {links && (
+                  <div className="rounded-md border border-gray-200 p-4">
+                    <h3 className="text-sm font-semibold text-gray-900">Links / Resources</h3>
+                    <p className="mt-1 text-sm text-gray-700 whitespace-pre-wrap">{links}</p>
+                  </div>
+                )}
                 {output.sections
                   ?.filter((sec) => (sec.heading && sec.heading.trim()) || (sec.body && sec.body.trim()))
                   .map((sec, idx) => {
