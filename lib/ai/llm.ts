@@ -1,6 +1,7 @@
 import OpenAI from 'openai';
 import Anthropic from '@anthropic-ai/sdk';
 import { JDSections, Tone, Seniority, AutocompleteRequest } from '@/types/jd';
+import { CommsRequest, CommsSections } from '@/types/comms';
 
 const openaiApiKey = process.env.OPENAI_API_KEY;
 const anthropicApiKey = process.env.ANTHROPIC_API_KEY;
@@ -475,5 +476,107 @@ Reply with only the skill phrase, no bullet or punctuation.`;
   }
 
   return '';
+}
+
+export async function generateCommsOutput(request: CommsRequest): Promise<CommsSections> {
+  const { mode, audience, formality, subject_seed, content, key_dates, actions_required, links, sections, include_deltas } = request;
+
+  const systemPrompt = `You are an executive communications writer for a consulting/technology firm.
+You create concise, structured emails/newsletters that are ready to send.
+Always return valid JSON with subject, summary, sections array, html_body, text_body.`;
+
+  const modeLabel = mode === 'newsletter' ? 'Newsletter' : 'Single Team Update';
+  const audienceLabel = audience === 'exec' ? 'CIO/SLT' : audience === 'org' ? 'Org-wide' : 'Team-level';
+  const formalityLabel = formality === 'high' ? 'Formal' : formality === 'low' ? 'Casual' : 'Neutral';
+
+  const defaultSections =
+    mode === 'newsletter'
+      ? ['Top Updates', 'AI/Tech Highlights', 'Company News', 'Risks & Actions', 'Upcoming Dates', 'Resources & Links']
+      : ['Context', "What's changing", "Who is impacted", 'When', 'Actions required', 'Contacts'];
+
+  const userPrompt = `Mode: ${modeLabel}
+Audience: ${audienceLabel}
+Formality: ${formalityLabel}
+Subject seed: ${subject_seed || 'None'}
+Key dates: ${key_dates || 'None'}
+Actions required: ${actions_required || 'None'}
+Links/resources: ${links || 'None'}
+Include deltas vs last issue: ${include_deltas ? 'Yes' : 'No'}
+Requested sections: ${(sections && sections.length > 0 ? sections : defaultSections).join(', ')}
+
+Source content:
+${content}
+
+Instructions:
+- Produce a concise subject line.
+- Write a short exec-ready summary (2-3 sentences).
+- Populate the sections with crisp bullets/paragraphs.
+- Return both HTML (basic tags, no inline CSS) and plain text variants.
+- Keep tone aligned to the audience and formality.
+- If include deltas is Yes, call out new vs ongoing vs resolved items where possible.`;
+
+  // Try OpenAI first
+  if (openai) {
+    try {
+      const completion = await openai.chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt },
+        ],
+        response_format: { type: 'json_object' },
+        temperature: 0.5,
+      });
+
+      const contentStr = completion.choices[0]?.message?.content;
+      if (contentStr) {
+        const parsed = JSON.parse(contentStr);
+        return {
+          subject: parsed.subject || subject_seed || '',
+          summary: parsed.summary || '',
+          sections: parsed.sections || [],
+          html_body: parsed.html_body || '',
+          text_body: parsed.text_body || '',
+        };
+      }
+    } catch (error) {
+      console.error('OpenAI comms error:', error);
+    }
+  }
+
+  // Fallback to Anthropic
+  if (anthropic) {
+    try {
+      const message = await anthropic.messages.create({
+        model: 'claude-3-haiku-20240307',
+        max_tokens: 2000,
+        system: systemPrompt,
+        messages: [
+          {
+            role: 'user',
+            content: userPrompt + '\n\nRespond with valid JSON only, no markdown formatting.',
+          },
+        ],
+      });
+
+      const contentObj = message.content[0];
+      if (contentObj.type === 'text') {
+        const text = contentObj.text.trim();
+        const jsonText = text.replace(/^```json\n?/i, '').replace(/\n?```$/i, '');
+        const parsed = JSON.parse(jsonText);
+        return {
+          subject: parsed.subject || subject_seed || '',
+          summary: parsed.summary || '',
+          sections: parsed.sections || [],
+          html_body: parsed.html_body || '',
+          text_body: parsed.text_body || '',
+        };
+      }
+    } catch (error) {
+      console.error('Anthropic comms error:', error);
+    }
+  }
+
+  throw new Error('No AI provider available. Please set OPENAI_API_KEY or ANTHROPIC_API_KEY.');
 }
 
