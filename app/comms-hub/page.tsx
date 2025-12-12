@@ -320,7 +320,31 @@ export default function CommsHubPage() {
                 {links && (
                   <div className="rounded-md border border-gray-200 p-4">
                     <h3 className="text-sm font-semibold text-gray-900">Links / Resources</h3>
-                    <p className="mt-1 text-sm text-gray-700 whitespace-pre-wrap">{links}</p>
+                    <ul className="mt-2 space-y-1">
+                      {links
+                        .split('\n')
+                        .map((l) => l.trim())
+                        .filter(Boolean)
+                        .map((l, idx) => {
+                          const isUrl = /^https?:\/\//i.test(l);
+                          return (
+                            <li key={idx} className="text-sm text-gray-700 break-words">
+                              {isUrl ? (
+                                <a
+                                  className="text-blue-700 hover:underline"
+                                  href={l}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  {l}
+                                </a>
+                              ) : (
+                                l
+                              )}
+                            </li>
+                          );
+                        })}
+                    </ul>
                   </div>
                 )}
                 {output.sections
