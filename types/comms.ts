@@ -1,5 +1,5 @@
 export type CommsMode = 'newsletter' | 'team';
-export type CommsTemplate = 'default' | 'change_notice';
+export type CommsTemplate = 'default' | 'change_notice' | 'awareness';
 
 export type CommsAudience = 'exec' | 'org' | 'team';
 

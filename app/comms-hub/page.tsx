@@ -157,7 +157,7 @@ export default function CommsHubPage() {
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-700">Template</label>
               <div className="flex flex-wrap gap-2">
-                {(['default', 'change_notice'] as CommsTemplate[]).map((t) => (
+                {(['default', 'change_notice', 'awareness'] as CommsTemplate[]).map((t) => (
                   <Button
                     key={t}
                     variant={template === t ? 'primary' : 'secondary'}
@@ -167,7 +167,7 @@ export default function CommsHubPage() {
                       setSections(getDefaultSections(mode, t));
                     }}
                   >
-                    {t === 'default' ? 'Default' : 'Change Notice'}
+                    {t === 'default' ? 'Default' : t === 'change_notice' ? 'Change Notice' : 'Awareness'}
                   </Button>
                 ))}
               </div>

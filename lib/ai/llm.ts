@@ -509,9 +509,13 @@ Do not add trailing colons to headings. Only include sections you can meaningful
       ? mode === 'newsletter'
         ? ['Topline summary', "What's changing", 'Impact', 'Actions required', 'Key dates', 'Links/Resources', 'Contacts']
         : ['Context', "What's changing", 'Impacted teams/systems', 'When', 'Actions required', 'Links/Resources', 'Contacts']
-      : mode === 'newsletter'
-        ? ['Top Updates', 'AI/Tech Highlights', 'Company News', 'Risks & Actions', 'Upcoming Dates', 'Resources & Links']
-        : ['Context', "What's changing", "Who is impacted", 'When', 'Actions required', 'Contacts'];
+      : template === 'awareness'
+        ? mode === 'newsletter'
+          ? ['Theme', 'Threat overview', 'Why it matters', 'Do', "Don't", 'Verification steps', 'Report & Contacts', 'Resources']
+          : ['Theme', 'What to watch for', 'Do', "Don't", 'How to verify', 'Report & Contacts', 'Resources']
+        : mode === 'newsletter'
+          ? ['Top Updates', 'AI/Tech Highlights', 'Company News', 'Risks & Actions', 'Upcoming Dates', 'Resources & Links']
+          : ['Context', "What's changing", "Who is impacted", 'When', 'Actions required', 'Contacts'];
 
   const userPrompt = `Mode: ${modeLabel}
 Audience: ${audienceLabel}
@@ -523,7 +527,13 @@ Links/resources: ${links || 'None'}
 Include deltas vs last issue: ${include_deltas ? 'Yes' : 'No'}
 Requested sections: ${(sections && sections.length > 0 ? sections : defaultSections).join(', ')}
 
-Template: ${template === 'change_notice' ? 'Change Notice (org/team rollout)' : 'Default'}
+Template: ${
+    template === 'change_notice'
+      ? 'Change Notice (org/team rollout)'
+      : template === 'awareness'
+        ? 'Security Awareness'
+        : 'Default'
+  }
 
 Source content:
 ${content}
