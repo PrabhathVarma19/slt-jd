@@ -94,6 +94,7 @@ export default function CommsHubPage() {
   const [actionsRequired, setActionsRequired] = useState('');
   const [links, setLinks] = useState('');
   const [includeLinks, setIncludeLinks] = useState(true);
+  const [includeSectionHeaders, setIncludeSectionHeaders] = useState(true);
   const [includeDeltas, setIncludeDeltas] = useState(false);
   const [sections, setSections] = useState<string[]>(getDefaultSections('newsletter', 'default'));
   const [isLoading, setIsLoading] = useState(false);
@@ -130,6 +131,7 @@ export default function CommsHubPage() {
           actions_required: actionsRequired || undefined,
           links: links || undefined,
           include_links: includeLinks,
+          include_section_headers: includeSectionHeaders,
           sections,
           include_deltas: includeDeltas,
         }),
@@ -309,13 +311,33 @@ export default function CommsHubPage() {
                   variant={includeLinks ? 'primary' : 'secondary'}
                   size="sm"
                   onClick={() => setIncludeLinks(true)}
-                >
-                  Yes
-                </Button>
+                  >
+                    Yes
+                  </Button>
                 <Button
                   variant={!includeLinks ? 'primary' : 'secondary'}
                   size="sm"
                   onClick={() => setIncludeLinks(false)}
+                  >
+                    No
+                  </Button>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">Include section headers in outputs?</label>
+              <div className="flex items-center gap-3">
+                <Button
+                  variant={includeSectionHeaders ? 'primary' : 'secondary'}
+                  size="sm"
+                  onClick={() => setIncludeSectionHeaders(true)}
+                >
+                  Yes
+                </Button>
+                <Button
+                  variant={!includeSectionHeaders ? 'primary' : 'secondary'}
+                  size="sm"
+                  onClick={() => setIncludeSectionHeaders(false)}
                 >
                   No
                 </Button>

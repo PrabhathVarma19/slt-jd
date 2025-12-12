@@ -493,6 +493,7 @@ export async function generateCommsOutput(request: CommsRequest): Promise<CommsS
     sections,
     include_deltas,
     include_links,
+    include_section_headers,
   } = request;
 
   const systemPrompt = `You are an executive communications writer for a consulting/technology firm.
@@ -542,7 +543,7 @@ Instructions:
 - Produce a concise subject line.
 - Write a short exec-ready summary (2-3 sentences).
 - Populate the sections with crisp bullets/paragraphs. If you cannot populate a section, omit it rather than leaving it blank.
-- Return both HTML (basic tags, no inline CSS) and plain text variants. Include links/resources when provided and allowed.
+- Return both HTML (basic tags, no inline CSS) and plain text variants. Include links/resources when provided and allowed. Include section headers unless told not to.
 - Keep tone aligned to the audience and formality.
 - If include deltas is Yes, call out new vs ongoing vs resolved items where possible.`;
 
@@ -569,6 +570,9 @@ Instructions:
           html_body: parsed.html_body || '',
           text_body: parsed.text_body || '',
         };
+        if (include_section_headers === false) {
+          result.sections = result.sections.map((s: any) => ({ heading: '', body: s.body || '' }));
+        }
         if (links && include_links !== false) {
           const linkLines = links.split('\n').map((l: string) => l.trim()).filter(Boolean);
           if (linkLines.length > 0) {
@@ -621,6 +625,9 @@ Instructions:
           html_body: parsed.html_body || '',
           text_body: parsed.text_body || '',
         };
+        if (include_section_headers === false) {
+          result.sections = result.sections.map((s: any) => ({ heading: '', body: s.body || '' }));
+        }
         if (links && include_links !== false) {
           const linkLines = links.split('\n').map((l: string) => l.trim()).filter(Boolean);
           if (linkLines.length > 0) {

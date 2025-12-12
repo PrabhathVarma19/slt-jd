@@ -16,6 +16,7 @@ export interface CommsRequest {
   actions_required?: string;
   links?: string;
   include_links?: boolean;
+  include_section_headers?: boolean;
   sections?: string[];
   include_deltas?: boolean;
 }
