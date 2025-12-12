@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Inter } from 'next/font/google';
 import './globals.css';
 
@@ -27,8 +28,15 @@ export default function RootLayout({
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="flex h-16 items-center justify-between">
                 <div className="flex items-center">
-                  <Link href="/" className="text-xl font-semibold tracking-tight text-gray-900">
-                    Beacon
+                  <Link href="/" className="flex items-center gap-2 text-xl font-semibold tracking-tight text-gray-900">
+                    <Image
+                      src="/trianz-logo-horizontal.png"
+                      alt="Trianz"
+                      width={140}
+                      height={32}
+                      priority
+                    />
+                    <span>Beacon</span>
                   </Link>
                 </div>
                 <nav className="flex items-center gap-6">
