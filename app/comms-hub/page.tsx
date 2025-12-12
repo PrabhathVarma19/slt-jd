@@ -52,9 +52,33 @@ const defaultChangeNoticeTeam = [
   'Contacts',
 ];
 
+const defaultAwarenessNewsletter = [
+  'Theme',
+  'Threat overview',
+  'Why it matters',
+  'Do',
+  "Don’t",
+  'Verification steps',
+  'Report & Contacts',
+  'Resources',
+];
+
+const defaultAwarenessTeam = [
+  'Theme',
+  'What to watch for',
+  'Do',
+  "Don’t",
+  'How to verify',
+  'Report & Contacts',
+  'Resources',
+];
+
 const getDefaultSections = (mode: CommsMode, template: CommsTemplate) => {
   if (template === 'change_notice') {
     return mode === 'newsletter' ? defaultChangeNoticeNewsletter : defaultChangeNoticeTeam;
+  }
+   if (template === 'awareness') {
+    return mode === 'newsletter' ? defaultAwarenessNewsletter : defaultAwarenessTeam;
   }
   return mode === 'newsletter' ? defaultNewsletterSections : defaultTeamSections;
 };
