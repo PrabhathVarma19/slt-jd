@@ -36,6 +36,12 @@ export default function RootLayout({
                     href="/"
                     className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
                   >
+                    Home
+                  </Link>
+                  <Link
+                    href="/jd"
+                    className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+                  >
                     Create JD
                   </Link>
                   <Link
@@ -43,6 +49,18 @@ export default function RootLayout({
                     className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
                   >
                     My JDs
+                  </Link>
+                  <Link
+                    href="/weekly-brief"
+                    className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+                  >
+                    Weekly Brief
+                  </Link>
+                  <Link
+                    href="/comms-hub"
+                    className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+                  >
+                    Comms Hub
                   </Link>
                 </nav>
               </div>
