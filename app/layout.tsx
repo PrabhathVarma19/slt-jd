@@ -28,12 +28,12 @@ export default function RootLayout({
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="flex h-16 items-center justify-between">
                 <div className="flex items-center">
-                  <Link href="/" className="flex items-center gap-2 text-xl font-semibold tracking-tight text-gray-900">
+                  <Link href="/" className="flex items-center gap-2 text-lg font-semibold tracking-tight text-gray-900">
                     <Image
                       src="/trianz-logo-horizontal.png"
                       alt="Trianz"
-                      width={140}
-                      height={32}
+                      width={120}
+                      height={28}
                       priority
                     />
                     <span>Beacon</span>
