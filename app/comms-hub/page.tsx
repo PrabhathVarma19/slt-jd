@@ -41,6 +41,7 @@ export default function CommsHubPage() {
   const [keyDates, setKeyDates] = useState('');
   const [actionsRequired, setActionsRequired] = useState('');
   const [links, setLinks] = useState('');
+  const [includeLinks, setIncludeLinks] = useState(true);
   const [includeDeltas, setIncludeDeltas] = useState(false);
   const [sections, setSections] = useState<string[]>(defaultNewsletterSections);
   const [isLoading, setIsLoading] = useState(false);
@@ -79,6 +80,7 @@ export default function CommsHubPage() {
           key_dates: keyDates || undefined,
           actions_required: actionsRequired || undefined,
           links: links || undefined,
+          include_links: includeLinks,
           sections,
           include_deltas: includeDeltas,
         }),
@@ -231,6 +233,25 @@ export default function CommsHubPage() {
                 onChange={(e) => setLinks(e.target.value)}
                 placeholder="e.g., policy link, how-to video"
               />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">Include links in outputs?</label>
+              <div className="flex items-center gap-3">
+                <Button
+                  variant={includeLinks ? 'primary' : 'secondary'}
+                  size="sm"
+                  onClick={() => setIncludeLinks(true)}
+                >
+                  Yes
+                </Button>
+                <Button
+                  variant={!includeLinks ? 'primary' : 'secondary'}
+                  size="sm"
+                  onClick={() => setIncludeLinks(false)}
+                >
+                  No
+                </Button>
+              </div>
             </div>
           </div>
 

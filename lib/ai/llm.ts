@@ -479,7 +479,19 @@ Reply with only the skill phrase, no bullet or punctuation.`;
 }
 
 export async function generateCommsOutput(request: CommsRequest): Promise<CommsSections> {
-  const { mode, audience, formality, subject_seed, content, key_dates, actions_required, links, sections, include_deltas } = request;
+  const {
+    mode,
+    audience,
+    formality,
+    subject_seed,
+    content,
+    key_dates,
+    actions_required,
+    links,
+    sections,
+    include_deltas,
+    include_links,
+  } = request;
 
   const systemPrompt = `You are an executive communications writer for a consulting/technology firm.
 You create concise, structured emails/newsletters that are ready to send.
@@ -512,7 +524,7 @@ Instructions:
 - Produce a concise subject line.
 - Write a short exec-ready summary (2-3 sentences).
 - Populate the sections with crisp bullets/paragraphs. If you cannot populate a section, omit it rather than leaving it blank.
-- Return both HTML (basic tags, no inline CSS) and plain text variants.
+- Return both HTML (basic tags, no inline CSS) and plain text variants. Include links/resources when provided and allowed.
 - Keep tone aligned to the audience and formality.
 - If include deltas is Yes, call out new vs ongoing vs resolved items where possible.`;
 
@@ -532,13 +544,32 @@ Instructions:
       const contentStr = completion.choices[0]?.message?.content;
       if (contentStr) {
         const parsed = JSON.parse(contentStr);
-        return {
+        const result: CommsSections = {
           subject: parsed.subject || subject_seed || '',
           summary: parsed.summary || '',
           sections: parsed.sections || [],
           html_body: parsed.html_body || '',
           text_body: parsed.text_body || '',
         };
+        if (links && include_links !== false) {
+          const linkLines = links.split('\n').map((l: string) => l.trim()).filter(Boolean);
+          if (linkLines.length > 0) {
+            const htmlLinks = linkLines
+              .map((l: string) => {
+                const safe = l.replace(/"/g, '');
+                return safe.startsWith('http')
+                  ? `<li><a href="${safe}" target="_blank" rel="noopener noreferrer">${safe}</a></li>`
+                  : `<li>${safe}</li>`;
+              })
+              .join('');
+            const htmlBlock = `<p><strong>Links / Resources</strong></p><ul>${htmlLinks}</ul>`;
+            result.html_body = result.html_body ? `${result.html_body}\n\n${htmlBlock}` : htmlBlock;
+
+            const textBlock = `Links / Resources:\n- ${linkLines.join('\n- ')}`;
+            result.text_body = result.text_body ? `${result.text_body}\n\n${textBlock}` : textBlock;
+          }
+        }
+        return result;
       }
     } catch (error) {
       console.error('OpenAI comms error:', error);
@@ -565,13 +596,32 @@ Instructions:
         const text = contentObj.text.trim();
         const jsonText = text.replace(/^```json\n?/i, '').replace(/\n?```$/i, '');
         const parsed = JSON.parse(jsonText);
-        return {
+        const result: CommsSections = {
           subject: parsed.subject || subject_seed || '',
           summary: parsed.summary || '',
           sections: parsed.sections || [],
           html_body: parsed.html_body || '',
           text_body: parsed.text_body || '',
         };
+        if (links && include_links !== false) {
+          const linkLines = links.split('\n').map((l: string) => l.trim()).filter(Boolean);
+          if (linkLines.length > 0) {
+            const htmlLinks = linkLines
+              .map((l: string) => {
+                const safe = l.replace(/"/g, '');
+                return safe.startsWith('http')
+                  ? `<li><a href="${safe}" target="_blank" rel="noopener noreferrer">${safe}</a></li>`
+                  : `<li>${safe}</li>`;
+              })
+              .join('');
+            const htmlBlock = `<p><strong>Links / Resources</strong></p><ul>${htmlLinks}</ul>`;
+            result.html_body = result.html_body ? `${result.html_body}\n\n${htmlBlock}` : htmlBlock;
+
+            const textBlock = `Links / Resources:\n- ${linkLines.join('\n- ')}`;
+            result.text_body = result.text_body ? `${result.text_body}\n\n${textBlock}` : textBlock;
+          }
+        }
+        return result;
       }
     } catch (error) {
       console.error('Anthropic comms error:', error);

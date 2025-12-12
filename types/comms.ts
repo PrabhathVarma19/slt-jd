@@ -13,6 +13,7 @@ export interface CommsRequest {
   key_dates?: string;
   actions_required?: string;
   links?: string;
+  include_links?: boolean;
   sections?: string[];
   include_deltas?: boolean;
 }
