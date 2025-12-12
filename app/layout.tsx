@@ -10,8 +10,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'RoleDraft',
-  description: 'From job title to ready-to-send JD in seconds',
+  title: 'Beacon',
+  description: 'Leadership hub for JDs, initiatives, and comms',
 };
 
 export default function RootLayout({
@@ -28,7 +28,7 @@ export default function RootLayout({
               <div className="flex h-16 items-center justify-between">
                 <div className="flex items-center">
                   <Link href="/" className="text-xl font-semibold tracking-tight text-gray-900">
-                    RoleDraft
+                    Beacon
                   </Link>
                 </div>
                 <nav className="flex items-center gap-6">
