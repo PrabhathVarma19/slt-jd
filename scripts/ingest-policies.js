@@ -1,9 +1,10 @@
 /**
  * Ingest local policy files into the policy_documents/policy_chunks tables.
  * Reads from POLICY_SOURCE_DIR (e.g., ./data), supports pdf/docx/md/txt.
- * Requires env: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, OPENAI_API_KEY.
+ * Requires env: SUPABASE_URL (or NEXT_PUBLIC_SUPABASE_URL), SUPABASE_SERVICE_ROLE_KEY, OPENAI_API_KEY.
  */
 /* eslint-disable no-console */
+require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 const pdfParse = require('pdf-parse');
@@ -13,16 +14,17 @@ const { createClient } = require('@supabase/supabase-js');
 const OpenAI = require('openai');
 
 const SOURCE_DIR = process.env.POLICY_SOURCE_DIR || './data';
+const SUPABASE_URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
 const EMBED_MODEL = process.env.EMBEDDING_MODEL || 'text-embedding-3-large';
 const CHUNK_SIZE = 1800; // approx characters per chunk
 const CHUNK_OVERLAP = 200;
 
-if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY || !process.env.OPENAI_API_KEY) {
-  console.error('Missing env: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, OPENAI_API_KEY');
+if (!SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY || !process.env.OPENAI_API_KEY) {
+  console.error('Missing env: SUPABASE_URL (or NEXT_PUBLIC_SUPABASE_URL), SUPABASE_SERVICE_ROLE_KEY, OPENAI_API_KEY');
   process.exit(1);
 }
 
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
+const supabase = createClient(SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 async function loadFile(filePath) {
