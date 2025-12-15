@@ -18,6 +18,7 @@ const SUPABASE_URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABAS
 const EMBED_MODEL = process.env.EMBEDDING_MODEL || 'text-embedding-3-large';
 const CHUNK_SIZE = 1800; // approx characters per chunk
 const CHUNK_OVERLAP = 200;
+const MAX_FILE_CHARS = parseInt(process.env.MAX_POLICY_FILE_CHARS || '800000', 10); // cap text to avoid OOM
 
 if (!SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY || !process.env.OPENAI_API_KEY) {
   console.error('Missing env: SUPABASE_URL (or NEXT_PUBLIC_SUPABASE_URL), SUPABASE_SERVICE_ROLE_KEY, OPENAI_API_KEY');
@@ -30,20 +31,41 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 async function loadFile(filePath) {
   const ext = path.extname(filePath).toLowerCase();
   if (ext === '.pdf') {
+    // Try to reduce memory: allow partial parse and truncate if huge
     const data = await pdfParse(fs.readFileSync(filePath));
-    return data.text || '';
+    let text = data.text || '';
+    if (text.length > MAX_FILE_CHARS) {
+      console.warn(`Truncating large PDF (${text.length} chars) to ${MAX_FILE_CHARS} chars: ${filePath}`);
+      text = text.slice(0, MAX_FILE_CHARS);
+    }
+    return text;
   }
   if (ext === '.docx') {
     const result = await mammoth.extractRawText({ buffer: fs.readFileSync(filePath) });
-    return result.value || '';
+    let text = result.value || '';
+    if (text.length > MAX_FILE_CHARS) {
+      console.warn(`Truncating large DOCX (${text.length} chars) to ${MAX_FILE_CHARS} chars: ${filePath}`);
+      text = text.slice(0, MAX_FILE_CHARS);
+    }
+    return text;
   }
   if (ext === '.md') {
     const raw = fs.readFileSync(filePath, 'utf8');
     const parsed = matter(raw);
-    return parsed.content || '';
+    let text = parsed.content || '';
+    if (text.length > MAX_FILE_CHARS) {
+      console.warn(`Truncating large MD (${text.length} chars) to ${MAX_FILE_CHARS} chars: ${filePath}`);
+      text = text.slice(0, MAX_FILE_CHARS);
+    }
+    return text;
   }
   if (ext === '.txt') {
-    return fs.readFileSync(filePath, 'utf8');
+    let text = fs.readFileSync(filePath, 'utf8');
+    if (text.length > MAX_FILE_CHARS) {
+      console.warn(`Truncating large TXT (${text.length} chars) to ${MAX_FILE_CHARS} chars: ${filePath}`);
+      text = text.slice(0, MAX_FILE_CHARS);
+    }
+    return text;
   }
   return '';
 }
