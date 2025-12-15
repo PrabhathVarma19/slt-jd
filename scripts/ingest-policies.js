@@ -20,6 +20,7 @@ const EMBED_MODEL = process.env.EMBEDDING_MODEL || 'text-embedding-3-large';
 const CHUNK_SIZE = 1800; // approx characters per chunk
 const CHUNK_OVERLAP = 200;
 const MAX_FILE_CHARS = parseInt(process.env.MAX_POLICY_FILE_CHARS || '800000', 10); // cap text to avoid OOM
+const SKIP_PDFS = process.env.SKIP_PDFS === 'true';
 
 if (!SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY || !process.env.OPENAI_API_KEY) {
   console.error('Missing env: SUPABASE_URL (or NEXT_PUBLIC_SUPABASE_URL), SUPABASE_SERVICE_ROLE_KEY, OPENAI_API_KEY');
@@ -29,15 +30,51 @@ if (!SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY || !process.env.OPEN
 const supabase = createClient(SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
+function readLimitedText(filePath) {
+  const fd = fs.openSync(filePath, 'r');
+  const chunk = 64 * 1024;
+  let buf = Buffer.alloc(chunk);
+  let total = '';
+  let bytesRead = 0;
+  while (total.length < MAX_FILE_CHARS) {
+    bytesRead = fs.readSync(fd, buf, 0, chunk, null);
+    if (!bytesRead) break;
+    total += buf.slice(0, bytesRead).toString('utf8');
+    if (bytesRead < chunk) break;
+  }
+  fs.closeSync(fd);
+  if (total.length > MAX_FILE_CHARS) {
+    console.warn(`Truncating large file (${total.length} chars) to ${MAX_FILE_CHARS} chars: ${filePath}`);
+    total = total.slice(0, MAX_FILE_CHARS);
+  }
+  return total;
+}
+
 async function loadFile(filePath) {
   const ext = path.extname(filePath).toLowerCase();
+
+  // Prefer existing .txt alongside PDF
   if (ext === '.pdf') {
-    // Try external pdftotext (if available) to avoid huge memory usage
+    const txtPath = filePath.replace(/\.pdf$/i, '.txt');
+    if (fs.existsSync(txtPath)) {
+      console.log(`Using existing TXT instead of PDF: ${txtPath}`);
+      return readLimitedText(txtPath);
+    }
+    if (SKIP_PDFS) {
+      console.warn(`Skipping PDF due to SKIP_PDFS=true: ${filePath}`);
+      return '';
+    }
+  }
+
+  if (ext === '.pdf') {
+    // Try external pdftotext to temp file to avoid huge stdout
+    const tmpPath = filePath + '.tmp.txt';
     let text = '';
     try {
-      const res = spawnSync('pdftotext', ['-layout', filePath, '-'], { encoding: 'utf8' });
-      if (res.status === 0 && !res.error) {
-        text = res.stdout || '';
+      const res = spawnSync('pdftotext', ['-layout', filePath, tmpPath], { encoding: 'utf8' });
+      if (res.status === 0 && !res.error && fs.existsSync(tmpPath)) {
+        text = readLimitedText(tmpPath);
+        fs.unlinkSync(tmpPath);
       }
     } catch (e) {
       // ignore and fall back
@@ -46,13 +83,14 @@ async function loadFile(filePath) {
       // Fallback to pdf-parse (may be heavy on large PDFs)
       const data = await pdfParse(fs.readFileSync(filePath));
       text = data.text || '';
-    }
-    if (text.length > MAX_FILE_CHARS) {
-      console.warn(`Truncating large PDF (${text.length} chars) to ${MAX_FILE_CHARS} chars: ${filePath}`);
-      text = text.slice(0, MAX_FILE_CHARS);
+      if (text.length > MAX_FILE_CHARS) {
+        console.warn(`Truncating large PDF (${text.length} chars) to ${MAX_FILE_CHARS} chars: ${filePath}`);
+        text = text.slice(0, MAX_FILE_CHARS);
+      }
     }
     return text;
   }
+
   if (ext === '.docx') {
     const result = await mammoth.extractRawText({ buffer: fs.readFileSync(filePath) });
     let text = result.value || '';
@@ -63,7 +101,7 @@ async function loadFile(filePath) {
     return text;
   }
   if (ext === '.md') {
-    const raw = fs.readFileSync(filePath, 'utf8');
+    const raw = readLimitedText(filePath);
     const parsed = matter(raw);
     let text = parsed.content || '';
     if (text.length > MAX_FILE_CHARS) {
@@ -73,12 +111,7 @@ async function loadFile(filePath) {
     return text;
   }
   if (ext === '.txt') {
-    let text = fs.readFileSync(filePath, 'utf8');
-    if (text.length > MAX_FILE_CHARS) {
-      console.warn(`Truncating large TXT (${text.length} chars) to ${MAX_FILE_CHARS} chars: ${filePath}`);
-      text = text.slice(0, MAX_FILE_CHARS);
-    }
-    return text;
+    return readLimitedText(filePath);
   }
   return '';
 }
