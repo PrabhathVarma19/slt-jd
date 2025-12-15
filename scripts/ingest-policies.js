@@ -17,9 +17,9 @@ const { spawnSync } = require('child_process');
 const SOURCE_DIR = process.env.POLICY_SOURCE_DIR || './data';
 const SUPABASE_URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
 const EMBED_MODEL = process.env.EMBEDDING_MODEL || 'text-embedding-3-large';
-const CHUNK_SIZE = 1800; // approx characters per chunk
-const CHUNK_OVERLAP = 200;
-const MAX_FILE_CHARS = parseInt(process.env.MAX_POLICY_FILE_CHARS || '800000', 10); // cap text to avoid OOM
+const CHUNK_SIZE = parseInt(process.env.POLICY_CHUNK_SIZE || '1000', 10); // approx chars per chunk
+const CHUNK_OVERLAP = parseInt(process.env.POLICY_CHUNK_OVERLAP || '100', 10);
+const MAX_FILE_CHARS = parseInt(process.env.MAX_POLICY_FILE_CHARS || '200000', 10); // cap text to avoid OOM
 const SKIP_PDFS = process.env.SKIP_PDFS === 'true';
 
 if (!SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY || !process.env.OPENAI_API_KEY) {
@@ -161,10 +161,12 @@ async function ingestFile(fullPath) {
   }
   const docId = await upsertDocument(title, relPath);
   const chunks = chunkText(content);
-  const rows = [];
+  console.log(`Chunks to process: ${chunks.length}`);
+
+  // insert per chunk to avoid holding all embeddings in memory
   for (let i = 0; i < chunks.length; i++) {
     const embedding = await embed(chunks[i]);
-    rows.push({
+    const row = {
       doc_id: docId,
       title,
       section: null,
@@ -172,16 +174,11 @@ async function ingestFile(fullPath) {
       version: 'v1',
       chunk: chunks[i],
       embedding,
-    });
-  }
-  // insert in batches
-  const batchSize = 20;
-  for (let i = 0; i < rows.length; i += batchSize) {
-    const batch = rows.slice(i, i + batchSize);
-    const { error } = await supabase.from('policy_chunks').insert(batch);
+    };
+    const { error } = await supabase.from('policy_chunks').insert(row);
     if (error) throw error;
   }
-  console.log(`Inserted ${rows.length} chunks for ${relPath}`);
+  console.log(`Inserted ${chunks.length} chunks for ${relPath}`);
 }
 
 function walk(dir) {
