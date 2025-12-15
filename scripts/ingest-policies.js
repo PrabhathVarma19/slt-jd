@@ -12,6 +12,7 @@ const mammoth = require('mammoth');
 const matter = require('gray-matter');
 const { createClient } = require('@supabase/supabase-js');
 const OpenAI = require('openai');
+const { spawnSync } = require('child_process');
 
 const SOURCE_DIR = process.env.POLICY_SOURCE_DIR || './data';
 const SUPABASE_URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -31,9 +32,21 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 async function loadFile(filePath) {
   const ext = path.extname(filePath).toLowerCase();
   if (ext === '.pdf') {
-    // Try to reduce memory: allow partial parse and truncate if huge
-    const data = await pdfParse(fs.readFileSync(filePath));
-    let text = data.text || '';
+    // Try external pdftotext (if available) to avoid huge memory usage
+    let text = '';
+    try {
+      const res = spawnSync('pdftotext', ['-layout', filePath, '-'], { encoding: 'utf8' });
+      if (res.status === 0 && !res.error) {
+        text = res.stdout || '';
+      }
+    } catch (e) {
+      // ignore and fall back
+    }
+    if (!text) {
+      // Fallback to pdf-parse (may be heavy on large PDFs)
+      const data = await pdfParse(fs.readFileSync(filePath));
+      text = data.text || '';
+    }
     if (text.length > MAX_FILE_CHARS) {
       console.warn(`Truncating large PDF (${text.length} chars) to ${MAX_FILE_CHARS} chars: ${filePath}`);
       text = text.slice(0, MAX_FILE_CHARS);
