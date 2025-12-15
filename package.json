@@ -9,26 +9,34 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.20.0",
+    "@langchain/community": "^0.3.10",
+    "@langchain/openai": "^0.3.2",
+    "@supabase/supabase-js": "^2.39.0",
+    "clsx": "^2.1.0",
+    "date-fns": "^3.3.1",
+    "gray-matter": "^4.0.3",
+    "html-to-text": "^9.0.5",
+    "langchain": "^0.3.36",
+    "mammoth": "^1.11.0",
+    "next": "^14.2.0",
+    "openai": "^4.28.0",
+    "pdf-parse": "^1.1.1",
+    "pg": "^8.16.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "next": "^14.2.0",
-    "@supabase/supabase-js": "^2.39.0",
-    "openai": "^4.28.0",
-    "@anthropic-ai/sdk": "^0.20.0",
-    "clsx": "^2.1.0",
     "tailwind-merge": "^2.2.0",
-    "date-fns": "^3.3.1"
+    "wink-bm25-text-search": "^3.1.2"
   },
   "devDependencies": {
-    "typescript": "^5.4.0",
     "@types/node": "^20.11.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "autoprefixer": "^10.4.17",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^16.0.10",
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.1",
-    "eslint": "^8.57.0",
-    "eslint-config-next": "^14.2.0"
+    "typescript": "^5.4.0"
   }
 }
-
