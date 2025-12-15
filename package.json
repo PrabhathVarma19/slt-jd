@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "ingest-policies": "node scripts/ingest-policies.js"
   },
   "bin": {
     "ingest-policies": "scripts/ingest-policies.js"
