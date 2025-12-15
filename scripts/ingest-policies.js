@@ -116,26 +116,27 @@ async function loadFile(filePath) {
   return '';
 }
 
-function chunkText(text) {
-  const clean = text.replace(/\r\n/g, '\n').trim();
-  const chunks = [];
-  let idx = 0;
-  while (idx < clean.length) {
-    const end = Math.min(clean.length, idx + CHUNK_SIZE);
-    const slice = clean.slice(idx, end).trim();
-    if (slice.length > 0) chunks.push(slice);
-    idx = end - CHUNK_OVERLAP;
-    if (idx < 0) idx = end;
-  }
-  return chunks;
-}
-
 async function embed(text) {
   const res = await openai.embeddings.create({
     model: EMBED_MODEL,
     input: text,
   });
   return res.data[0].embedding;
+}
+
+async function insertChunk(docId, title, chunk) {
+  const embedding = await embed(chunk);
+  const row = {
+    doc_id: docId,
+    title,
+    section: null,
+    page: null,
+    version: 'v1',
+    chunk,
+    embedding,
+  };
+  const { error } = await supabase.from('policy_chunks').insert(row);
+  if (error) throw error;
 }
 
 async function upsertDocument(title, relPath) {
@@ -154,31 +155,30 @@ async function ingestFile(fullPath) {
   const relPath = path.relative(SOURCE_DIR, fullPath);
   const title = path.basename(fullPath);
   console.log(`Ingesting ${relPath}`);
+
   const content = await loadFile(fullPath);
   if (!content.trim()) {
     console.warn(`No content parsed for ${relPath}, skipping.`);
     return;
   }
-  const docId = await upsertDocument(title, relPath);
-  const chunks = chunkText(content);
-  console.log(`Chunks to process: ${chunks.length}`);
 
-  // insert per chunk to avoid holding all embeddings in memory
-  for (let i = 0; i < chunks.length; i++) {
-    const embedding = await embed(chunks[i]);
-    const row = {
-      doc_id: docId,
-      title,
-      section: null,
-      page: null,
-      version: 'v1',
-      chunk: chunks[i],
-      embedding,
-    };
-    const { error } = await supabase.from('policy_chunks').insert(row);
-    if (error) throw error;
+  const docId = await upsertDocument(title, relPath);
+
+  // Stream chunking: iterate through content without holding all chunks in memory
+  let cursor = 0;
+  let count = 0;
+  const len = content.length;
+  while (cursor < len && count < 20000) { // hard cap chunks to avoid runaway
+    const end = Math.min(len, cursor + CHUNK_SIZE);
+    const slice = content.slice(cursor, end).trim();
+    if (slice.length > 0) {
+      await insertChunk(docId, title, slice);
+      count += 1;
+    }
+    cursor = end - CHUNK_OVERLAP;
+    if (cursor <= 0) cursor = end;
   }
-  console.log(`Inserted ${chunks.length} chunks for ${relPath}`);
+  console.log(`Inserted ${count} chunks for ${relPath}`);
 }
 
 function walk(dir) {
