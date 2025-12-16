@@ -277,7 +277,7 @@ export default function TravelDeskPage() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-semibold text-gray-900">Summary</span>
-                  <Button size="xs" variant="secondary" onClick={() => copyText(result.summary)}>
+                  <Button size="sm" variant="secondary" onClick={() => copyText(result.summary)}>
                     Copy summary
                   </Button>
                 </div>
@@ -296,7 +296,7 @@ export default function TravelDeskPage() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-semibold text-gray-900">Email draft</span>
-                  <Button size="xs" variant="secondary" onClick={() => copyText(result.emailBody)}>
+                  <Button size="sm" variant="secondary" onClick={() => copyText(result.emailBody)}>
                     Copy email
                   </Button>
                 </div>
