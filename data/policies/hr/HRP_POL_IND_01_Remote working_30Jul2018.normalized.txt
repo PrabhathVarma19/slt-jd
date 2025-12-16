@@ -1,0 +1,255 @@
+# TRIANZ India HR Policy
+
+## Release ID: HRP_POL_IND_01_Remote working/Work From Home
+
+### Document Control
+- **Organisation:** Trianz Holdings Pvt. Ltd.
+- **Title:** Human Resources_ Remote working
+- **Author:** Human Resources Department
+- **Filename:** HRP_POL_IND_01_Remote working
+- **Owner:** Human Resources
+- **Subject:** Remote working/ Work From Home
+- **Protective Marking:** Public- Confidential
+- **Review date:** [Not specified]
+
+### Revision History
+- **Revision Date:** 16-07-2018
+- **Reviser:** Paul Jacob
+- **Previous Version:** NA
+- **Description of Revision:** Release of Policy
+
+### Document Approvals
+This document requires the following approvals:
+- **Sponsor Approval:**
+  - **President & CEO:** Sri Manchala
+  - **VP HR & TU:** Sujit Sahoo
+  - **VP – Chief Assurance & Data Protection officer:** Ganesh Arunachala
+
+### Document Distribution
+This document will be distributed to:
+- **To All Employees:** NA
+- **To All Contractors:** NA
+
+---
+
+## Table of Contents
+1. Policy Statement
+2. Purpose
+3. Scope
+4. Legislation
+5. Definition of Work from Home
+6. Request to work remotely
+7. Approving requests for working from home
+8. Expectations of Associates who work from home
+   - 8.1 IT equipment
+   - 8.2 Telephone
+   - 8.3 Security Requirements
+   - 8.4 Dress Code
+   - 8.5 Background Noise
+   - 8.6 Backdrop
+9. InfoSec Compliance requirements for Information Security Risk mitigation
+10. Absence and sickness
+11. Disciplinary procedures
+12. Confidentiality Clause
+13. Monitoring and Review
+14. Variation
+15. Annexure
+
+---
+
+## 1. Policy Statement
+Trianz provides users with the facilities and opportunities to work remotely as appropriate. All users who work remotely must be aware of the acceptable use of computer devices and remote working opportunities. The policy emphasizes both Information Security and HR Practices to be followed during remote work.
+
+## 2. Purpose
+- To formalize the remote working policy for associates authorized to work from home for legitimate business or personal reasons (e.g., health, maternity).
+  - If the associate is on a billable project, requisite client approvals are mandatory.
+- To establish Information Security Compliance and business requirements standards for the use of Trianz and client IT information assets in a teleworking environment.
+  - Appropriate monitoring mechanisms must be implemented while associates work remotely.
+  - Suitable IT assets with adequate security controls must be provided to enable safe and secure project/business work.
+  - IT information assets and any information stored on various devices must be safeguarded according to client InfoSec requirements and Trianz InfoSec standards, subject to random audits every six months.
+
+## 3. Scope
+The Work from Home (WFH) Policy applies to:
+- All applicable authorized Trianz associates.
+- Client-approved contract employees using Trianz IT assets and facilities remotely from home.
+- This policy is applicable only in India.
+
+## 4. Legislation
+There is no specific legislation regarding remote work; however, associates are bound by the aspects laid out in this document as a corporate reference.
+
+## 5. Definition of Work from Home
+- Working from Home is defined as the capability for associates to work from a location within India, apart from designated Trianz or client offices, using Trianz assets and equipment for a prolonged duration.
+- Requisite manager approvals are mandatory to work from home. Decisions regarding remote work must be made on a case-by-case basis at the discretion of the manager or Trianz management, ensuring compliance with all statutory guidelines and policies.
+- Trianz retains the discretion to approve or deny remote work requests; it is neither a contractual nor statutory right.
+
+## 6. Request to work remotely
+- All requests for remote work must align with the definition of the “Remote working / Work from home” policy.
+
+# TRIANZ India HR Policy
+
+## 7. Remote Working / Work From Home
+
+1. **Approval Requirement**: Associates wishing to work from a remote location must obtain prior agreement from their line manager. Retrospective requests will not be accepted, and any absence may be deemed unauthorized, potentially leading to disciplinary action.
+
+2. **Client Approval**: If the associate is on a project that requires client approval for remote work, the reporting manager must obtain this approval before the work from home request is approved.
+
+3. **Business Requirement**: Line managers must ensure there is a clear business need for the associate to work remotely instead of from the office. For example, remote work may be justified if it allows the associate to focus on a specific task without daily distractions.
+
+### Guidelines for Approving Requests for Working from Home
+
+Line managers should consider the following criteria when evaluating requests from associates:
+
+- **Job Nature**: Determine if the associate's job requires regular face-to-face contact, making remote work unsuitable.
+  
+- **Skills and Performance**: Assess the associate's skills, abilities, and past performance to decide if they can work unsupervised effectively.
+  
+- **IT Dependencies**: Exclude associates who depend on organizational IT assets that they do not possess from the policy.
+  
+- **Team Impact**: Evaluate the potential impact on the associate's colleagues and ensure sufficient resources are available to cover the associate's absence.
+  
+- **Home Location Suitability**: Ensure the associate's home environment is secure and meets the documented checklist, verified by the line manager before approval.
+  
+- **Medical Appointments**: Requests for remote work coinciding with medical appointments are allowed if there is a clear business benefit.
+  
+- **Flexi-time Recording**: Associates on flexi-time must record hours worked at home in the attendance tracking system.
+  
+- **Request Renewal**: All work from home requests must be reinitiated by the associate every three months and re-approved by the manager, unless changes are made by Trianz management based on criticality. Managers can revoke work from home privileges with two days' notice.
+
+### Expectations of Associates Who Work from Home
+
+- Associates must engage in agreed Trianz work and remain contactable during regular business hours.
+
+## 8. IT Equipment
+
+- Trianz will provide official laptops. Connectivity to the Trianz network or email requires IS configuration, which must be authorized by the Project/Delivery manager and approved by InfoSec.
+
+## 8.1 Work Location
+
+- All associates are required to work within India.
+- Associates must inform their managers via email if they are not working from their designated work location.
+
+## 8.2 Telephone
+
+- Associates must use their own telephones for occasional calls while working from home.
+
+## 8.3 Security Requirements
+
+1. **Mandatory Training**: Associates eligible for remote work must complete all mandatory trainings (e.g., POSH, INFOSEC) before working from home.
+
+2. **WFH Checklist**: Associates must fill out a Work From Home checklist, which must be approved by the Project/Delivery manager and maintained for audit purposes.
+
+3. **Client Approval for ODC Users**: Associates who are ODC users must maintain an approval email from the client for audit purposes, which is the responsibility of the Project/Delivery manager.
+
+4. **Security Awareness**: Associates must be aware of the increased risk of security breaches while working from home and ensure that all documentation is securely stored.
+
+**8.5 IT Equipment Usage**
+
+- Associates must ensure that any laptop or PC is password protected and turned off when not in use.
+- IT equipment provided to associates for working from home is for their exclusive use. Associates are not permitted to allow family members or friends to use this equipment.
+- Associates must comply with Trianz policies regarding IT equipment and applications as outlined in the “Acceptable Usage Policy & Data Privacy Policy.” (Refer to: Trinet > Corp Functions > Assurance > Blue Book > 08_Information Security Management System > 01_Policies > Acceptable Usage Policy & Data Privacy Policy)
+- To access the Trianz network/servers from remote locations, associates must obtain approval from their manager and use a Virtual Private Network (VPN).
+
+**8.6 Dress Code**
+
+- Associates are expected to dress in professional attire as per the defined Dress Code Policy during video conferences or client meetings conducted via Skype or other visual media.
+
+**8.7 Background Noise**
+
+- Associates must ensure that background noise is minimized during mobile calls or video calls with clients and/or Trianz stakeholders.
+
+**9 Backdrop**
+
+- For planned or unplanned video calls with clients or Trianz stakeholders, associates should have a light-colored or plain white backdrop.
+
+**InfoSec Compliance Requirements for Information Security Risk Mitigation**
+
+- Trianz acknowledges the risks associated with accessing and handling information for official project work/business. 
+- All work-from-home users must comply with the policies specified under the information security management system in the Bluebook.
+- In an ODC environment, laptops must be imaged with the appropriate thin client profile approved by the client to prevent unauthorized access and usage of Trianz or client information.
+- This policy aims to mitigate the following risks:
+  - Increased risk of equipment damage, loss, or theft.
+  - Accidental or deliberate overlooking by unauthorized individuals.
+  - Unauthorized access to confidential, proprietary, personal, and sensitive information.
+  - Unauthorized introduction of malicious software and viruses.
+  - Potential restrictions imposed by InfoSec Assurance due to information loss or misuse.
+  - Potential HR/legal/regulatory actions against associates due to information loss or misuse.
+- For more information, refer to the Infosec Compliance requirements for Information Security risk mitigation at: Trinet > Corp Functions > Assurance > Blue Book > 08_Information Security Management System > 01_Policies.
+
+**10 Absence and Sickness**
+
+- If an associate is unable to work from home due to sickness, injury, or other reasons, they must follow Trianz’s Absence Reporting Procedure and Sick Leave Policy.
+- Associates are required to inform their line manager of the expected date of return, the reason for absence, and progress, similar to procedures followed when working at Trianz office or client premises.
+
+**11 Disciplinary Procedures**
+
+- The Disciplinary Policy and Procedures apply equally to both office-based and work-from-home arrangements.
+- Any abuse of work-from-home arrangements that constitutes misconduct may result in disciplinary action.
+
+**12 Confidentiality Clause**
+
+- While working from home, associates remain subject to all confidentiality clauses in their employment contract.
+- Disclosure of confidential information during employment may be considered gross misconduct and grounds for termination without notice.
+
+**13 Monitoring and Review**
+
+- Line managers are responsible for monitoring associates’ performance while working from home.
+- Compliance with this policy and its effectiveness will be monitored through audits conducted at least once every six months or earlier.
+- In addition to internal, external, and client audits, compliance with security, availability, processing integrity, confidentiality, and privacy controls is mandatory. Specific technical audits may also be conducted as necessary.
+
+### 4. From Home
+
+**Version:** 1.00
+
+1. **Management Review of WFH Audit Findings**
+   - The WFH audit findings, security incidents, and corrective & preventive action plans are subject to management review by the Information Security Assurance Council (ISAC). 
+   - ISAC comprises members including a management representative, Chief Assurance & Data Protection Officer, HR, IS, Delivery, legal, and other applicable departments.
+
+2. **Policy Review Schedule**
+   - The WFH policy will be reviewed biannually, with amendments made based on the findings of the Biannual Management review.
+   - If a review is necessary due to legislative changes or a Security Incident impacting Regulatory Compliance, the management review will occur within seven working days of the Security Incident Reporting (SIR).
+   - Corresponding policy/procedure changes will be implemented within 14 days of the SIR.
+   - Action closure must occur no later than 30 days from the date of the SIR.
+
+3. **Security Breach Notification**
+   - For any security breaches, the responsible line manager must notify ISAC within 24 hours.
+   - The InfoSec team will assess the magnitude and impact of the breach and provide a SIR report to ISAC.
+   - ISAC will review the SIR and define the Security Incident Response Plan (SIRP), including client communication, stakeholder communication, and any necessary disciplinary actions.
+
+### 14. Variation
+- Trianz reserves the right to update this policy as required.
+
+### 15. Annexure: Roles & Responsibilities
+
+**Individual Associate’s Responsibilities**
+- All associates (permanent/contract) are responsible for the security of information/assets created or used during their duties.
+- Associates must ensure zero breaches of information security and be aware of all relevant Information Security Policies and procedures while adhering to their recognized Codes of Conduct.
+- Associates must comply with the Code of Conduct outlined in their Letter of Appointment and any subsequent addendums.
+
+**Delivery Manager’s/Project Manager’s/Line Manager’s Responsibilities**
+- Managers are responsible for assessing and approving all remote working applications and ensuring associates are aware of the policies and procedures for safe and secure remote working practices.
+- Managers must conduct timely assessments of associates' performance and document it in the system.
+- Managers must ensure that associates with remote working approval are adequately trained and conform to task completion guidelines.
+- Managers should periodically review the need for teleworking.
+- Managers will monitor deliverables and discipline, reporting any deviations to HR.
+
+**HR Team Responsibilities**
+- The HR team must be notified of any remote working requests.
+- Associates must consult with their manager regarding any safety matters that may affect their ability to work remotely. This documentation must be emailed to the manager and submitted to the HR team before starting remote work.
+- The manager must approve the employee’s WFH request via email, copying HR.
+
+**IT Team Responsibilities**
+- The Trianz IT Services team is responsible for configuring IT equipment to ensure smooth operation (e.g., laptops).
+- The IT Services team must ensure all Trianz equipment is encrypted before processing any confidential information.
+- The IT Services team must regularly back up data on network drives.
+- The team will ensure appropriate access through username and password, along with endpoint encryption and antivirus software installation.
+- Upon equipment return, the IT team is responsible for:
+  - Deleting locally stored data.
+  - Updating the IT asset database to reflect changes in user and/or storage/decommissioning of the equipment.
+  - Ensuring that equipment is physically secure, endpoint encrypted, and has antivirus software installed before storage.
+
+**Chief Information Officer (CIO) Responsibilities**
+- The CIO has overall responsibility for the security of Trianz infrastructure and information assets.
+
+**Chief Assurance & Data Protection Officer Responsibilities**
+- The Chief Assurance & Data Protection Officer is accountable for ensuring that every associate at Trianz complies with Information Security standards, Data Privacy Regulations, and Client Standards and Regulations.
+- This role must ensure the confidentiality, integrity, and availability of client and Trianz information assets.

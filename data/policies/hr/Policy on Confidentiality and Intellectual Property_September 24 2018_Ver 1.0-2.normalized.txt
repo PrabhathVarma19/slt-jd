@@ -1,0 +1,121 @@
+# Policy on Confidentiality and Intellectual Property
+
+**Release ID:** HR_Pol 0015  
+**Version:** 1.00  
+
+## Information Classification
+- **Confidential Information**: Information available only to authorized persons, distributed on a "Need to know" basis, and provides economic or strategic value to Trianz.
+- **Public Information**: Information that is publicly available.
+
+### Classification Types:
+- **Confidential**: Function Confidential
+- **Public**: Trianz, Public (Clients, Suppliers, and General Public)
+
+## Table of Contents
+1. Purpose and Interpretation
+2. Obligations of Confidence
+3. Intellectual Property
+4. Data Privacy Norms
+5. Indemnity
+6. Continuing Obligations
+
+## 1. Purpose and Interpretation
+1.1 This policy outlines the terms and conditions for associates' access to Confidential Information owned by Trianz or its clients. Trianz owns all intellectual property created by associates during their employment.
+
+1.2 This agreement applies to all Trianz affiliates and client sites.
+
+1.3 Definitions:
+- **Confidential Information** includes, but is not limited to:
+  - Financial, marketing, sales, merchandising, and technical information
+  - Ideas, concepts, and techniques
+  - Artwork, sketches, drawings, reports, and models
+  - Inventions, know-how, and processes
+  - Technologies, apparatus, and equipment
+  - Algorithms, software programs, software source documents, and formulae
+  - Research, experimental work, development, design details, and specifications
+  - Engineering, procurement requirements, purchasing, and manufacturing
+  - Client lists
+  - Business forecasts and marketing plans
+  - Any client information considered confidential by the client
+
+- **Exclusions**: Information that:
+  - Enters the public domain without breach of this Policy
+  - Was known to the Associate prior to disclosure without any obligation to maintain confidentiality
+
+- **Intellectual Property Law**: Includes all rights related to patents, copyrights, trademarks, trade secrets, and other intellectual property as defined by the World Intellectual Property Organization.
+
+1.4 Additional Notes:
+- References to this Policy include any variations.
+- References to laws include regulations and related statutes.
+
+**1. Definitions**  
+1.1 Singular includes plural and vice versa; the term "person" includes firms, bodies corporate, unincorporated associations, or authorities.  
+1.2 Headings are for convenience and do not affect the interpretation of this Policy.
+
+**2. Obligations of Confidence**  
+2.1 The Associate agrees that all Confidential Information will remain the sole property of Trianz.  
+2.2 As a condition of employment with Trianz, the Associate must:  
+- Hold all Confidential Information in strict confidence and not disclose it without prior written consent from Trianz.  
+- Take all necessary steps to maintain the confidentiality of the information and ensure compliance with this Policy.  
+- Refrain from actions that may breach any obligations under this Policy.  
+- Not use or reproduce any Confidential Information for purposes other than performing duties for Trianz.  
+2.3 The Associate must return all documents and materials related to Confidential Information and not retain any copies. The return of these documents does not release the Associate from obligations under this Policy.
+
+**3. Intellectual Property**  
+3.1 The Associate assigns all existing and future intellectual property rights to Trianz for any Intellectual Property created during employment.  
+3.2 The Associate shall comply with Trianz's requests to ensure intellectual property rights are assigned to Trianz.  
+3.3 The Associate agrees that:  
+- Activities during employment may result in the invention or creation of Intellectual Property.  
+- Any inventions or creations made during employment or using Trianz’s resources will be communicated to Trianz and will be Trianz’s property.  
+- The Associate will not apply for registration of any Intellectual Property rights for these inventions or creations without Trianz's consent.  
+- The Associate will assign any Intellectual Property related to these inventions and creations to Trianz or a related corporation.  
+- Upon Trianz's request, the Associate will execute all necessary documents and actions to secure Intellectual Property rights for Trianz.  
+- If any Intellectual Property is granted to the Associate, it must be immediately assigned to Trianz or a related corporation.  
+- The Associate grants Trianz a royalty-free, irrevocable, worldwide license for any invention or creation that the Associate has incorporated into Trianz's Intellectual Property. The Associate will not incorporate such creations without prior written approval from Trianz.  
+- The Associate warrants not to violate third-party Intellectual Property rights or use their Confidential Information while performing duties.
+
+**4. Data Privacy Norms**  
+The Associate understands and acknowledges that the Company is obligated to protect data.
+
+# Policy on Confidentiality and Intellectual Property
+
+## 5. Indemnity
+- The Associate shall indemnify TRIANZ against all losses, costs, expenses, claims, and liabilities incurred due to the Associate’s breach of any obligations under this Policy.
+
+## 6. Continuing Obligations
+- The Associate’s obligations under this Policy are ongoing and will continue after the termination of the Associate’s employment with Trianz.
+
+### 6.1 Governing Law
+- This policy is governed by the confidentiality, intellectual property, and data privacy laws of:
+  - India
+  - USA
+  - GDPR
+  - International laws applicable to all Trianz clients and their end customers
+  - The laws of the country, state, or county/town where the Trianz office of the Associate is located.
+- Jurisdiction is limited to the Trianz office location of the Associate.
+
+### 6.2 Miscellaneous
+- **Waiver and Variation**: 
+  - A provision or right under this Policy may only be waived in writing, signed by the party granting the waiver.
+  - Variations to this Policy must also be in writing and signed by both parties.
+- **Notices**: 
+  - Any notice, approval, consent, or communication related to this Policy must be in writing and delivered personally, left at the designated address, or sent by pre-paid ordinary post to the address indicated at the beginning of this Policy or any other address specified by the addressee.
+
+**Document Control Information**
+
+- **Owner:** Management Representative
+- **Release ID:** HRP-POL0015
+- **Effective Date:** September 24, 2018
+- **Version:** 1.00
+
+**Version History**
+
+- **Version Number:** 1.00
+  - **Author:** Human Capital Team
+  - **Date:** September 24, 2018
+  - **Reviewer:** Paul Jacob, Joshy VM
+  - **Approver:** Sujit
+  - **Reason for Change:** Initial release
+  - **Change Description:** None
+
+This policy and its provisions are in addition to any other policy between the parties involved.

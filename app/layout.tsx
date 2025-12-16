@@ -53,16 +53,22 @@ export default function RootLayout({
                     Create JD
                   </Link>
                   <Link
-                    href="/library"
-                    className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
-                  >
-                    My JDs
-                  </Link>
-                  <Link
                     href="/weekly-brief"
                     className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
                   >
                     Weekly Initiatives
+                  </Link>
+                  <Link
+                    href="/policy-agent"
+                    className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+                  >
+                    Ask Beacon
+                  </Link>
+                  <Link
+                    href="/travel-desk"
+                    className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+                  >
+                    Travel Desk
                   </Link>
                   <Link
                     href="/comms-hub"
@@ -82,4 +88,3 @@ export default function RootLayout({
     </html>
   );
 }
-

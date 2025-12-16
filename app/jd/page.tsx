@@ -1,12 +1,14 @@
 'use client';
 
 import { useState, useEffect, Suspense } from 'react';
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import RoleBriefPanel from '@/components/jd-creator/RoleBriefPanel';
 import JDPreview from '@/components/jd-creator/JDPreview';
 import { JDRecord, GenerateJDRequest } from '@/types/jd';
 import { formatJDText } from '@/lib/utils';
 import { useToast } from '@/lib/hooks/useToast';
+import Button from '@/components/ui/button';
 
 function JDContent() {
   const searchParams = useSearchParams();
@@ -176,6 +178,14 @@ function JDContent() {
   return (
     <>
       <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <h1 className="text-xl font-semibold text-gray-900">Create Job Description</h1>
+          <Link href="/library">
+            <Button variant="secondary" size="sm">
+              My JDs
+            </Button>
+          </Link>
+        </div>
         {error && (
           <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-800">
             {error}

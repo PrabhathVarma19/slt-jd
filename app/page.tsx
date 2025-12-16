@@ -22,6 +22,18 @@ const features = [
     link: '/comms-hub',
     action: 'Open Comms Hub',
   },
+  {
+    title: 'Policy Agent',
+    description: 'Ask natural-language questions grounded in internal policy documents with citations.',
+    link: '/policy-agent',
+    action: 'Open Policy Agent',
+  },
+  {
+    title: 'Travel Desk',
+    description: 'Capture trip details and generate a clear, policy-aware travel request and email draft for the travel desk.',
+    link: '/travel-desk',
+    action: 'Open Travel Desk',
+  },
 ];
 
 export default function Home() {
@@ -82,4 +94,3 @@ export default function Home() {
     </div>
   );
 }
-
