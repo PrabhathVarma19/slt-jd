@@ -179,7 +179,12 @@ function JDContent() {
     <>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-xl font-semibold text-gray-900">Create Job Description</h1>
+          <div className="flex flex-col">
+            <span className="text-xs font-medium uppercase tracking-wide text-gray-500">
+              Beacon · Create JD
+            </span>
+            <h1 className="text-xl font-semibold text-gray-900 mt-1">Create Job Description</h1>
+          </div>
           <Link href="/library">
             <Button variant="secondary" size="sm">
               My JDs

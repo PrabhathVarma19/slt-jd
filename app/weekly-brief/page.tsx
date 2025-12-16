@@ -97,8 +97,8 @@ export default function WeeklyBriefPage() {
       <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm space-y-6">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-1">
-          <p className="text-sm font-semibold uppercase tracking-wide text-blue-700">Weekly Initiatives</p>
-          <h1 className="text-2xl font-semibold text-gray-900">Prep and publish the weekly initiatives.</h1>
+          <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Beacon · Weekly Initiatives</p>
+          <h1 className="text-2xl font-semibold text-gray-900 mt-1">Prep and publish the weekly initiatives.</h1>
           <p className="text-sm text-gray-600">Paste updates, set the week, and generate digest/run-of-show/actions.</p>
         </div>
           <Link href="/">

@@ -123,6 +123,21 @@ function tokenize(text: string): string[] {
     .filter((t) => t && !STOP_WORDS.has(t));
 }
 
+function extractKeyRules(answer: string): string | null {
+  const raw = answer.replace(/\r\n/g, '\n');
+  const sentences = raw
+    .split(/(?<=[.?!])\s+/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+  const KEY_PATTERN = /\d|grade\s+\d+|day\b|days\b|hour\b|hours\b|inr\b|₹|per diem/i;
+
+  const candidates = sentences.filter((s) => KEY_PATTERN.test(s));
+  if (!candidates.length) return null;
+
+  return candidates.slice(0, 4).join('\n');
+}
+
 function getPolicyChunks(): PolicyChunk[] {
   if (cachedChunks) return cachedChunks;
 
@@ -449,7 +464,9 @@ Respond with a concise answer and include citations [n] for every factual statem
         'In practice, you should follow the normal grade-based rules in the policy and request a case-by-case exception through your manager, HR, and the relevant support team (such as HR or the Travel Desk).';
     }
 
-    return NextResponse.json({ answer: finalAnswer, sources });
+    const keyRules = extractKeyRules(finalAnswer);
+
+    return NextResponse.json({ answer: finalAnswer, keyRules, sources });
   } catch (error: any) {
     console.error('Policy agent error:', error);
     return NextResponse.json({ error: error.message || 'Failed to process request' }, { status: 500 });

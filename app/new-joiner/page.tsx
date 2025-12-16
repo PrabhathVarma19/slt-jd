@@ -20,34 +20,30 @@ interface PolicySource {
 
 interface PolicyAgentResponse {
   answer: string;
-  keyRules?: string | null;
   sources?: PolicySource[];
 }
 
 const QUICK_QUESTIONS: string[] = [
-  'What is the return to office policy?',
-  'How many days do I need to be in office?',
-  'Can I request an exception to the RTO policy?',
-  'What travel modes are allowed for my grade?',
-  'How do I raise a travel request?',
-  'What are the hotel limits for my grade and city?',
+  'What should I do on my first day?',
+  'How do I set up my Trianz email and VPN?',
+  'How to request laptop or system access?',
   'How to submit expenses in Fusion?',
-  'How do I request laptop or VPN access?',
-  'What is the per diem for international travel?',
+  'What is the return to office policy?',
+  'What travel modes are allowed for my grade?',
+  'What is the probation period for a new joiner?',
   'How many leave days do I get in a year?',
-  'What is the probation period for new joiners?',
-  'Whom should I contact for travel or accommodation queries?',
+  'Who do I contact for HR queries?',
+  'Where can I find all HR policies?',
 ];
 
 type Feedback = 'up' | 'down' | null;
 
-export default function PolicyAgentPage() {
+export default function NewJoinerBuddyPage() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [sources, setSources] = useState<PolicySource[]>([]);
-  const [keyRules, setKeyRules] = useState<string | null>(null);
   const [recentQuestions, setRecentQuestions] = useState<string[]>([]);
   const [feedback, setFeedback] = useState<Feedback>(null);
 
@@ -57,7 +53,7 @@ export default function PolicyAgentPage() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     try {
-      const stored = window.localStorage.getItem('beacon_recent_questions');
+      const stored = window.localStorage.getItem('beacon_new_joiner_recent');
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed)) {
@@ -72,7 +68,10 @@ export default function PolicyAgentPage() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     try {
-      window.localStorage.setItem('beacon_recent_questions', JSON.stringify(recentQuestions.slice(0, 5)));
+      window.localStorage.setItem(
+        'beacon_new_joiner_recent',
+        JSON.stringify(recentQuestions.slice(0, 5))
+      );
     } catch {
       // ignore localStorage errors
     }
@@ -92,7 +91,6 @@ export default function PolicyAgentPage() {
     setIsLoading(true);
     setError(null);
     setFeedback(null);
-    setKeyRules(null);
     setRecentQuestions((prev) => {
       const withoutDup = prev.filter((q) => q !== trimmed);
       return [trimmed, ...withoutDup].slice(0, 5);
@@ -114,10 +112,9 @@ export default function PolicyAgentPage() {
       const answerText = data.answer || 'No answer generated.';
       setMessages((prev) => [...prev, { role: 'assistant', content: answerText }]);
       setSources(data.sources || []);
-      setKeyRules((data as any).keyRules || null);
 
       if (lastUserMessage) {
-        console.log('Ask Beacon answer', {
+        console.log('New Joiner Buddy answer', {
           question: lastUserMessage.content,
           answerPreview: answerText.slice(0, 160),
         });
@@ -141,7 +138,7 @@ export default function PolicyAgentPage() {
   const handleFeedback = (value: Feedback) => {
     setFeedback(value);
     if (lastUserMessage && lastAssistantMessage) {
-      console.log('Ask Beacon feedback', {
+      console.log('New Joiner Buddy feedback', {
         question: lastUserMessage.content,
         answerPreview: lastAssistantMessage.content.slice(0, 160),
         feedback: value,
@@ -153,13 +150,16 @@ export default function PolicyAgentPage() {
     <div className="space-y-6">
       <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
         <div className="space-y-2">
-          <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Beacon · Ask Beacon</p>
+          <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
+            Beacon · New Joiner Buddy
+          </p>
           <h1 className="text-2xl font-semibold text-gray-900 mt-1">
-            One place to ask about policies and how work gets done.
+            Get quick answers for your first weeks at Trianz.
           </h1>
           <p className="text-sm text-gray-600">
-            Use this conversational assistant for HR, travel, RTO, onboarding, and other internal &quot;how do I…&quot;
-            questions. It answers strictly from uploaded company documents and will say if something is not covered.
+            Ask about day-one tasks, IT setup, RTO expectations, travel and expenses. Answers are
+            grounded in the same policies powering Ask Beacon and will say when you should contact
+            HR, IT or your manager.
           </p>
         </div>
       </div>
@@ -215,9 +215,8 @@ export default function PolicyAgentPage() {
           <div className="flex-1 space-y-4 overflow-y-auto pr-1">
             {messages.length === 0 && (
               <div className="text-sm text-gray-600">
-                Start with a question like &quot;What is the return to office policy?&quot;, &quot;How do I raise a
-                travel request?&quot; or &quot;Am I eligible for air travel in grade 6?&quot;. You can ask follow-up
-                questions in the same thread.
+                Try asking &quot;What should I do on my first day?&quot; or &quot;How do I request a
+                laptop and VPN access?&quot;. You can ask follow-up questions in the same thread.
               </div>
             )}
             {messages.map((msg, idx) => (
@@ -248,17 +247,7 @@ export default function PolicyAgentPage() {
           </div>
 
           {lastAssistantMessage && (
-            <>
-              {keyRules && (
-                <div className="mt-3 rounded-md border border-blue-100 bg-blue-50 px-3 py-2 text-xs text-blue-900">
-                  <div className="text-[11px] font-semibold uppercase tracking-wide mb-1">
-                    Key rules
-                  </div>
-                  <p className="whitespace-pre-wrap">{keyRules}</p>
-                </div>
-              )}
-
-              <div className="mt-3 flex items-center justify-end gap-2 text-xs text-gray-500">
+            <div className="mt-3 flex items-center justify-end gap-2 text-xs text-gray-500">
               <span>Did this answer help?</span>
               <button
                 type="button"
@@ -282,8 +271,7 @@ export default function PolicyAgentPage() {
               >
                 No
               </button>
-              </div>
-            </>
+            </div>
           )}
 
           <div className="mt-4 space-y-2 border-t border-gray-100 pt-4">
@@ -293,7 +281,7 @@ export default function PolicyAgentPage() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="e.g., How do I submit an expense report for international travel?"
+              placeholder="e.g., What should I do before my first day?"
             />
             <div className="flex items-center justify-between">
               <span className="text-xs text-gray-500">
@@ -310,7 +298,7 @@ export default function PolicyAgentPage() {
           <h2 className="text-lg font-semibold text-gray-900">Sources</h2>
           {!lastAssistantMessage && (
             <p className="text-sm text-gray-600">
-              After the assistant answers, you&apos;ll see which documents and sections were used here.
+              After the buddy answers, you&apos;ll see which documents and sections were used here.
             </p>
           )}
           {lastAssistantMessage && sources && sources.length > 0 && (

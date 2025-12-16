@@ -27,7 +27,9 @@ export default function TravelDeskPage() {
   const [extraDetails, setExtraDetails] = useState('');
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [submitMessage, setSubmitMessage] = useState<string | null>(null);
   const [result, setResult] = useState<TravelDeskResponse | null>(null);
 
   const canSubmit =
@@ -48,6 +50,7 @@ export default function TravelDeskPage() {
     }
     setIsLoading(true);
     setError(null);
+    setSubmitMessage(null);
     setResult(null);
 
     try {
@@ -83,6 +86,53 @@ export default function TravelDeskPage() {
     }
   };
 
+  const handleSubmitRequest = async () => {
+    if (!canSubmit || !result) {
+      setError('Please fill the required fields and generate the request first.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    setError(null);
+    setSubmitMessage(null);
+
+    try {
+      const res = await fetch('/api/actions/travel-request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          employeeId,
+          mobile,
+          email,
+          grade,
+          origin,
+          destination,
+          departDate,
+          returnDate: isOneWay ? null : returnDate || null,
+          isOneWay,
+          purpose,
+          modePreference: modePreference || null,
+          extraDetails: extraDetails || null,
+          summary: result.summary,
+          policyNotes: result.policyNotes,
+          emailBody: result.emailBody,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        throw new Error(data.error || 'Failed to submit travel request');
+      }
+
+      setSubmitMessage('Travel request captured (backend wiring in progress).');
+    } catch (err: any) {
+      setError(err.message || 'Failed to submit travel request');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const copyText = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
@@ -95,8 +145,10 @@ export default function TravelDeskPage() {
     <div className="space-y-6">
       <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
         <div className="space-y-2">
-          <p className="text-sm font-semibold uppercase tracking-wide text-blue-700">Travel Desk</p>
-          <h1 className="text-2xl font-semibold text-gray-900">
+          <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
+            Beacon · Travel Desk
+          </p>
+          <h1 className="text-2xl font-semibold text-gray-900 mt-1">
             Raise a travel request without writing an email.
           </h1>
           <p className="text-sm text-gray-600">
@@ -110,6 +162,11 @@ export default function TravelDeskPage() {
           {error && (
             <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
               {error}
+            </div>
+          )}
+          {submitMessage && !error && (
+            <div className="rounded-md border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">
+              {submitMessage}
             </div>
           )}
 
@@ -306,6 +363,15 @@ export default function TravelDeskPage() {
                   className="text-sm text-gray-800"
                   value={result.emailBody}
                 />
+              </div>
+
+              <div className="flex items-center justify-end pt-2">
+                <Button
+                  onClick={handleSubmitRequest}
+                  disabled={isSubmitting || !result || !canSubmit}
+                >
+                  {isSubmitting ? 'Submitting…' : 'Submit to Travel Desk'}
+                </Button>
               </div>
             </div>
           )}

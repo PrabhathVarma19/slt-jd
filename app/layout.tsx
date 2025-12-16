@@ -65,6 +65,12 @@ export default function RootLayout({
                     Ask Beacon
                   </Link>
                   <Link
+                    href="/new-joiner"
+                    className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+                  >
+                    New Joiner Buddy
+                  </Link>
+                  <Link
                     href="/travel-desk"
                     className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
                   >

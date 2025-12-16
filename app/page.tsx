@@ -23,10 +23,16 @@ const features = [
     action: 'Open Comms Hub',
   },
   {
-    title: 'Policy Agent',
-    description: 'Ask natural-language questions grounded in internal policy documents with citations.',
+    title: 'Ask Beacon',
+    description: 'Chat with an AI assistant grounded in internal policies and how-to guides, with citations.',
     link: '/policy-agent',
-    action: 'Open Policy Agent',
+    action: 'Open Ask Beacon',
+  },
+  {
+    title: 'New Joiner Buddy',
+    description: 'First-week helper for new associates: day-one tasks, IT setup, RTO, travel and expenses.',
+    link: '/new-joiner',
+    action: 'Open New Joiner Buddy',
   },
   {
     title: 'Travel Desk',

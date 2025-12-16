@@ -163,8 +163,8 @@ export default function CommsHubPage() {
     <div className="space-y-8">
       <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
         <div className="space-y-2">
-          <p className="text-sm font-semibold uppercase tracking-wide text-blue-700">Comms Hub</p>
-          <h1 className="text-2xl font-semibold text-gray-900">Generate newsletters or single-team emails.</h1>
+          <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Beacon · Comms Hub</p>
+          <h1 className="text-2xl font-semibold text-gray-900 mt-1">Generate newsletters or single-team emails.</h1>
           <p className="text-sm text-gray-600">
             Paste your updates, pick mode and audience, and get HTML + text outputs ready to send.
           </p>
@@ -475,4 +475,3 @@ export default function CommsHubPage() {
     </div>
   );
 }
-
