@@ -289,6 +289,8 @@ function extractRtoRules(text: string): { attendance?: string; hours?: string } 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
+    const mode: 'default' | 'new_joiner' =
+      (body?.mode as 'default' | 'new_joiner') || 'default';
     const rawMessages = Array.isArray(body?.messages) ? body.messages : [];
     const history: { role: 'user' | 'assistant'; content: string }[] = rawMessages
       .filter(
@@ -412,7 +414,7 @@ export async function POST(req: NextRequest) {
         )
         .join('\n\n');
 
-      const systemPrompt = `You are "Ask Beacon", an internal assistant for Trianz.
+      const basePrompt = `You are "Ask Beacon", an internal assistant for Trianz.
 You answer questions about company policies and internal "how do I..." processes.
 You must answer ONLY from the provided context and must not invent new policies or rules.
 Include citations like [1], [2] that refer to the sources list.
@@ -420,6 +422,15 @@ Always include concrete rules and quantitative details (such as number of days p
 Respond in plain text only: no Markdown, no bold, no italics, no bullet symbols like "*" or "-".
 When you describe a sequence of steps, use numbered lines (for example "1. ...", "2. ...") with each step on its own line.
 If you cannot find a clear answer, explicitly say you do not know and, if appropriate, suggest that the user contact HR, their manager, or the relevant support team.`;
+
+      const newJoinerAddendum =
+        'You are currently helping a new joiner who may not know internal jargon. Keep answers short and friendly. ' +
+        'Prefer 3 to 6 numbered steps when explaining what to do. ' +
+        'Avoid deep policy history; focus on what they actually need to do now. ' +
+        'Always end with one final sentence like: "If you are unsure, please confirm with your manager or HR at hr@trianz.com."';
+
+      const systemPrompt =
+        mode === 'new_joiner' ? `${basePrompt}\n\n${newJoinerAddendum}` : basePrompt;
 
       const userPrompt = `Conversation so far:
 ${historyText}

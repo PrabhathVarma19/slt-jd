@@ -23,17 +23,28 @@ interface PolicyAgentResponse {
   sources?: PolicySource[];
 }
 
-const QUICK_QUESTIONS: string[] = [
+const DAY_ONE_QUESTIONS: string[] = [
   'What should I do on my first day?',
+  'What should I do before my first day?',
+  'What meetings should I expect on day 1?',
+];
+
+const ACCESS_IT_QUESTIONS: string[] = [
   'How do I set up my Trianz email and VPN?',
   'How to request laptop or system access?',
-  'How to submit expenses in Fusion?',
-  'What is the return to office policy?',
-  'What travel modes are allowed for my grade?',
+  'How do I get access to project tools and portals?',
+];
+
+const POLICIES_QUESTIONS: string[] = [
   'What is the probation period for a new joiner?',
   'How many leave days do I get in a year?',
-  'Who do I contact for HR queries?',
+  'What is the return to office policy?',
   'Where can I find all HR policies?',
+];
+
+const TRAVEL_EXPENSE_QUESTIONS: string[] = [
+  'How to submit expenses in Fusion?',
+  'What travel modes are allowed for my grade?',
 ];
 
 type Feedback = 'up' | 'down' | null;
@@ -46,6 +57,7 @@ export default function NewJoinerBuddyPage() {
   const [sources, setSources] = useState<PolicySource[]>([]);
   const [recentQuestions, setRecentQuestions] = useState<string[]>([]);
   const [feedback, setFeedback] = useState<Feedback>(null);
+  const [showHrLink, setShowHrLink] = useState(false);
 
   const lastAssistantMessage = [...messages].reverse().find((m) => m.role === 'assistant');
   const lastUserMessage = [...messages].reverse().find((m) => m.role === 'user');
@@ -91,6 +103,7 @@ export default function NewJoinerBuddyPage() {
     setIsLoading(true);
     setError(null);
     setFeedback(null);
+    setShowHrLink(false);
     setRecentQuestions((prev) => {
       const withoutDup = prev.filter((q) => q !== trimmed);
       return [trimmed, ...withoutDup].slice(0, 5);
@@ -102,6 +115,7 @@ export default function NewJoinerBuddyPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           messages: nextMessages,
+          mode: 'new_joiner',
         }),
       });
       const data: PolicyAgentResponse & { error?: string } = await res.json();
@@ -137,6 +151,7 @@ export default function NewJoinerBuddyPage() {
 
   const handleFeedback = (value: Feedback) => {
     setFeedback(value);
+    setShowHrLink(value === 'down');
     if (lastUserMessage && lastAssistantMessage) {
       console.log('New Joiner Buddy feedback', {
         question: lastUserMessage.content,
@@ -161,6 +176,10 @@ export default function NewJoinerBuddyPage() {
             grounded in the same policies powering Ask Beacon and will say when you should contact
             HR, IT or your manager.
           </p>
+          <p className="text-xs text-gray-500">
+            Use this for: 1) Day 1 and Week 1 questions, 2) basic HR / RTO / leave queries, 3) how
+            to request laptop, VPN and submit expenses.
+          </p>
         </div>
       </div>
 
@@ -171,39 +190,91 @@ export default function NewJoinerBuddyPage() {
               Quick questions
             </label>
 
-            <div className="flex flex-wrap gap-2">
-              {QUICK_QUESTIONS.map((q) => (
-                <Button
-                  key={q}
-                  type="button"
-                  size="sm"
-                  variant="secondary"
-                  className="whitespace-nowrap text-xs"
-                  onClick={() => handleAsk(q)}
-                  disabled={isLoading}
-                >
-                  {q}
-                </Button>
-              ))}
-              {recentQuestions.length > 0 && (
-                <>
-                  <span className="mx-1 text-xs text-gray-400">•</span>
-                  {recentQuestions.map((q) => (
-                    <Button
-                      key={q}
-                      type="button"
-                      size="sm"
-                      variant="ghost"
-                      className="whitespace-nowrap text-xs text-gray-600"
-                      onClick={() => handleAsk(q)}
-                      disabled={isLoading}
-                    >
-                      Recent: {q.length > 40 ? `${q.slice(0, 37)}...` : q}
-                    </Button>
-                  ))}
-                </>
-              )}
+            <div className="space-y-2">
+              <div className="flex flex-wrap gap-2 items-center">
+                <span className="text-[11px] font-medium text-gray-500">Day 1</span>
+                {DAY_ONE_QUESTIONS.map((q) => (
+                  <Button
+                    key={q}
+                    type="button"
+                    size="sm"
+                    variant="secondary"
+                    className="whitespace-nowrap text-xs"
+                    onClick={() => handleAsk(q)}
+                    disabled={isLoading}
+                  >
+                    {q}
+                  </Button>
+                ))}
+              </div>
+              <div className="flex flex-wrap gap-2 items-center">
+                <span className="text-[11px] font-medium text-gray-500">Access &amp; IT</span>
+                {ACCESS_IT_QUESTIONS.map((q) => (
+                  <Button
+                    key={q}
+                    type="button"
+                    size="sm"
+                    variant="secondary"
+                    className="whitespace-nowrap text-xs"
+                    onClick={() => handleAsk(q)}
+                    disabled={isLoading}
+                  >
+                    {q}
+                  </Button>
+                ))}
+              </div>
+              <div className="flex flex-wrap gap-2 items-center">
+                <span className="text-[11px] font-medium text-gray-500">Policies &amp; leave</span>
+                {POLICIES_QUESTIONS.map((q) => (
+                  <Button
+                    key={q}
+                    type="button"
+                    size="sm"
+                    variant="secondary"
+                    className="whitespace-nowrap text-xs"
+                    onClick={() => handleAsk(q)}
+                    disabled={isLoading}
+                  >
+                    {q}
+                  </Button>
+                ))}
+              </div>
+              <div className="flex flex-wrap gap-2 items-center">
+                <span className="text-[11px] font-medium text-gray-500">Travel &amp; expenses</span>
+                {TRAVEL_EXPENSE_QUESTIONS.map((q) => (
+                  <Button
+                    key={q}
+                    type="button"
+                    size="sm"
+                    variant="secondary"
+                    className="whitespace-nowrap text-xs"
+                    onClick={() => handleAsk(q)}
+                    disabled={isLoading}
+                  >
+                    {q}
+                  </Button>
+                ))}
+              </div>
             </div>
+
+            {recentQuestions.length > 0 && (
+              <div className="flex flex-wrap gap-2 items-center">
+                <span className="text-[11px] font-medium text-gray-500">Recent</span>
+                {recentQuestions.map((q) => (
+                  <Button
+                    key={q}
+                    type="button"
+                    size="sm"
+                    variant="ghost"
+                    className="whitespace-nowrap text-xs text-gray-600"
+                    onClick={() => handleAsk(q)}
+                    disabled={isLoading}
+                  >
+                    {q.length > 40 ? `${q.slice(0, 37)}...` : q}
+                  </Button>
+                ))}
+              </div>
+            )}
           </div>
 
           {error && (
@@ -247,30 +318,44 @@ export default function NewJoinerBuddyPage() {
           </div>
 
           {lastAssistantMessage && (
-            <div className="mt-3 flex items-center justify-end gap-2 text-xs text-gray-500">
-              <span>Did this answer help?</span>
-              <button
-                type="button"
-                className={`rounded-full border px-2 py-1 transition ${
-                  feedback === 'up'
-                    ? 'border-green-500 bg-green-50 text-green-700'
-                    : 'border-gray-200 bg-white hover:border-green-400 hover:text-green-700'
-                }`}
-                onClick={() => handleFeedback('up')}
-              >
-                Yes
-              </button>
-              <button
-                type="button"
-                className={`rounded-full border px-2 py-1 transition ${
-                  feedback === 'down'
-                    ? 'border-red-500 bg-red-50 text-red-700'
-                    : 'border-gray-200 bg-white hover:border-red-400 hover:text-red-700'
-                }`}
-                onClick={() => handleFeedback('down')}
-              >
-                No
-              </button>
+            <div className="mt-3 space-y-1 text-xs text-gray-500">
+              <div className="flex items-center justify-end gap-2">
+                <span>Did this answer help?</span>
+                <button
+                  type="button"
+                  className={`rounded-full border px-2 py-1 transition ${
+                    feedback === 'up'
+                      ? 'border-green-500 bg-green-50 text-green-700'
+                      : 'border-gray-200 bg-white hover:border-green-400 hover:text-green-700'
+                  }`}
+                  onClick={() => handleFeedback('up')}
+                >
+                  Yes
+                </button>
+                <button
+                  type="button"
+                  className={`rounded-full border px-2 py-1 transition ${
+                    feedback === 'down'
+                      ? 'border-red-500 bg-red-50 text-red-700'
+                      : 'border-gray-200 bg-white hover:border-red-400 hover:text-red-700'
+                  }`}
+                  onClick={() => handleFeedback('down')}
+                >
+                  No
+                </button>
+              </div>
+              {showHrLink && lastUserMessage && (
+                <div className="flex justify-end">
+                  <a
+                    href={`mailto:hr@trianz.com?subject=Question%20about%20policy&body=${encodeURIComponent(
+                      lastUserMessage.content
+                    )}`}
+                    className="text-[11px] text-blue-700 hover:underline"
+                  >
+                    Email HR this question
+                  </a>
+                </div>
+              )}
             </div>
           )}
 
@@ -340,8 +425,32 @@ export default function NewJoinerBuddyPage() {
               No specific sources were returned for the last answer.
             </p>
           )}
+
+          <div className="mt-4 rounded-lg border border-gray-100 bg-gray-50 p-4 space-y-3">
+            <h3 className="text-sm font-semibold text-gray-900">Day 1 checklist (example)</h3>
+            <p className="text-xs text-gray-600">
+              This is a generic checklist. Exact steps can vary by team and location.
+            </p>
+            <ul className="text-xs text-gray-700 space-y-1 list-disc pl-4">
+              <li>Confirm your reporting manager and work location.</li>
+              <li>Complete HR onboarding formalities and document upload.</li>
+              <li>Set up corporate email, Teams, and VPN as per IT instructions.</li>
+              <li>Review RTO / work-from-home expectations with your manager.</li>
+              <li>Check mandatory trainings and due dates (InfoSec, POSH, etc.).</li>
+            </ul>
+
+            <h3 className="mt-3 text-sm font-semibold text-gray-900">First-week checklist</h3>
+            <ul className="text-xs text-gray-700 space-y-1 list-disc pl-4">
+              <li>Understand your role, project, and key deliverables for the first 30–90 days.</li>
+              <li>Clarify working hours, leave application process, and escalation paths.</li>
+              <li>Meet your immediate team and key stakeholders.</li>
+              <li>Bookmark key systems: HR portal, timesheet, expense tool, travel desk.</li>
+              <li>Note important email IDs (HR, IT helpdesk, Travel Desk, InfoSec).</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
   );
 }
+

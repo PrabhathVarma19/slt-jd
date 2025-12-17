@@ -104,6 +104,7 @@ export default function PolicyAgentPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           messages: nextMessages,
+          mode: 'default',
         }),
       });
       const data: PolicyAgentResponse & { error?: string } = await res.json();
