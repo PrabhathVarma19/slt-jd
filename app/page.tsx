@@ -3,44 +3,70 @@
 import Link from 'next/link';
 import Button from '@/components/ui/button';
 
-const features = [
-  {
-    title: 'Create Job Description',
-    description: 'Generate, edit, and save JDs with AI assistance for SLT/CXO hiring flows.',
-    link: '/jd',
-    action: 'Open JD Creator',
-  },
-  {
-    title: 'Weekly Initiatives (CIO)',
-    description: 'Ingest team updates, get a digest, run-of-show, and action register for the weekly initiatives call.',
-    link: '/weekly-brief',
-    action: 'Open Weekly Initiatives',
-  },
-  {
-    title: 'Comms Hub',
-    description: 'Turn raw updates into exec newsletters or single-team emails in one click.',
-    link: '/comms-hub',
-    action: 'Open Comms Hub',
-  },
+type AgentCategory = 'Leadership' | 'Org-wide';
+
+interface AgentCard {
+  title: string;
+  description: string;
+  link: string;
+  category: AgentCategory;
+  accent: string;
+  label: string;
+}
+
+const AGENTS: AgentCard[] = [
   {
     title: 'Ask Beacon',
-    description: 'Chat with an AI assistant grounded in internal policies and how-to guides, with citations.',
+    description: 'Policy and how-to assistant with grounded answers and key rules.',
     link: '/policy-agent',
-    action: 'Open Ask Beacon',
+    category: 'Org-wide',
+    accent: 'from-sky-500 to-blue-600',
+    label: 'Policy & how-to',
   },
   {
     title: 'New Joiner Buddy',
-    description: 'First-week helper for new associates: day-one tasks, IT setup, RTO, travel and expenses.',
+    description: 'Day-1 and week-1 helper for new associates: setup, RTO, leave and basics.',
     link: '/new-joiner',
-    action: 'Open New Joiner Buddy',
+    category: 'Org-wide',
+    accent: 'from-emerald-500 to-teal-600',
+    label: 'Onboarding',
+  },
+  {
+    title: 'Create JD',
+    description: 'Generate, edit and save SLT/CXO-ready job descriptions with AI.',
+    link: '/jd',
+    category: 'Leadership',
+    accent: 'from-indigo-500 to-purple-600',
+    label: 'Hiring',
+  },
+  {
+    title: 'Weekly Initiatives',
+    description: 'Turn team updates into CIO-ready digest, run-of-show and action register.',
+    link: '/weekly-brief',
+    category: 'Leadership',
+    accent: 'from-amber-500 to-orange-500',
+    label: 'CIO brief',
+  },
+  {
+    title: 'Comms Hub',
+    description: 'Convert raw notes into exec newsletters or targeted team emails.',
+    link: '/comms-hub',
+    category: 'Leadership',
+    accent: 'from-fuchsia-500 to-pink-500',
+    label: 'Exec comms',
   },
   {
     title: 'Travel Desk',
-    description: 'Capture trip details and generate a clear, policy-aware travel request and email draft for the travel desk.',
+    description: 'Prepare policy-aware travel summaries and email drafts for the travel desk.',
     link: '/travel-desk',
-    action: 'Open Travel Desk',
+    category: 'Org-wide',
+    accent: 'from-cyan-500 to-sky-500',
+    label: 'Travel & expenses',
   },
 ];
+
+const leadershipAgents = AGENTS.filter((a) => a.category === 'Leadership');
+const orgAgents = AGENTS.filter((a) => a.category === 'Org-wide');
 
 export default function Home() {
   return (
@@ -48,55 +74,114 @@ export default function Home() {
       <section className="rounded-2xl border border-gray-200 bg-white px-8 py-10 shadow-sm">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <div className="space-y-3 max-w-2xl">
-            <p className="text-sm font-semibold uppercase tracking-wide text-blue-700">CIO Workspace</p>
+            <p className="text-sm font-semibold uppercase tracking-wide text-blue-700">
+              Beacon workspace
+            </p>
             <h1 className="text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">
-              Ship faster with AI copilots for hiring, updates, and exec comms.
+              AI agents for leaders and teams at Trianz.
             </h1>
             <p className="text-base text-gray-600">
-              Choose a tool to start: generate JDs, prep the weekly CIO brief, or craft exec-ready newsletters and team updates.
+              Use Beacon to draft JDs, prep CIO initiatives, generate exec-ready comms, answer policy
+              questions, and guide new joiners—without digging through email threads and PDFs.
             </p>
             <div className="flex flex-wrap gap-3">
-              <Link href="/jd">
-                <Button>Open JD Creator</Button>
+              <Link href="/policy-agent">
+                <Button>Open Ask Beacon</Button>
               </Link>
-              <Link href="/weekly-brief">
-                <Button variant="secondary">Weekly Initiatives</Button>
+              <Link href="/jd">
+                <Button variant="secondary">Create JD</Button>
               </Link>
             </div>
           </div>
-          <div className="rounded-xl border border-gray-200 bg-gray-50 px-6 py-5 text-sm text-gray-700 shadow-inner">
-            <h3 className="text-base font-semibold text-gray-900">What&apos;s inside</h3>
+          <div className="rounded-xl border border-gray-200 bg-gray-50 px-6 py-5 text-sm text-gray-700 shadow-inner max-w-md">
+            <h3 className="text-base font-semibold text-gray-900">What Beacon helps with</h3>
             <ul className="mt-3 space-y-2">
-              <li>• AI-generated JDs with editing and library</li>
-              <li>• Weekly digest + run-of-show for CIO calls</li>
-              <li>• Exec newsletters or single-team updates</li>
-              <li>• One place for SLT-ready outputs</li>
+              <li>• Draft and refine SLT/CXO job descriptions</li>
+              <li>• Turn weekly updates into a CIO-ready brief</li>
+              <li>• Generate newsletters and single-team updates</li>
+              <li>• Answer policy and “how do I…” questions with citations</li>
+              <li>• Guide new joiners through their first days</li>
             </ul>
           </div>
         </div>
       </section>
 
-      <section>
-        <h2 className="text-xl font-semibold text-gray-900">Tools</h2>
-        <div className="mt-6 grid gap-4 md:grid-cols-2">
-          {features.map((feature) => (
-            <div
-              key={feature.title}
-              className="flex flex-col justify-between rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition hover:border-gray-300"
+      <section className="space-y-6">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-semibold text-gray-900">Agents for leadership &amp; ops</h2>
+          <p className="text-xs text-gray-500">
+            Built for CIO, SLT and PMs to prepare decisions faster.
+          </p>
+        </div>
+        <div className="grid gap-4 md:grid-cols-3">
+          {leadershipAgents.map((agent) => (
+            <Link
+              key={agent.title}
+              href={agent.link}
+              className="group rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:border-gray-300 hover:shadow-md"
             >
-              <div className="space-y-2">
-                <h3 className="text-lg font-semibold text-gray-900">{feature.title}</h3>
-                <p className="text-sm text-gray-600">{feature.description}</p>
+              <div className="flex items-start gap-3">
+                <div
+                  className={`flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br ${agent.accent} text-xs font-semibold text-white`}
+                >
+                  {agent.label.slice(0, 2).toUpperCase()}
+                </div>
+                <div className="space-y-1">
+                  <p className="text-[11px] font-medium uppercase tracking-wide text-gray-500">
+                    {agent.label}
+                  </p>
+                  <h3 className="text-sm font-semibold text-gray-900 group-hover:text-gray-950">
+                    {agent.title}
+                  </h3>
+                  <p className="text-xs text-gray-600">{agent.description}</p>
+                </div>
               </div>
-              <div className="mt-4">
-                <Link href={feature.link}>
-                  <Button size="md">{feature.action}</Button>
-                </Link>
+              <div className="mt-4 text-xs font-medium text-blue-700 group-hover:underline">
+                Open {agent.title}
               </div>
-            </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="space-y-6">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-semibold text-gray-900">Agents for everyone</h2>
+          <p className="text-xs text-gray-500">
+            Self-service helpers for policies, onboarding, travel and comms.
+          </p>
+        </div>
+        <div className="grid gap-4 md:grid-cols-3">
+          {orgAgents.map((agent) => (
+            <Link
+              key={agent.title}
+              href={agent.link}
+              className="group rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:border-gray-300 hover:shadow-md"
+            >
+              <div className="flex items-start gap-3">
+                <div
+                  className={`flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br ${agent.accent} text-xs font-semibold text-white`}
+                >
+                  {agent.label.slice(0, 2).toUpperCase()}
+                </div>
+                <div className="space-y-1">
+                  <p className="text-[11px] font-medium uppercase tracking-wide text-gray-500">
+                    {agent.label}
+                  </p>
+                  <h3 className="text-sm font-semibold text-gray-900 group-hover:text-gray-950">
+                    {agent.title}
+                  </h3>
+                  <p className="text-xs text-gray-600">{agent.description}</p>
+                </div>
+              </div>
+              <div className="mt-4 text-xs font-medium text-blue-700 group-hover:underline">
+                Open {agent.title}
+              </div>
+            </Link>
           ))}
         </div>
       </section>
     </div>
   );
 }
+
