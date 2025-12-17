@@ -450,7 +450,13 @@ export default function NewJoinerBuddyPage() {
           </div>
         </div>
       </div>
+
+      <div className="rounded-lg border border-gray-100 bg-gray-50 px-4 py-3 text-[11px] text-gray-500">
+        New Joiner Buddy is intended to guide associates through their first weeks at Trianz. Answers
+        come from internal policies and onboarding material and are kept conservative; for anything
+        unclear or personal (payroll, contracts, performance), please confirm with your manager or HR
+        at hr@trianz.com. Built for Trianz · Content last updated Dec 2025.
+      </div>
     </div>
   );
 }
-

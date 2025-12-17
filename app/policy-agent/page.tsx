@@ -355,6 +355,13 @@ export default function PolicyAgentPage() {
           )}
         </div>
       </div>
+
+      <div className="rounded-lg border border-gray-100 bg-gray-50 px-4 py-3 text-[11px] text-gray-500">
+        Beacon answers are grounded in internal Trianz policy and process documents only and will say
+        it does not know when something is not covered. For sensitive or edge-case decisions, please
+        confirm with your manager, HR, InfoSec or the relevant support team. Built for Trianz ·
+        Content last updated Dec 2025.
+      </div>
     </div>
   );
 }
