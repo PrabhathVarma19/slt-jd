@@ -9,6 +9,7 @@ type ChatRole = 'user' | 'assistant';
 interface ChatMessage {
   role: ChatRole;
   content: string;
+  createdAt: string;
 }
 
 interface PolicySource {
@@ -47,6 +48,13 @@ const TRAVEL_EXPENSE_QUESTIONS: string[] = [
   'What travel modes are allowed for my grade?',
 ];
 
+const SECURITY_QUESTIONS: string[] = [
+  'What should I do if I receive a suspicious or phishing email?',
+  'What are the password rules at Trianz?',
+  'How should I classify client or confidential data?',
+  'What is the policy on using personal devices (BYOD)?',
+];
+
 type Feedback = 'up' | 'down' | null;
 
 export default function NewJoinerBuddyPage() {
@@ -58,6 +66,16 @@ export default function NewJoinerBuddyPage() {
   const [recentQuestions, setRecentQuestions] = useState<string[]>([]);
   const [feedback, setFeedback] = useState<Feedback>(null);
   const [showHrLink, setShowHrLink] = useState(false);
+
+  const formatTime = (iso: string) => {
+    try {
+      const d = new Date(iso);
+      if (Number.isNaN(d.getTime())) return '';
+      return d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+    } catch {
+      return '';
+    }
+  };
 
   const lastAssistantMessage = [...messages].reverse().find((m) => m.role === 'assistant');
   const lastUserMessage = [...messages].reverse().find((m) => m.role === 'user');
@@ -97,7 +115,11 @@ export default function NewJoinerBuddyPage() {
       return;
     }
 
-    const nextMessages: ChatMessage[] = [...messages, { role: 'user', content: trimmed }];
+    const now = new Date().toISOString();
+    const nextMessages: ChatMessage[] = [
+      ...messages,
+      { role: 'user', content: trimmed, createdAt: now },
+    ];
     setMessages(nextMessages);
     setInput('');
     setIsLoading(true);
@@ -124,7 +146,11 @@ export default function NewJoinerBuddyPage() {
       }
 
       const answerText = data.answer || 'No answer generated.';
-      setMessages((prev) => [...prev, { role: 'assistant', content: answerText }]);
+      const ts = new Date().toISOString();
+      setMessages((prev) => [
+        ...prev,
+        { role: 'assistant', content: answerText, createdAt: ts },
+      ]);
       setSources(data.sources || []);
 
       if (lastUserMessage) {
@@ -159,6 +185,14 @@ export default function NewJoinerBuddyPage() {
         feedback: value,
       });
     }
+  };
+
+  const handleResetConversation = () => {
+    setMessages([]);
+    setFeedback(null);
+    setShowHrLink(false);
+    setError(null);
+    setIsLoading(false);
   };
 
   return (
@@ -263,6 +297,24 @@ export default function NewJoinerBuddyPage() {
                   ))}
                 </div>
               </div>
+              <div className="space-y-1">
+                <span className="block text-[11px] font-medium text-gray-500">Security &amp; Infosec</span>
+                <div className="flex flex-wrap gap-2">
+                  {SECURITY_QUESTIONS.map((q) => (
+                    <Button
+                      key={q}
+                      type="button"
+                      size="sm"
+                      variant="secondary"
+                      className="whitespace-nowrap text-xs"
+                      onClick={() => handleAsk(q)}
+                      disabled={isLoading}
+                    >
+                      {q}
+                    </Button>
+                  ))}
+                </div>
+              </div>
             </div>
 
             {recentQuestions.length > 0 && (
@@ -284,6 +336,18 @@ export default function NewJoinerBuddyPage() {
               </div>
             )}
           </div>
+
+          {messages.length > 0 && (
+            <div className="mt-2 flex justify-end">
+              <button
+                type="button"
+                className="text-[11px] text-blue-700 hover:underline"
+                onClick={handleResetConversation}
+              >
+                New conversation
+              </button>
+            </div>
+          )}
 
           {error && (
             <div className="mb-3 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
@@ -322,6 +386,11 @@ export default function NewJoinerBuddyPage() {
                     {msg.role === 'user' ? 'You' : 'Buddy'}
                   </span>
                   <p>{msg.content}</p>
+                  {msg.createdAt && (
+                    <span className="text-[10px] text-gray-300 self-end">
+                      {formatTime(msg.createdAt)}
+                    </span>
+                  )}
                 </div>
               </div>
             ))}

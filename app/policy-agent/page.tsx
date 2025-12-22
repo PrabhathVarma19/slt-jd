@@ -9,6 +9,7 @@ type ChatRole = 'user' | 'assistant';
 interface ChatMessage {
   role: ChatRole;
   content: string;
+  createdAt: string;
 }
 
 interface PolicySource {
@@ -32,11 +33,15 @@ const QUICK_QUESTIONS: string[] = [
   'How do I raise a travel request?',
   'What are the hotel limits for my grade and city?',
   'How to submit expenses in Fusion?',
-  'How do I request laptop or VPN access?',
   'What is the per diem for international travel?',
   'How many leave days do I get in a year?',
   'What is the probation period for new joiners?',
   'Whom should I contact for travel or accommodation queries?',
+  // Security & Infosec
+  'What should I do if I get a phishing or suspicious email?',
+  'What are the password rules at Trianz?',
+  'How should I classify client or confidential data?',
+  'What is the policy on using personal devices (BYOD)?',
 ];
 
 type Feedback = 'up' | 'down' | null;
@@ -50,6 +55,16 @@ export default function PolicyAgentPage() {
   const [keyRules, setKeyRules] = useState<string | null>(null);
   const [recentQuestions, setRecentQuestions] = useState<string[]>([]);
   const [feedback, setFeedback] = useState<Feedback>(null);
+
+  const formatTime = (iso: string) => {
+    try {
+      const d = new Date(iso);
+      if (Number.isNaN(d.getTime())) return '';
+      return d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+    } catch {
+      return '';
+    }
+  };
 
   const lastAssistantMessage = [...messages].reverse().find((m) => m.role === 'assistant');
   const lastUserMessage = [...messages].reverse().find((m) => m.role === 'user');
@@ -86,7 +101,11 @@ export default function PolicyAgentPage() {
       return;
     }
 
-    const nextMessages: ChatMessage[] = [...messages, { role: 'user', content: trimmed }];
+    const now = new Date().toISOString();
+    const nextMessages: ChatMessage[] = [
+      ...messages,
+      { role: 'user', content: trimmed, createdAt: now },
+    ];
     setMessages(nextMessages);
     setInput('');
     setIsLoading(true);
@@ -113,7 +132,11 @@ export default function PolicyAgentPage() {
       }
 
       const answerText = data.answer || 'No answer generated.';
-      setMessages((prev) => [...prev, { role: 'assistant', content: answerText }]);
+      const ts = new Date().toISOString();
+      setMessages((prev) => [
+        ...prev,
+        { role: 'assistant', content: answerText, createdAt: ts },
+      ]);
       setSources(data.sources || []);
       setKeyRules((data as any).keyRules || null);
 
@@ -148,6 +171,15 @@ export default function PolicyAgentPage() {
         feedback: value,
       });
     }
+  };
+
+  const handleResetConversation = () => {
+    setMessages([]);
+    setSources([]);
+    setKeyRules(null);
+    setFeedback(null);
+    setError(null);
+    setIsLoading(false);
   };
 
   return (
@@ -207,6 +239,18 @@ export default function PolicyAgentPage() {
             </div>
           </div>
 
+          {messages.length > 0 && (
+            <div className="mt-2 flex justify-end">
+              <button
+                type="button"
+                className="text-[11px] text-blue-700 hover:underline"
+                onClick={handleResetConversation}
+              >
+                New conversation
+              </button>
+            </div>
+          )}
+
           {error && (
             <div className="mb-3 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
               {error}
@@ -244,6 +288,11 @@ export default function PolicyAgentPage() {
                     {msg.role === 'user' ? 'You' : 'Beacon'}
                   </span>
                   <p>{msg.content}</p>
+                  {msg.createdAt && (
+                    <span className="text-[10px] text-gray-300 self-end">
+                      {formatTime(msg.createdAt)}
+                    </span>
+                  )}
                 </div>
               </div>
             ))}
