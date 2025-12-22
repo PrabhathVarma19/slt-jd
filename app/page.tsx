@@ -86,7 +86,7 @@ export default function Home() {
             </p>
             <div className="flex flex-wrap gap-3">
               <Link href="/policy-agent">
-                <Button>Open Ask Beacon</Button>
+                <Button>Ask Beacon</Button>
               </Link>
               <Link href="/jd">
                 <Button variant="secondary">Create JD</Button>
@@ -184,4 +184,3 @@ export default function Home() {
     </div>
   );
 }
-
