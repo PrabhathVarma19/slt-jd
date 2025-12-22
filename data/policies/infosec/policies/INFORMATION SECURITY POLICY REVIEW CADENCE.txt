@@ -1,0 +1,1429 @@
+INFORMATION SECURITY
+POLICY REVIEW CADENCE
+
+TRIANZ INTERNAL
+
+trianz.com
+
+Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be
+disclosed, duplicated, or used for any purpose other than that stated herein, in
+whole or in part, without the express written consent of Trianz.
+
+Information Classification
+☐ Public
+☒ Internal
+☐ Confidential
+☐ Restricted
+
+TRIANZ INTERNAL
+
+2
+
+Table of Contents
+1.
+
+INTRODUCTION
+
+4
+
+2.
+
+POLICY REVIEW CADENCE SCHEDULE
+
+4
+
+3.
+
+ISO CONTROL MAPPING(S)
+
+10
+
+TRIANZ INTERNAL
+
+3
+
+1. Introduction
+This document will detail the Control objective-wise Review
+Cadence of InformationSecurity Policies and Procedures
+
+2. Policy Review Cadence Schedule
+#
+
+Control
+
+Control Objective
+
+Policy
+
+1
+
+5.1
+Managem
+ent
+direction
+for
+informatio
+n security
+
+Objective: To provide
+
+Information
+
+managementdirection and
+
+SecurityPolicy
+Apex Manual
+
+2
+
+3
+
+6.1
+
+support for information security
+in accordance
+with business requirements
+andrelevant laws and
+regulations.
+Objective: To establish a
+management framework to
+initiate and control the
+
+Responsibilities
+Access Control
+
+on
+
+implementation andoperation
+
+Policy
+
+6.2 Mobile
+devices
+
+of information security
+within the organization
+Objective: ensure the
+security ofteleworking and
+
+Policy on the
+useMobile
+
+use of mobile devices.
+
+ng
+
+5
+
+6
+
+Roles
+
+Internal
+organizati
+
+and
+teleworki
+
+4
+
+ISAC
+
+Review
+Triggers for Policy
+Cadence Review
+Annual
+
+and Annual
+
+7.1 Prior to
+
+Objective: To ensure that
+
+Employm
+ent
+
+employees and contractors
+understand their
+
+Verification
+Policy
+
+7.2
+
+responsibilitiesand are
+suitable for the roles for
+which they are considered.
+Objective: To ensure that
+
+Professional
+
+During
+
+employees and contractors
+
+Development Policy
+
+Employm
+
+are aware of and fulfil their
+
+Policy for
+
+ent
+
+informationsecurity
+
+DisciplinaryAction
+
+onand
+changeof
+employm
+
+•
+
+External Audit
+
+•
+
+Client Audit
+
+•
+
+Client Visit
+feedback
+
+•
+
+Management
+feedback
+
+Bi-Annual
+
+•
+
+Changes due
+to
+Technological
+and
+Environmental
+Factors
+
+Annual
+•
+
+Complianc
+e to anynew
+regulatory
+standards
+
+responsibilities.
+Objective: To protect the
+organization’s interests as
+
+Asset
+Management
+
+part ofthe process of
+changing or terminating
+
+Policy
+Employee Exit
+
+employment.
+
+ProcessEmployee
+
+TRIANZ INTERNAL
+
+Internal Audit
+
+computing and
+Communicatio
+n Facilities
+BYOD Policy
+Background
+
+7.3
+Terminati
+
+•
+
+Annual
+
+•
+
+Security
+Incidents
+
+Annual
+
+•
+
+BCP Triggers
+
+•
+
+Learnings
+from, VA
+findings
+
+4
+
+7
+
+8
+
+ent
+
+Transition Process
+
+8.1
+Objective: To identify
+Responsibil organizational assets and
+defineappropriate protection
+ityfor
+responsibilities.
+assets
+
+Asset
+management
+
+8.2
+Informatio
+n
+
+Objective: To ensure that
+
+classificati
+on
+8.3
+Media
+
+in accordance with its
+importance to the
+organization.
+Objective:
+To
+prevent
+unauthorized
+disclosure,
+
+handlin
+g
+
+modification,
+removal
+or
+destruction
+of
+information
+
+Annual
+
+Policy
+Acceptable
+UsagePolicy
+Media Handling Policy Bi-Annual
+
+information receives an
+appropriatelevel of protection
+
+Access control Policy Bi-Annual
+Password Policy
+
+stored on
+media.
+
+#
+
+Control
+
+Control Objective
+
+Policy
+
+10
+
+9.1 Business
+
+Objective: To limit access
+toinformation and
+
+11
+
+requirement
+s
+of
+access
+control
+9.2 User
+
+Access control Policy Bi-Annual
+Password Policy
+
+access
+manageme
+
+authorizeduser access and
+to prevent unauthorized
+
+Review
+Triggers for Policy
+Cadence Review
+
+information processing
+facilities.
+Objective: To ensure
+
+nt
+12
+
+13
+
+access to systems
+and services.
+9.3 User
+Objective: To make users
+responsibiliti accountable for safeguarding
+es
+theirauthentication
+information
+9.4 System
+Objective: To prevent
+
+Access control Policy Bi-Annual
+Password Policy
+
+and
+applicatio
+14
+
+unauthorizedaccess to
+systems and applications.
+
+naccess
+control
+10.1
+Objective: To ensure proper
+Cryptographi andeffective use of
+ccontrols
+
+cryptography to protect the
+confidentiality,
+authenticity and/or
+integrity ofinformation.
+
+TRIANZ INTERNAL
+
+Access control Policy Bi-Annual
+Password Policy
+Access control Policy B-Annual
+Password Policy
+
+Policy on the
+use of
+
+•
+
+Internal Audit
+
+•
+
+External Audit
+
+•
+
+Client Audit
+
+•
+
+Client Visit
+feedback
+
+Annual
+•
+
+Management
+feedback
+
+Cryptographic
+Controls
+•
+
+Changes due
+
+5
+
+15
+
+16
+
+17
+
+11.1 Secure
+areas
+
+11.2
+Equipment
+
+12.1
+Operational
+procedures
+and
+
+18
+
+Physical Access
+Control and
+
+damage and interference to
+the organization’s information
+
+Environmental
+Security Policy
+
+and information
+processing facilities
+Objective: To prevent loss,
+
+System
+
+and
+
+and secure
+
+software
+
+change
+
+of
+
+processing
+
+12.3 Backup
+
+protected
+against malware.
+Objective: To protect against
+lossof data
+
+Annual
+
+•
+
+Complian
+ce to any
+new
+regulatory
+
+interruption to the
+organization’s operations.
+Objective: To ensure correct
+operations
+
+to
+Technological
+and
+Environmenta
+
+Acceptable usage
+policy
+
+damage, theft or
+compromise ofassets and
+
+information
+
+Annual
+
+l Factors
+
+facilities.
+responsibiliti
+e
+s
+12.2
+Objective: To ensure that
+Protection
+information and information
+from
+processing facilities are
+malware
+
+19
+
+Objective: To prevent
+unauthorizedphysical access,
+
+standards
+
+Annual
+
+management
+
+•
+
+Security
+Incidents
+
+•
+
+BCP Triggers
+
+policy
+
+Antivirus
+Malwarepolicy
+
+Annual
+
+Backup and
+Restoration Policy
+
+Annual
+
+Learnings from, VA
+findings
+
+Data Retention and
+Secure disposal
+policyMedia
+Handling Policy
+Password Protection
+Policy
+Personal Data
+Protection and
+20
+
+privacyPolicy
+12.4 Logging
+
+Objective: To record events
+
+Information security
+
+and
+monitoring
+
+andgenerate evidence
+
+12.5 Control
+of
+operational
+software
+
+Objective: To ensure the
+integrity ofoperational systems
+
+logging and
+monitoring
+policy
+Patch
+Management
+
+#
+
+Control
+
+Control Objective
+
+Policy
+
+22
+
+12.6
+Technical
+vulnerabilit
+y
+managem
+ent
+
+Objective: To prevent
+exploitationof technical
+
+Vulnerability
+Management
+
+vulnerabilities.
+
+Policy
+
+21
+
+Annual
+
+Bi-Annual
+
+Policy
+
+TRIANZ INTERNAL
+
+Review Triggers for
+Cadence Policy Review
+Bi-Annual
+
+6
+
+23
+
+24
+
+12.7
+Information
+systems
+audit
+considerati
+ons
+13.1 Network
+security
+
+Objective: To minimize the
+impactof audit activities on
+
+Information
+SystemAudit trial
+
+operational systems.
+
+Management
+Procedure
+
+Objective: To ensure the
+protectionof information in
+
+Email Policy
+Network
+
+manageme networks and its supporting
+nt
+information processing facilities.
+25
+
+26
+
+27
+
+28
+
+29
+
+Objective:
+
+To
+
+on
+transfer
+
+security
+
+of
+
+transferred
+
+the
+
+information
+within
+and
+
+with
+
+Email Policy
+Security
+
+any
+
+Management
+Procedure
+
+14.1 Security Objective: To ensure that
+requiremen information security is an
+
+Secure SDLC
+PolicyApplication
+
+ts
+of integral part of information
+information systems acrossthe entire
+
+security policy
+Group Manual
+
+systems
+
+ISOperations
+
+lifecycle. This also includes the
+requirements for information
+
+14.2
+
+Secure SDLC
+
+Securityin
+developme
+
+information security is
+designedand implemented
+
+PolicyApplication
+security policy
+
+ntand
+support
+processes
+14.3 Test
+
+within the development
+lifecycle of
+information systems.
+Objective: To ensure the
+
+Personal data
+
+data
+
+protectionof data used for
+testing
+
+protection and
+privacypolicy
+
+on
+
+is accessible by suppliers
+
+ofthe organization’s assets that
+
+agreed level of information
+security and service delivery in
+
+delivery
+line with supplier
+managemen agreements
+t
+
+TRIANZ INTERNAL
+
+•
+
+External Audit
+
+•
+
+Client Audit
+
+•
+
+Client Visit
+feedback
+
+•
+
+Management
+feedback
+
+•
+Annual
+
+Changes
+due to
+Technologic
+al and
+Environment
+al Factors
+Complia
+anynew
+
+Annual
+
+regulator
+y
+standard
+s
+
+Supplier
+Securitypolicy
+
+supplier
+relationships
+15.2
+Objective: To maintain an
+Supplier
+service
+
+Internal Audit
+
+nce to
+
+Information
+SecurityPolicy
+Objective: To ensure protection
+
+•
+
+•
+
+systems which provide
+services over public networks
+Objective: To ensure that
+
+15.1
+Informati
+
+Bi-Annual
+
+Network
+
+an
+
+externalentity
+
+security in
+30
+
+organization
+
+maintain
+
+Bi-Annual
+
+Security
+Management
+Procedure
+
+13.2
+Informati
+
+Annual
+
+Annual
+
+•
+
+Security
+Incidents
+
+•
+Annual
+
+BCP Triggers
+
+Learnings from,
+VA findings
+
+Annual
+Supplier
+Securitypolicy
+
+7
+
+31
+
+16.1
+Manageme
+ntof
+information
+security
+incidents
+
+32
+
+Annual
+
+Objective: To ensure a
+consistentand effective
+approach to the management
+of information security
+incidents, including
+communication on security
+
+and
+events
+improvement and weaknesses.
+s
+17.1
+Objective: Information security
+Informati
+continuity should be
+on
+embedded inthe
+security
+continuity
+organization’s business
+continuity management systems
+
+Information
+security incident
+management
+policy
+
+Business
+continuitypolicy
+
+#
+
+Control
+
+Control Objective
+
+Policy
+
+33
+
+17.2
+Redundanci
+es
+
+Objective: To ensure
+
+Business
+
+availability ofinformation
+processing facilities.
+
+continuitypolicy
+
+Objective: To avoid breaches
+of legal, statutory, regulatory
+
+Intellectual
+propertyrights
+
+or contractual obligations
+related toinformation
+
+policy
+Risk
+
+security and of any security
+requirements.
+
+Management
+Policy
+
+34
+
+18.1
+Compliance
+with legal
+and
+contractual
+requirement
+s
+
+Bi-Annual
+
+Information
+
+Review
+Cadence
+Bi-Annual
+
+Triggers for
+Policy Review
+•
+
+Internal Audit
+
+•
+
+External Audit
+
+•
+
+Client Audit
+
+•
+
+Client Visit
+
+Annual
+
+feedback
+Bi-Annual
+
+•
+
+feedback
+
+SecurityPolicy
+35
+
+18.2
+Informatio
+nsecurity
+reviews
+
+Objective: To ensure that
+information security is
+
+Information
+SecurityPolicy
+
+Bi-Annual
+
+Management
+
+•
+
+implementedand operated in
+accordance with the
+
+Changes
+due to
+Technologic
+al and
+
+organizational policies and
+procedures
+
+Environmen
+tal Factors
+•
+
+Complia
+nce to
+anynew
+regulato
+ry
+standar
+ds
+
+•
+
+Security
+Incidents
+
+•
+
+BCP
+
+Triggers
+TRIANZ INTERNAL
+
+8
+
+Learnings from,
+VA findings
+
+TRIANZ INTERNAL
+
+9
+
+3. ISO Control Mapping(s)
+
+Category of
+Control
+
+ISO 27001:2022 Control
+
+Document Name as per
+ISO 27001:2022
+
+Organizational
+Controls
+
+5.1 Policies for information
+Information Security
+security Control Information
+Policy Review Cadence
+security policy and topicspecific policies shall be defined,
+approved by management,
+published, communicated to,
+and acknowledged by relevant
+personnel and relevant
+interested parties, and reviewed
+at planned intervals and if
+significant changes occur.
+
+Organizational
+Controls
+
+5.36 Compliance with policies,
+rules and standards for
+information security Control
+Compliance with the
+
+Information Security
+Policy Review Cadence
+
+organization's information
+security policy, topicspecific
+policies, rules and standards
+shall be regularly reviewed.
+
+TRIANZ INTERNAL
+
+10
+
+Document Control
+Owner:
+
+CISO
+
+Release ID:
+
+ISPR_POL_059
+
+For Trianz Process Improvement Group (TPIG) Purpose Only
+Version History
+
+Ver.
+No.
+0.1
+
+Date
+16-May2020
+
+Author
+
+Reviewer
+
+Approver
+
+Vijaya
+
+Ganesh
+
+-
+
+Rajeswari
+
+Arunachal
+
+Reason for
+Change
+Client
+
+Risk
+
+Change Description
+Initial Draft
+
+Assessment inputs
+
+a
+1.00
+
+20th May2020
+
+Ganesh
+
+Phani
+
+Vivek
+
+Modification to
+
+Arunachal
+
+Krishna
+
+Sambasivam
+
+provide policy wise
+
+a
+
+For approval
+
+review cadence
+
+1.1
+
+1-Feb2021
+
+Divya G
+
+Vijaya R
+
+Phani
+
+For Review
+
+Modified as per the new
+template
+
+2.00
+
+1-Feb2021
+
+Divya G
+
+Vijaya R
+
+Phani
+
+For Approval
+
+Approved and Baselined
+
+2.1
+
+8-Nov-2021
+
+Divya G
+
+Vijaya R
+
+Siva N
+
+For Review
+
+Modified as per the new
+template
+
+3.00
+
+8-Nov-2021
+
+Divya G
+
+Vijaya R
+
+Siva N
+
+For Approval
+
+Approved and Baselined
+
+3.00
+
+3-Jan-2022
+
+Divya G
+
+Vijaya R
+
+Siva N
+
+For Review
+
+Reviewed and no
+changes
+
+3.00
+
+07-Apr-2023
+
+Shivateja
+
+Vijaya R
+
+Srikanth M
+
+For Review
+
+Reviewed and no
+changes
+
+3.1
+
+12-May-2023
+
+4.0
+
+12-May-2023
+
+TRIANZ INTERNAL
+
+Rama
+Madhavan
+Rama
+Madhavan
+
+Vijaya
+
+Vijaya
+
+For Review
+
+Srikanth M
+
+For Approval
+
+Migrated to new
+template
+Approved and Baselined
+
+11
+
+4.1
+
+5.0
+
+15-feb-24
+23-feb-24
+
+Shalini
+
+Vijaya
+
+Srikanth M
+
+For Review
+
+Shalini
+
+Vijaya
+
+Srikanth M
+
+For Approval
+
+5.1
+
+28-May-25
+
+Kruti
+
+Vijaya
+
+6.0
+
+29-May-25
+
+Kruti
+
+Vijaya
+
+TRIANZ INTERNAL
+
+For Review
+
+Srikanth M
+
+For Approval
+
+Mapped with ISO 27001,
+2022 control 5.1 and 5.36
+Approved and Baselined
+
+Migrated to new
+template.
+Approved and Baselined
+
+12
+
+Contact Information
+Name
+Email
+Phone
+
+Thank You
+infosec@trianz.com
+
+The content in this document is copyrighted; any unauthorized use – in part or full – may violate the
+copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly
+displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz
+name and its products are subject to trademark and copyright protections, regardless of how and
+where referenced.
+
+TRIANZ INTERNAL
+
+13
+
+

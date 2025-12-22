@@ -1,0 +1,1089 @@
+INFORMATION ASSET CLASSIFICATION
+POLICY
+
+TRIANZ INTERNAL
+
+trianz.com
+
+Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be
+disclosed, duplicated, or used for any purpose other than that stated herein, in
+whole or in part, without the express written consent of Trianz.
+
+Information Classification
+☐ Public
+☒ Internal
+☐ Confidential
+☐ Restricted
+
+TRIANZ INTERNAL
+
+2
+
+Table of Contents
+1.
+
+INTRODUCTION
+
+4
+
+1.
+
+OBJECTIVE
+
+4
+
+2.
+
+SCOPE
+
+4
+
+3.
+
+ACTIVITIES PERFORMED
+
+4
+
+3.1 Policy
+
+4
+
+4.
+
+ROLES AND RESPONSIBILITIES
+
+7
+
+5.
+
+MEASUREMENT AND REPORTING
+
+7
+
+6.
+
+COMPLIANCE AND MONITORING
+
+7
+
+7.
+
+EXCEPTION(S)
+
+7
+
+8.
+
+ISO CONTROL MAPPING(S)
+
+7
+
+TRIANZ INTERNAL
+
+3
+
+1. Introduction
+Information classification scheme is essential for protecting informational
+assets by assigning value and safeguarding confidentiality, integrity, and
+availability. The level of security afforded to company data depends directly
+on its classification level. Organizations shall consider confidentiality,
+availability, and integrity including privacy requirements including privacy
+when categorizing assets. This ensures that the classification scheme
+balances business needs and security requirements for each category of
+information.
+
+1. Objective
+The purpose of this policy is to establish the key principles of information
+classification for both electronic and physical forms. This policy has been
+designed to support the "need to know" principle, so that information is
+protected from unauthorized disclosure, use, modification, and deletion.
+
+2. Scope
+Applicable to all Information Assets of Trianz located on premises, Offshore,
+Client premises or on Cloud infrastructure.
+
+3. Activities performed
+3.1 Policy
+All the associates are responsible for ensuring that the company
+information assets are protected and stored by classifying the
+information properly as per the Information Classification policy.
+All the assets shall be catalogued and tagged in the asset inventory.
+Respective function owners are responsible for ensuring that the
+Information Assets are classified as per information classification policy.
+Information assets are classified at Trianz into four categories, which are
+listed below.
+
+TRIANZ INTERNAL
+
+4
+
+SL.
+
+Information
+
+No.
+
+Classification
+
+1
+
+Public
+
+Description
+Public information will be made
+available to the public at
+large.
+Reasonable care will to be taken
+to prevent any damage or
+alteration to such information
+(for e.g., web site content,
+marketing brochures, press
+releases, etc.).
+The Information Asset Owners will
+ensure that Information Assets
+are classified as per above
+information classification
+
+2
+
+Internal
+
+Internal – Internal use only information will be made
+available to all the employees
+of the organization and would
+be made available only to
+authorized persons outside
+the organization (for example,
+a client or a third-party
+service provider).
+Adequate security measures
+shall be taken to prevent
+unauthorized access and/or
+modifications within the
+organization.
+Some examples are operating
+procedure manuals, internal
+announcements, process
+assets etc.
+
+TRIANZ INTERNAL
+
+5
+
+3
+
+Confidential
+
+Confidential information will be
+made available only to
+authorized persons, both
+within and outside the
+organization (for example, a
+client or a third-party service
+provider)
+Distribution of such information
+will be on a “need-to-know’’
+basis only.
+Adequate security measures
+shall be provided to prevent
+unauthorized access.
+Some examples are business
+plans, marketing strategies,
+human resources database,
+strategic plan, customer
+specific data etc.
+
+4
+
+Restricted
+
+•
+•
+
+•
+
+The definition of
+a restriction is a limitation.
+Any asset consisting of
+Personal or Sensitive
+Information that is protected
+by law shall have this
+classification.
+Those assets classified with
+this shall be protected with
+highest level of access control
+and security like encryption,
+rights Management etc
+Examples : Candidates
+resumes, employee profiles,
+Documents containing
+individual’s Financial
+information or individual
+Health Information Eg: Payrolls,
+
+TRIANZ INTERNAL
+
+6
+
+Income tax files, Insurance
+claims, Website Visitor
+Database, vendor information,
+Biometric information etc
+
+4. Roles and Responsibilities
+SL.
+
+Roles
+
+Responsibilities
+
+Associates
+
+Classifying the documents as per the
+
+No.
+1
+
+policy
+2
+
+Function/Product
+Owner
+
+Make sure that information are
+classified as per the policy
+
+3
+
+CISO/CIO
+
+Approve the policy
+
+5. Measurement and reporting
+Number of Documents identified vs Number of documents classified.
+
+6. Compliance and Monitoring
+Ensure 100% information classification is done.
+
+7. Exception(s)
+None.
+
+8. ISO Control Mapping(s)
+Category of
+Control
+TRIANZ INTERNAL
+
+ISO 27001:2022 Control
+
+Document Name as per
+ISO 27001:2022
+7
+
+Organizational
+Controls
+
+5.12 Classification of information Information Asset
+Control Information shall be
+Classification policy
+classified according to the
+information security needs of
+the organization based on
+confidentiality, integrity,
+availability and relevant
+interested party requirements,
+
+Organizational
+Controls
+
+5.13 Labelling of information
+Control An appropriate set of
+procedures for information
+
+Information Asset
+Classification policy
+
+labelling shall be developed and
+implemented in accordance
+with the information
+classification scheme adopted
+by the organization.
+
+TRIANZ INTERNAL
+
+8
+
+Document Control
+Owner:
+
+CISO
+
+Release ID:
+
+IAC-POL-0004
+
+For Trianz Process Improvement Group (TPIG) Purpose Only
+Version History
+
+Ver.
+No.
+0.00
+
+Reason for
+
+Change
+
+Change
+
+Description
+
+Date
+
+Author
+
+Reviewer
+
+Approver
+
+26-Feb-07
+
+Jyotessh
+
+-
+
+-
+
+Initial draft
+
+-
+
+-
+
+Baseline is
+
+G Nair
+1.00
+
+26-Feb-07
+
+Jyotessh
+G Nair
+
+approved by
+
+Approved
+Baseline.
+
+Zulfikar Deen.
+1.01
+
+30-Jul-08
+
+Bharatee
+
+-
+
+-
+
+sha B R
+
+Revised the
+
+Changed
+
+policies in
+
+the Policy
+
+accordance
+
+statements,
+
+with the revised
+ISMS
+Framework
+
+Changed
+the
+template
+Added
+document
+classificatio
+n scheme
+
+2.00
+
+28-Apr-09
+
+Balu Nair
+
+-
+
+-
+
+Approved for
+
+Baselined
+
+Baseline
+2.01
+
+30-Dec-10
+
+Chakrav
+arthi
+
+TRIANZ INTERNAL
+
+-
+
+-
+
+QMG review
+
+Formatted
+the entire
+document
+
+9
+
+3.00
+
+31-Dec-10
+
+Chakrav
+
+-
+
+-
+
+arthi
+3.01
+
+06-May-11
+
+Srilaksh
+
+Request for
+
+Baselined
+
+baseline
+-
+
+-
+
+mi
+
+To maintain
+common
+release id
+allocation for
+
+Modified
+Release ID in
+cover page
+and header
+
+bluebook
+documents
+4.00
+
+06-May-11
+
+Srilaksh
+
+-
+
+-
+
+mi
+4.01
+
+3-Aug-11
+
+Sudhars
+
+Request for
+
+Baselined
+
+baseline
+-
+
+-
+
+QMG review
+
+ana
+
+Replace
+Owner with
+Managemen
+t
+Representati
+ve in place
+of CIO
+In Document
+Classificatio
+n Scheme,
+"Retention
+period is 3
+Years" row is
+removed
+
+5.00
+
+3-Aug-11
+
+Sudhars
+
+-
+
+-
+
+ana
+5.01
+
+14-Oct-11
+
+Venkates
+
+-
+
+-
+
+Request for
+
+Approved
+
+baseline
+
+and
+Baselined
+
+QMG Review
+
+Used new
+
+war
+
+template as
+
+Reddy
+
+per
+
+GD
+
+documentat
+ion
+guidelines
+
+TRIANZ INTERNAL
+
+10
+
+‘Shall’ word
+is replaced
+by ‘Will’
+throughout
+the policy
+statements
+6.00
+
+14-Oct-11
+
+Venkates
+
+-
+
+-
+
+war
+
+Approval for
+
+Baselined
+
+Baseline
+
+Reddy
+GD
+7.00
+
+08-Nov-12
+
+Balu Nair
+
+-
+
+-
+
+Standardization
+
+Modified the
+
+of Book Process
+
+template
+
+Assets
+
+format
+Changed
+the Logo
+
+7.01
+
+24-Oct-16
+
+Sriharsha -
+
+-
+
+Modified Scope
+
+G
+
+Added
+Cloud
+infrastructur
+e under
+scope
+
+8.00
+
+07-Dec-16
+
+Shishir
+
+-
+
+-
+
+Approved by
+
+Baselined
+
+CISO
+8.01
+
+09-Oct-17
+
+Balu Nair
+
+-
+
+-
+
+Internal audit
+
+Information
+
+feedback
+
+classificatio
+n is
+complexly
+revamped
+
+8.02
+
+10-Oct-17
+
+Balu Nair
+
+-
+
+-
+
+Reviewed by
+Ganesh and
+
+9.00
+
+20-Jun-18
+
+Balu Nair
+
+-
+
+Review
+feedback
+
+Shishir
+
+incorporate
+d
+
+Approval for
+
+Baseline
+
+Baseline
+
+TRIANZ INTERNAL
+
+11
+
+9.1
+
+14-Jan-19
+
+Balu Nair
+
+Modified Asset
+classification
+scheme
+
+10.0
+
+14-May-19
+
+Balu Nair
+
+Ganesh
+
+Approved for
+
+Arunachal
+
+Release
+
+Modified
+Asset
+Classificatio
+n scheme.
+Baselined
+
+a
+10.1
+
+11-May-20
+
+Karthik N
+
+Balu Nair
+
+Review
+
+Roles
+modified
+with
+CISO/CIO.
+
+11.0
+
+11.1
+
+14-May-20
+
+22-Jul-20
+
+Karthik N
+
+Balu Nair
+
+Phani
+
+Phani
+
+For Approval
+
+Approved
+and
+Baselined
+
+Krishna
+
+Krishna
+
+Anitha
+
+Phani
+
+Quarterly
+
+Krishna
+
+Review
+
+Information
+Classificatio
+n is modified
+
+Ravindra
+
+Anitha
+
+Phani
+
+Approved for
+
+Baselined
+
+Ravindra
+
+Krishna
+
+Baseline
+
+Phani
+
+Quarterly
+
+Krishna
+
+Review
+
+Phani
+
+Approved for
+
+Krishna
+
+Baseline
+
+n
+12.0
+
+31-Jul-20
+
+Balu Nair
+
+n
+12.1
+
+13.0
+
+13.1
+
+12-Feb-21
+
+12-Feb-21
+
+Balu Nair
+
+Balu Nair
+
+06-Jan-
+
+Krutidee
+
+2022
+
+pta
+
+TRIANZ INTERNAL
+
+Vijaya R
+
+Vijaya R
+
+Balu Nair
+
+For Review
+
+Reviewed
+
+Baselined
+
+Reviewed
+and
+Information
+classificatio
+n updated
+from
+“Confidential
+” to “Internal”
+
+12
+
+14.0
+
+14.1
+
+06-Jan-
+
+Krutidee
+
+2022
+
+pta
+
+13-Mar-
+
+Sanjana
+
+Siva N
+
+Siva N
+
+Approved for
+
+Baselined
+
+Baseline
+Balu Nair
+
+Siva N
+
+For Review
+
+2022
+
+The scope
+has been
+extended to
+products
+and services
+
+15.0
+
+15-Mar-
+
+Sanjana
+
+Balu Nair
+
+Siva N
+
+For Approval
+
+Approved
+and
+Baselined
+
+Shalini,
+
+Balu Nair
+
+Srikanth
+
+For Review
+
+Reviewed
+
+2022
+15.1
+
+03-May2023
+
+Rama
+
+Migrated to
+new
+template
+
+Madhav
+an
+
+16.0
+
+12-May2023
+
+Rama
+Madhav
+
+Vijaya
+
+Srikanth M
+
+For Approval
+
+an
+
+Baselined
+
+16.1
+
+15-Feb2024
+
+Shalini
+
+Approved
+and
+
+Vijaya
+
+For Review
+
+Change in
+Introduction
+part in
+accordance
+with ISO 27k,
+2022 new
+standard
+control 5.12
+
+17.0
+
+23-Feb2024
+
+17.1
+
+30-Apr-25
+
+Shalini
+
+Vijaya
+
+Kruti
+
+Vijaya
+
+Srikanth
+
+For Approval
+For Yearly Review
+
+Approved
+and
+Baselined
+Migrated to a
+new
+Template.
+
+18.0
+
+14-May-25
+
+TRIANZ INTERNAL
+
+Kruti
+
+Vijaya
+
+Srikanth
+
+For Approval
+
+Approved
+and
+Baselined
+13
+
+TRIANZ INTERNAL
+
+14
+
+Contact Information
+Name
+Email
+Phone
+
+Thank You
+infosec@trianz.com
+
+The content in this document is copyrighted; any unauthorized use – in part or full – may violate the
+copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly
+displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz
+name and its products are subject to trademark and copyright protections, regardless of how and
+where referenced.
+TRIANZ INTERNAL
+
+15
+
+

@@ -1,0 +1,798 @@
+SYSTEM AND SOFTWARE
+CHANGE MANAGEMENT
+POLICY
+
+TRIANZ INTERNAL
+
+trianz.com
+
+Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be
+disclosed, duplicated, or used for any purpose other than that stated herein, in
+whole or in part, without the express written consent of Trianz.
+
+Information Classification
+☐ Public
+☒ Internal
+☐ Confidential
+☐ Restricted
+
+TRIANZ INTERNAL
+
+2
+
+Table of Contents
+1.
+
+PURPOSE
+
+4
+
+2.
+
+SCOPE
+
+4
+
+3.
+
+POLICY
+
+4
+
+4.
+
+ROLES & RESPONSIBILITIES
+
+5
+
+5.
+
+OPERATIONAL REQUIREMENTS
+
+6
+
+5.1 Change Documentation
+
+6
+
+5.2 Change Classification
+
+6
+
+5.3 Change Testing
+
+6
+
+5.4 Changes affecting SLA’s
+
+6
+
+5.5 Approval
+
+7
+
+5.6 Communicating changes
+
+7
+
+5.7 Change Implementation
+
+7
+
+5.8 Roll-Back Procedure
+
+7
+
+5.9 Emergency Changes
+
+7
+
+5.10 Verification of Changes
+
+8
+
+5.11 Communication of Changes
+
+8
+
+6.
+
+MONITORING
+
+8
+
+7.
+
+COMPLIANCE
+
+8
+
+8.
+
+EXCEPTIONS(S)
+
+8
+
+9.
+
+ISO CONTROL MAPPING(S)
+
+9
+
+TRIANZ INTERNAL
+
+3
+
+1. Purpose
+The purpose of this policy is to establish management direction and high-level
+objectives for change management and also to ensure controlling the changes to the
+organization, business processes, information processing facilities and systems that
+affect information security.
+Various controls are categorized to mitigate the risk as follows:
+• Information being corrupted and/or destroyed;
+• Computer performance being disrupted and/or degraded;
+• Productivity losses being incurred; and
+• Exposure to reputational risk
+• Any changes that are being done in cloud service are not affecting the cloud
+services.
+
+2. Scope
+This policy applies to all parties operating within the Trianz’s network environment
+or utilizing Information Resources, Cloud service provisioning and Cloud service
+consumption. It covers the data networks, LAN servers and personal computers
+(stand- alone or network-enabled), located at Trianz offices and company
+production related locations, where these systems are under the jurisdiction
+and/or ownership of Trianz including cloud environment, and any personal
+computers, laptops, mobile device and or servers authorized to access the Trianz’s
+data networks and Cloud Networks. None of the employees is exempted from this
+policy.
+
+3. Policy
+Changes to information resources shall be managed and executed according to a
+formal change control process. The control process shall ensure that the changes
+proposed are reviewed, authorized, tested, implemented, and released in a
+controlled manner; and that the status of each proposed change is monitored.
+
+TRIANZ INTERNAL
+
+4
+
+4. Roles & Responsibilities
+Sl. No
+
+1
+
+Item
+
+Roles
+
+Responsibility
+
+Change
+
+Cloud
+
+Shall have the responsibility and authority
+
+Manageme
+
+Service
+
+tocause this policy to be implemented and
+
+nt
+
+Provider
+
+maintained
+As a Cloud Service Provider:
+Shall provide the following:
+➢ Categories of changes
+➢ Planned Date and Time of Changes
+➢ Technical description of changes to the
+Cloud Service and underlying systems
+Notification of Start and Completion of
+the Changes
+➢ In case the service is dependent on
+Peer Cloud Service Provider, ensure that
+change is informed to cloud service
+customer
+
+2
+
+3
+
+Change
+
+Cloud
+
+Manageme
+
+Service
+
+nt
+
+Customer
+
+Audit &
+
+InfoSec
+
+Compliance
+
+Assurance
+
+TRIANZ INTERNAL
+
+As a Cloud Service Customer:
+Shall take into consideration of any
+changesthat would impact any of the
+services provided by the Cloud Provider
+
+Annual Policy & Compliance Review
+
+5
+
+Roles & Responsibilities for ISO 20000-1:2018 (Service Management System: Please
+refer to System and
+Software Change Management Procedure).
+
+5. Operational Requirements
+5.1 Change Documentation
+All change requests shall be logged whether approved or rejected on a
+standardized and central system. The approval of all change requests
+and the results thereof shall be documented. A documented audit trail,
+maintained at a Business Unit Level, containing relevant information shall
+be maintained at all times. This should include change request
+documentation, change authorization and the outcome of the change.
+No single person should be able to effect changes to production
+information systems without the approval of other authorized personnel.
+All the change items shall be included in either MSA or SLA.
+
+5.2 Change Classification
+All change requests shall be prioritized in terms of benefits, urgency,
+effort required and potential impact on operations.
+
+5.3 Change Testing
+Changes shall be tested in an isolated, controlled, and representative
+environment (where such an environment is feasible) prior to
+implementation to minimize the effect on the relevant business process,
+to assess its impact on operations and security and to verify that only
+intended and approved changes were made.
+
+5.4 Changes affecting SLA’s
+The impact of change on existing SLA’s shall be considered. Where
+applicable, changes to the SLA shall be controlled through a formal
+change process which includes contractual amendments.
+
+TRIANZ INTERNAL
+
+6
+
+5.5 Approval
+All changes shall be approved prior to implementation. Approval of
+changes shall be based on formal acceptance criteria i.e. the change
+request was done by an authorized user, the impact assessment was
+performed and proposed changes were tested. All major changes shall
+be informed to information security and data privacy assurance team
+and seek approvals if necessary.
+
+5.6 Communicating changes
+All users, significantly affected by a change, shall be notified of the
+change. The user representative shall sign-off on the change. Users
+shall be required to make submissions and comment prior to the
+acceptance of the change.
+
+5.7 Change Implementation
+Implementation shall only be undertaken after appropriate testing
+and approval by stakeholders. All major changes shall be treated as
+new system implementation and shall be established as a project.
+Major changes will be classified according to effort required to
+develop and implement said changes.
+
+5.8 Roll-Back Procedure
+Procedures for aborting and recovering from unsuccessful changes
+shall be documented. Should the outcome of a change be different to
+the expected result (as identified in the testing of the change),
+procedures and responsibilities shall be noted for the recovery and
+continuity of the affected areas. (Added for clarification)
+
+5.9 Emergency Changes
+Specific procedures to ensure the proper control, authorization, and
+documentation of emergency changes shall be in place. Specific
+parameters will be defined as a standard for classifying changes as
+Emergency changes.
+
+TRIANZ INTERNAL
+
+7
+
+5.10 Verification of Changes
+All changes shall be verified during and after implementation. On
+unsuccessful implementation, fall back procedures will be in place to
+ensure systems can revert back to what they were prior to
+implementation of changes, as the case may be.
+
+5.11 Communication of Changes
+All changes are communicated to all stakeholders that information
+security requirements have been met.
+
+6. Monitoring
+Reporting metrics, documentation templates and change implementation
+reports are described in the approved and published Trianz Change
+Management Procedure. Change implementation reports should be
+generated and maintained by the IT team, which will be used to summarize
+the outcome of the changes implemented. These reports shall be made
+available to Information Security and Internal Audit upon request.
+
+7. Compliance
+Any person, subject to this policy, who fails to comply with the provisions as
+set out above or any amendment thereto, shall be subjected to
+appropriate disciplinary or legal action in accordance with the Trianz
+Disciplinary Code and Procedures. Company Information Security policies,
+standards, procedures and guidelines shall comply with legal, regulatory
+and statutory requirements.
+All changes shall adhere to the policy to ensure the reliability of the systems
+and applications.
+
+8. Exceptions(s)
+Exceptions to the System and Software change management policy shall follow the
+Exception handling policy.
+
+TRIANZ INTERNAL
+
+8
+
+9. ISO Control Mapping(s)
+Category of
+Control
+
+ISO 27001:2022 Control
+
+Document Name as
+per ISO 27001:2022
+
+Technological
+
+8.32 Change management
+
+System and Software
+
+Control Changes to information Change Management
+processing facilities and
+Policy
+information systems shall be
+subject to change management
+procedures.
+
+TRIANZ INTERNAL
+
+9
+
+Document Control
+Owner:
+
+CISO
+
+Release ID:
+
+SSCM-POL-0044
+
+For Trianz Process Improvement Group (TPIG) Purpose Only
+Version History
+Ver
+.
+
+Introductio
+Date
+
+Author
+
+Reviewer
+
+Approver
+
+No.
+0.1
+
+13-Oct2017
+
+-
+
+Chan
+
+n /Reason
+
+ge
+
+for Change
+
+Descrip
+tion
+Initial
+Draft
+
+Creation of
+
+Roshni
+
+Shishir
+
+Madhusood
+
+Kumar
+
+Change
+
+an
+
+Singh
+
+Managemen
+t Policy
+
+1.00
+
+14-May-
+
+Kamad
+
+18
+
+ev
+
+Balu Nair
+
+Ganesh A
+
+Baseline
+d
+
+Approved
+by Ganesh
+
+Pradha
+1.01
+
+2.0
+
+29-Apr19
+
+14-May19
+
+n
+Balu Nair
+
+Balu Nair
+
+TRIANZ INTERNAL
+
+Joshy VM
+
+-
+
+Ganesh
+
+Approved
+
+Arunachala
+
+for Release
+
+•
+
+Trianz
+logo is
+replac
+edwith
+new
+logo
+
+•
+
+Informa
+tion
+classific
+ation
+modified
+Baseline
+d
+
+•
+
+10
+
+3.0
+
+22-Nov-
+
+Vijaya
+
+Phani
+
+Vivek
+
+Updated the
+
+2019
+
+Rajeswari
+
+Krishna
+
+Sambasiv
+
+policy to
+
+am
+
+align to
+
+V
+
+•
+
+Standards –
+ISO 27017
+
+3.1
+
+4.0
+
+4.1
+
+12-May20
+
+14-May20
+
+29-Jan21
+
+Balu Nair
+
+Phani
+
+•
+
+Phani
+
+Phani
+
+For
+
+Krishna
+
+Krishna
+
+Approval
+
+Vijaya
+
+Phani
+
+Rajesw
+
+Krishna
+
+onal
+Procedur
+es
+Migrat
+ed to
+the
+
+Krishna
+
+Balu Nair
+
+Update
+d the
+Purpose
+, Roles &
+Respon
+sibilities
+and
+Section
+5Operati
+
+For Review
+
+ari
+
+new
+template
+Approve
+d and
+Baseline
+d
+Policy is
+aligned to
+ISO 200001:2018
+Standard,
+Informatio
+n
+classificati
+
+5.0
+
+5.1
+
+29-Jan21
+
+Vijaya
+
+Phani
+
+Rajesw
+
+Krishna
+
+ari
+21-Dec21
+
+Vijaya
+Rajesw
+
+Karthik N
+
+Phani Krishna
+
+For Approval
+
+on
+updated
+Approved
+and
+Baselined
+
+For Review
+
+Formatting
+changes
+
+ari
+
+TRIANZ INTERNAL
+
+11
+
+6.0
+
+7.0
+
+13-Jan22
+
+Vijaya
+
+Karthik N
+
+Rajesw
+
+Sivaramakrish
+nan N
+
+ari
+11-Apr-23 Vijaya
+
+Karthik N
+
+For Approval
+
+Approved
+and
+Baselined
+
+For Review
+
+Updated
+section 5.5
+(Approval)
+
+Rajesw
+ari,
+Pallavi
+Chakra
+barty
+8.0
+
+12-May23
+
+Vijaya
+
+Karthik N
+
+Srikanth M
+
+For Approval
+
+Rajesw
+
+New
+template
+change
+Approved
+and
+Baselined
+
+ari
+8.1
+
+11-Feb-24 Shalini
+
+Vijaya
+
+Srikanth M
+
+For Review
+
+Mapped with
+new ISO
+27001 2022
+controls
+
+9.0
+
+23-Feb24
+
+Shalini
+
+Vijaya
+
+Srikanth M
+
+For Approval
+
+Approved
+and
+Baselined
+
+9.1
+
+28-May- Kruti
+25
+
+Vijaya
+
+10.0
+
+29-May- Kruti
+25
+
+Vijaya
+
+Srikanth M
+
+For Review
+
+Migrated
+to new
+template
+
+For Approval
+
+Approved
+and
+Baselined
+
+TRIANZ INTERNAL
+
+12
+
+Contact Information
+Name
+Email
+Phone
+
+Thank You
+infosec@trianz.com
+
+The content in this document is copyrighted; any unauthorized use – in part or full – may violate the
+copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly
+displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz
+name and its products are subject to trademark and copyright protections, regardless of how and
+where referenced.
+TRIANZ INTERNAL
+
+13
+
+

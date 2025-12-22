@@ -191,69 +191,77 @@ export default function NewJoinerBuddyPage() {
             </label>
 
             <div className="space-y-2">
-              <div className="flex flex-wrap gap-2 items-center">
-                <span className="text-[11px] font-medium text-gray-500">Day 1</span>
-                {DAY_ONE_QUESTIONS.map((q) => (
-                  <Button
-                    key={q}
-                    type="button"
-                    size="sm"
-                    variant="secondary"
-                    className="whitespace-nowrap text-xs"
-                    onClick={() => handleAsk(q)}
-                    disabled={isLoading}
-                  >
-                    {q}
-                  </Button>
-                ))}
+              <div className="space-y-1">
+                <span className="block text-[11px] font-medium text-gray-500">Day 1</span>
+                <div className="flex flex-wrap gap-2">
+                  {DAY_ONE_QUESTIONS.map((q) => (
+                    <Button
+                      key={q}
+                      type="button"
+                      size="sm"
+                      variant="secondary"
+                      className="whitespace-nowrap text-xs"
+                      onClick={() => handleAsk(q)}
+                      disabled={isLoading}
+                    >
+                      {q}
+                    </Button>
+                  ))}
+                </div>
               </div>
-              <div className="flex flex-wrap gap-2 items-center">
-                <span className="text-[11px] font-medium text-gray-500">Access &amp; IT</span>
-                {ACCESS_IT_QUESTIONS.map((q) => (
-                  <Button
-                    key={q}
-                    type="button"
-                    size="sm"
-                    variant="secondary"
-                    className="whitespace-nowrap text-xs"
-                    onClick={() => handleAsk(q)}
-                    disabled={isLoading}
-                  >
-                    {q}
-                  </Button>
-                ))}
+              <div className="space-y-1">
+                <span className="block text-[11px] font-medium text-gray-500">Access &amp; IT</span>
+                <div className="flex flex-wrap gap-2">
+                  {ACCESS_IT_QUESTIONS.map((q) => (
+                    <Button
+                      key={q}
+                      type="button"
+                      size="sm"
+                      variant="secondary"
+                      className="whitespace-nowrap text-xs"
+                      onClick={() => handleAsk(q)}
+                      disabled={isLoading}
+                    >
+                      {q}
+                    </Button>
+                  ))}
+                </div>
               </div>
-              <div className="flex flex-wrap gap-2 items-center">
-                <span className="text-[11px] font-medium text-gray-500">Policies &amp; leave</span>
-                {POLICIES_QUESTIONS.map((q) => (
-                  <Button
-                    key={q}
-                    type="button"
-                    size="sm"
-                    variant="secondary"
-                    className="whitespace-nowrap text-xs"
-                    onClick={() => handleAsk(q)}
-                    disabled={isLoading}
-                  >
-                    {q}
-                  </Button>
-                ))}
+              <div className="space-y-1">
+                <span className="block text-[11px] font-medium text-gray-500">Policies &amp; leave</span>
+                <div className="flex flex-wrap gap-2">
+                  {POLICIES_QUESTIONS.map((q) => (
+                    <Button
+                      key={q}
+                      type="button"
+                      size="sm"
+                      variant="secondary"
+                      className="whitespace-nowrap text-xs"
+                      onClick={() => handleAsk(q)}
+                      disabled={isLoading}
+                    >
+                      {q}
+                    </Button>
+                  ))}
+                </div>
               </div>
-              <div className="flex flex-wrap gap-2 items-center">
-                <span className="text-[11px] font-medium text-gray-500">Travel &amp; expenses</span>
-                {TRAVEL_EXPENSE_QUESTIONS.map((q) => (
-                  <Button
-                    key={q}
-                    type="button"
-                    size="sm"
-                    variant="secondary"
-                    className="whitespace-nowrap text-xs"
-                    onClick={() => handleAsk(q)}
-                    disabled={isLoading}
-                  >
-                    {q}
-                  </Button>
-                ))}
+              <div className="space-y-1">
+                <span className="block text-[11px] font-medium text-gray-500">Travel &amp; expenses</span>
+                <div className="flex flex-wrap gap-2">
+                  {TRAVEL_EXPENSE_QUESTIONS.map((q) => (
+                    <Button
+                      key={q}
+                      type="button"
+                      size="sm"
+                      variant="secondary"
+                      className="whitespace-nowrap text-xs"
+                      onClick={() => handleAsk(q)}
+                      disabled={isLoading}
+                    >
+                      {q}
+                    </Button>
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -283,11 +291,19 @@ export default function NewJoinerBuddyPage() {
             </div>
           )}
 
-          <div className="flex-1 space-y-4 overflow-y-auto pr-1">
+          <div className="chat-scroll flex-1 space-y-4 overflow-y-auto pr-1 rounded-lg bg-gray-50 p-3 max-h-[420px]">
             {messages.length === 0 && (
-              <div className="text-sm text-gray-600">
-                Try asking &quot;What should I do on my first day?&quot; or &quot;How do I request a
-                laptop and VPN access?&quot;. You can ask follow-up questions in the same thread.
+              <div className="flex justify-start">
+                <div className="inline-flex max-w-md flex-col gap-1 rounded-2xl bg-white px-3 py-2 text-sm text-gray-700 shadow-sm">
+                  <span className="text-[11px] font-medium uppercase tracking-wide text-blue-600">
+                    Buddy
+                  </span>
+                  <p>
+                    Try asking &quot;What should I do on my first day?&quot; or
+                    &quot;How do I request a laptop and VPN access?&quot;. You can ask follow-up questions
+                    in the same thread.
+                  </p>
+                </div>
               </div>
             )}
             {messages.map((msg, idx) => (
@@ -296,13 +312,16 @@ export default function NewJoinerBuddyPage() {
                 className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-full rounded-2xl px-3 py-2 text-sm whitespace-pre-wrap ${
+                  className={`inline-flex max-w-md flex-col gap-1 rounded-2xl px-3 py-2 text-sm whitespace-pre-wrap shadow-sm ${
                     msg.role === 'user'
                       ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 text-gray-900'
+                      : 'bg-white text-gray-900'
                   }`}
                 >
-                  {msg.content}
+                  <span className="text-[11px] font-medium uppercase tracking-wide opacity-70">
+                    {msg.role === 'user' ? 'You' : 'Buddy'}
+                  </span>
+                  <p>{msg.content}</p>
                 </div>
               </div>
             ))}

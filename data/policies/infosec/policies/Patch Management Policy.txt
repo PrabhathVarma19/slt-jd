@@ -1,0 +1,920 @@
+Patch Management Policy
+
+TRIANZ INTERNAL
+
+trianz.com
+
+Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be
+disclosed, duplicated, or used for any purpose other than that stated herein, in
+whole or in part, without the express written consent of Trianz.
+
+Information Classification
+☐ Public
+☒ Internal
+☐ Confidential
+☐ Restricted
+
+TRIANZ INTERNAL
+
+2
+
+Table of Contents
+1.
+
+PURPOSE
+
+4
+
+2.
+
+OBJECTIVE
+
+4
+
+3.
+
+SCOPE
+
+4
+
+4.
+
+POLICY STATEMENT
+
+4
+
+4.1 Trianz Owned Assets
+
+4
+
+4.2 Supplier Owned Assets
+
+4
+
+5.
+
+PATCHING SCHEDULE
+
+5
+
+6.
+
+MONITORING AND REPORTING
+
+7
+
+7.
+
+ROLES AND RESPONSIBILITIES
+
+7
+
+8.
+
+APPLICABLE STANDARDS
+
+8
+
+9.
+
+ISO CONTROLS MAPPING
+
+8
+
+10. REFERENCE POLICIES & PROCEDURES
+
+9
+
+11. EXCEPTIONS(S)
+
+9
+
+TRIANZ INTERNAL
+
+3
+
+1. Purpose
+This document describes the Information Security requirements for maintaining
+up-to-date Security patches on all the systems.
+
+2. Objective
+• The objective of this policy is to prevent the exploitation of vulnerabilities on
+computing and related systems.
+• All Systems, Servers and Network Devices must be maintained, and security
+patches must be applied in a timely manner consistent with an assessment of
+risk.
+
+3. Scope
+This policy applies to all Systems, Network Devices and Servers of Trianz which are
+on premise, or any Cloud based infrastructure or service where Patch
+Management is Trianz’s responsibility.
+
+This includes systems that contain
+
+company or client data owned or managed by Trianz regardless of location (Onprem or Cloud).
+
+4. Policy Statement
+4.1 Trianz Owned Assets
+•
+
+Systems, Servers, and infrastructure owned and managed by Trianz shall
+be installed with latest security patches to protect the assets from
+known/Unknown vulnerabilities.
+
+•
+
+Security Patches shall be identified, reviewed, tested and approved
+before implementing in the production environment.
+
+•
+
+All Security patch updates, shall be followed through the Change control
+process. This is to ensure successful completion of patch updates.
+
+4.2 Supplier Owned Assets
+•
+
+Systems, Servers, and infrastructure owned by Supplier and managed by
+Trianz/Supplier shall be installed with latest security patches to protect
+the assets from known/Unknown vulnerabilities.
+
+TRIANZ INTERNAL
+
+4
+
+•
+•
+•
+•
+
+In case of patches to be applied from supplier end the contract should
+clearly specify the same.
+Security Patches shall be identified, reviewed, tested, and approved before
+implementing in the production environment.
+All Security patch updates shall be followed through the Change control
+process. This is to ensure successful completion of patch updates.
+Trianz supplier security policy shall enforce Security patch compliance by
+the Suppliers/ vendors by conducting periodic vendor audits and SLA
+reviews.
+
+5. Patching Schedule
+IT infrastructure
+Period
+
+Activity
+
+Monthly
+
+Critical Security patches and Security updates and
+general System updates, Critical Third-party
+application patches and upgrades based on the
+security recommendations.
+
+Quarterly
+
+Server Updates
+
+On-demand
+
+High/Critical severity patches will be deployed
+immediately based on security recommendations
+
+Printers, peripherals, switches, routers, firewalls, and storage
+Period
+
+Activity
+
+Quarterly
+
+Check for new firmware updates. Reference:
+OEM portals, emails, Security Blogs etc..
+
+Vendor Update
+
+Upgrade firmware within a week of vendor
+notifications. Reference: Vendor notifications,
+
+TRIANZ INTERNAL
+
+5
+
+5.1.1.1
+
+On-demand, and
+emergency security
+
+The IS Security team will determine the risk
+and the relevance of the patch, as well as
+
+patching
+
+when the system should be patched. All
+related Critical, High, and Business impact
+patches shall be deployed immediately upon
+approval.
+
+5.1.1.2
+
+Zero-day Vulnerabilities
+
+Immediate Risk Assessment: Identify
+affected systems, assess the impact, and
+determine exposure.
+Emergency Patch Deployment: Apply
+vendor-released patches or hotfixes as soon
+as they become available.
+Temporary Mitigations: If no patch is
+available, implement workarounds such as
+disabling affected services, applying firewall
+rules, or restricting access.
+Expedited Testing: Conduct rapid testing of
+patches in a controlled environment before
+deployment to prevent system disruptions.
+Prioritized Deployment: Apply patches on
+critical systems first, followed by non-critical
+assets.
+Monitoring & Threat Intelligence:
+Continuously monitor for new threats,
+indicators of compromise, and vendor
+updates.
+Incident Response Integration: Align with the
+incident response process to contain,
+eradicate, and recover from potential
+exploitation.
+Post-Patch Review: Validate successful
+updating of patches, conduct security
+testing, and update documentation for future
+reference.
+
+Exceptions
+
+Systems, Network Devices, Security
+Appliances and applications that cannot be
+patched to resolve a known vulnerabilities
+
+TRIANZ INTERNAL
+
+6
+
+will have the justification documented by the
+device/application owner and ensure that
+the necessary compensating control(s) are
+implemented.
+Systems
+
+•
+
+All the Systems (Desktops and laptops) must have automatic updates enabled
+
+•
+
+for Security patches for Operating System.
+All the endpoints will be patched for Critical third-party applications or new
+version upgrades based on security recommendations.
+Servers and Network/security Devices:
+
+•
+
+•
+
+•
+
+Servers (Unix, Linux, Windows, etc.) must comply with the Operating Systems
+patches released by the vendors or as per the Trianz patch update schedule,
+whichever is earlier.
+Network/Security Devices must comply with the Internet Operating Systems,
+Firmware and patches released by the OEMs and vendors or as per the Trianz
+patch update schedule, whichever is earlier.
+Above patch schedule is defined to address the default operating system level,
+service pack, hotfix, and patch level required to ensure the security of the Trianz
+asset and the data that resides on the system.
+
+6. Monitoring and Reporting
+•
+
+•
+
+Patch implementation reports shall be generated and maintained by the IS
+Operation team, which will be used to summarize the outcome of each
+patching cycle.
+These reports shall be used to evaluate patch implementation, the current
+patching levels of all systems and to assess the current level of risk.
+
+7. Roles and Responsibilities
+Role
+
+Responsibility
+
+System
+
+They are responsible for ensuring that
+
+Owner
+
+software they manage is maintained
+
+TRIANZ INTERNAL
+
+Internal/External
+Internal
+
+7
+
+through regular software updates and
+patching
+CIO
+
+CIO is accountable for ensuring that the
+
+Internal
+
+software update and patching policy is
+adhered to
+IS
+
+IS Operation being responsible for
+
+operation
+
+Implementation and enforcement of this
+policy.
+
+InfoSec
+
+Conduct periodic/Spot audits to ensure
+
+Team
+
+compliance.
+
+Product
+
+Ensure all the end points systems are
+
+Owner /
+
+patched that are being used for projects
+
+Internal
+
+Internal
+
+project
+
+Internal
+
+manager
+
+8. Applicable Standards
+•
+•
+
+ISO 27001:2022
+ISO 27701:2019
+
+9. ISO Controls Mapping
+Category of
+Control
+
+ISO 27001:2022 Control
+
+Document Name as
+per ISO 27001:2022
+
+Technological
+Controls
+
+8.19 Installation of Software on
+Operational Systems
+
+Patch Management
+Policy
+
+TRIANZ INTERNAL
+
+8
+
+10. Reference Policies & Procedures
+•
+•
+•
+•
+
+Information security Policy.
+IS Operations Process.
+System and Software Change Management Policy.
+System and Software Change Management Procedure.
+
+11. Exceptions(s)
+Exceptions to the Patch management policy will require formal written approval from
+the Information Security & Data Privacy Assurance Team.
+Refer to Exception Handling Policy
+
+TRIANZ INTERNAL
+
+9
+
+Document Control
+Owner:
+
+CISO
+
+Release ID:
+
+PATM-POL-0051
+
+For Trianz Process Improvement Group (TPIG) Purpose Only
+Version History
+
+Ver.
+
+Date
+
+Author
+
+Reviewer
+
+No.
+0.01
+
+25-May-17 Roshni
+Madhudhan
+
+0.02
+
+12-May-18 Kamadev
+
+Introduction/Reaso
+n for Change
+
+Approver
+
+Description
+
+Shishir
+
+Creation of
+
+Kumar
+
+Patch
+
+Singh &
+
+Management
+
+Kamadev
+
+Policy
+
+Joshy VM
+
+Review before final
+
+Ganesh
+
+release to Blue
+
+Arunachal a per the
+
+Balu Nair
+
+Ganesh
+
+Change
+
+Initial Draft
+
+Arunachal
+
+book.
+
+Updated as
+standard &
+inclusion of
+metrics
+
+1.00
+
+20-Jun-18 Kamadev
+
+Approval for
+
+Pradhan
+1.1
+
+6-May-20 Vijaya
+
+Ganesh AJ
+
+Baseline
+
+Baseline
+Karthik, Balu
+
+For Review
+
+Information
+
+Rajeswari
+
+Classificatio
+n updated
+
+2.0
+
+15-May-
+
+Vijaya
+
+20
+
+Rajeswari
+
+Karthik, Balu
+
+For Approval
+
+Phani
+
+Approved
+
+Krishna
+
+and
+Baselined
+
+2.1
+
+28-July-
+
+Anitha
+
+Phani
+
+Half yearly review as
+
+Added
+
+20
+
+Ravindran
+
+Krishna
+
+per Policy
+
+information
+
+TRIANZ INTERNAL
+
+10
+
+pertaining to
+cloud as well
+and
+Baselined
+3.0
+
+31-July-20 Anitha
+Ravindran
+
+Phani
+
+Half yearly review as Phani
+
+Approved
+
+Krishna
+
+per Policy
+
+and
+
+Krishna
+
+Baselined
+3.1
+
+21-Jan-21
+
+Divya
+
+Phani
+
+Gongalla
+
+Krishna
+
+For Review
+
+Phani
+
+Updated
+
+Krishna
+
+new
+information
+classification
+
+4.0
+
+4.1
+
+21-Jan-21
+
+Divya
+
+Phani
+
+Gongalla
+
+Krishna
+
+30-July-21 Divya
+Gongalla
+
+Phani
+
+For Approval
+
+Phani
+Krishna
+
+For Review
+
+Krishna
+
+Approved
+and
+Baselined
+Added Roles
+
+Phani
+
+and
+
+Krishna
+
+Responsibiliti
+es
+
+5.0
+
+30-July-21 Divya
+Gongalla
+
+5.1
+
+8-Nov-21
+
+Phani
+
+For Approval
+
+Krishna
+
+Siva
+
+Gangadhar
+
+Krishna &
+
+Aka
+
+Krishna
+For Review
+
+8-Nov-21
+
+Siva
+
+Gangadhar
+
+Krishna &
+
+Aka
+
+For Approval
+
+23-Jan-21 Divya G
+
+Karthik N
+
+For Review and
+Approval
+
+TRIANZ INTERNAL
+
+Sivaramakr
+ishnan N
+
+Pranesh K
+6.0
+
+Sivaramakr
+ishnan N
+
+Pranesh
+6.0
+
+Phani
+
+Sivaramakr
+ishnan N
+
+Approved
+and
+Baselined
+Updated the
+policy
+section 5
+Approved
+and
+Baselined
+Reviewed
+and no
+changes
+
+11
+
+6.1
+
+13-Mar-22 Sanjana
+
+Karthik N
+
+For Review
+
+The scope
+Sivaramakr
+ishnan N
+
+has been
+extended to
+products and
+services
+
+7.0
+
+21-Mar-22 Sanjana
+
+Sivaramakris For Approval
+hnan N
+
+7.1
+
+Vijaya R
+
+Sivaramakr
+ishnan N
+
+Yearly Review
+
+Approved
+and
+Baselined
+
+12-May-
+
+Balu Nair,
+
+Format and
+
+2023
+
+Shalini
+
+changes
+
+Kumari
+
+done
+New
+template
+change
+
+8.0
+
+12-May-23 Balu Nair
+
+Yearly Review
+
+Srikanth
+Mantena
+
+8.1
+
+15-Feb-24 Vijaya
+
+Balu
+
+For review
+
+Approved
+and
+Baselined
+Updated the
+
+Srikanth
+Mantena
+
+section ISO
+Control
+Mapping
+aligning to
+ISO
+27001:2022
+
+9.0
+
+9.1
+
+23-Feb-24 Vijaya
+
+Balu
+
+05-Mar-
+
+Krutideepta Vijaya R,
+
+25
+
+Barik
+
+Balu Nair &
+Beniyel S
+
+TRIANZ INTERNAL
+
+For Approval
+
+For Yearly Review
+
+Srikanth
+
+Approved
+
+Mantena
+
+and
+Baselined
+Supplier
+Owned
+Assets
+Section &
+Patching
+12
+
+Schedule
+(Zero Day
+Vulnerability)
+Section Has
+been
+modified.
+Migrated to a
+new
+Template.
+10.0
+
+14-May-25 Krutideepta Vijaya R,
+Barik
+
+Balu Nair &
+Beniyel S
+
+TRIANZ INTERNAL
+
+For Approval
+
+Srikanth
+
+Approved
+
+Mantena
+
+and
+Baselined
+
+13
+
+Contact Information
+Name
+Email
+Phone
+
+Thank You
+infosec@trianz.com
+
+The content in this document is copyrighted; any unauthorized use – in part or full – may violate the
+copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly
+displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz
+name and its products are subject to trademark and copyright protections, regardless of how and
+where referenced.
+TRIANZ INTERNAL
+
+14
+
+

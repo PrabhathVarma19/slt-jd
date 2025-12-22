@@ -1,0 +1,886 @@
+Guidelines on Email Usage
+
+TRIANZ INTERNAL
+
+trianz.com
+
+Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be
+disclosed, duplicated, or used for any purpose other than that stated herein, in
+whole or in part, without the express written consent of Trianz.
+
+Information Classification
+☐ Public
+☒ Internal
+☐ Confidential
+☐ Restricted
+
+TRIANZ INTERNAL
+
+2
+
+Table of Contents
+1.
+
+INTRODUCTION
+
+4
+
+2.
+
+OBJECTIVES
+
+4
+
+3.
+
+SCOPE
+
+4
+
+4.
+
+GUIDELINES
+
+4
+
+4.1 Authorization of E Mail Usage
+
+4
+
+4.1.1
+
+User Identification and User Password Management
+
+5
+
+4.1.2
+
+Setting Usage Norms & Protection
+
+5
+
+4.1.3
+
+Company Property
+
+5
+
+4.2 Directions for Usage
+
+6
+
+4.2.1
+
+Purpose of Use
+
+6
+
+4.2.2
+
+Importance of E-mail
+
+6
+
+4.3 E-mail System Integrity
+
+6
+
+4.3.1
+
+No Default Protection
+
+6
+
+4.3.2
+
+Monitoring of Communications
+
+6
+
+4.3.3
+
+Inspections and Disclosure of Communication
+
+7
+
+4.3.4
+
+No Guaranteed Message Privacy
+
+7
+
+4.3.5
+
+Statistical Data
+
+7
+
+4.4 E Mail Forwarding
+
+8
+
+4.5 E-mail etiquette
+
+8
+
+4.6 Security of Email
+
+10
+
+TRIANZ INTERNAL
+
+3
+
+1. Introduction
+E-mail is extensively used for all communication in TRIANZ. The following
+guidelines aim to reduce e-mail risks and suggest strategies for secure e-mail
+usage and position both employees and organization in a professional manner
+before internal and external audiences.
+
+2. Objectives
+This guideline covers the following aspects:
+•
+
+Authorization of Usage
+
+•
+
+E-mail Administration
+
+•
+
+Directions for usage
+
+•
+
+E-mail System Integrity
+
+•
+
+Disclaimer
+
+3. Scope
+All individual users (Employees, Consultants and others associated with TRIANZ)
+who use the E-mail services provided by TRIANZ.)
+
+4. Guidelines
+4.1
+
+Authorization of E Mail Usage
+Only employees and other persons duly authorized by the appropriate
+TRIANZ authority shall be permitted to use TRIANZ’s E-mail systems and
+resources. HR shall initiate the User Access Registration on the Local Email server, for a new joinee by raising request to IS Service Desk.
+The IS team shall create a unique user profile within 2 working days from
+the day IS team gets the request from HR. The IS team shall check the
+previous username on the database and shall create only unique e-mail
+from the history (Firstname.lastname).
+
+TRIANZ INTERNAL
+
+4
+
+The HR initiates deregistration of user access to the Local E-mail Server
+on termination / resignation / transfer of the employee by raising a
+request to IT servicedesk. The IS team shall deactivate the email access
+on the same day subject to the approval from Delivery Head / Project
+Manager.
+For parting employees, the HR shall raise a request for deactivation and
+the same is taken care of by the IS Team.
+
+4.1.1
+
+User Identification and User Password Management
+All authorized users shall be provided with a unique user-identification
+(user-id.). The users shall be provided access to the mailing system
+based on their user id and a password as per the standard policy
+(firstname.lastname). The Password Management exercised by the
+user shall be in accordance with the Password Policy of TRIANZ.
+
+4.1.2 Setting Usage Norms & Protection
+The IT team shall administer the Local e-mail system with appropriate
+settings of the mailbox size, maximum size of out-going attachment
+etc.; the mailbox size allocated to all the users 50 GB to 100 GB,
+Functional Head / Project Managers100 GB , Delivery Head / Directors
+and above designated management staff 100 GB.
+
+All E-mail
+
+attachments should not exceed the size of 10 MB. Exceptions to this if
+any, shall be explicitly authorized by the IS Manager/CIO. Appropriate
+virus protection Spam filters, spoof detections and ransomeware
+protections shall also be implemented on all the mail server(s) and
+these shall be updated periodically and as necessary, to ensure total
+protection at all times.
+
+4.1.3 Company Property
+All messages generated on or handled by electronic communication
+systems, including back-up copies, are considered to be the property
+of TRIANZ, and are not the property of users of the electronic
+communication services.
+
+TRIANZ INTERNAL
+
+5
+
+Note: In respect of client administered e-mail systems, the property
+right may vest with TRIANZ or the client, depending on the terms of
+engagement.
+
+4.2 Directions for Usage
+4.2.1 Purpose of Use
+The use of TRIANZ’s E-mail system must be related to business needs.
+Incidental and occasional personal use of E-mail may occur when
+such use does not generate a direct/indirect cost for TRIANZ. Any such
+incidental and occasional use of TRIANZ’s E-mail resources for
+personal purposes is subject to the provisions of this guideline.
+
+4.2.2 Importance of E-mail
+TRIANZ considers E-mail as an important and effective means of
+communication. TRIANZ recognizes the importance of E-mail content
+and speed of response in conveying a professional image and
+providing good client service.
+
+4.3
+
+E-mail System Integrity
+4.3.1
+
+No Default Protection
+Employees are reminded that even though TRIANZ electronic
+communication systems shall be encrypted for all mails sent within
+the organization, it is advisable not to send any sensitive information
+through such mails in plain text.
+
+4.3.2 Monitoring of Communications
+TRIANZ committed to respecting the rights of its employees, including
+their reasonable expectation of privacy. TRIANZ shall not monitor Email as a routine matter but it may do so to the extent permitted by
+law, as TRIANZ deems necessary for purposes of maintaining the
+integrity and effective operation of the E-mail systems.
+
+TRIANZ INTERNAL
+
+6
+
+To the extent permitted by law, TRIANZ reserves the right to access and
+disclose the contents of users’ E-mail without the consent of the user.
+TRIANZ reserves the right to intercept and filter out in-coming and
+outgoing mails/ attachments, especially the executables /documents,
+whenever a virus threat is anticipated or for checking data leaks.
+Any user of the Trianz’s E-mail resources who makes use of an
+encryption device to restrict or inhibit access to his or her E-mail must
+provide access to such encrypted communications when requested
+to do so.
+This is not applicable in respect of client administered E-mail system.
+
+4.3.3 Inspections and Disclosure of Communication
+TRIANZ reserves the right to inspect and disclose the contents of E-mail
+in the course of an investigation triggered by indications of
+misconduct or misuse to respond to legal processes as needed to
+locate substantive information required to TRIANZ business that is not
+more readily available by some other means to support operational,
+maintenance, auditing and security related activities
+
+4.3.4 No Guaranteed Message Privacy
+TRIANZ’s- cannot guarantee that E-mail communications shall be
+private. Employees should be aware that E-mail communications
+though fully protected by TRIANZ against all known vulnerabilities,
+there is still a chance for it to be forwarded, intercepted, printed, and
+stored by others. Further more, others can access electronic
+communications in accordance with this guideline.
+
+4.3.5 Statistical Data
+Consistent with generally accepted business practice, TRIANZ collects
+statistical data about Email communications. Using such information,
+the IS Server team shall monitor the use of E-mail communications to
+ensure continuous availability and reliability of these systems.
+
+TRIANZ INTERNAL
+
+7
+
+Note: This is not applicable in respect of client administered E-mail
+system.
+
+4.4
+
+E Mail Forwarding
+Email forwarding is strictly restricted to personal email IDs, users are not
+allowed to use auto email forwarding to personal IDs for any corporate
+emails.
+Recognizing that some information is intended for specific individuals and
+may not be appropriate for general distribution, electronic communications
+users should exercise caution when forwarding messages.
+
+4.5
+
+E-mail etiquette
+Do’s:
+•
+
+Write well-structured mails. Always include a short and descriptive subject
+heading
+
+• TRIANZ’s E-mail style is informal. Keep the sentences short and to the point
+• Start your E-mail with ‘Hi’, ‘Hello’ or ‘Dear’, and the name of the person
+•
+
+End the message with “Warm Regards’ or ‘Best Regards’ or ‘Thanks and
+regards ‘
+• Use spell checker before you send out an E-mail
+• Include your name, Job title, Company Name, Contact Details, if
+appropriate in signature
+
+•
+
+Compress attachments wherever possibleDo not
+
+send
+
+unnecessary
+
+attachments
+• If you forward mails, state clearly what action you expect the recipient to do
+• Only mark E-mail as important / priority if they really are important / priority
+• Delete any E-mail message that you do not need to have a copy of
+• Periodically purge messages, no longer needed for business purposes, from
+your personal E-mail message storage areas
+
+Don’ts:
+• Do not write E-mails in capitals
+
+TRIANZ INTERNAL
+
+8
+
+• Do not subscribe to a newsletter or news group without prior permission from
+your supervisor
+• Do not use the E-mail resources for personal monetary gain or for commercial
+purposes that are not directly related to TRIANZ’s business
+• Do not use offensive words or abuse words in the email
+• Do not send copies of documents /software in violation of copyright laws
+• Do not capture /intercept and / or open E-mail not meant for you, except as
+required in order for authorized employees to diagnose and correct delivery
+problems
+• Do not use E-mail to harass or intimidate others or to interfere with the ability
+of others to Conduct
+TRIANZ’s business
+• Do not use E-mail systems for any purpose restricted or prohibited by law or
+regulations
+• Do not forward mails (dot forward) to Public E-mail service providers
+(Hotmail, Yahoo, etc.)
+• Do not indulge in “spoofing” i.e., constructing an E-mail communication such
+that it appears to be from someone else
+• Do not indulge in “Snooping”, i.e., obtaining access to the files or E-mail of
+others.
+• Do not attempt unauthorized access to E-mail
+
+or breaching the security
+
+measures on any E-mail system
+• Do not send mail addressed to all employees without consulting IS Group
+• Do not make or post indecent remarks, proposals or materials
+• Do not reveal or publicize confidential or proprietary information which
+includes, but is not limited to: financial information, new business and product
+ideas, marketing strategies and plans, databases and the information
+contained
+
+therein,
+
+client
+
+lists,
+
+technical
+
+product
+
+information,
+
+computer/network access codes and business relationships
+
+TRIANZ INTERNAL
+
+9
+
+• Do not use mail systems for charitable endeavors, private business activities,
+amusement / entertainment purposes unless expressly approved by TRIANZ
+• Never create either the appearance or the reality of inappropriate use of E-mail
+system
+• Do not send mass greeting cards
+• Do not forward E-mail to multiple addresses unless it serves genuine business
+purposes
+
+4.6
+
+Security of Email
+A unique email ID is assigned to each employee of Trianz. This email ID is for
+official use only. The employee shall sign an agreement on usage of e-mail
+at the time of joining. Employees shall strictly adhere to this agreement.
+•
+
+IS Team shall be responsible for administering E-mail services and E-mail
+back ups.
+
+•
+
+Only designated IS team members owns The Global admin deligation
+
+•
+
+User ID and e-mail accounts are deleted at the time of separation.
+
+•
+
+Size of outgoing mails is limited to 10MB. Mails greater than this size are
+deleted automatically.
+
+•
+
+Spam is an unacceptable use of the STPI IP network. Spam includes any of
+the following activities:
+
+•
+
+Posting a single message or messages similar in content to more than five
+online forums or newsgroups.
+
+•
+
+Collecting the responses from unsolicited email.
+
+•
+
+Sending email with charity requests, petitions for signatures, or any chain
+mail related materials.
+
+•
+
+Sending email that does not accurately identify the sender, the sender’s
+return
+
+•
+
+Address and the email address of login.
+
+•
+
+Users can report any suspected or spam emails from the outlook report
+button
+
+Virus infected mails
+
+TRIANZ INTERNAL
+
+10
+
+•
+
+E-mail communication with outside world is protected. Email attachments
+are auto scanned on mail server by Antivirus Software
+
+TRIANZ INTERNAL
+
+11
+
+For Trianz Process Improvement Group (TPIG) Purpose Only
+Version History
+
+Ver.
+
+Author
+
+Reviewer
+
+No.
+0.00
+
+Approve
+r
+
+Jyotessh
+
+-
+
+-
+
+G Nair
+1.00
+
+Date
+
+Jyotessh
+
+Reason for
+
+Change Description
+
+Change
+Draft
+
+•
+
+26-Feb-
+
+Baseline is
+
+• Approved Baseline
+
+07
+
+approved by
+
+26-Feb07
+
+-
+
+-
+
+G Nair
+
+Zulfikar Deen
+1.01
+
+Bharatees
+
+-
+
+-
+
+ha B R
+
+24-Feb-
+
+New Asset
+
+09
+
+Management
+
+•
+
+Changed the title
+to
+
+Framework
+
+Rules on Email
+Usage
+•
+
+Formatted the
+document to
+have consistency
+
+•
+
+Updated the
+Section 5.2.2 and
+5.7 to reflect the
+new norms.
+
+•
+
+Added Document
+Classification
+Scheme
+
+2.00
+
+Balu Nair
+
+2.01
+
+-
+
+-
+
+28-Apr-
+
+Approval for
+
+09
+
+Release
+
+30-Dec-10 QMG review
+
+• Baselined
+• Formatted entire
+
+Chakrava
+
+document and
+
+rthi
+
+modified
+properties
+
+TRIANZ INTERNAL
+
+12
+
+3.00
+
+-
+
+Chakrava
+
+-
+
+31-Dec-10
+
+rthi
+3.01
+
+•
+
+Request for
+
+baseline
+
+baseline
+
+Srilaksh
+
+-
+
+-
+
+mi
+
+24-May-
+
+Approved for
+
+QMG Review
+
+•
+
+11
+
+Modified release
+id in header and
+cover page
+
+4.00
+
+Srilaksh
+
+-
+
+-
+
+mi
+4.01
+
+Sudhars
+
+-
+
+-
+
+24-May-
+
+Approval for
+
+11
+
+Baseline
+
+3-Aug-11
+
+QMG review
+
+• Baselined
+Replace Owner
+
+•
+
+ana
+
+with
+Management
+Representative in
+place of CIO
+In Document
+
+•
+
+Classification
+Scheme,
+"Retention period
+is 3 Years" row is
+removed
+5.00
+
+Sudhars
+
+-
+
+-
+
+3-Aug-11
+
+ana
+6.00
+
+Request for
+
+•
+
+baseline
+
+Sudhars
+
+-
+
+-
+
+ana
+
+28-Sep-
+
+Approved and
+Baselined
+
+QMG review
+
+•
+
+12
+
+Formatted as per
+latest template
+format
+
+6.1
+
+Pranesh
+
+Gangadhar Gangadh 30-July-
+
+Kulkarni
+
+Aka
+
+ar Aka
+
+2021
+
+For Review
+
+•
+
+and update
+
+IT name replaced
+with IS
+
+•
+
+Updated Mail Box
+size at section 5.2.2
+
+7.0
+7.0
+7.1
+
+Pranesh
+
+Gangadhar Gangadh 30-July-
+
+Kulkarni
+
+Aka
+
+Kruti
+
+Vijaya
+
+Vijaya
+
+TRIANZ INTERNAL
+
+Balu
+
+ar Aka
+
+For Approval Approved and Baselined
+
+2021
+03-June- Annual
+
+No Changes
+
+2024
+
+Review
+
+28-May-
+
+For Annual
+
+Migrated to a new
+
+25
+
+Review
+
+template
+
+13
+
+7.2
+
+Vijaya
+
+Siva
+
+8.0
+
+Vijaya
+
+Balu & Siva
+
+Srikanth
+M
+
+TRIANZ INTERNAL
+
+28-May25
+
+For Annual
+Review
+
+Incorporated review
+comments
+
+29-May-
+
+For Approval Approved and Baselined
+
+25
+
+14
+
+Contact Information
+Name
+Email
+Phone
+
+Thank You
+infosec@trianz.com
+
+The content in this document is copyrighted; any unauthorized use – in part or full – may violate the
+copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly
+displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz
+name and its products are subject to trademark and copyright protections, regardless of how and
+where referenced.
+
+TRIANZ INTERNAL
+
+15
+
+

@@ -213,12 +213,19 @@ export default function PolicyAgentPage() {
             </div>
           )}
 
-          <div className="flex-1 space-y-4 overflow-y-auto pr-1">
+          <div className="chat-scroll flex-1 space-y-4 overflow-y-auto pr-1 rounded-lg bg-gray-50 p-3 max-h-[420px]">
             {messages.length === 0 && (
-              <div className="text-sm text-gray-600">
-                Start with a question like &quot;What is the return to office policy?&quot;, &quot;How do I raise a
-                travel request?&quot; or &quot;Am I eligible for air travel in grade 6?&quot;. You can ask follow-up
-                questions in the same thread.
+              <div className="flex justify-start">
+                <div className="inline-flex max-w-md flex-col gap-1 rounded-2xl bg-white px-3 py-2 text-sm text-gray-700 shadow-sm">
+                  <span className="text-[11px] font-medium uppercase tracking-wide text-blue-600">
+                    Beacon
+                  </span>
+                  <p>
+                    Start with a question like &quot;What is the return to office policy?&quot;, &quot;How do
+                    I raise a travel request?&quot; or &quot;Am I eligible for air travel in grade 6?&quot;. You
+                    can ask follow-up questions in the same thread.
+                  </p>
+                </div>
               </div>
             )}
             {messages.map((msg, idx) => (
@@ -227,13 +234,16 @@ export default function PolicyAgentPage() {
                 className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-full rounded-2xl px-3 py-2 text-sm whitespace-pre-wrap ${
+                  className={`inline-flex max-w-md flex-col gap-1 rounded-2xl px-3 py-2 text-sm whitespace-pre-wrap shadow-sm ${
                     msg.role === 'user'
                       ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 text-gray-900'
+                      : 'bg-white text-gray-900'
                   }`}
                 >
-                  {msg.content}
+                  <span className="text-[11px] font-medium uppercase tracking-wide opacity-70">
+                    {msg.role === 'user' ? 'You' : 'Beacon'}
+                  </span>
+                  <p>{msg.content}</p>
                 </div>
               </div>
             ))}
