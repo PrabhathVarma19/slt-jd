@@ -229,14 +229,6 @@ export default function ServiceDeskPage() {
                 placeholder="you@trianz.com"
               />
             </div>
-            <div className="space-y-1.5">
-              <label className="text-xs font-medium text-gray-700">Grade</label>
-              <Input
-                value={form.grade}
-                onChange={(e) => handleChange('grade', e.target.value)}
-                placeholder="e.g., Grade 5"
-              />
-            </div>
           </div>
 
           <div className="space-y-1.5">
@@ -311,55 +303,44 @@ export default function ServiceDeskPage() {
             </div>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="space-y-1.5">
-              <label className="text-xs font-medium text-gray-700">Reason / use case</label>
-              <Textarea
-                rows={2}
-                value={form.reason}
-                onChange={(e) => handleChange('reason', e.target.value)}
-                placeholder="Brief reason for this request"
-              />
+          <div className="space-y-1.5">
+            <label className="text-xs font-medium text-gray-700">Duration</label>
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => handleChange('durationType', 'permanent')}
+                className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${
+                  form.durationType === 'permanent'
+                    ? 'border-blue-600 bg-blue-50 text-blue-700'
+                    : 'border-gray-200 bg-white text-gray-700 hover:border-blue-300'
+                }`}
+                disabled={isSubmitting}
+              >
+                Permanent
+              </button>
+              <button
+                type="button"
+                onClick={() => handleChange('durationType', 'temporary')}
+                className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${
+                  form.durationType === 'temporary'
+                    ? 'border-blue-600 bg-blue-50 text-blue-700'
+                    : 'border-gray-200 bg-white text-gray-700 hover:border-blue-300'
+                }`}
+                disabled={isSubmitting}
+              >
+                Temporary
+              </button>
             </div>
-            <div className="space-y-1.5">
-              <label className="text-xs font-medium text-gray-700">Duration</label>
-              <div className="flex flex-wrap gap-2">
-                <button
-                  type="button"
-                  onClick={() => handleChange('durationType', 'permanent')}
-                  className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${
-                    form.durationType === 'permanent'
-                      ? 'border-blue-600 bg-blue-50 text-blue-700'
-                      : 'border-gray-200 bg-white text-gray-700 hover:border-blue-300'
-                  }`}
-                  disabled={isSubmitting}
-                >
-                  Permanent
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleChange('durationType', 'temporary')}
-                  className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${
-                    form.durationType === 'temporary'
-                      ? 'border-blue-600 bg-blue-50 text-blue-700'
-                      : 'border-gray-200 bg-white text-gray-700 hover:border-blue-300'
-                  }`}
-                  disabled={isSubmitting}
-                >
-                  Temporary
-                </button>
+            {form.durationType === 'temporary' && (
+              <div className="mt-2 space-y-1">
+                <label className="text-xs font-medium text-gray-700">Requested until</label>
+                <Input
+                  type="date"
+                  value={form.durationUntil}
+                  onChange={(e) => handleChange('durationUntil', e.target.value)}
+                />
               </div>
-              {form.durationType === 'temporary' && (
-                <div className="mt-2 space-y-1">
-                  <label className="text-xs font-medium text-gray-700">Requested until</label>
-                  <Input
-                    type="date"
-                    value={form.durationUntil}
-                    onChange={(e) => handleChange('durationUntil', e.target.value)}
-                  />
-                </div>
-              )}
-            </div>
+            )}
           </div>
 
           <div className="flex items-center justify-between pt-2">
