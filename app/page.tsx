@@ -63,6 +63,14 @@ const AGENTS: AgentCard[] = [
     accent: 'from-cyan-500 to-sky-500',
     label: 'Travel & expenses',
   },
+  {
+    title: 'Service Desk',
+    description: 'Raise IT and access requests in a structured, policy-aware format.',
+    link: '/service-desk',
+    category: 'Org-wide',
+    accent: 'from-slate-500 to-gray-700',
+    label: 'IT & access',
+  },
 ];
 
 const leadershipAgents = AGENTS.filter((a) => a.category === 'Leadership');
@@ -137,7 +145,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="mt-4 text-xs font-medium text-blue-700 group-hover:underline">
-                Open {agent.title}
+                {agent.title}
               </div>
             </Link>
           ))}

@@ -70,12 +70,18 @@ export default function RootLayout({
                   >
                     New Joiner Buddy
                   </Link>
-                  <Link
-                    href="/travel-desk"
-                    className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
-                  >
-                    Travel Desk
-                  </Link>
+                <Link
+                  href="/travel-desk"
+                  className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+                >
+                  Travel Desk
+                </Link>
+                <Link
+                  href="/service-desk"
+                  className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+                >
+                  Service Desk
+                </Link>
                   <Link
                     href="/comms-hub"
                     className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
