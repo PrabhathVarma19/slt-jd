@@ -11,7 +11,6 @@ interface ItServiceFormState {
   name: string;
   employeeId: string;
   email: string;
-  mobile: string;
   location: string;
   grade: string;
   requestType: RequestType;
@@ -37,7 +36,6 @@ const initialFormState: ItServiceFormState = {
   name: '',
   employeeId: '',
   email: '',
-  mobile: '',
   location: '',
   grade: '',
   requestType: 'access',
@@ -126,8 +124,8 @@ export default function ServiceDeskPage() {
           </h1>
           <p className="text-sm text-gray-600">
             Use this form for system access, laptops, software installs, password issues and other IT
-            help. Beacon will format your request and send it to the IT Service Desk with the right
-            details.
+            help. You can just describe the issue in your own words—Beacon will categorise it and send
+            a structured request to the IT Service Desk with the right details.
           </p>
         </div>
       </div>
@@ -191,14 +189,6 @@ export default function ServiceDeskPage() {
                 value={form.email}
                 onChange={(e) => handleChange('email', e.target.value)}
                 placeholder="you@trianz.com"
-              />
-            </div>
-            <div className="space-y-1.5">
-              <label className="text-xs font-medium text-gray-700">Mobile</label>
-              <Input
-                value={form.mobile}
-                onChange={(e) => handleChange('mobile', e.target.value)}
-                placeholder="+91 ..."
               />
             </div>
             <div className="space-y-1.5">
@@ -409,4 +399,3 @@ export default function ServiceDeskPage() {
     </div>
   );
 }
-

@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sendMailViaGraph } from '@/lib/graph';
+import OpenAI from 'openai';
 
 const REQUIRED_FIELDS = ['name', 'employeeId', 'email', 'requestType', 'details'] as const;
 
 type RequiredField = (typeof REQUIRED_FIELDS)[number];
+
+const openaiApiKey = process.env.OPENAI_API_KEY;
+const openai = openaiApiKey ? new OpenAI({ apiKey: openaiApiKey }) : null;
 
 export async function POST(req: NextRequest) {
   const itDeskEmail = process.env.IT_SERVICEDESK_EMAIL;
@@ -36,7 +40,7 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    const {
+    let {
       name,
       employeeId,
       email,
@@ -55,6 +59,67 @@ export async function POST(req: NextRequest) {
       impact,
       details,
     } = body;
+
+    // If the user has not filled many classification fields, let the AI suggest them
+    const shouldClassify =
+      openai &&
+      (!requestType || requestType === 'other' || !system || !impact || !reason);
+
+    if (shouldClassify && openai) {
+      try {
+        const prompt = `You are an internal IT service-desk assistant.
+Given the free-text description of an IT request below, classify it and propose structured fields.
+
+Return a JSON object with these keys:
+- request_type: one of "access", "laptop", "software", "password", "other"
+- system: short system or application name (e.g. "VPN", "GitLab", "ERP"). If unknown, use "General".
+- environment: one of "Prod", "UAT", "Dev", "NA" (if not applicable)
+- access_level: short label such as "View only", "Standard user", "Admin" (or "NA" if not relevant)
+- impact: one of "blocker", "high", "medium", "low"
+- reason: one sentence reason or use case summarising why this is needed.
+
+Description:
+${details || ''}
+
+Respond with JSON only, no explanation.`;
+
+        const completion = await openai.chat.completions.create({
+          model: 'gpt-4o-mini',
+          messages: [
+            { role: 'system', content: 'You classify IT service requests into structured fields.' },
+            { role: 'user', content: prompt },
+          ],
+          temperature: 0,
+        });
+
+        const content = completion.choices[0]?.message?.content;
+        if (content) {
+          const jsonText = content.trim().replace(/^```json\s*/i, '').replace(/```$/i, '');
+          const parsed = JSON.parse(jsonText);
+
+          if (!requestType || requestType === 'other') {
+            requestType = parsed.request_type || requestType;
+          }
+          if (!system) {
+            system = parsed.system || system;
+          }
+          if (!environment) {
+            environment = parsed.environment || environment;
+          }
+          if (!accessType) {
+            accessType = parsed.access_level || accessType;
+          }
+          if (!impact) {
+            impact = parsed.impact || impact;
+          }
+          if (!reason) {
+            reason = parsed.reason || reason;
+          }
+        }
+      } catch (e) {
+        console.error('IT service AI classification failed; continuing with raw fields.', e);
+      }
+    }
 
     const requestTypeLabelMap: Record<string, string> = {
       access: 'System / application access',
@@ -165,4 +230,3 @@ export async function POST(req: NextRequest) {
     );
   }
 }
-
