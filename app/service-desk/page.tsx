@@ -176,27 +176,6 @@ export default function ServiceDeskPage() {
             </div>
           )}
 
-          <div className="space-y-2">
-            <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Category</p>
-            <div className="flex flex-wrap gap-2">
-              {(['access', 'laptop', 'software', 'password', 'other'] as RequestType[]).map((rt) => (
-                <button
-                  key={rt}
-                  type="button"
-                  onClick={() => handleChange('requestType', rt)}
-                  className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${
-                    form.requestType === rt
-                      ? 'border-blue-600 bg-blue-50 text-blue-700'
-                      : 'border-gray-200 bg-white text-gray-700 hover:border-blue-300'
-                  }`}
-                  disabled={isSubmitting}
-                >
-                  {requestTypeLabel(rt)}
-                </button>
-              ))}
-            </div>
-          </div>
-
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-1.5">
               <label className="text-xs font-medium text-gray-700">
@@ -260,6 +239,15 @@ export default function ServiceDeskPage() {
 
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-1.5">
+              <label className="text-xs font-medium text-gray-700">Category</label>
+              <Input
+                value={requestTypeLabel(form.requestType)}
+                readOnly
+                className="bg-gray-50"
+                placeholder="Will be suggested from details"
+              />
+            </div>
+            <div className="space-y-1.5">
               <label className="text-xs font-medium text-gray-700">
                 Subcategory / system or application
               </label>
@@ -269,6 +257,9 @@ export default function ServiceDeskPage() {
                 placeholder="e.g., VPN, Cursor, GitLab, ERP"
               />
             </div>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-1.5">
               <label className="text-xs font-medium text-gray-700">Project / client</label>
               <Input
