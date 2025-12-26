@@ -209,6 +209,22 @@ export default function ServiceDeskPage() {
             </div>
           </div>
 
+          <div className="space-y-1.5">
+            <label className="text-xs font-medium text-gray-700">
+              Details <span className="text-red-500">*</span>
+            </label>
+            <Textarea
+              rows={4}
+              value={form.details}
+              onChange={(e) => handleChange('details', e.target.value)}
+              placeholder="Explain the request in simple language. Include any error messages, systems involved, and urgency."
+            />
+            <p className="text-[11px] text-gray-500">
+              You can fill this first in your own words. Beacon will suggest system, impact and other
+              fields for the email to IT.
+            </p>
+          </div>
+
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-1.5">
               <label className="text-xs font-medium text-gray-700">
@@ -319,18 +335,6 @@ export default function ServiceDeskPage() {
                 </div>
               )}
             </div>
-          </div>
-
-          <div className="space-y-1.5">
-            <label className="text-xs font-medium text-gray-700">
-              Details <span className="text-red-500">*</span>
-            </label>
-            <Textarea
-              rows={4}
-              value={form.details}
-              onChange={(e) => handleChange('details', e.target.value)}
-              placeholder="Explain the request in simple language. Include any error messages, systems involved, and urgency."
-            />
           </div>
 
           <div className="flex items-center justify-between pt-2">
