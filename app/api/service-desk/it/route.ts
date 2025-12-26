@@ -138,7 +138,6 @@ Respond with JSON only, no explanation.`;
     if (email) htmlLines.push(`<li><strong>Email:</strong> ${email}</li>`);
     if (mobile) htmlLines.push(`<li><strong>Mobile:</strong> ${mobile}</li>`);
     if (grade) htmlLines.push(`<li><strong>Grade:</strong> ${grade}</li>`);
-    if (location) htmlLines.push(`<li><strong>Location:</strong> ${location}</li>`);
     htmlLines.push('</ul>');
 
     htmlLines.push('<h3>Request</h3>');

@@ -11,7 +11,6 @@ interface ItServiceFormState {
   name: string;
   employeeId: string;
   email: string;
-  location: string;
   grade: string;
   requestType: RequestType;
   system: string;
@@ -34,7 +33,6 @@ const initialFormState: ItServiceFormState = {
   name: '',
   employeeId: '',
   email: '',
-  location: '',
   grade: '',
   requestType: 'other',
   system: '',
@@ -229,14 +227,6 @@ export default function ServiceDeskPage() {
                 value={form.email}
                 onChange={(e) => handleChange('email', e.target.value)}
                 placeholder="you@trianz.com"
-              />
-            </div>
-            <div className="space-y-1.5">
-              <label className="text-xs font-medium text-gray-700">Location</label>
-              <Input
-                value={form.location}
-                onChange={(e) => handleChange('location', e.target.value)}
-                placeholder="City / Country"
               />
             </div>
             <div className="space-y-1.5">
