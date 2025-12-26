@@ -56,6 +56,7 @@ export default function ServiceDeskPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<ApiResponse | null>(null);
+  const [isSuggesting, setIsSuggesting] = useState(false);
 
   const handleChange = (
     field: keyof ItServiceFormState,
@@ -93,6 +94,56 @@ export default function ServiceDeskPage() {
       setError(err.message || 'Failed to submit IT service request');
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleSuggestFromDetails = async () => {
+    if (!form.details.trim()) {
+      setError('Please describe the issue in Details before asking Beacon to suggest fields.');
+      return;
+    }
+
+    setIsSuggesting(true);
+    setError(null);
+
+    try {
+      const res = await fetch('/api/service-desk/it/classify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ details: form.details }),
+      });
+      const data = (await res.json()) as {
+        requestType?: string | null;
+        system?: string | null;
+        environment?: string | null;
+        accessType?: string | null;
+        impact?: string | null;
+        reason?: string | null;
+        error?: string;
+      };
+      if (!res.ok || data.error) {
+        throw new Error(data.error || 'Failed to classify request');
+      }
+
+      setForm((prev) => ({
+        ...prev,
+        requestType:
+          (prev.requestType === 'other' || !prev.requestType) && data.requestType
+            ? (data.requestType as RequestType)
+            : prev.requestType,
+        system: prev.system || data.system || '',
+        environment: prev.environment || data.environment || '',
+        accessType: prev.accessType || data.accessType || '',
+        impact:
+          prev.impact ||
+          ((data.impact as ItServiceFormState['impact']) ?? prev.impact) ||
+          prev.impact,
+        reason: prev.reason || data.reason || '',
+      }));
+    } catch (err: any) {
+      setError(err.message || 'Failed to classify request from details.');
+    } finally {
+      setIsSuggesting(false);
     }
   };
 
@@ -219,10 +270,21 @@ export default function ServiceDeskPage() {
               onChange={(e) => handleChange('details', e.target.value)}
               placeholder="Explain the request in simple language. Include any error messages, systems involved, and urgency."
             />
-            <p className="text-[11px] text-gray-500">
-              You can fill this first in your own words. Beacon will suggest system, impact and other
-              fields for the email to IT.
-            </p>
+            <div className="flex items-center justify-between gap-3">
+              <p className="text-[11px] text-gray-500">
+                You can fill this first in your own words. Beacon can then suggest system, impact and
+                other fields.
+              </p>
+              <Button
+                size="xs"
+                variant="secondary"
+                type="button"
+                onClick={handleSuggestFromDetails}
+                disabled={isSuggesting || !form.details.trim()}
+              >
+                {isSuggesting ? 'Suggesting…' : 'Let Beacon suggest fields'}
+              </Button>
+            </div>
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
