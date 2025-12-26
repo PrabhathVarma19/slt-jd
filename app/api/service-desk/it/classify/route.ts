@@ -46,6 +46,7 @@ Respond with JSON only, no explanation.`;
         { role: 'user', content: prompt },
       ],
       temperature: 0,
+      response_format: { type: 'json_object' },
     });
 
     const content = completion.choices[0]?.message?.content;
@@ -75,4 +76,3 @@ Respond with JSON only, no explanation.`;
     );
   }
 }
-

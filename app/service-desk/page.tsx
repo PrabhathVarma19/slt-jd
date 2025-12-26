@@ -38,7 +38,7 @@ const initialFormState: ItServiceFormState = {
   email: '',
   location: '',
   grade: '',
-  requestType: 'access',
+  requestType: 'other',
   system: '',
   environment: '',
   accessType: '',
@@ -127,18 +127,13 @@ export default function ServiceDeskPage() {
 
       setForm((prev) => ({
         ...prev,
-        requestType:
-          (prev.requestType === 'other' || !prev.requestType) && data.requestType
-            ? (data.requestType as RequestType)
-            : prev.requestType,
-        system: prev.system || data.system || '',
-        environment: prev.environment || data.environment || '',
-        accessType: prev.accessType || data.accessType || '',
+        requestType: (data.requestType as RequestType) || prev.requestType,
+        system: (data.system as string | null) ?? prev.system,
+        environment: (data.environment as string | null) ?? prev.environment,
+        accessType: (data.accessType as string | null) ?? prev.accessType,
         impact:
-          prev.impact ||
-          ((data.impact as ItServiceFormState['impact']) ?? prev.impact) ||
-          prev.impact,
-        reason: prev.reason || data.reason || '',
+          ((data.impact as ItServiceFormState['impact']) ?? prev.impact) || prev.impact,
+        reason: (data.reason as string | null) ?? prev.reason,
       }));
     } catch (err: any) {
       setError(err.message || 'Failed to classify request from details.');
