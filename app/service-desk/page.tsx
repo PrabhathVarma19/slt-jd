@@ -15,8 +15,6 @@ interface ItServiceFormState {
   grade: string;
   requestType: RequestType;
   system: string;
-  environment: string;
-  accessType: string;
   reason: string;
   durationType: 'permanent' | 'temporary';
   durationUntil: string;
@@ -40,8 +38,6 @@ const initialFormState: ItServiceFormState = {
   grade: '',
   requestType: 'other',
   system: '',
-  environment: '',
-  accessType: '',
   reason: '',
   durationType: 'permanent',
   durationUntil: '',
@@ -129,8 +125,6 @@ export default function ServiceDeskPage() {
         ...prev,
         requestType: (data.requestType as RequestType) || prev.requestType,
         system: (data.system as string | null) ?? prev.system,
-        environment: (data.environment as string | null) ?? prev.environment,
-        accessType: (data.accessType as string | null) ?? prev.accessType,
         impact:
           ((data.impact as ItServiceFormState['impact']) ?? prev.impact) || prev.impact,
         reason: (data.reason as string | null) ?? prev.reason,
@@ -185,7 +179,7 @@ export default function ServiceDeskPage() {
           )}
 
           <div className="space-y-2">
-            <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Request type</p>
+            <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Category</p>
             <div className="flex flex-wrap gap-2">
               {(['access', 'laptop', 'software', 'password', 'other'] as RequestType[]).map((rt) => (
                 <button
@@ -285,28 +279,12 @@ export default function ServiceDeskPage() {
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-1.5">
               <label className="text-xs font-medium text-gray-700">
-                System / application {form.requestType === 'access' ? <span className="text-red-500">*</span> : null}
+                Subcategory / system or application
               </label>
               <Input
                 value={form.system}
                 onChange={(e) => handleChange('system', e.target.value)}
-                placeholder="e.g., VPN, GitLab, ERP"
-              />
-            </div>
-            <div className="space-y-1.5">
-              <label className="text-xs font-medium text-gray-700">Environment</label>
-              <Input
-                value={form.environment}
-                onChange={(e) => handleChange('environment', e.target.value)}
-                placeholder="Prod / UAT / Dev"
-              />
-            </div>
-            <div className="space-y-1.5">
-              <label className="text-xs font-medium text-gray-700">Access level</label>
-              <Input
-                value={form.accessType}
-                onChange={(e) => handleChange('accessType', e.target.value)}
-                placeholder="View only / Standard / Admin"
+                placeholder="e.g., VPN, Cursor, GitLab, ERP"
               />
             </div>
             <div className="space-y-1.5">

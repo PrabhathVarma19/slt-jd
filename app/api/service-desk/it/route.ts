@@ -103,12 +103,7 @@ Respond with JSON only, no explanation.`;
           if (!system) {
             system = parsed.system || system;
           }
-          if (!environment) {
-            environment = parsed.environment || environment;
-          }
-          if (!accessType) {
-            accessType = parsed.access_level || accessType;
-          }
+          // We currently ignore environment and access level in the outgoing email to keep it simple.
           if (!impact) {
             impact = parsed.impact || impact;
           }
@@ -149,9 +144,7 @@ Respond with JSON only, no explanation.`;
     htmlLines.push('<h3>Request</h3>');
     htmlLines.push('<ul>');
     htmlLines.push(`<li><strong>Type:</strong> ${requestLabel}</li>`);
-    htmlLines.push(`<li><strong>System / application:</strong> ${systemLabel}</li>`);
-    if (environment) htmlLines.push(`<li><strong>Environment:</strong> ${environment}</li>`);
-    if (accessType) htmlLines.push(`<li><strong>Access level:</strong> ${accessType}</li>`);
+    htmlLines.push(`<li><strong>Subcategory / system:</strong> ${systemLabel}</li>`);
     if (reason) htmlLines.push(`<li><strong>Reason / use case:</strong> ${reason}</li>`);
     if (durationType) htmlLines.push(`<li><strong>Duration:</strong> ${durationType}</li>`);
     if (durationUntil)
@@ -185,9 +178,7 @@ Respond with JSON only, no explanation.`;
     textLines.push('');
     textLines.push('Request');
     textLines.push(`Type: ${requestLabel}`);
-    textLines.push(`System / application: ${systemLabel}`);
-    if (environment) textLines.push(`Environment: ${environment}`);
-    if (accessType) textLines.push(`Access level: ${accessType}`);
+    textLines.push(`Subcategory / system: ${systemLabel}`);
     if (reason) textLines.push(`Reason / use case: ${reason}`);
     if (durationType) textLines.push(`Duration: ${durationType}`);
     if (durationUntil) textLines.push(`Requested until: ${durationUntil}`);
