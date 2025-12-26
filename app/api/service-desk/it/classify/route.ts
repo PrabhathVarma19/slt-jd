@@ -28,7 +28,9 @@ Given the free-text description of an IT request below, classify it and propose 
 
 Return a JSON object with these keys:
 - request_type: one of "access", "laptop", "software", "password", "other"
-- system: short system or application name (e.g. "VPN", "GitLab", "ERP"). If unknown, use "General".
+- system: short system or application name (e.g. "VPN", "GitLab", "ERP").
+  If the description clearly mentions a tool or product name (for example "Cursor", "Jira", "Salesforce"),
+  return that exact name even if you do not recognise it. Use "General" only if there is no specific tool mentioned.
 - environment: one of "Prod", "UAT", "Dev", "NA" (if not applicable)
 - access_level: short label such as "View only", "Standard user", "Admin" (or "NA" if not relevant)
 - impact: one of "blocker", "high", "medium", "low"
