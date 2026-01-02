@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import Button from '@/components/ui/button';
 import Textarea from '@/components/ui/textarea';
 
@@ -79,6 +80,21 @@ export default function NewJoinerBuddyPage() {
 
   const lastAssistantMessage = [...messages].reverse().find((m) => m.role === 'assistant');
   const lastUserMessage = [...messages].reverse().find((m) => m.role === 'user');
+
+  const shouldShowServiceDeskCta = (() => {
+    if (!lastUserMessage) return false;
+    const q = lastUserMessage.content.toLowerCase();
+
+    const laptopKeywords = ['laptop', 'device', 'machine'];
+    const accessKeywords = ['vpn', 'access', 'system access', 'portal access', 'tool access'];
+    const itWords = ['email', 'outlook', 'teams', 'vpn', 'gitlab', 'jira', 'confluence', 'cursor'];
+
+    const mentionsLaptop = laptopKeywords.some((w) => q.includes(w));
+    const mentionsAccess = accessKeywords.some((w) => q.includes(w));
+    const mentionsItSystem = itWords.some((w) => q.includes(w));
+
+    return mentionsLaptop || mentionsAccess || mentionsItSystem;
+  })();
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -197,6 +213,14 @@ export default function NewJoinerBuddyPage() {
 
   return (
     <div className="space-y-6">
+      <div className="mb-2">
+        <Link
+          href="/"
+          className="inline-flex items-center text-xs font-medium text-blue-700 hover:underline"
+        >
+          ← Back to Home
+        </Link>
+      </div>
       <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
         <div className="space-y-2">
           <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
@@ -405,47 +429,62 @@ export default function NewJoinerBuddyPage() {
             )}
           </div>
 
-          {lastAssistantMessage && (
-            <div className="mt-3 space-y-1 text-xs text-gray-500">
-              <div className="flex items-center justify-end gap-2">
-                <span>Did this answer help?</span>
-                <button
-                  type="button"
-                  className={`rounded-full border px-2 py-1 transition ${
-                    feedback === 'up'
-                      ? 'border-green-500 bg-green-50 text-green-700'
-                      : 'border-gray-200 bg-white hover:border-green-400 hover:text-green-700'
-                  }`}
-                  onClick={() => handleFeedback('up')}
-                >
-                  Yes
-                </button>
-                <button
-                  type="button"
-                  className={`rounded-full border px-2 py-1 transition ${
-                    feedback === 'down'
-                      ? 'border-red-500 bg-red-50 text-red-700'
-                      : 'border-gray-200 bg-white hover:border-red-400 hover:text-red-700'
-                  }`}
-                  onClick={() => handleFeedback('down')}
-                >
-                  No
-                </button>
-              </div>
-              {showHrLink && lastUserMessage && (
-                <div className="flex justify-end">
-                  <a
-                    href={`mailto:hr@trianz.com?subject=Question%20about%20policy&body=${encodeURIComponent(
-                      lastUserMessage.content
-                    )}`}
-                    className="text-[11px] text-blue-700 hover:underline"
+            {lastAssistantMessage && (
+              <div className="mt-3 space-y-2 text-xs text-gray-500">
+                <div className="flex items-center justify-end gap-2">
+                  <span>Did this answer help?</span>
+                  <button
+                    type="button"
+                    className={`rounded-full border px-2 py-1 transition ${
+                      feedback === 'up'
+                        ? 'border-green-500 bg-green-50 text-green-700'
+                        : 'border-gray-200 bg-white hover:border-green-400 hover:text-green-700'
+                    }`}
+                    onClick={() => handleFeedback('up')}
                   >
-                    Email HR this question
-                  </a>
+                    Yes
+                  </button>
+                  <button
+                    type="button"
+                    className={`rounded-full border px-2 py-1 transition ${
+                      feedback === 'down'
+                        ? 'border-red-500 bg-red-50 text-red-700'
+                        : 'border-gray-200 bg-white hover:border-red-400 hover:text-red-700'
+                    }`}
+                    onClick={() => handleFeedback('down')}
+                  >
+                    No
+                  </button>
                 </div>
-              )}
-            </div>
-          )}
+
+                {showHrLink && lastUserMessage && (
+                  <div className="flex justify-end">
+                    <a
+                      href={`mailto:hr@trianz.com?subject=Question%20about%20policy&body=${encodeURIComponent(
+                        lastUserMessage.content
+                      )}`}
+                      className="text-[11px] text-blue-700 hover:underline"
+                    >
+                      Email HR this question
+                    </a>
+                  </div>
+                )}
+
+                {shouldShowServiceDeskCta && lastUserMessage && (
+                  <div className="flex justify-end">
+                    <Link
+                      href={{
+                        pathname: '/service-desk',
+                        query: { details: lastUserMessage.content },
+                      }}
+                      className="inline-flex items-center rounded-md bg-blue-600 px-3 py-1.5 text-[11px] font-medium text-white hover:bg-blue-700"
+                    >
+                      Open Service Desk for this
+                    </Link>
+                  </div>
+                )}
+              </div>
+            )}
 
           <div className="mt-4 space-y-2 border-t border-gray-100 pt-4">
             <label className="text-sm font-medium text-gray-700">Ask a question</label>

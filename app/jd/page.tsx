@@ -177,6 +177,14 @@ function JDContent() {
 
   return (
     <>
+      <div className="mb-2">
+        <Link
+          href="/"
+          className="inline-flex items-center text-xs font-medium text-blue-700 hover:underline"
+        >
+          ← Back to Home
+        </Link>
+      </div>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div className="flex flex-col">

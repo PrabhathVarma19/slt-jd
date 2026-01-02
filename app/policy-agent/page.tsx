@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import Button from '@/components/ui/button';
 import Textarea from '@/components/ui/textarea';
 
@@ -49,6 +50,7 @@ type Feedback = 'up' | 'down' | null;
 export default function PolicyAgentPage() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
+  const [answerStyle, setAnswerStyle] = useState<'standard' | 'how_to'>('standard');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [sources, setSources] = useState<PolicySource[]>([]);
@@ -68,6 +70,41 @@ export default function PolicyAgentPage() {
 
   const lastAssistantMessage = [...messages].reverse().find((m) => m.role === 'assistant');
   const lastUserMessage = [...messages].reverse().find((m) => m.role === 'user');
+
+  const shouldShowServiceDeskCta = (() => {
+    if (!lastUserMessage || answerStyle !== 'how_to') return false;
+    const q = lastUserMessage.content.toLowerCase();
+    // Simple keyword heuristic for IT / access type questions
+    return (
+      q.includes('vpn') ||
+      q.includes('access') ||
+      q.includes('laptop') ||
+      q.includes('system access') ||
+      q.includes('cursor') ||
+      q.includes('gitlab') ||
+      q.includes('jira') ||
+      q.includes('confluence') ||
+      q.includes('password') ||
+      q.includes('software install')
+    );
+  })();
+
+  const shouldShowTravelDeskCta = (() => {
+    if (!lastUserMessage || answerStyle !== 'how_to') return false;
+    const q = lastUserMessage.content.toLowerCase();
+    return (
+      q.includes('travel') ||
+      q.includes('trip') ||
+      q.includes('flight') ||
+      q.includes('ticket') ||
+      q.includes('hotel') ||
+      q.includes('per diem') ||
+      q.includes('per-diem') ||
+      q.includes('expense') ||
+      q.includes('fusion') ||
+      q.includes('travel desk')
+    );
+  })();
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -102,6 +139,11 @@ export default function PolicyAgentPage() {
     }
 
     const now = new Date().toISOString();
+    const apiUserContent =
+      answerStyle === 'how_to'
+        ? `${trimmed}\n\nPlease answer this as a numbered step-by-step how-to, with 3–8 steps and each step on its own line.`
+        : trimmed;
+
     const nextMessages: ChatMessage[] = [
       ...messages,
       { role: 'user', content: trimmed, createdAt: now },
@@ -122,8 +164,12 @@ export default function PolicyAgentPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          messages: nextMessages,
+          messages: [
+            ...messages,
+            { role: 'user', content: apiUserContent, createdAt: now },
+          ],
           mode: 'default',
+          style: answerStyle,
         }),
       });
       const data: PolicyAgentResponse & { error?: string } = await res.json();
@@ -184,6 +230,14 @@ export default function PolicyAgentPage() {
 
   return (
     <div className="space-y-6">
+      <div className="mb-2">
+        <Link
+          href="/"
+          className="inline-flex items-center text-xs font-medium text-blue-700 hover:underline"
+        >
+          ← Back to Home
+        </Link>
+      </div>
       <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
         <div className="space-y-2">
           <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Beacon · Ask Beacon</p>
@@ -194,6 +248,36 @@ export default function PolicyAgentPage() {
             Use this conversational assistant for HR, travel, RTO, onboarding, and other internal &quot;how do I…&quot;
             questions. It answers strictly from uploaded company documents and will say if something is not covered.
           </p>
+        </div>
+      </div>
+
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <span className="text-xs font-medium text-gray-700">Answer style:</span>
+        <div className="inline-flex rounded-full border border-gray-200 bg-gray-50 p-1 text-xs font-medium text-gray-700">
+          <button
+            type="button"
+            onClick={() => setAnswerStyle('standard')}
+            className={`rounded-full px-3 py-1 transition ${
+              answerStyle === 'standard'
+                ? 'bg-white text-gray-900 shadow-sm'
+                : 'text-gray-500 hover:text-gray-900'
+            }`}
+            disabled={isLoading}
+          >
+            Standard
+          </button>
+          <button
+            type="button"
+            onClick={() => setAnswerStyle('how_to')}
+            className={`rounded-full px-3 py-1 transition ${
+              answerStyle === 'how_to'
+                ? 'bg-white text-gray-900 shadow-sm'
+                : 'text-gray-500 hover:text-gray-900'
+            }`}
+            disabled={isLoading}
+          >
+            How‑to steps
+          </button>
         </div>
       </div>
 
@@ -318,30 +402,50 @@ export default function PolicyAgentPage() {
                 </div>
               )}
 
-              <div className="mt-3 flex items-center justify-end gap-2 text-xs text-gray-500">
-              <span>Did this answer help?</span>
-              <button
-                type="button"
-                className={`rounded-full border px-2 py-1 transition ${
-                  feedback === 'up'
-                    ? 'border-green-500 bg-green-50 text-green-700'
-                    : 'border-gray-200 bg-white hover:border-green-400 hover:text-green-700'
-                }`}
-                onClick={() => handleFeedback('up')}
-              >
-                Yes
-              </button>
-              <button
-                type="button"
-                className={`rounded-full border px-2 py-1 transition ${
-                  feedback === 'down'
-                    ? 'border-red-500 bg-red-50 text-red-700'
-                    : 'border-gray-200 bg-white hover:border-red-400 hover:text-red-700'
-                }`}
-                onClick={() => handleFeedback('down')}
-              >
-                No
-              </button>
+              <div className="mt-3 flex flex-col gap-3">
+                <div className="flex items-center justify-end gap-2 text-xs text-gray-500">
+                  <span>Did this answer help?</span>
+                  <button
+                    type="button"
+                    className={`rounded-full border px-2 py-1 transition ${
+                      feedback === 'up'
+                        ? 'border-green-500 bg-green-50 text-green-700'
+                        : 'border-gray-200 bg-white hover:border-green-400 hover:text-green-700'
+                    }`}
+                    onClick={() => handleFeedback('up')}
+                  >
+                    Yes
+                  </button>
+                  <button
+                    type="button"
+                    className={`rounded-full border px-2 py-1 transition ${
+                      feedback === 'down'
+                        ? 'border-red-500 bg-red-50 text-red-700'
+                        : 'border-gray-200 bg-white hover:border-red-400 hover:text-red-700'
+                    }`}
+                    onClick={() => handleFeedback('down')}
+                  >
+                    No
+                  </button>
+                </div>
+
+                {shouldShowServiceDeskCta && lastUserMessage && (
+                  <div className="rounded-md border border-blue-100 bg-blue-50 px-3 py-2 text-[11px] text-blue-900 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <p>
+                      Need IT to actually do this? Open a Service Desk request with your question
+                      pre-filled.
+                    </p>
+                    <Link
+                      href={{
+                        pathname: '/service-desk',
+                        query: { details: lastUserMessage.content },
+                      }}
+                      className="inline-flex items-center justify-center rounded-md bg-blue-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-blue-700"
+                    >
+                      Open Service Desk
+                    </Link>
+                  </div>
+                )}
               </div>
             </>
           )}

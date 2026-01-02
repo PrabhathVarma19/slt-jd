@@ -11,8 +11,6 @@ const REQUIRED_FIELDS = [
   'destination',
   'departDate',
   'purpose',
-  'summary',
-  'emailBody',
 ] as const;
 
 type RequiredField = (typeof REQUIRED_FIELDS)[number];
@@ -66,14 +64,14 @@ export async function POST(req: NextRequest) {
         ${
           body.returnDate && !body.isOneWay
             ? `<li><strong>Return:</strong> ${body.returnDate}</li>`
+            : body.isOneWay
+            ? `<li><strong>Return:</strong> One-way trip</li>`
             : ''
         }
         <li><strong>Purpose:</strong> ${body.purpose}</li>
+        ${body.modePreference ? `<li><strong>Preferred mode:</strong> ${body.modePreference}</li>` : ''}
+        ${body.extraDetails ? `<li><strong>Additional details:</strong> ${body.extraDetails}</li>` : ''}
       </ul>
-      <h3>Beacon summary</h3>
-      <p>${body.summary || 'No summary provided.'}</p>
-      <h3>Proposed email text</h3>
-      <pre style="white-space:pre-wrap;font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">${body.emailBody}</pre>
     `;
 
     const textBodyLines = [
@@ -90,14 +88,14 @@ export async function POST(req: NextRequest) {
       `Origin: ${body.origin}`,
       `Destination: ${body.destination}`,
       `Departure: ${body.departDate}`,
-      body.returnDate && !body.isOneWay ? `Return: ${body.returnDate}` : '',
+      body.returnDate && !body.isOneWay
+        ? `Return: ${body.returnDate}`
+        : body.isOneWay
+        ? 'Return: One-way trip'
+        : '',
       `Purpose: ${body.purpose}`,
-      '',
-      'Beacon summary',
-      body.summary || 'No summary provided.',
-      '',
-      'Proposed email text',
-      body.emailBody,
+      body.modePreference ? `Preferred mode: ${body.modePreference}` : '',
+      body.extraDetails ? `Additional details: ${body.extraDetails}` : '',
     ].filter(Boolean);
 
     const mailResult = await sendMailViaGraph({

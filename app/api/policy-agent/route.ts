@@ -291,6 +291,8 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const mode: 'default' | 'new_joiner' =
       (body?.mode as 'default' | 'new_joiner') || 'default';
+    const style: 'standard' | 'how_to' =
+      (body?.style as 'standard' | 'how_to') || 'standard';
     const rawMessages = Array.isArray(body?.messages) ? body.messages : [];
     const history: { role: 'user' | 'assistant'; content: string }[] = rawMessages
       .filter(
@@ -426,12 +428,24 @@ If you cannot find a clear answer, explicitly say you do not know and, if approp
 
       const newJoinerAddendum =
         'You are currently helping a new joiner who may not know internal jargon. Keep answers short and friendly. ' +
-        'Prefer 3 to 6 numbered steps when explaining what to do. ' +
         'Avoid deep policy history; focus on what they actually need to do now. ' +
         'Always end with one final sentence like: "If you are unsure, please confirm with your manager or HR at hr@trianz.com."';
 
-      const systemPrompt =
-        mode === 'new_joiner' ? `${basePrompt}\n\n${newJoinerAddendum}` : basePrompt;
+      const howToAddendum =
+        'For this question the user prefers a HOW-TO style answer.\n' +
+        '- Start with a single short summary sentence.\n' +
+        '- Then add a blank line and give 3 to 8 numbered steps (1., 2., 3., ...) describing exactly what the user should do in order.\n' +
+        '- Each step must be on its own line and start with the step number.\n' +
+        '- Keep wording concrete and actionable (who to contact, which tool to use, where to click, what to include in a request).\n' +
+        '- Do not add extra commentary outside the summary sentence and the numbered steps.\n';
+
+      let systemPrompt = basePrompt;
+      if (mode === 'new_joiner') {
+        systemPrompt = `${systemPrompt}\n\n${newJoinerAddendum}`;
+      }
+      if (style === 'how_to') {
+        systemPrompt = `${systemPrompt}\n\n${howToAddendum}`;
+      }
 
       const userPrompt = `Conversation so far:
 ${historyText}

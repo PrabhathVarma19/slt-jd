@@ -89,6 +89,14 @@ export default function WeeklyBriefPage() {
 
   return (
     <div className="space-y-6">
+      <div className="mb-2">
+        <Link
+          href="/"
+          className="inline-flex items-center text-xs font-medium text-blue-700 hover:underline"
+        >
+          ← Back to Home
+        </Link>
+      </div>
       <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-4 text-sm text-yellow-900">
         <div className="font-semibold">Under progress</div>
         <p>Weekly Brief UI scaffolded. LLM generation, persistence, and history will be wired next.</p>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import Button from '@/components/ui/button';
 import Input from '@/components/ui/input';
 import Textarea from '@/components/ui/textarea';
@@ -172,6 +173,14 @@ export default function CommsHubPage() {
       </div>
 
       <div className="space-y-6">
+        <div className="mb-2">
+          <Link
+            href="/"
+            className="inline-flex items-center text-xs font-medium text-blue-700 hover:underline"
+          >
+            ← Back to Home
+          </Link>
+        </div>
         <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm space-y-6">
           {error && (
             <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">

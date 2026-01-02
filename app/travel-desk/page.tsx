@@ -1,17 +1,16 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import Button from '@/components/ui/button';
 import Input from '@/components/ui/input';
 import Textarea from '@/components/ui/textarea';
+import { formatDate } from '@/lib/utils';
 
-interface TravelDeskResponse {
-  summary: string;
-  emailBody: string;
-  policyNotes: string;
-}
+type View = 'form' | 'review' | 'success';
 
 export default function TravelDeskPage() {
+  // Form state
   const [name, setName] = useState('');
   const [employeeId, setEmployeeId] = useState('');
   const [mobile, setMobile] = useState('');
@@ -26,11 +25,11 @@ export default function TravelDeskPage() {
   const [modePreference, setModePreference] = useState('');
   const [extraDetails, setExtraDetails] = useState('');
 
-  const [isLoading, setIsLoading] = useState(false);
+  // UI state
+  const [view, setView] = useState<View>('form');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [submitMessage, setSubmitMessage] = useState<string | null>(null);
-  const [result, setResult] = useState<TravelDeskResponse | null>(null);
 
   const canSubmit =
     name.trim() &&
@@ -43,61 +42,41 @@ export default function TravelDeskPage() {
     departDate.trim() &&
     purpose.trim();
 
-  const handleGenerate = async () => {
+  const resetForm = () => {
+    setName('');
+    setEmployeeId('');
+    setMobile('');
+    setEmail('');
+    setGrade('');
+    setOrigin('');
+    setDestination('');
+    setDepartDate('');
+    setReturnDate('');
+    setIsOneWay(false);
+    setPurpose('');
+    setModePreference('');
+    setExtraDetails('');
+    setError(null);
+    setSubmitMessage(null);
+  };
+
+  const handlePrepareRequest = () => {
     if (!canSubmit) {
       setError('Please fill the required fields (marked with *).');
       return;
     }
-    setIsLoading(true);
     setError(null);
-    setSubmitMessage(null);
-    setResult(null);
-
-    try {
-      const res = await fetch('/api/travel-desk', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name,
-          email,
-          employeeId,
-          mobile,
-          grade,
-          origin,
-          destination,
-          departDate,
-          returnDate: isOneWay ? null : returnDate || null,
-          isOneWay,
-          purpose,
-          modePreference: modePreference || null,
-          extraDetails: extraDetails || null,
-        }),
-      });
-
-      const data = await res.json();
-      if (!res.ok || data.error) {
-        throw new Error(data.error || 'Failed to generate travel request');
-      }
-      setResult(data);
-    } catch (err: any) {
-      setError(err.message || 'Failed to generate travel request');
-    } finally {
-      setIsLoading(false);
-    }
+    setView('review');
   };
 
-  const handleSubmitRequest = async () => {
-    if (!canSubmit || !result) {
-      setError('Please fill the required fields and generate the request first.');
-      return;
-    }
-
+  const handleConfirm = async () => {
     setIsSubmitting(true);
     setError(null);
     setSubmitMessage(null);
 
     try {
-      const res = await fetch('/api/actions/travel-request', {
+      // Send email directly with form data
+      const submitRes = await fetch('/api/actions/travel-request', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -114,18 +93,16 @@ export default function TravelDeskPage() {
           purpose,
           modePreference: modePreference || null,
           extraDetails: extraDetails || null,
-          summary: result.summary,
-          policyNotes: result.policyNotes,
-          emailBody: result.emailBody,
         }),
       });
 
-      const data = await res.json();
-      if (!res.ok || data.error) {
-        throw new Error(data.error || 'Failed to submit travel request');
+      const submitData = await submitRes.json();
+      if (!submitRes.ok || submitData.error) {
+        throw new Error(submitData.error || 'Failed to submit travel request');
       }
 
-      setSubmitMessage('Travel request captured (backend wiring in progress).');
+      setSubmitMessage(submitData.message || 'Travel request emailed to the Travel Desk.');
+      setView('success');
     } catch (err: any) {
       setError(err.message || 'Failed to submit travel request');
     } finally {
@@ -133,40 +110,50 @@ export default function TravelDeskPage() {
     }
   };
 
-  const copyText = async (text: string) => {
+  const handleCreateAnother = () => {
+    resetForm();
+    setView('form');
+  };
+
+  const formatDateDisplay = (dateString: string) => {
+    if (!dateString) return '';
     try {
-      await navigator.clipboard.writeText(text);
+      return formatDate(dateString);
     } catch {
-      // ignore copy failures
+      return dateString;
     }
   };
 
-  return (
-    <div className="space-y-6">
-      <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-        <div className="space-y-2">
-          <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
-            Beacon · Travel Desk
-          </p>
-          <h1 className="text-2xl font-semibold text-gray-900 mt-1">
-            Raise a travel request without writing an email.
-          </h1>
-          <p className="text-sm text-gray-600">
-            Fill the trip details and let Beacon prepare a clear, policy-aware request and an email draft for the travel desk and your manager.
-          </p>
+  // Form View
+  if (view === 'form') {
+    return (
+      <div className="space-y-6">
+        <div className="mb-2">
+          <Link
+            href="/"
+            className="inline-flex items-center text-xs font-medium text-blue-700 hover:underline"
+          >
+            ← Back to Home
+          </Link>
         </div>
-      </div>
+        <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+          <div className="space-y-2">
+            <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
+              Beacon · Travel Desk
+            </p>
+            <h1 className="text-2xl font-semibold text-gray-900 mt-1">
+              Raise a travel request without writing an email.
+            </h1>
+            <p className="text-sm text-gray-600">
+              Fill the trip details and let Beacon prepare a clear, policy-aware request and an email draft for the travel desk and your manager.
+            </p>
+          </div>
+        </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
-          <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm space-y-4">
+        <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm space-y-4 max-w-4xl">
           {error && (
             <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
               {error}
-            </div>
-          )}
-          {submitMessage && !error && (
-            <div className="rounded-md border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">
-              {submitMessage}
             </div>
           )}
 
@@ -259,6 +246,7 @@ export default function TravelDeskPage() {
                 type="date"
                 value={departDate}
                 onChange={(e) => setDepartDate(e.target.value)}
+                min={new Date().toISOString().split('T')[0]}
               />
             </div>
             <div className="space-y-1">
@@ -279,6 +267,7 @@ export default function TravelDeskPage() {
                   type="date"
                   value={returnDate}
                   onChange={(e) => setReturnDate(e.target.value)}
+                  min={departDate || new Date().toISOString().split('T')[0]}
                 />
               )}
             </div>
@@ -316,65 +305,176 @@ export default function TravelDeskPage() {
           </div>
 
           <div className="flex items-center gap-3 pt-2">
-            <Button onClick={handleGenerate} disabled={isLoading || !canSubmit}>
-              {isLoading ? 'Preparing request...' : 'Prepare travel request'}
+            <Button onClick={handlePrepareRequest} disabled={!canSubmit}>
+              Prepare travel request
             </Button>
           </div>
         </div>
+      </div>
+    );
+  }
 
-        <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm space-y-4">
-          <h2 className="text-lg font-semibold text-gray-900">Output</h2>
-          {!result && (
-            <p className="text-sm text-gray-600">
-              Fill the form and click &quot;Prepare travel request&quot; to see the summary, policy notes, and email draft.
+  // Review View
+  if (view === 'review') {
+    return (
+      <div className="space-y-6">
+        <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+          <div className="space-y-2">
+            <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
+              Beacon · Travel Desk
             </p>
-          )}
-          {result && (
-            <div className="space-y-5">
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-semibold text-gray-900">Summary</span>
-                  <Button size="sm" variant="secondary" onClick={() => copyText(result.summary)}>
-                    Copy summary
-                  </Button>
-                </div>
-                <p className="text-sm text-gray-800 whitespace-pre-wrap">{result.summary}</p>
-              </div>
+            <h1 className="text-2xl font-semibold text-gray-900 mt-1">
+              Review your travel request
+            </h1>
+            <p className="text-sm text-gray-600">
+              Please review the details below. Click Confirm to send the request to the Travel Desk.
+            </p>
+          </div>
+        </div>
 
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-semibold text-gray-900">Policy check</span>
-                </div>
-                <p className="text-sm text-gray-800 whitespace-pre-wrap">
-                  {result.policyNotes || 'No specific policy constraints detected for this request.'}
-                </p>
-              </div>
-
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-semibold text-gray-900">Email draft</span>
-                  <Button size="sm" variant="secondary" onClick={() => copyText(result.emailBody)}>
-                    Copy email
-                  </Button>
-                </div>
-                <Textarea
-                  readOnly
-                  rows={8}
-                  className="text-sm text-gray-800"
-                  value={result.emailBody}
-                />
-              </div>
-
-              <div className="flex items-center justify-end pt-2">
-                <Button
-                  onClick={handleSubmitRequest}
-                  disabled={isSubmitting || !result || !canSubmit}
-                >
-                  {isSubmitting ? 'Submitting…' : 'Submit to Travel Desk'}
-                </Button>
-              </div>
+        <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm max-w-3xl mx-auto">
+          {error && (
+            <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800 mb-4">
+              {error}
             </div>
           )}
+
+          <div className="space-y-6">
+            {/* Employee Details */}
+            <div className="space-y-3">
+              <h2 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">
+                Employee Details
+              </h2>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div>
+                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Name as per Govt ID</p>
+                  <p className="text-sm text-gray-900 mt-1">{name}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Employee ID</p>
+                  <p className="text-sm text-gray-900 mt-1">{employeeId}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Mobile</p>
+                  <p className="text-sm text-gray-900 mt-1">{mobile}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Email</p>
+                  <p className="text-sm text-gray-900 mt-1">{email}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Grade</p>
+                  <p className="text-sm text-gray-900 mt-1">{grade}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Trip Details */}
+            <div className="space-y-3">
+              <h2 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">
+                Trip Details
+              </h2>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div>
+                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Origin</p>
+                  <p className="text-sm text-gray-900 mt-1">{origin}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Destination</p>
+                  <p className="text-sm text-gray-900 mt-1">{destination}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Departure Date</p>
+                  <p className="text-sm text-gray-900 mt-1">{formatDateDisplay(departDate)}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Return Date</p>
+                  <p className="text-sm text-gray-900 mt-1">
+                    {isOneWay ? (
+                      <span className="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700">
+                        One-way trip
+                      </span>
+                    ) : returnDate ? (
+                      formatDateDisplay(returnDate)
+                    ) : (
+                      'Not specified'
+                    )}
+                  </p>
+                </div>
+                <div className="sm:col-span-2">
+                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Purpose</p>
+                  <p className="text-sm text-gray-900 mt-1 whitespace-pre-wrap">{purpose}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Additional Information */}
+            {(modePreference || extraDetails) && (
+              <div className="space-y-3">
+                <h2 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">
+                  Additional Information
+                </h2>
+                {modePreference && (
+                  <div>
+                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Preferred Mode</p>
+                    <p className="text-sm text-gray-900 mt-1">{modePreference}</p>
+                  </div>
+                )}
+                {extraDetails && (
+                  <div>
+                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Additional Details</p>
+                    <p className="text-sm text-gray-900 mt-1 whitespace-pre-wrap">{extraDetails}</p>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Actions */}
+            <div className="flex items-center justify-between gap-3 pt-4 border-t border-gray-200">
+              <Button variant="secondary" onClick={() => setView('form')} disabled={isSubmitting}>
+                Back
+              </Button>
+              <Button onClick={handleConfirm} disabled={isSubmitting}>
+                {isSubmitting ? 'Sending request...' : 'Confirm and Send'}
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Success View
+  return (
+    <div className="space-y-6">
+      <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm max-w-2xl mx-auto text-center">
+        <div className="space-y-4">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
+            <svg
+              className="h-6 w-6 text-green-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+          </div>
+          <div>
+            <h2 className="text-2xl font-semibold text-gray-900">Travel request submitted!</h2>
+            <p className="mt-2 text-sm text-gray-600">
+              {submitMessage || 'Your travel request has been sent to the Travel Desk.'}
+            </p>
+          </div>
+          <div className="pt-4">
+            <Button onClick={handleCreateAnother}>
+              Create another request
+            </Button>
+          </div>
         </div>
       </div>
     </div>

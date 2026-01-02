@@ -26,69 +26,20 @@ export default function RootLayout({
         <div className="min-h-screen bg-white">
           <header className="border-b border-gray-200 bg-white/95 backdrop-blur-sm sticky top-0 z-50">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <div className="flex h-16 items-center justify-between">
-                <div className="flex items-center">
-                  <Link href="/" className="flex items-center gap-2 text-lg font-semibold tracking-tight text-gray-900">
-                    <Image
-                      src="/trianz-logo-horizontal.png"
-                      alt="Trianz"
-                      width={120}
-                      height={28}
-                      priority
-                    />
-                    <span>Beacon</span>
-                  </Link>
-                </div>
-                <nav className="flex items-center gap-6">
-                  <Link
-                    href="/"
-                    className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
-                  >
-                    Home
-                  </Link>
-                  <Link
-                    href="/jd"
-                    className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
-                  >
-                    Create JD
-                  </Link>
-                  <Link
-                    href="/weekly-brief"
-                    className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
-                  >
-                    Weekly Initiatives
-                  </Link>
-                  <Link
-                    href="/policy-agent"
-                    className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
-                  >
-                    Ask Beacon
-                  </Link>
-                  <Link
-                    href="/new-joiner"
-                    className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
-                  >
-                    New Joiner Buddy
-                  </Link>
+              <div className="flex h-16 items-center justify-start">
                 <Link
-                  href="/travel-desk"
-                  className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+                  href="/"
+                  className="flex items-center gap-2 text-lg font-semibold tracking-tight text-gray-900"
                 >
-                  Travel Desk
+                  <Image
+                    src="/trianz-logo-horizontal.png"
+                    alt="Trianz"
+                    width={120}
+                    height={28}
+                    priority
+                  />
+                  <span>Beacon</span>
                 </Link>
-                <Link
-                  href="/service-desk"
-                  className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
-                >
-                  Service Desk
-                </Link>
-                  <Link
-                    href="/comms-hub"
-                    className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
-                  >
-                    Comms Hub
-                  </Link>
-                </nav>
               </div>
             </div>
           </header>
