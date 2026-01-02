@@ -107,74 +107,74 @@ export default function ExpensesCoachPage() {
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1.4fr)]">
         <div className="space-y-4 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-          <h2 className="text-sm font-semibold text-gray-900">Ask a question</h2>
+          <h2 className="text-sm font-semibold text-gray-900">Conversation</h2>
           {error && (
             <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
               {error}
             </div>
           )}
-          <Textarea
-            rows={3}
-            value={question}
-            onChange={(e) => setQuestion(e.target.value)}
-            placeholder="E.g., How do I submit travel expenses in Fusion? or What is my hotel limit in Mumbai?"
-          />
-          <div className="flex items-center justify-between gap-3">
-            <p className="text-[11px] text-gray-500">
-              Beacon will answer using Trianz policies only, with steps you can follow directly in
-              Fusion.
+          {messages.length === 0 && (
+            <p className="text-sm text-gray-600">
+              Ask a question below, or use a quick question from the right to see how Beacon explains
+              expenses and Fusion in simple steps.
             </p>
-            <Button onClick={() => ask()} disabled={isLoading || !question.trim()} size="sm">
-              {isLoading ? 'Answering…' : 'Ask'}
-            </Button>
+          )}
+          <div className="space-y-3 max-h-[360px] overflow-y-auto rounded-md border border-gray-100 bg-gray-50 p-3">
+            {messages.map((m, idx) => (
+              <div
+                key={idx}
+                className={
+                  m.role === 'user'
+                    ? 'ml-auto max-w-[80%] rounded-lg bg-blue-50 px-3 py-2 text-sm text-gray-900'
+                    : 'mr-auto max-w-[80%] rounded-lg bg-white px-3 py-2 text-sm text-gray-900 border border-gray-100'
+                }
+              >
+                <p className="whitespace-pre-wrap text-[13px]">{m.content}</p>
+                {m.role === 'assistant' && m.keyRules && (
+                  <div className="mt-2 rounded-md bg-gray-50 px-2 py-1.5 text-[11px] text-gray-700">
+                    <p className="font-semibold text-gray-800">Key rules</p>
+                    <p className="mt-1 whitespace-pre-wrap">{m.keyRules}</p>
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
 
-          <div className="mt-4 space-y-3">
-            <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-500">
-              Conversation
-            </h3>
-            {messages.length === 0 && (
-              <p className="text-sm text-gray-600">
-                Ask a question above, or use a quick question from the right to see how Beacon
-                explains expenses and Fusion in simple steps.
+          {showTravelDeskCta && (
+            <div className="rounded-md border border-blue-100 bg-blue-50 px-3 py-2 text-xs text-blue-900">
+              <p className="font-semibold">Need to raise a travel request?</p>
+              <p className="mt-1">
+                You can use the Travel Desk tool to format and send a formal travel request to the
+                team.
               </p>
-            )}
-            <div className="space-y-3 max-h-[360px] overflow-y-auto rounded-md border border-gray-100 bg-gray-50 p-3">
-              {messages.map((m, idx) => (
-                <div
-                  key={idx}
-                  className={
-                    m.role === 'user'
-                      ? 'ml-auto max-w-[80%] rounded-lg bg-blue-50 px-3 py-2 text-sm text-gray-900'
-                      : 'mr-auto max-w-[80%] rounded-lg bg-white px-3 py-2 text-sm text-gray-900 border border-gray-100'
-                  }
-                >
-                  <p className="whitespace-pre-wrap text-[13px]">{m.content}</p>
-                  {m.role === 'assistant' && m.keyRules && (
-                    <div className="mt-2 rounded-md bg-gray-50 px-2 py-1.5 text-[11px] text-gray-700">
-                      <p className="font-semibold text-gray-800">Key rules</p>
-                      <p className="mt-1 whitespace-pre-wrap">{m.keyRules}</p>
-                    </div>
-                  )}
-                </div>
-              ))}
+              <Link
+                href="/travel-desk"
+                className="mt-2 inline-flex text-xs font-medium text-blue-700 hover:underline"
+              >
+                Open Travel Desk
+              </Link>
             </div>
+          )}
 
-            {showTravelDeskCta && (
-              <div className="rounded-md border border-blue-100 bg-blue-50 px-3 py-2 text-xs text-blue-900">
-                <p className="font-semibold">Need to raise a travel request?</p>
-                <p className="mt-1">
-                  You can use the Travel Desk tool to format and send a formal travel request to the
-                  team.
-                </p>
-                <Link
-                  href="/travel-desk"
-                  className="mt-2 inline-flex text-xs font-medium text-blue-700 hover:underline"
-                >
-                  Open Travel Desk
-                </Link>
-              </div>
-            )}
+          <div className="mt-4 space-y-2 border-t border-gray-100 pt-3">
+            <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+              Ask a question
+            </h3>
+            <Textarea
+              rows={3}
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              placeholder="E.g., How do I submit travel expenses in Fusion? or What is my hotel limit in Mumbai?"
+            />
+            <div className="flex items-center justify-between gap-3">
+              <p className="text-[11px] text-gray-500">
+                Beacon will answer using Trianz policies only, with steps you can follow directly in
+                Fusion.
+              </p>
+              <Button onClick={() => ask()} disabled={isLoading || !question.trim()} size="sm">
+                {isLoading ? 'Answering…' : 'Ask'}
+              </Button>
+            </div>
           </div>
         </div>
 
