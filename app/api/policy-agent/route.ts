@@ -304,6 +304,11 @@ export async function POST(req: NextRequest) {
       .map((m: any) => ({ role: m.role, content: m.content }));
 
     const lastUser = [...history].reverse().find((m) => m.role === 'user');
+    const prevUser =
+      [...history]
+        .reverse()
+        .filter((m) => m.role === 'user')
+        .slice(1)[0] || null;
     const fallbackQuestion = (body?.question || '').toString();
     const question = (lastUser?.content || fallbackQuestion || '').trim();
 
@@ -314,6 +319,20 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'OPENAI_API_KEY not set' }, { status: 500 });
     }
 
+    // Build an "effective question" for retrieval so that short / ambiguous
+    // follow-ups stay anchored to the previous topic.
+    let retrievalQuestion = question;
+    if (prevUser) {
+      const lower = question.toLowerCase();
+      const isVeryShort = question.split(/\s+/).filter(Boolean).length <= 6;
+      const hasPronoun =
+        /\b(it|they|them|that|this|there|those|these|how many|how much)\b/.test(lower);
+
+      if (isVeryShort || hasPronoun) {
+        retrievalQuestion = `${prevUser.content}\nFollow-up question: ${question}`;
+      }
+    }
+
     const chunks = getPolicyChunks();
     if (!chunks.length) {
       return NextResponse.json({
@@ -322,7 +341,7 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    const topChunks = rankChunks(question, chunks);
+    const topChunks = rankChunks(retrievalQuestion, chunks);
     if (!topChunks.length) {
       return NextResponse.json({
         answer:
