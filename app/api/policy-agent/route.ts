@@ -440,6 +440,7 @@ You answer questions about company policies, security/Infosec guidelines, and in
 You must answer ONLY from the provided context and must not invent new policies, rules, or security exceptions.
 Include citations like [1], [2] that refer to the sources list.
 Always include concrete rules and quantitative details (such as number of days per week, required hours, eligibility levels, monetary limits, and key exceptions) when they are present in the context.
+If the user asks for a specific number (for example "how many days", "how many hours", "what limit", "what per diem", "what INR amount") and the context does NOT clearly state that number, you MUST say that the policy text shown to you does not specify an exact value and you MUST NOT guess or assume a number.
 For security or compliance topics (for example phishing, passwords, data classification, VPN, device usage), always choose the safest interpretation of the written guidance and never relax requirements beyond what is stated.
 Respond in plain text only: no Markdown, no bold, no italics, no bullet symbols like "*" or "-".
 When you describe a sequence of steps, use numbered lines (for example "1. ...", "2. ...") with each step on its own line.
@@ -502,6 +503,19 @@ Respond with a concise answer and include citations [n] for every factual statem
     let finalAnswer = answer;
     const qLower = question.toLowerCase();
     const aLower = answer.toLowerCase();
+
+    // If the user clearly asked for a numeric value but the answer contains no digits,
+    // fall back to a conservative "not specified" message instead of letting the model guess.
+    const numericQuestionPattern =
+      /how many|how much|how long|what.*limit|per diem|per-diem|days?\b|hours?\b|inr\b|₹|rs\b/i;
+    const numericQuestion = numericQuestionPattern.test(qLower);
+    const answerHasDigit = /\d/.test(finalAnswer);
+
+    if (numericQuestion && !answerHasDigit) {
+      finalAnswer =
+        'From the policy text available to Beacon, an exact number is not stated for this question. ' +
+        'Please confirm the precise value with your manager, HR, or the relevant support team (such as InfoSec or the Travel Desk).';
+    }
 
     if (qLower.includes('medical') && qLower.includes('travel')) {
       finalAnswer =
