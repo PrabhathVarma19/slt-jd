@@ -64,6 +64,14 @@ const AGENTS: AgentCard[] = [
     label: 'Travel & expenses',
   },
   {
+    title: 'Expenses & Fusion Coach',
+    description: 'Explain reimbursable expenses and Fusion steps in clear, numbered actions.',
+    link: '/expenses-coach',
+    category: 'Org-wide',
+    accent: 'from-teal-500 to-emerald-600',
+    label: 'Expenses',
+  },
+  {
     title: 'Service Desk',
     description: 'Raise IT and access requests in a structured, policy-aware format.',
     link: '/service-desk',

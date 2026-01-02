@@ -288,9 +288,9 @@ function extractRtoRules(text: string): { attendance?: string; hours?: string } 
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
-    const mode: 'default' | 'new_joiner' =
-      (body?.mode as 'default' | 'new_joiner') || 'default';
+      const body = await req.json();
+      const mode: 'default' | 'new_joiner' | 'expenses' =
+        (body?.mode as 'default' | 'new_joiner' | 'expenses') || 'default';
     const style: 'standard' | 'how_to' =
       (body?.style as 'standard' | 'how_to') || 'standard';
     const rawMessages = Array.isArray(body?.messages) ? body.messages : [];
@@ -431,6 +431,14 @@ If you cannot find a clear answer, explicitly say you do not know and, if approp
         'Avoid deep policy history; focus on what they actually need to do now. ' +
         'Always end with one final sentence like: "If you are unsure, please confirm with your manager or HR at hr@trianz.com."';
 
+      const expensesAddendum =
+        'You are currently answering a question about expenses, reimbursements, travel claims, or Fusion expense entry. ' +
+        'Focus on:\n' +
+        '- What is reimbursable vs. non-reimbursable (e.g., hotels, per diem, client dinners, roaming, gym, etc.).\n' +
+        '- City / country / grade specific limits for hotel stays and per diem amounts, when available in context.\n' +
+        '- How to submit or categorise the expense correctly in Fusion (which type to choose, what description to use, and what receipts to attach).\n' +
+        'Keep the answer practical so the user can directly follow it while filling Fusion.';
+
       const howToAddendum =
         'For this question the user prefers a HOW-TO style answer.\n' +
         '- Start with a single short summary sentence.\n' +
@@ -442,6 +450,8 @@ If you cannot find a clear answer, explicitly say you do not know and, if approp
       let systemPrompt = basePrompt;
       if (mode === 'new_joiner') {
         systemPrompt = `${systemPrompt}\n\n${newJoinerAddendum}`;
+      } else if (mode === 'expenses') {
+        systemPrompt = `${systemPrompt}\n\n${expensesAddendum}`;
       }
       if (style === 'how_to') {
         systemPrompt = `${systemPrompt}\n\n${howToAddendum}`;

@@ -200,6 +200,8 @@ export default function ServiceDeskPage() {
     setShouldAutoSuggest(false);
     // fire and forget; errors will show in the usual error banner
     void runSuggestion();
+    // we intentionally skip runSuggestion in deps to avoid re-running
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shouldAutoSuggest, form.details]);
 
   const handleSubmit = async () => {
