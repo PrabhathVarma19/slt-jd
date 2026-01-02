@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import Button from '@/components/ui/button';
 import Textarea from '@/components/ui/textarea';
@@ -32,6 +32,7 @@ export default function ExpensesCoachPage() {
   const [messages, setMessages] = useState<BeaconMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const messagesRef = useRef<HTMLDivElement | null>(null);
 
   const ask = async (q?: string) => {
     const trimmed = (q ?? question).trim();
@@ -79,6 +80,12 @@ export default function ExpensesCoachPage() {
     lastUserQuestion,
   );
 
+  useEffect(() => {
+    if (!messagesRef.current) return;
+    const el = messagesRef.current;
+    el.scrollTop = el.scrollHeight;
+  }, [messages]);
+
   return (
     <div className="space-y-6">
       <div className="mb-2">
@@ -119,7 +126,10 @@ export default function ExpensesCoachPage() {
               expenses and Fusion in simple steps.
             </p>
           )}
-          <div className="space-y-3 max-h-[360px] overflow-y-auto rounded-md border border-gray-100 bg-gray-50 p-3">
+          <div
+            ref={messagesRef}
+            className="space-y-3 max-h-[400px] overflow-y-auto rounded-md border border-gray-100 bg-gray-50 p-3"
+          >
             {messages.map((m, idx) => (
               <div
                 key={idx}
@@ -246,4 +256,3 @@ export default function ExpensesCoachPage() {
     </div>
   );
 }
-

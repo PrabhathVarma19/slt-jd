@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Button from '@/components/ui/button';
 import Textarea from '@/components/ui/textarea';
@@ -57,6 +57,7 @@ export default function PolicyAgentPage() {
   const [keyRules, setKeyRules] = useState<string | null>(null);
   const [recentQuestions, setRecentQuestions] = useState<string[]>([]);
   const [feedback, setFeedback] = useState<Feedback>(null);
+  const messagesRef = useRef<HTMLDivElement | null>(null);
 
   const formatTime = (iso: string) => {
     try {
@@ -129,6 +130,12 @@ export default function PolicyAgentPage() {
       // ignore localStorage errors
     }
   }, [recentQuestions]);
+
+  useEffect(() => {
+    if (!messagesRef.current) return;
+    const el = messagesRef.current;
+    el.scrollTop = el.scrollHeight;
+  }, [messages]);
 
   const handleAsk = async (questionOverride?: string) => {
     const raw = questionOverride ?? input;
@@ -341,7 +348,10 @@ export default function PolicyAgentPage() {
             </div>
           )}
 
-          <div className="chat-scroll flex-1 space-y-4 overflow-y-auto pr-1 rounded-lg bg-gray-50 p-3 max-h-[420px]">
+          <div
+            ref={messagesRef}
+            className="chat-scroll flex-1 space-y-4 overflow-y-auto pr-1 rounded-lg bg-gray-50 p-3 max-h-[420px]"
+          >
             {messages.length === 0 && (
               <div className="flex justify-start">
                 <div className="inline-flex max-w-md flex-col gap-1 rounded-2xl bg-white px-3 py-2 text-sm text-gray-700 shadow-sm">
