@@ -234,16 +234,11 @@ export default function ServiceDeskPage() {
 
       setResult(data);
 
-       // On success, reset the form while keeping identity fields, and show a confirmation modal
-       if (res.ok) {
-         setForm((prev) => ({
-           ...initialFormState,
-           name: prev.name,
-           employeeId: prev.employeeId,
-           email: prev.email,
-         }));
-         setShowSuccessModal(true);
-       }
+      // On success, reset the form completely and show a confirmation modal
+      if (res.ok) {
+        setForm(initialFormState);
+        setShowSuccessModal(true);
+      }
     } catch (err: any) {
       setError(err.message || 'Failed to submit IT request.');
     } finally {
@@ -367,6 +362,7 @@ export default function ServiceDeskPage() {
                 Subcategory / system or application <span className="text-red-500">*</span>
               </label>
               <Input
+                autoComplete="off"
                 value={form.system}
                 onChange={(e) => handleChange('system', e.target.value)}
                 placeholder="e.g., VPN, Cursor, GitLab, ERP"
