@@ -7,7 +7,7 @@ import Input from '@/components/ui/input';
 import Textarea from '@/components/ui/textarea';
 import { formatDate } from '@/lib/utils';
 
-type View = 'form' | 'review' | 'success';
+type View = 'form' | 'review';
 
 export default function TravelDeskPage() {
   // Form state
@@ -30,6 +30,7 @@ export default function TravelDeskPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [submitMessage, setSubmitMessage] = useState<string | null>(null);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const canSubmit =
     name.trim() &&
@@ -75,8 +76,7 @@ export default function TravelDeskPage() {
     setSubmitMessage(null);
 
     try {
-      // Send email directly with form data
-      const submitRes = await fetch('/api/actions/travel-request', {
+      const res = await fetch('/api/actions/travel-request', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -96,23 +96,22 @@ export default function TravelDeskPage() {
         }),
       });
 
-      const submitData = await submitRes.json();
-      if (!submitRes.ok || submitData.error) {
-        throw new Error(submitData.error || 'Failed to submit travel request');
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        throw new Error(data.error || 'Failed to submit travel request');
       }
 
-      setSubmitMessage(submitData.message || 'Travel request emailed to the Travel Desk.');
-      setView('success');
+      setSubmitMessage(data.message || 'Travel request emailed to the Travel Desk.');
+
+      // Reset the form, return to form view, and show confirmation popup
+      resetForm();
+      setView('form');
+      setShowSuccessModal(true);
     } catch (err: any) {
       setError(err.message || 'Failed to submit travel request');
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const handleCreateAnother = () => {
-    resetForm();
-    setView('form');
   };
 
   const formatDateDisplay = (dateString: string) => {
@@ -133,24 +132,26 @@ export default function TravelDeskPage() {
             href="/"
             className="inline-flex items-center text-xs font-medium text-blue-700 hover:underline"
           >
-            ← Back to Home
+            Back to Home
           </Link>
         </div>
+
         <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
           <div className="space-y-2">
             <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
-              Beacon · Travel Desk
+              Beacon Travel Desk
             </p>
-            <h1 className="text-2xl font-semibold text-gray-900 mt-1">
+            <h1 className="mt-1 text-2xl font-semibold text-gray-900">
               Raise a travel request without writing an email.
             </h1>
             <p className="text-sm text-gray-600">
-              Fill the trip details and let Beacon prepare a clear, policy-aware request and an email draft for the travel desk and your manager.
+              Fill the trip details and let Beacon prepare a clear, policy-aware request and an email
+              draft for the travel desk and your manager.
             </p>
           </div>
         </div>
 
-        <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm space-y-4 max-w-4xl">
+        <div className="max-w-4xl rounded-lg border border-gray-200 bg-white p-6 shadow-sm space-y-4">
           {error && (
             <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
               {error}
@@ -205,7 +206,7 @@ export default function TravelDeskPage() {
           </div>
 
           <div className="grid gap-4 sm:grid-cols-3">
-            <div className="space-y-1 sm:col-span-1">
+            <div className="space-y-1">
               <label className="text-sm font-medium text-gray-700">
                 Grade <span className="text-red-500">*</span>
               </label>
@@ -215,7 +216,7 @@ export default function TravelDeskPage() {
                 placeholder="e.g., 5, 7, 9"
               />
             </div>
-            <div className="space-y-1 sm:col-span-1">
+            <div className="space-y-1">
               <label className="text-sm font-medium text-gray-700">
                 Onward from (city) <span className="text-red-500">*</span>
               </label>
@@ -225,7 +226,7 @@ export default function TravelDeskPage() {
                 placeholder="e.g., Bangalore"
               />
             </div>
-            <div className="space-y-1 sm:col-span-1">
+            <div className="space-y-1">
               <label className="text-sm font-medium text-gray-700">
                 Destination city <span className="text-red-500">*</span>
               </label>
@@ -281,7 +282,7 @@ export default function TravelDeskPage() {
               rows={3}
               value={purpose}
               onChange={(e) => setPurpose(e.target.value)}
-              placeholder="e.g., Client presentation for XYZ, internal workshop, implementation go-live, etc."
+              placeholder="e.g., Client presentation, internal workshop, implementation go-live, etc."
             />
           </div>
 
@@ -295,7 +296,9 @@ export default function TravelDeskPage() {
           </div>
 
           <div className="space-y-1">
-            <label className="text-sm font-medium text-gray-700">Additional details (optional)</label>
+            <label className="text-sm font-medium text-gray-700">
+              Additional details (optional)
+            </label>
             <Textarea
               rows={3}
               value={extraDetails}
@@ -310,6 +313,25 @@ export default function TravelDeskPage() {
             </Button>
           </div>
         </div>
+
+        {showSuccessModal && (
+          <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/40">
+            <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
+              <h2 className="text-lg font-semibold text-gray-900">Travel request submitted!</h2>
+              <p className="mt-2 text-sm text-gray-700">
+                {submitMessage || 'Your travel request has been sent to the Travel Desk.'}
+              </p>
+              <p className="mt-2 text-xs text-gray-500">
+                You&apos;ll also receive a copy of the request by email.
+              </p>
+              <div className="mt-4 flex justify-end">
+                <Button size="sm" onClick={() => setShowSuccessModal(false)}>
+                  OK
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -321,9 +343,9 @@ export default function TravelDeskPage() {
         <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
           <div className="space-y-2">
             <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
-              Beacon · Travel Desk
+              Beacon Travel Desk
             </p>
-            <h1 className="text-2xl font-semibold text-gray-900 mt-1">
+            <h1 className="mt-1 text-2xl font-semibold text-gray-900">
               Review your travel request
             </h1>
             <p className="text-sm text-gray-600">
@@ -332,9 +354,9 @@ export default function TravelDeskPage() {
           </div>
         </div>
 
-        <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm max-w-3xl mx-auto">
+        <div className="mx-auto max-w-3xl rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
           {error && (
-            <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800 mb-4">
+            <div className="mb-4 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
               {error}
             </div>
           )}
@@ -342,54 +364,64 @@ export default function TravelDeskPage() {
           <div className="space-y-6">
             {/* Employee Details */}
             <div className="space-y-3">
-              <h2 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">
-                Employee Details
+              <h2 className="border-b border-gray-200 pb-2 text-lg font-semibold text-gray-900">
+                Employee details
               </h2>
               <div className="grid gap-3 sm:grid-cols-2">
                 <div>
-                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Name as per Govt ID</p>
-                  <p className="text-sm text-gray-900 mt-1">{name}</p>
+                  <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
+                    Name as per Govt ID
+                  </p>
+                  <p className="mt-1 text-sm text-gray-900">{name}</p>
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Employee ID</p>
-                  <p className="text-sm text-gray-900 mt-1">{employeeId}</p>
+                  <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
+                    Employee ID
+                  </p>
+                  <p className="mt-1 text-sm text-gray-900">{employeeId}</p>
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Mobile</p>
-                  <p className="text-sm text-gray-900 mt-1">{mobile}</p>
+                  <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Mobile</p>
+                  <p className="mt-1 text-sm text-gray-900">{mobile}</p>
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Email</p>
-                  <p className="text-sm text-gray-900 mt-1">{email}</p>
+                  <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Email</p>
+                  <p className="mt-1 text-sm text-gray-900">{email}</p>
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Grade</p>
-                  <p className="text-sm text-gray-900 mt-1">{grade}</p>
+                  <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Grade</p>
+                  <p className="mt-1 text-sm text-gray-900">{grade}</p>
                 </div>
               </div>
             </div>
 
             {/* Trip Details */}
             <div className="space-y-3">
-              <h2 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">
-                Trip Details
+              <h2 className="border-b border-gray-200 pb-2 text-lg font-semibold text-gray-900">
+                Trip details
               </h2>
               <div className="grid gap-3 sm:grid-cols-2">
                 <div>
-                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Origin</p>
-                  <p className="text-sm text-gray-900 mt-1">{origin}</p>
+                  <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Origin</p>
+                  <p className="mt-1 text-sm text-gray-900">{origin}</p>
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Destination</p>
-                  <p className="text-sm text-gray-900 mt-1">{destination}</p>
+                  <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
+                    Destination
+                  </p>
+                  <p className="mt-1 text-sm text-gray-900">{destination}</p>
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Departure Date</p>
-                  <p className="text-sm text-gray-900 mt-1">{formatDateDisplay(departDate)}</p>
+                  <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
+                    Departure date
+                  </p>
+                  <p className="mt-1 text-sm text-gray-900">{formatDateDisplay(departDate)}</p>
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Return Date</p>
-                  <p className="text-sm text-gray-900 mt-1">
+                  <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
+                    Return date
+                  </p>
+                  <p className="mt-1 text-sm text-gray-900">
                     {isOneWay ? (
                       <span className="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700">
                         One-way trip
@@ -402,8 +434,10 @@ export default function TravelDeskPage() {
                   </p>
                 </div>
                 <div className="sm:col-span-2">
-                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Purpose</p>
-                  <p className="text-sm text-gray-900 mt-1 whitespace-pre-wrap">{purpose}</p>
+                  <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
+                    Purpose
+                  </p>
+                  <p className="mt-1 whitespace-pre-wrap text-sm text-gray-900">{purpose}</p>
                 </div>
               </div>
             </div>
@@ -411,31 +445,37 @@ export default function TravelDeskPage() {
             {/* Additional Information */}
             {(modePreference || extraDetails) && (
               <div className="space-y-3">
-                <h2 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">
-                  Additional Information
+                <h2 className="border-b border-gray-200 pb-2 text-lg font-semibold text-gray-900">
+                  Additional information
                 </h2>
                 {modePreference && (
                   <div>
-                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Preferred Mode</p>
-                    <p className="text-sm text-gray-900 mt-1">{modePreference}</p>
+                    <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
+                      Preferred mode
+                    </p>
+                    <p className="mt-1 text-sm text-gray-900">{modePreference}</p>
                   </div>
                 )}
                 {extraDetails && (
                   <div>
-                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Additional Details</p>
-                    <p className="text-sm text-gray-900 mt-1 whitespace-pre-wrap">{extraDetails}</p>
+                    <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
+                      Additional details
+                    </p>
+                    <p className="mt-1 whitespace-pre-wrap text-sm text-gray-900">
+                      {extraDetails}
+                    </p>
                   </div>
                 )}
               </div>
             )}
 
             {/* Actions */}
-            <div className="flex items-center justify-between gap-3 pt-4 border-t border-gray-200">
+            <div className="flex items-center justify-between gap-3 border-t border-gray-200 pt-4">
               <Button variant="secondary" onClick={() => setView('form')} disabled={isSubmitting}>
                 Back
               </Button>
               <Button onClick={handleConfirm} disabled={isSubmitting}>
-                {isSubmitting ? 'Sending request...' : 'Confirm and Send'}
+                {isSubmitting ? 'Sending request...' : 'Confirm and send'}
               </Button>
             </div>
           </div>
@@ -444,39 +484,6 @@ export default function TravelDeskPage() {
     );
   }
 
-  // Success View
-  return (
-    <div className="space-y-6">
-      <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm max-w-2xl mx-auto text-center">
-        <div className="space-y-4">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-            <svg
-              className="h-6 w-6 text-green-600"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
-          </div>
-          <div>
-            <h2 className="text-2xl font-semibold text-gray-900">Travel request submitted!</h2>
-            <p className="mt-2 text-sm text-gray-600">
-              {submitMessage || 'Your travel request has been sent to the Travel Desk.'}
-            </p>
-          </div>
-          <div className="pt-4">
-            <Button onClick={handleCreateAnother}>
-              Create another request
-            </Button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  return null;
 }
+
