@@ -114,6 +114,7 @@ export default function ServiceDeskPage() {
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<ApiResponse | null>(null);
   const [shouldAutoSuggest, setShouldAutoSuggest] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   // Seed Details when navigated from Ask Beacon with ?details=...
   useEffect(() => {
@@ -216,7 +217,6 @@ export default function ServiceDeskPage() {
 
     setIsSubmitting(true);
     setError(null);
-    setResult(null);
 
     try {
       const payload: ItServiceFormState = { ...form };
@@ -233,6 +233,17 @@ export default function ServiceDeskPage() {
       }
 
       setResult(data);
+
+       // On success, reset the form while keeping identity fields, and show a confirmation modal
+       if (res.ok) {
+         setForm((prev) => ({
+           ...initialFormState,
+           name: prev.name,
+           employeeId: prev.employeeId,
+           email: prev.email,
+         }));
+         setShowSuccessModal(true);
+       }
     } catch (err: any) {
       setError(err.message || 'Failed to submit IT request.');
     } finally {
@@ -524,6 +535,26 @@ export default function ServiceDeskPage() {
           </div>
         </div>
       </div>
+
+      {showSuccessModal && (
+        <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/40">
+          <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
+            <h2 className="text-lg font-semibold text-gray-900">Request sent</h2>
+            <p className="mt-2 text-sm text-gray-700">
+              {result?.message ||
+                'Your IT request has been submitted. The IT Service Desk will reach out.'}
+            </p>
+            <p className="mt-2 text-xs text-gray-500">
+              You&apos;ll also receive a copy of the request by email.
+            </p>
+            <div className="mt-4 flex justify-end">
+              <Button size="sm" onClick={() => setShowSuccessModal(false)}>
+                OK
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
