@@ -36,7 +36,9 @@ export async function POST(req: NextRequest) {
     }
 
     if (!travelDeskEmail) {
-      console.warn('TRAVEL_DESK_EMAIL is not set. Travel request will be validated but no email sent.');
+      console.warn(
+        'TRAVEL_DESK_EMAIL is not set. Travel request will be validated but no email sent.'
+      );
       return NextResponse.json({
         status: 'accepted',
         message:
@@ -69,8 +71,16 @@ export async function POST(req: NextRequest) {
             : ''
         }
         <li><strong>Purpose:</strong> ${body.purpose}</li>
-        ${body.modePreference ? `<li><strong>Preferred mode:</strong> ${body.modePreference}</li>` : ''}
-        ${body.extraDetails ? `<li><strong>Additional details:</strong> ${body.extraDetails}</li>` : ''}
+        ${
+          body.modePreference
+            ? `<li><strong>Preferred mode:</strong> ${body.modePreference}</li>`
+            : ''
+        }
+        ${
+          body.extraDetails
+            ? `<li><strong>Additional details:</strong> ${body.extraDetails}</li>`
+            : ''
+        }
       </ul>
     `;
 
@@ -100,6 +110,7 @@ export async function POST(req: NextRequest) {
 
     const mailResult = await sendMailViaGraph({
       to: [travelDeskEmail],
+      cc: body.email ? [body.email] : undefined,
       subject,
       htmlBody,
       textBody: textBodyLines.join('\n'),
@@ -130,3 +141,4 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
