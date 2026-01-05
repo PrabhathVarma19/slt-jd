@@ -238,7 +238,7 @@ export default function ServiceDeskPage() {
           href="/"
           className="inline-flex items-center text-xs font-medium text-blue-700 hover:underline"
         >
-          Back to Home
+          ← Back to Home
         </Link>
       </div>
 
