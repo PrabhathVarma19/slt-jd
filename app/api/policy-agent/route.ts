@@ -138,6 +138,118 @@ function extractKeyRules(answer: string): string | null {
   return candidates.slice(0, 4).join('\n');
 }
 
+// Small set of pre-reviewed "golden" answers for very common, high‑impact questions.
+// These bypass the model for speed and consistency, but still return lightweight sources.
+function getGoldenAnswer(question: string, mode?: string): {
+  answer: string;
+  sources?: Array<{ title?: string; section?: string; page?: number; link?: string | null }>;
+} | null {
+  const q = question.toLowerCase();
+  const m = mode ?? 'default';
+
+  // Return to Office expectations – days in office per week.
+  if (
+    (q.includes('return to office') || q.includes('rto')) &&
+    (q.includes('how many') || q.includes('days') || q.includes('in office'))
+  ) {
+    const answer =
+      'According to the Trianz India Return to Office (RTO) Policy, associates are expected to work from the office for a minimum of three (3) designated days per week as per the roster agreed with their manager. ' +
+      'Standard working hours remain nine (9) hours per day, including a one‑hour lunch break. ' +
+      'Exceptions for critical medical conditions or caregiving responsibilities can be approved case‑by‑case by HR and leadership for a defined period, after which they are reviewed. ' +
+      'If you believe you need an exception, speak with your manager and HR before changing your working pattern.';
+
+    return {
+      answer,
+      sources: [
+        {
+          title: 'Trianz India Return to Office Policy',
+          section: '3. Expectations',
+          page: 1,
+          link: null,
+        },
+      ],
+    };
+  }
+
+  // Travel modes / eligibility by grade.
+  if (
+    (q.includes('travel mode') ||
+      q.includes('mode of transport') ||
+      (q.includes('travel') && q.includes('grade'))) &&
+    q.includes('policy')
+  ) {
+    const answer =
+      'Under the Trianz India Travel Policy (domestic travel – “Mode of Transport – Eligibility”):\n\n' +
+      '- Air: Economy class air travel is eligible for associates in Grade 5 and above. Associates who are not eligible for air travel may still travel by air with prior approval from the divisional or business head in situations such as emergencies, critical customer service, long rail/road journeys (18 hours or more), or where rail/road fare is greater than or equal to airfare.\n' +
+      '- Rail: AC 2‑tier / AC Chair‑car / AC 2‑tier sleeper / AC‑3‑tier sleeper are allowed for all grades. Air‑conditioned 1st Class rail travel is typically allowed from Grade 9 and above.\n' +
+      '- Road: Air‑conditioned coach / Luxury / Volvo buses are allowed for all grades.\n' +
+      '- When convenient overnight public transport is available, associates in Salary Group 8 and below are expected to use it (for example, overnight trains on routes such as Bangalore–Chennai).\n\n' +
+      'For any specific trip, you should still check the latest travel policy and obtain approvals where required (especially for air travel when your grade is normally not eligible).';
+
+    return {
+      answer,
+      sources: [
+        {
+          title: 'Trianz India Travel Policy',
+          section: '4.1 Mode of Transport – Eligibility',
+          page: 1,
+          link: null,
+        },
+      ],
+    };
+  }
+
+  // Annual leave entitlement for India associates.
+  if (
+    (q.includes('leave days') || q.includes('annual leave') || q.includes('earned leave')) &&
+    (q.includes('year') || q.includes('per year') || q.includes('in a year'))
+  ) {
+    const answer =
+      'For Trianz India associates, the standard annual leave entitlements documented in the HR policies are:\n\n' +
+      '- Earned Leave: 18 working days per year.\n' +
+      '- Sick / Contingency Leave: 6 working days per year.\n' +
+      '- Paternity Leave: 5 working days (where applicable).\n' +
+      '- Adoption Leave: 10 working days (for eligible adoption cases).\n' +
+      '- Bereavement Leave: 5 working days.\n\n' +
+      'These numbers apply to full‑time India associates as per the current policy. Always check the latest HR communication or your offer letter for any role‑ or location‑specific differences, and speak with HR if you have a special case.';
+
+    return {
+      answer,
+      sources: [
+        {
+          title: 'Trianz India HR Policies',
+          section: 'Leave entitlements',
+          page: 1,
+          link: null,
+        },
+      ],
+    };
+  }
+
+  // Probation period for new joiners.
+  if (q.includes('probation') && (q.includes('period') || q.includes('how long'))) {
+    const answer =
+      'For most new Trianz India associates, the probation period defined in the HR policies is six (6) months from the date of joining, unless a different duration is explicitly mentioned in the offer letter or employment contract. ' +
+      'During probation, performance, conduct, and cultural fit are reviewed; confirmation is communicated in writing once the probation period is successfully completed. ' +
+      'If your offer letter or local law specifies a different probation duration, that specific document takes precedence over the generic policy.';
+
+    return {
+      answer,
+      sources: [
+        {
+          title: 'Trianz India HR Policies',
+          section: 'Probation and confirmation',
+          page: 1,
+          link: null,
+        },
+      ],
+    };
+  }
+
+  // Default: no golden answer match.
+  return null;
+}
+
 function getPolicyChunks(): PolicyChunk[] {
   if (cachedChunks) return cachedChunks;
 
@@ -288,9 +400,9 @@ function extractRtoRules(text: string): { attendance?: string; hours?: string } 
 
 export async function POST(req: NextRequest) {
   try {
-      const body = await req.json();
-      const mode: 'default' | 'new_joiner' | 'expenses' =
-        (body?.mode as 'default' | 'new_joiner' | 'expenses') || 'default';
+    const body = await req.json();
+    const mode: 'default' | 'new_joiner' | 'expenses' =
+      (body?.mode as 'default' | 'new_joiner' | 'expenses') || 'default';
     const style: 'standard' | 'how_to' =
       (body?.style as 'standard' | 'how_to') || 'standard';
     const rawMessages = Array.isArray(body?.messages) ? body.messages : [];
@@ -317,6 +429,17 @@ export async function POST(req: NextRequest) {
     }
     if (!process.env.OPENAI_API_KEY) {
       return NextResponse.json({ error: 'OPENAI_API_KEY not set' }, { status: 500 });
+    }
+
+    // Check for a pre-reviewed "golden" answer first for very common FAQs.
+    const golden = getGoldenAnswer(question, mode);
+    if (golden) {
+      const keyRules = extractKeyRules(golden.answer);
+      return NextResponse.json({
+        answer: golden.answer,
+        keyRules,
+        sources: golden.sources ?? [],
+      });
     }
 
     // Build an "effective question" for retrieval so that short / ambiguous

@@ -26,6 +26,33 @@ interface PolicyAgentResponse {
   sources?: PolicySource[];
 }
 
+function groupSources(sources: PolicySource[]) {
+  const map = new Map<
+    string,
+    { title: string; sections: string[]; pages: number[]; link: string | null }
+  >();
+
+  for (const src of sources) {
+    const title = (src.title || 'Untitled').trim();
+    if (!map.has(title)) {
+      map.set(title, { title, sections: [], pages: [], link: src.link ?? null });
+    }
+    const entry = map.get(title)!;
+    if (src.section) {
+      const s = src.section.trim();
+      if (s && !entry.sections.includes(s)) entry.sections.push(s);
+    }
+    if (typeof src.page === 'number' && !entry.pages.includes(src.page)) {
+      entry.pages.push(src.page);
+    }
+    if (!entry.link && src.link) {
+      entry.link = src.link;
+    }
+  }
+
+  return Array.from(map.values());
+}
+
 const QUICK_QUESTIONS: string[] = [
   'What is the return to office policy?',
   'How many days do I need to be in office?',
@@ -489,36 +516,36 @@ export default function PolicyAgentPage() {
           )}
           {lastAssistantMessage && sources && sources.length > 0 && (
             <div className="space-y-2">
-              {sources
-                .filter(
-                  (src, index, all) =>
-                    all.findIndex((s) => (s.title || '').trim() === (src.title || '').trim()) === index
-                )
-                .map((src, idx) => (
-                  <div key={idx} className="rounded-md border border-gray-200 p-3 text-sm text-gray-700">
-                    <div className="flex items-center justify-between">
-                      <div className="font-medium text-gray-900">
-                        {src.title || 'Untitled'}
-                        {src.section ? (
-                          <span className="ml-1 text-xs font-normal text-gray-500">({src.section})</span>
-                        ) : null}
-                      </div>
-                      <span className="text-xs uppercase tracking-wide text-gray-500">
-                        Source {idx + 1}
-                      </span>
-                    </div>
-                    {src.link && (
-                      <a
-                        className="mt-2 inline-flex text-xs text-blue-700 hover:underline"
-                        href={src.link}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        Open document
-                      </a>
-                    )}
+              {groupSources(sources).map((src, idx) => (
+                <div key={idx} className="rounded-md border border-gray-200 p-3 text-sm text-gray-700">
+                  <div className="flex items-center justify-between">
+                    <div className="font-medium text-gray-900">{src.title}</div>
+                    <span className="text-xs uppercase tracking-wide text-gray-500">
+                      Source {idx + 1}
+                    </span>
                   </div>
-                ))}
+                  {(src.sections.length > 0 || src.pages.length > 0) && (
+                    <p className="mt-1 text-xs text-gray-600">
+                      {src.sections.length > 0 && (
+                        <span>Sections: {src.sections.join(', ')}.</span>
+                      )}{' '}
+                      {src.pages.length > 0 && (
+                        <span>Pages: {src.pages.join(', ')}.</span>
+                      )}
+                    </p>
+                  )}
+                  {src.link && (
+                    <a
+                      className="mt-2 inline-flex text-xs text-blue-700 hover:underline"
+                      href={src.link}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Open document
+                    </a>
+                  )}
+                </div>
+              ))}
             </div>
           )}
           {lastAssistantMessage && (!sources || sources.length === 0) && (
