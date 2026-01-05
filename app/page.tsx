@@ -123,14 +123,8 @@ export default function Home() {
       </section>
 
       <section className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold text-gray-900">Agents for leadership &amp; ops</h2>
-          <p className="text-xs text-gray-500">
-            Built for CIO, SLT and PMs to prepare decisions faster.
-          </p>
-        </div>
         <div className="grid gap-4 md:grid-cols-3">
-          {leadershipAgents.map((agent) => (
+          {AGENTS.map((agent) => (
             <Link
               key={agent.title}
               href={agent.link}
@@ -154,44 +148,6 @@ export default function Home() {
               </div>
               <div className="mt-4 text-xs font-medium text-blue-700 group-hover:underline">
                 {agent.title}
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      <section className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold text-gray-900">Agents for everyone</h2>
-          <p className="text-xs text-gray-500">
-            Self-service helpers for policies, onboarding, travel and comms.
-          </p>
-        </div>
-        <div className="grid gap-4 md:grid-cols-3">
-          {orgAgents.map((agent) => (
-            <Link
-              key={agent.title}
-              href={agent.link}
-              className="group rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:border-gray-300 hover:shadow-md"
-            >
-              <div className="flex items-start gap-3">
-                <div
-                  className={`flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br ${agent.accent} text-xs font-semibold text-white`}
-                >
-                  {agent.label.slice(0, 2).toUpperCase()}
-                </div>
-                <div className="space-y-1">
-                  <p className="text-[11px] font-medium uppercase tracking-wide text-gray-500">
-                    {agent.label}
-                  </p>
-                  <h3 className="text-sm font-semibold text-gray-900 group-hover:text-gray-950">
-                    {agent.title}
-                  </h3>
-                  <p className="text-xs text-gray-600">{agent.description}</p>
-                </div>
-              </div>
-              <div className="mt-4 text-xs font-medium text-blue-700 group-hover:underline">
-                Open {agent.title}
               </div>
             </Link>
           ))}
