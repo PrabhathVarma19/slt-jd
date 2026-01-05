@@ -6,7 +6,14 @@ import Button from '@/components/ui/button';
 import Input from '@/components/ui/input';
 import Textarea from '@/components/ui/textarea';
 
-type RequestType = 'access' | 'hardware' | 'software' | 'subscription' | 'password' | 'other';
+type RequestType =
+  | ''
+  | 'access'
+  | 'hardware'
+  | 'software'
+  | 'subscription'
+  | 'password'
+  | 'other';
 type ImpactLevel = 'blocker' | 'high' | 'medium' | 'low';
 type DurationType = 'permanent' | 'temporary';
 
@@ -38,7 +45,7 @@ const initialFormState: ItServiceFormState = {
   employeeId: '',
   email: '',
   grade: '',
-  requestType: 'other',
+  requestType: '',
   system: '',
   project: '',
   managerEmail: '',
@@ -200,6 +207,8 @@ export default function ServiceDeskPage() {
     !!form.employeeId.trim() &&
     !!form.email.trim() &&
     !!form.details.trim() &&
+    !!form.requestType &&
+    !!form.system.trim() &&
     !isSubmitting;
 
   const handleSubmit = async () => {
@@ -322,13 +331,18 @@ export default function ServiceDeskPage() {
 
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-gray-700">Category</label>
+              <label className="text-xs font-medium text-gray-700">
+                Category <span className="text-red-500">*</span>
+              </label>
               <select
                 className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-xs text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 value={form.requestType}
                 onChange={(e) => handleChange('requestType', e.target.value as RequestType)}
                 disabled={isSubmitting}
               >
+                <option value="" disabled>
+                  Choose a category
+                </option>
                 <option value="access">System / application access</option>
                 <option value="hardware">Hardware / devices</option>
                 <option value="software">Software install</option>
@@ -339,7 +353,7 @@ export default function ServiceDeskPage() {
             </div>
             <div className="space-y-1.5">
               <label className="text-xs font-medium text-gray-700">
-                Subcategory / system or application
+                Subcategory / system or application <span className="text-red-500">*</span>
               </label>
               <Input
                 value={form.system}
