@@ -118,8 +118,9 @@ Respond with JSON only, no explanation.`;
 
     const requestTypeLabelMap: Record<string, string> = {
       access: 'System / application access',
-      laptop: 'New laptop / hardware',
-      software: 'Software install / license',
+      hardware: 'Hardware / devices',
+      software: 'Software install',
+      subscription: 'Subscription / SaaS access',
       password: 'Password / account issue',
       other: 'Other IT request',
     };
@@ -190,6 +191,7 @@ Respond with JSON only, no explanation.`;
 
     const mailResult = await sendMailViaGraph({
       to: [itDeskEmail],
+      cc: email ? [email] : undefined,
       subject,
       htmlBody,
       textBody: textLines.join('\n'),

@@ -5,6 +5,7 @@ const senderUpn = process.env.GRAPH_SENDER_UPN;
 
 export interface GraphMailOptions {
   to: string[];
+  cc?: string[];
   subject: string;
   htmlBody: string;
   textBody?: string;
@@ -75,6 +76,9 @@ export async function sendMailViaGraph(options: GraphMailOptions): Promise<{ ok:
         toRecipients: options.to.map((address) => ({
           emailAddress: { address },
         })),
+        ccRecipients: (options.cc || []).map((address) => ({
+          emailAddress: { address },
+        })),
         replyTo: (options.replyTo || []).map((address) => ({
           emailAddress: { address },
         })),
@@ -108,4 +112,3 @@ export async function sendMailViaGraph(options: GraphMailOptions): Promise<{ ok:
     return { ok: false, error: error?.message || 'Unknown Graph error' };
   }
 }
-
