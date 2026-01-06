@@ -318,12 +318,11 @@ export default function NewJoinerBuddyPage() {
             )}
           </div>
 
-          <div className="relative flex-1 min-h-0">
-            <ScrollArea
-              ref={messagesRef}
-              className="h-full chat-scroll rounded-2xl bg-muted"
-            >
-              <div className="p-3 space-y-3">
+          {/* Grey chat surface (messages + composer) */}
+          <div className="flex flex-col flex-1 min-h-0 rounded-2xl bg-muted p-3">
+            <div className="relative flex-1 min-h-0">
+              <ScrollArea ref={messagesRef} className="h-full chat-scroll">
+                <div className="space-y-3">
                 {messages.length === 0 && (
                   <div className="flex justify-start">
                     <div className="inline-flex max-w-md flex-col gap-1 rounded-2xl bg-card px-3 py-2 text-sm text-slate-700 shadow-sm">
@@ -373,37 +372,36 @@ export default function NewJoinerBuddyPage() {
                     </div>
                   </div>
                 )}
-              </div>
-            </ScrollArea>
+                </div>
+              </ScrollArea>
 
-            {hasUnread && !isAtBottom && (
-              <Button
-                type="button"
-                size="sm"
-                variant="secondary"
-                className="absolute bottom-3 right-3 rounded-full shadow-sm"
-                onClick={() => {
-                  scrollToBottom('smooth');
-                  setHasUnread(false);
-                }}
-              >
-                Jump to latest
-              </Button>
-            )}
-          </div>
+              {hasUnread && !isAtBottom && (
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="secondary"
+                  className="absolute bottom-3 right-3 rounded-full shadow-sm"
+                  onClick={() => {
+                    scrollToBottom('smooth');
+                    setHasUnread(false);
+                  }}
+                >
+                  Jump to latest
+                </Button>
+              )}
+            </div>
 
-          {error && <ErrorBar message={error} className="mt-2" />}
+            {error && <ErrorBar message={error} className="mt-3" />}
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-700">Ask a question</label>
-            <div className="flex items-end gap-3">
+            <div className="mt-3 space-y-2">
+              <div className="flex items-end gap-3">
               <Textarea
-                rows={3}
+                rows={2}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder="e.g., What should I do before my first day?"
-                className="flex-1 resize-none rounded-2xl"
+                className="flex-1 resize-none rounded-2xl bg-card"
               />
               <Button
                 className="rounded-full px-5"
@@ -419,10 +417,11 @@ export default function NewJoinerBuddyPage() {
                   'Ask'
                 )}
               </Button>
+              </div>
+              <p className="text-xs text-slate-500">
+                Press Enter to send. Shift+Enter for a new line.
+              </p>
             </div>
-            <p className="text-xs text-slate-500">
-              Press Enter to send. Shift+Enter for a new line.
-            </p>
           </div>
         </div>
 
