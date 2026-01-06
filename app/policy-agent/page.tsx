@@ -511,7 +511,7 @@ export default function PolicyAgentPage() {
             </ScrollArea>
           </div>
 
-          <div className="bg-card rounded-3xl shadow-sm p-4 space-y-3 flex flex-col min-h-0 flex-1">
+          <div className="bg-card rounded-3xl shadow-sm p-4 space-y-3 flex flex-col min-h-0 flex-1 overflow-hidden">
             <h2 className="text-sm font-semibold text-slate-900">Sources</h2>
 
             {!lastAssistantMessage && (
@@ -522,7 +522,7 @@ export default function PolicyAgentPage() {
 
             <ScrollArea className="flex-1 min-h-0 pr-2">
               {lastAssistantMessage && sourcesGrouped.length > 0 && (
-                <div className="space-y-2">
+                <div className="space-y-2 pb-32">
                   {sourcesGrouped.map((src, idx) => (
                     <div
                       key={idx}
@@ -560,7 +560,7 @@ export default function PolicyAgentPage() {
               )}
 
               {lastAssistantMessage && sourcesGrouped.length === 0 && (
-                <p className="text-sm text-slate-600">
+                <p className="text-sm text-slate-600 pb-32">
                   No sources were returned for the last answer.
                 </p>
               )}
