@@ -14,16 +14,18 @@ export function BackToHome({
   className?: string;
   label?: string;
 }) {
+  const isIconOnly = !label;
   return (
     <Link
       href={href}
+      aria-label={label || "Back to Home"}
       className={cn(
         "inline-flex items-center gap-1 text-xs font-medium text-blue-700 hover:underline",
         className
       )}
     >
       <ChevronLeft className="h-4 w-4" />
-      <span>{label}</span>
+      {!isIconOnly && <span>{label}</span>}
     </Link>
   );
 }

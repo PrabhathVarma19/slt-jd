@@ -288,10 +288,10 @@ export default function NewJoinerBuddyPage() {
   }, [sources]);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-4 space-y-4">
+    <div className="max-w-6xl mx-auto px-4 py-4 space-y-3">
       <div className="space-y-1">
-        <div className="flex items-center gap-3">
-          <BackToHome className="text-xs" />
+        <div className="flex items-center gap-2">
+          <BackToHome label="" className="text-xs" />
           <h1 className="text-2xl font-semibold text-slate-900">New Joiner Buddy</h1>
         </div>
         <p className="text-sm text-slate-600">
@@ -299,7 +299,7 @@ export default function NewJoinerBuddyPage() {
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] md:h-[calc(100vh-220px)] min-h-[560px]">
+      <div className="grid gap-6 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] md:h-[calc(100vh-180px)] min-h-[560px]">
         {/* Left: chat surface */}
         <div className="bg-card rounded-3xl shadow-sm p-4 sm:p-6 flex flex-col gap-4 h-[70vh] min-h-[560px] md:h-full md:min-h-0">
           <div className="flex items-center justify-between gap-3">
@@ -319,8 +319,11 @@ export default function NewJoinerBuddyPage() {
           </div>
 
           <div className="relative flex-1 min-h-0">
-            <ScrollArea ref={messagesRef} className="h-full chat-scroll">
-              <div className="bg-muted rounded-2xl p-3 space-y-3">
+            <ScrollArea
+              ref={messagesRef}
+              className="h-full chat-scroll rounded-2xl bg-muted"
+            >
+              <div className="p-3 space-y-3">
                 {messages.length === 0 && (
                   <div className="flex justify-start">
                     <div className="inline-flex max-w-md flex-col gap-1 rounded-2xl bg-card px-3 py-2 text-sm text-slate-700 shadow-sm">
