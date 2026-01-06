@@ -288,7 +288,7 @@ export default function NewJoinerBuddyPage() {
   }, [sources]);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-6 space-y-6">
+    <div className="max-w-6xl mx-auto px-4 py-4 space-y-6">
       <div className="space-y-2">
         <BackToHome />
         <h1 className="text-2xl font-semibold text-slate-900">New Joiner Buddy</h1>
@@ -300,134 +300,19 @@ export default function NewJoinerBuddyPage() {
       <div className="grid gap-6 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
         {/* Left: chat surface */}
         <div className="bg-card rounded-3xl shadow-sm p-4 sm:p-6 flex flex-col gap-4 min-h-[560px]">
-          <div className="space-y-2">
-            <p className="text-sm font-semibold text-slate-900">Quick questions</p>
-            <div className="space-y-2">
-              <div className="space-y-1">
-                <span className="block text-[11px] font-medium text-slate-500">Day 1</span>
-                <div className="flex flex-wrap gap-2">
-                  {DAY_ONE_QUESTIONS.map((q) => (
-                    <Button
-                      key={q}
-                      type="button"
-                      size="sm"
-                      variant="secondary"
-                      className="whitespace-nowrap text-xs rounded-full"
-                      onClick={() => handleAsk(q)}
-                      disabled={isLoading}
-                    >
-                      {q}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="space-y-1">
-                <span className="block text-[11px] font-medium text-slate-500">Access &amp; IT</span>
-                <div className="flex flex-wrap gap-2">
-                  {ACCESS_IT_QUESTIONS.map((q) => (
-                    <Button
-                      key={q}
-                      type="button"
-                      size="sm"
-                      variant="secondary"
-                      className="whitespace-nowrap text-xs rounded-full"
-                      onClick={() => handleAsk(q)}
-                      disabled={isLoading}
-                    >
-                      {q}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="space-y-1">
-                <span className="block text-[11px] font-medium text-slate-500">Policies &amp; leave</span>
-                <div className="flex flex-wrap gap-2">
-                  {POLICIES_QUESTIONS.map((q) => (
-                    <Button
-                      key={q}
-                      type="button"
-                      size="sm"
-                      variant="secondary"
-                      className="whitespace-nowrap text-xs rounded-full"
-                      onClick={() => handleAsk(q)}
-                      disabled={isLoading}
-                    >
-                      {q}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="space-y-1">
-                <span className="block text-[11px] font-medium text-slate-500">Travel &amp; expenses</span>
-                <div className="flex flex-wrap gap-2">
-                  {TRAVEL_EXPENSE_QUESTIONS.map((q) => (
-                    <Button
-                      key={q}
-                      type="button"
-                      size="sm"
-                      variant="secondary"
-                      className="whitespace-nowrap text-xs rounded-full"
-                      onClick={() => handleAsk(q)}
-                      disabled={isLoading}
-                    >
-                      {q}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="space-y-1">
-                <span className="block text-[11px] font-medium text-slate-500">Security &amp; Infosec</span>
-                <div className="flex flex-wrap gap-2">
-                  {SECURITY_QUESTIONS.map((q) => (
-                    <Button
-                      key={q}
-                      type="button"
-                      size="sm"
-                      variant="secondary"
-                      className="whitespace-nowrap text-xs rounded-full"
-                      onClick={() => handleAsk(q)}
-                      disabled={isLoading}
-                    >
-                      {q}
-                    </Button>
-                  ))}
-                </div>
-              </div>
+          <div className="flex items-center justify-between gap-3">
+            <div className="space-y-0.5">
+              <p className="text-sm font-semibold text-slate-900">Conversation</p>
+              <p className="text-xs text-slate-500">Ask your own question, or pick a suggested one on the right.</p>
             </div>
-
-            {recentQuestions.length > 0 && (
-              <div className="flex flex-wrap gap-2 items-center pt-1">
-                <span className="text-[11px] font-medium text-slate-500">Recent</span>
-                {recentQuestions.map((q) => (
-                  <Button
-                    key={q}
-                    type="button"
-                    size="sm"
-                    variant="ghost"
-                    className="whitespace-nowrap text-xs text-slate-600 rounded-full"
-                    onClick={() => handleAsk(q)}
-                    disabled={isLoading}
-                  >
-                    {q.length > 40 ? `${q.slice(0, 37)}...` : q}
-                  </Button>
-                ))}
-              </div>
-            )}
-
             {messages.length > 0 && (
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  className="text-[11px] text-blue-700 hover:underline"
-                  onClick={handleResetConversation}
-                >
-                  New conversation
-                </button>
-              </div>
+              <button
+                type="button"
+                className="text-[11px] text-blue-700 hover:underline"
+                onClick={handleResetConversation}
+              >
+                New conversation
+              </button>
             )}
           </div>
 
@@ -593,8 +478,126 @@ export default function NewJoinerBuddyPage() {
           </div>
         </div>
 
-        {/* Right: sources + checklist */}
+        {/* Right: suggested questions + sources + checklist */}
         <div className="space-y-4">
+          <div className="bg-card rounded-3xl shadow-sm p-4 space-y-3">
+            <h2 className="text-sm font-semibold text-slate-900">Suggested questions</h2>
+            <ScrollArea className="h-[320px] pr-2">
+              <div className="space-y-3">
+                <div className="space-y-1">
+                  <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">Day 1</p>
+                  <div className="flex flex-wrap gap-2">
+                    {DAY_ONE_QUESTIONS.map((q) => (
+                      <Button
+                        key={q}
+                        type="button"
+                        size="sm"
+                        variant="secondary"
+                        className="whitespace-nowrap text-xs rounded-full"
+                        onClick={() => handleAsk(q)}
+                        disabled={isLoading}
+                      >
+                        {q}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">Access and IT</p>
+                  <div className="flex flex-wrap gap-2">
+                    {ACCESS_IT_QUESTIONS.map((q) => (
+                      <Button
+                        key={q}
+                        type="button"
+                        size="sm"
+                        variant="secondary"
+                        className="whitespace-nowrap text-xs rounded-full"
+                        onClick={() => handleAsk(q)}
+                        disabled={isLoading}
+                      >
+                        {q}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">Policies and leave</p>
+                  <div className="flex flex-wrap gap-2">
+                    {POLICIES_QUESTIONS.map((q) => (
+                      <Button
+                        key={q}
+                        type="button"
+                        size="sm"
+                        variant="secondary"
+                        className="whitespace-nowrap text-xs rounded-full"
+                        onClick={() => handleAsk(q)}
+                        disabled={isLoading}
+                      >
+                        {q}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">Travel and expenses</p>
+                  <div className="flex flex-wrap gap-2">
+                    {TRAVEL_EXPENSE_QUESTIONS.map((q) => (
+                      <Button
+                        key={q}
+                        type="button"
+                        size="sm"
+                        variant="secondary"
+                        className="whitespace-nowrap text-xs rounded-full"
+                        onClick={() => handleAsk(q)}
+                        disabled={isLoading}
+                      >
+                        {q}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">Security</p>
+                  <div className="flex flex-wrap gap-2">
+                    {SECURITY_QUESTIONS.map((q) => (
+                      <Button
+                        key={q}
+                        type="button"
+                        size="sm"
+                        variant="secondary"
+                        className="whitespace-nowrap text-xs rounded-full"
+                        onClick={() => handleAsk(q)}
+                        disabled={isLoading}
+                      >
+                        {q}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+                {recentQuestions.length > 0 && (
+                  <div className="space-y-2">
+                    <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">Recent</p>
+                    <div className="flex flex-wrap gap-2">
+                      {recentQuestions.map((q) => (
+                        <Button
+                          key={q}
+                          type="button"
+                          size="sm"
+                          variant="ghost"
+                          className="whitespace-nowrap text-xs text-slate-600 rounded-full"
+                          onClick={() => handleAsk(q)}
+                          disabled={isLoading}
+                        >
+                          {q.length > 44 ? `${q.slice(0, 41)}...` : q}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </ScrollArea>
+          </div>
+
           <div className="bg-card rounded-3xl shadow-sm p-4 space-y-3">
             <h2 className="text-sm font-semibold text-slate-900">Sources</h2>
             {!lastAssistantMessage && (

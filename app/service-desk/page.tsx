@@ -262,7 +262,7 @@ export default function ServiceDeskPage() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-6 space-y-6">
+    <div className="max-w-6xl mx-auto px-4 py-4 space-y-6">
       <div className="space-y-2">
         <BackToHome />
         <h1 className="text-2xl font-semibold text-slate-900">Service Desk</h1>

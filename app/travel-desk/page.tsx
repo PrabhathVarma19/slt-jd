@@ -148,7 +148,7 @@ export default function TravelDeskPage() {
   // Form View
   if (view === 'form') {
     return (
-      <div className="max-w-6xl mx-auto px-4 py-6 space-y-6">
+      <div className="max-w-6xl mx-auto px-4 py-4 space-y-6">
         <div className="space-y-2">
           <BackToHome />
           <h1 className="text-2xl font-semibold text-slate-900">Travel Desk</h1>
@@ -386,7 +386,7 @@ export default function TravelDeskPage() {
   // Review View
   if (view === 'review') {
     return (
-      <div className="max-w-6xl mx-auto px-4 py-6 space-y-6">
+      <div className="max-w-6xl mx-auto px-4 py-4 space-y-6">
         <div className="space-y-2">
           <BackToHome />
           <h1 className="text-2xl font-semibold text-slate-900">Review travel request</h1>

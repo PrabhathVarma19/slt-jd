@@ -328,7 +328,7 @@ export default function PolicyAgentPage() {
   const sourcesGrouped = useMemo(() => groupSources(sources || []), [sources]);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-6 space-y-6">
+    <div className="max-w-6xl mx-auto px-4 py-4 space-y-6">
       <div className="space-y-2">
         <BackToHome />
         <h1 className="text-2xl font-semibold text-slate-900">Ask Beacon</h1>
@@ -343,7 +343,7 @@ export default function PolicyAgentPage() {
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="space-y-0.5">
               <p className="text-sm font-semibold text-slate-900">Conversation</p>
-              <p className="text-xs text-slate-500">Use quick questions or ask your own.</p>
+              <p className="text-xs text-slate-500">Ask your own question, or pick a suggested one on the right.</p>
             </div>
             <div className="inline-flex rounded-full bg-muted p-1 text-xs font-medium text-slate-700">
               <button
@@ -373,53 +373,17 @@ export default function PolicyAgentPage() {
             </div>
           </div>
 
-          <div className="space-y-2">
-            <div className="flex flex-wrap gap-2">
-              {QUICK_QUESTIONS.map((q) => (
-                <Button
-                  key={q}
-                  type="button"
-                  size="sm"
-                  variant="secondary"
-                  className="whitespace-nowrap text-xs rounded-full"
-                  onClick={() => handleAsk(q)}
-                  disabled={isLoading}
-                >
-                  {q}
-                </Button>
-              ))}
-              {recentQuestions.length > 0 && (
-                <>
-                  <span className="mx-1 text-xs text-slate-300 self-center">|</span>
-                  {recentQuestions.map((q) => (
-                    <Button
-                      key={q}
-                      type="button"
-                      size="sm"
-                      variant="ghost"
-                      className="whitespace-nowrap text-xs text-slate-600 rounded-full"
-                      onClick={() => handleAsk(q)}
-                      disabled={isLoading}
-                    >
-                      Recent: {q.length > 40 ? `${q.slice(0, 37)}...` : q}
-                    </Button>
-                  ))}
-                </>
-              )}
+          {messages.length > 0 && (
+            <div className="flex justify-end">
+              <button
+                type="button"
+                className="text-[11px] text-blue-700 hover:underline"
+                onClick={handleResetConversation}
+              >
+                New conversation
+              </button>
             </div>
-
-            {messages.length > 0 && (
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  className="text-[11px] text-blue-700 hover:underline"
-                  onClick={handleResetConversation}
-                >
-                  New conversation
-                </button>
-              </div>
-            )}
-          </div>
+          )}
 
           <div className="relative flex-1">
             <ScrollArea ref={messagesRef} className="h-full chat-scroll">
@@ -585,59 +549,106 @@ export default function PolicyAgentPage() {
           </div>
         </div>
 
-        {/* Right: sources */}
-        <div className="bg-card rounded-3xl shadow-sm p-4 space-y-3">
-          <h2 className="text-sm font-semibold text-slate-900">Sources</h2>
-
-          {!lastAssistantMessage && (
-            <p className="text-sm text-slate-600">
-              Sources will appear here after Beacon answers.
-            </p>
-          )}
-
-          {lastAssistantMessage && sourcesGrouped.length > 0 && (
-            <div className="space-y-2">
-              {sourcesGrouped.map((src, idx) => (
-                <div
-                  key={idx}
-                  className="rounded-2xl border border-border bg-background px-3 py-2 text-sm text-slate-700"
-                >
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="font-medium text-slate-900">{src.title}</div>
-                    <span className="text-[11px] uppercase tracking-wide text-slate-500">
-                      Source {idx + 1}
-                    </span>
-                  </div>
-                  {(src.sections.length > 0 || src.pages.length > 0) && (
-                    <p className="mt-1 text-xs text-slate-600">
-                      {src.sections.length > 0 && (
-                        <span>Sections: {src.sections.join(', ')}.</span>
-                      )}{' '}
-                      {src.pages.length > 0 && (
-                        <span>Pages: {src.pages.join(', ')}.</span>
-                      )}
-                    </p>
-                  )}
-                  {src.link && (
-                    <a
-                      className="mt-2 inline-flex text-xs text-blue-700 hover:underline"
-                      href={src.link}
-                      target="_blank"
-                      rel="noreferrer"
+        {/* Right: suggested questions + sources */}
+        <div className="space-y-4">
+          <div className="bg-card rounded-3xl shadow-sm p-4 space-y-3">
+            <h2 className="text-sm font-semibold text-slate-900">Suggested questions</h2>
+            <ScrollArea className="h-[320px] pr-2">
+              <div className="space-y-3">
+                <div className="flex flex-wrap gap-2">
+                  {QUICK_QUESTIONS.map((q) => (
+                    <Button
+                      key={q}
+                      type="button"
+                      size="sm"
+                      variant="secondary"
+                      className="whitespace-nowrap text-xs rounded-full"
+                      onClick={() => handleAsk(q)}
+                      disabled={isLoading}
                     >
-                      Open document
-                    </a>
-                  )}
+                      {q}
+                    </Button>
+                  ))}
                 </div>
-              ))}
-            </div>
-          )}
+                {recentQuestions.length > 0 && (
+                  <div className="space-y-2">
+                    <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+                      Recent
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {recentQuestions.map((q) => (
+                        <Button
+                          key={q}
+                          type="button"
+                          size="sm"
+                          variant="ghost"
+                          className="whitespace-nowrap text-xs text-slate-600 rounded-full"
+                          onClick={() => handleAsk(q)}
+                          disabled={isLoading}
+                        >
+                          {q.length > 44 ? `${q.slice(0, 41)}...` : q}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </ScrollArea>
+          </div>
 
-          {lastAssistantMessage && sourcesGrouped.length === 0 && (
-            <p className="text-sm text-slate-600">
-              No sources were returned for the last answer.
-            </p>
-          )}
+          <div className="bg-card rounded-3xl shadow-sm p-4 space-y-3">
+            <h2 className="text-sm font-semibold text-slate-900">Sources</h2>
+
+            {!lastAssistantMessage && (
+              <p className="text-sm text-slate-600">
+                Sources will appear here after Beacon answers.
+              </p>
+            )}
+
+            {lastAssistantMessage && sourcesGrouped.length > 0 && (
+              <div className="space-y-2">
+                {sourcesGrouped.map((src, idx) => (
+                  <div
+                    key={idx}
+                    className="rounded-2xl border border-border bg-background px-3 py-2 text-sm text-slate-700"
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="font-medium text-slate-900">{src.title}</div>
+                      <span className="text-[11px] uppercase tracking-wide text-slate-500">
+                        Source {idx + 1}
+                      </span>
+                    </div>
+                    {(src.sections.length > 0 || src.pages.length > 0) && (
+                      <p className="mt-1 text-xs text-slate-600">
+                        {src.sections.length > 0 && (
+                          <span>Sections: {src.sections.join(', ')}.</span>
+                        )}{' '}
+                        {src.pages.length > 0 && (
+                          <span>Pages: {src.pages.join(', ')}.</span>
+                        )}
+                      </p>
+                    )}
+                    {src.link && (
+                      <a
+                        className="mt-2 inline-flex text-xs text-blue-700 hover:underline"
+                        href={src.link}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Open document
+                      </a>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {lastAssistantMessage && sourcesGrouped.length === 0 && (
+              <p className="text-sm text-slate-600">
+                No sources were returned for the last answer.
+              </p>
+            )}
+          </div>
         </div>
       </div>
 
