@@ -288,10 +288,12 @@ export default function NewJoinerBuddyPage() {
   }, [sources]);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-4 space-y-6">
-      <div className="space-y-2">
-        <BackToHome />
-        <h1 className="text-2xl font-semibold text-slate-900">New Joiner Buddy</h1>
+    <div className="max-w-6xl mx-auto px-4 py-4 space-y-4">
+      <div className="space-y-1">
+        <div className="flex items-center gap-3">
+          <BackToHome className="text-xs" />
+          <h1 className="text-2xl font-semibold text-slate-900">New Joiner Buddy</h1>
+        </div>
         <p className="text-sm text-slate-600">
           Get quick, policy-grounded answers for day one, IT setup, RTO, travel and expenses.
         </p>

@@ -324,10 +324,12 @@ export default function PolicyAgentPage() {
   const sourcesGrouped = useMemo(() => groupSources(sources || []), [sources]);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-4 space-y-6">
-      <div className="space-y-2">
-        <BackToHome />
-        <h1 className="text-2xl font-semibold text-slate-900">Ask Beacon</h1>
+    <div className="max-w-6xl mx-auto px-4 py-4 space-y-4">
+      <div className="space-y-1">
+        <div className="flex items-center gap-3">
+          <BackToHome className="text-xs" />
+          <h1 className="text-2xl font-semibold text-slate-900">Ask Beacon</h1>
+        </div>
         <p className="text-sm text-slate-600">
           Ask policy and &quot;how do I...&quot; questions. Answers are grounded in internal Trianz policies with citations.
         </p>
