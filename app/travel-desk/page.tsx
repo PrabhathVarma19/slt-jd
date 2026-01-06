@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import Button from '@/components/ui/button';
 import Input from '@/components/ui/input';
 import Textarea from '@/components/ui/textarea';
@@ -13,6 +12,9 @@ import {
   CardDescription,
   CardContent,
 } from '@/components/ui/card';
+import { BackToHome } from '@/components/ui/back-to-home';
+import { Spinner } from '@/components/ui/spinner';
+import { useToast } from '@/lib/hooks/useToast';
 
 type View = 'form' | 'review';
 
@@ -38,6 +40,9 @@ export default function TravelDeskPage() {
   const [error, setError] = useState<string | null>(null);
   const [submitMessage, setSubmitMessage] = useState<string | null>(null);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [lastSubmitAt, setLastSubmitAt] = useState<string | null>(null);
+  const [lastSubmitOutcome, setLastSubmitOutcome] = useState<'success' | 'error' | null>(null);
+  const { showToast, ToastContainer } = useToast();
 
   const canSubmit =
     name.trim() &&
@@ -109,6 +114,11 @@ export default function TravelDeskPage() {
       }
 
       setSubmitMessage(data.message || 'Travel request emailed to the Travel Desk.');
+      setLastSubmitAt(
+        new Date().toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })
+      );
+      setLastSubmitOutcome('success');
+      showToast('Travel request emailed to Travel Desk. A copy was sent to you.', 'success');
 
       // Reset the form, return to form view, and show confirmation popup
       resetForm();
@@ -116,6 +126,11 @@ export default function TravelDeskPage() {
       setShowSuccessModal(true);
     } catch (err: any) {
       setError(err.message || 'Failed to submit travel request');
+      setLastSubmitAt(
+        new Date().toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })
+      );
+      setLastSubmitOutcome('error');
+      showToast('Could not send request. Check VPN or try again.', 'error');
     } finally {
       setIsSubmitting(false);
     }
@@ -133,32 +148,18 @@ export default function TravelDeskPage() {
   // Form View
   if (view === 'form') {
     return (
-      <div className="space-y-6">
-        <div className="mb-2">
-          <Link
-            href="/"
-            className="inline-flex items-center text-xs font-medium text-blue-700 hover:underline"
-          >
-            Back to Home
-          </Link>
+      <div className="max-w-6xl mx-auto px-4 py-6 space-y-6">
+        <div className="space-y-2">
+          <BackToHome />
+          <h1 className="text-2xl font-semibold text-slate-900">Travel Desk</h1>
+          <p className="text-sm text-slate-600">
+            Prepare and send structured travel requests. Beacon formats your ask into a clear email.
+          </p>
         </div>
 
-        <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-          <div className="space-y-2">
-            <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
-              Beacon Travel Desk
-            </p>
-            <h1 className="mt-1 text-2xl font-semibold text-gray-900">
-              Raise a travel request without writing an email.
-            </h1>
-            <p className="text-sm text-gray-600">
-              Fill the trip details and let Beacon prepare a clear, policy-aware request and an email
-              draft for the travel desk and your manager.
-            </p>
-          </div>
-        </div>
-
-        <Card className="max-w-4xl">
+        <div className="grid gap-6 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+          {/* Left: form */}
+          <Card>
           <CardHeader>
             <CardTitle>Travel Desk</CardTitle>
             <CardDescription>
@@ -329,6 +330,36 @@ export default function TravelDeskPage() {
           </CardContent>
         </Card>
 
+          {/* Right: status & guidance */}
+          <div className="space-y-4">
+            <div className="bg-card rounded-3xl shadow-sm p-4 space-y-3">
+              <h2 className="text-sm font-semibold text-slate-900">What happens next</h2>
+              <p className="text-sm text-slate-600">
+                Beacon formats your travel request and emails it to the Travel Desk. You are CC&apos;d on the email.
+              </p>
+            </div>
+            <div className="bg-card rounded-3xl shadow-sm p-4 space-y-3">
+              <h2 className="text-sm font-semibold text-slate-900">Submission status</h2>
+              {!lastSubmitAt && (
+                <p className="text-sm text-slate-600">No requests sent from this page yet.</p>
+              )}
+              {lastSubmitAt && (
+                <div className="space-y-1 text-sm">
+                  <p className="text-slate-700">
+                    Last submission: <span className="font-medium text-slate-900">{lastSubmitAt}</span>
+                  </p>
+                  {lastSubmitOutcome === 'success' && (
+                    <p className="text-green-700">Last travel request sent successfully.</p>
+                  )}
+                  {lastSubmitOutcome === 'error' && (
+                    <p className="text-red-700">Last attempt failed. Please try again.</p>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
         {showSuccessModal && (
           <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/40">
             <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
@@ -347,6 +378,7 @@ export default function TravelDeskPage() {
             </div>
           </div>
         )}
+        <ToastContainer />
       </div>
     );
   }
@@ -354,29 +386,24 @@ export default function TravelDeskPage() {
   // Review View
   if (view === 'review') {
     return (
-      <div className="space-y-6">
-        <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-          <div className="space-y-2">
-            <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
-              Beacon Travel Desk
-            </p>
-            <h1 className="mt-1 text-2xl font-semibold text-gray-900">
-              Review your travel request
-            </h1>
-            <p className="text-sm text-gray-600">
-              Please review the details below. Click Confirm to send the request to the Travel Desk.
-            </p>
-          </div>
+      <div className="max-w-6xl mx-auto px-4 py-6 space-y-6">
+        <div className="space-y-2">
+          <BackToHome />
+          <h1 className="text-2xl font-semibold text-slate-900">Review travel request</h1>
+          <p className="text-sm text-slate-600">
+            Please review the details below. Click Confirm to send the request to the Travel Desk.
+          </p>
         </div>
 
-        <Card className="mx-auto max-w-3xl">
-          <CardHeader>
-            <CardTitle>Review your travel request</CardTitle>
-            <CardDescription>
-              Please review the details below. Click Confirm to send the request to the Travel Desk.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
+        <div className="grid gap-6 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+          <Card className="w-full">
+            <CardHeader>
+              <CardTitle>Review your travel request</CardTitle>
+              <CardDescription>
+                Please review the details below. Click Confirm to send the request to the Travel Desk.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
             {error && (
               <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
                 {error}
@@ -496,11 +523,43 @@ export default function TravelDeskPage() {
                 Back
               </Button>
               <Button onClick={handleConfirm} disabled={isSubmitting}>
-                {isSubmitting ? 'Sending request...' : 'Confirm and send'}
+                {isSubmitting ? (
+                  <span className="inline-flex items-center gap-2">
+                    <Spinner />
+                    Submitting...
+                  </span>
+                ) : (
+                  'Confirm and send'
+                )}
               </Button>
             </div>
           </CardContent>
         </Card>
+
+          <div className="space-y-4">
+            <div className="bg-card rounded-3xl shadow-sm p-4 space-y-3">
+              <h2 className="text-sm font-semibold text-slate-900">Submission status</h2>
+              {!lastSubmitAt && (
+                <p className="text-sm text-slate-600">No requests sent from this page yet.</p>
+              )}
+              {lastSubmitAt && (
+                <div className="space-y-1 text-sm">
+                  <p className="text-slate-700">
+                    Last submission: <span className="font-medium text-slate-900">{lastSubmitAt}</span>
+                  </p>
+                  {lastSubmitOutcome === 'success' && (
+                    <p className="text-green-700">Last travel request sent successfully.</p>
+                  )}
+                  {lastSubmitOutcome === 'error' && (
+                    <p className="text-red-700">Last attempt failed. Please try again.</p>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <ToastContainer />
       </div>
     );
   }

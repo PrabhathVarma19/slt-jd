@@ -1,17 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import Button from '@/components/ui/button';
 import Input from '@/components/ui/input';
 import Textarea from '@/components/ui/textarea';
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from '@/components/ui/card';
+import { BackToHome } from '@/components/ui/back-to-home';
+import { Spinner } from '@/components/ui/spinner';
+import { useToast } from '@/lib/hooks/useToast';
 
 type RequestType =
   | ''
@@ -122,6 +117,9 @@ export default function ServiceDeskPage() {
   const [result, setResult] = useState<ApiResponse | null>(null);
   const [shouldAutoSuggest, setShouldAutoSuggest] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [lastSubmitAt, setLastSubmitAt] = useState<string | null>(null);
+  const [lastSubmitOutcome, setLastSubmitOutcome] = useState<'success' | 'error' | null>(null);
+  const { showToast, ToastContainer } = useToast();
 
   // Seed Details when navigated from Ask Beacon with ?details=...
   useEffect(() => {
@@ -240,6 +238,11 @@ export default function ServiceDeskPage() {
       }
 
       setResult(data);
+      setLastSubmitAt(
+        new Date().toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })
+      );
+      setLastSubmitOutcome('success');
+      showToast('Request emailed to Service Desk. A copy was sent to you.', 'success');
 
       // On success, reset the form completely and show a confirmation modal
       if (res.ok) {
@@ -248,46 +251,33 @@ export default function ServiceDeskPage() {
       }
     } catch (err: any) {
       setError(err.message || 'Failed to submit IT request.');
+      setLastSubmitAt(
+        new Date().toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })
+      );
+      setLastSubmitOutcome('error');
+      showToast('Could not send request. Check VPN or try again.', 'error');
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="space-y-6">
-      <div className="mb-2">
-        <Link
-          href="/"
-          className="inline-flex items-center text-xs font-medium text-blue-700 hover:underline"
-        >
-          &lt;- Back to Home
-        </Link>
+    <div className="max-w-6xl mx-auto px-4 py-6 space-y-6">
+      <div className="space-y-2">
+        <BackToHome />
+        <h1 className="text-2xl font-semibold text-slate-900">Service Desk</h1>
+        <p className="text-sm text-slate-600">
+          Raise structured IT and access requests. Beacon can suggest category, system and impact.
+        </p>
       </div>
 
-      <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-        <div className="space-y-2">
-          <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
-            Service Desk | IT &amp; access
-          </p>
-          <h1 className="text-2xl font-semibold text-gray-900">
-            Raise structured IT and access requests.
-          </h1>
-          <p className="text-sm text-gray-600">
-            Describe the issue in your own words and let Beacon suggest the right category and
-            system. Your request is formatted into a clear email and routed to the IT Service Desk.
-          </p>
-        </div>
-      </div>
-
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1.3fr)]">
-        <Card className="space-y-6">
-          <CardHeader>
-            <CardTitle>Service Desk - IT &amp; access</CardTitle>
-            <CardDescription>
-              Raise IT and access requests; Beacon helps suggest category, system and impact.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
+      <div className="grid gap-6 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+        {/* Left: form */}
+        <div className="bg-card rounded-3xl shadow-sm p-6 space-y-6">
+          <div className="space-y-1">
+            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              Requester
+            </p>
             <div className="grid gap-4 md:grid-cols-3">
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-gray-700">
@@ -321,7 +311,12 @@ export default function ServiceDeskPage() {
                 />
               </div>
             </div>
+          </div>
 
+          <div className="space-y-1">
+            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              Request details
+            </p>
             <div className="space-y-1.5">
               <label className="text-xs font-medium text-gray-700">
                 Details <span className="text-red-500">*</span>
@@ -420,7 +415,12 @@ export default function ServiceDeskPage() {
                 />
               </div>
             </div>
+          </div>
 
+          <div className="space-y-1">
+            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              Impact &amp; duration
+            </p>
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-gray-700">Impact</label>
@@ -477,6 +477,7 @@ export default function ServiceDeskPage() {
                 )}
               </div>
             </div>
+          </div>
 
             {error && (
               <div className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-800">
@@ -488,15 +489,22 @@ export default function ServiceDeskPage() {
               <p className="text-xs text-gray-500">
                 Beacon will send this request to the IT Service Desk with your email as reply-to.
               </p>
-              <Button size="sm" onClick={handleSubmit} disabled={!canSubmit}>
-                {isSubmitting ? 'Submitting...' : 'Submit IT request'}
+            <Button size="sm" onClick={handleSubmit} disabled={!canSubmit} className="rounded-full">
+              {isSubmitting ? (
+                <span className="inline-flex items-center gap-2">
+                  <Spinner />
+                  Submitting...
+                </span>
+              ) : (
+                'Submit IT request'
+              )}
               </Button>
             </div>
-          </CardContent>
-        </Card>
+        </div>
 
+        {/* Right: status & guidance */}
         <div className="space-y-4">
-          <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm space-y-3 text-sm text-gray-700">
+          <div className="bg-card rounded-3xl shadow-sm p-4 space-y-3 text-sm text-gray-700">
             <h2 className="text-sm font-semibold text-gray-900">What this covers</h2>
             <ul className="list-disc space-y-1 pl-5">
               <li>Access to internal systems (VPN, GitLab, ERP, BI tools, etc.).</li>
@@ -510,8 +518,31 @@ export default function ServiceDeskPage() {
             </p>
           </div>
 
-          <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm space-y-3 text-sm text-gray-700">
+          <div className="bg-card rounded-3xl shadow-sm p-4 space-y-3 text-sm text-gray-700">
+            <p className="text-sm font-semibold text-gray-900">What happens next</p>
+            <p className="text-sm text-gray-600">
+              Beacon formats your request and emails it to the IT Service Desk. You are CC&apos;d on the email.
+            </p>
+
             <h2 className="text-sm font-semibold text-gray-900">Submission status</h2>
+            {!lastSubmitAt && (
+              <p className="text-sm text-gray-600">
+                No requests sent from this page yet.
+              </p>
+            )}
+            {lastSubmitAt && (
+              <div className="space-y-1">
+                <p className="text-sm text-gray-700">
+                  Last submission: <span className="font-medium text-gray-900">{lastSubmitAt}</span>
+                </p>
+                {lastSubmitOutcome === 'success' && (
+                  <p className="text-sm text-green-700">Last request sent successfully.</p>
+                )}
+                {lastSubmitOutcome === 'error' && (
+                  <p className="text-sm text-red-700">Last attempt failed. Please try again.</p>
+                )}
+              </div>
+            )}
             {!result && !error && (
               <p className="text-sm text-gray-600">
                 After you submit, you&apos;ll see whether Beacon successfully emailed your request to
@@ -537,7 +568,7 @@ export default function ServiceDeskPage() {
             )}
           </div>
 
-          <div className="rounded-lg border border-gray-100 bg-gray-50 px-4 py-3 text-[11px] text-gray-500">
+          <div className="rounded-2xl bg-muted px-4 py-3 text-[11px] text-gray-500">
             Beacon does not override IT or security policies. It only formats and routes your request
             to the right team. For questions on what is allowed, ask Beacon about the relevant policy
             or contact IT / InfoSec.
@@ -564,6 +595,8 @@ export default function ServiceDeskPage() {
           </div>
         </div>
       )}
+
+      <ToastContainer />
     </div>
   );
 }

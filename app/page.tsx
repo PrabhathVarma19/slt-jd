@@ -95,20 +95,9 @@ const BUCKET_LABELS: Record<ToolBucket, string> = {
   Requests: 'Requests',
   Outputs: 'Outputs',
 };
-type ToolFilter = 'All' | ToolBucket;
-
-const FILTERS: { id: ToolFilter; label: string }[] = [
-  { id: 'All', label: 'All' },
-  { id: 'Ask', label: 'Ask' },
-  { id: 'Requests', label: 'Requests' },
-  { id: 'Outputs', label: 'Outputs' },
-];
 
 export default function Home() {
-  const [activeFilter, setActiveFilter] = useState<ToolFilter>('All');
-
-  const filteredTools =
-    activeFilter === 'All' ? TOOLS : TOOLS.filter((tool) => tool.bucket === activeFilter);
+  const buckets: ToolBucket[] = ['Ask', 'Requests', 'Outputs'];
 
   return (
     <div className="space-y-10">
@@ -245,61 +234,44 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Tools launcher with category chips */}
+      {/* Tools launcher */}
       <section id="tools" className="space-y-4">
         <h2 className="text-xl font-semibold text-slate-900">Tools in Beacon</h2>
         <p className="text-sm text-slate-600">Organized by how you use them.</p>
 
-        {/* Category chips */}
-        <div className="flex flex-wrap gap-2">
-          {FILTERS.map((filter) => {
-            const isActive = filter.id === activeFilter;
+        <div className="space-y-4">
+          {buckets.map((bucket) => {
+            const tools = TOOLS.filter((t) => t.bucket === bucket);
             return (
-              <button
-                key={filter.id}
-                type="button"
-                onClick={() => setActiveFilter(filter.id)}
-                className={[
-                  'rounded-full px-4 py-1.5 text-sm font-medium transition',
-                  isActive
-                    ? 'bg-slate-900 text-white shadow-sm'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200',
-                ].join(' ')}
-              >
-                {filter.label}
-              </button>
+              <div key={bucket} className="space-y-2">
+                <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+                  {BUCKET_LABELS[bucket]}
+                </h3>
+                <div className="space-y-2">
+                  {tools.map((tool) => (
+                    <Link
+                      key={tool.title}
+                      href={tool.href}
+                      className="flex items-center justify-between gap-4 rounded-2xl bg-card px-4 py-3 shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-md"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div
+                          className={`flex h-9 w-9 items-center justify-center rounded-full text-xs font-semibold ${tool.accent}`}
+                        >
+                          {tool.initials}
+                        </div>
+                        <div className="space-y-0.5">
+                          <p className="text-sm font-semibold text-slate-900">{tool.title}</p>
+                          <p className="text-xs text-slate-600">{tool.description}</p>
+                        </div>
+                      </div>
+                      <ChevronRight className="h-4 w-4 text-slate-400" aria-hidden="true" />
+                    </Link>
+                  ))}
+                </div>
+              </div>
             );
           })}
-        </div>
-
-        {/* Cards grid for selected category */}
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {filteredTools.map((tool) => (
-            <Card
-              key={tool.title}
-              className="flex flex-col justify-between rounded-2xl bg-card shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-            >
-              <Link href={tool.href} className="flex h-full flex-col justify-between">
-                <CardContent className="space-y-3 p-4">
-                  <div className="flex items-center gap-3">
-                    <div
-                      className={`flex h-9 w-9 items-center justify-center rounded-full text-xs font-semibold ${tool.accent}`}
-                    >
-                      {tool.initials}
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold text-slate-900">{tool.title}</p>
-                    </div>
-                  </div>
-                  <p className="text-xs text-slate-600">{tool.description}</p>
-                </CardContent>
-                <div className="flex items-center justify-between px-4 pb-3 pt-0 text-xs text-slate-600">
-                  <span className="font-medium">Open {tool.title}</span>
-                  <ChevronRight className="h-4 w-4 text-slate-400" aria-hidden="true" />
-                </div>
-              </Link>
-            </Card>
-          ))}
         </div>
       </section>
 
@@ -309,11 +281,11 @@ export default function Home() {
           <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
             How Beacon answers
           </p>
-          <div className="mt-2 space-y-1 text-xs text-slate-600 md:text-sm">
-            <p>• Grounded in internal sources (policies, HR/IT docs).</p>
-            <p>• Citations included (document and section).</p>
-            <p>• Uses approved email workflows; does not bypass approvals.</p>
-          </div>
+          <ul className="mt-2 space-y-1 list-disc pl-5 text-xs text-slate-600 md:text-sm">
+            <li>Grounded in internal sources (policies, HR/IT docs).</li>
+            <li>Citations included (document and section).</li>
+            <li>Uses approved email workflows; does not bypass approvals.</li>
+          </ul>
         </div>
       </section>
     </div>
