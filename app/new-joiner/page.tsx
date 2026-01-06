@@ -297,9 +297,9 @@ export default function NewJoinerBuddyPage() {
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+      <div className="grid gap-6 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] md:h-[calc(100vh-220px)] min-h-[560px]">
         {/* Left: chat surface */}
-        <div className="bg-card rounded-3xl shadow-sm p-4 sm:p-6 flex flex-col gap-4 h-[560px]">
+        <div className="bg-card rounded-3xl shadow-sm p-4 sm:p-6 flex flex-col gap-4 h-[70vh] min-h-[560px] md:h-full md:min-h-0">
           <div className="flex items-center justify-between gap-3">
             <div className="space-y-0.5">
               <p className="text-sm font-semibold text-slate-900">Conversation</p>
@@ -421,11 +421,11 @@ export default function NewJoinerBuddyPage() {
           </div>
         </div>
 
-        {/* Right: suggested questions + sources + checklist */}
-        <div className="space-y-4">
-          <div className="bg-card rounded-3xl shadow-sm p-4 space-y-3">
+        {/* Right: sidebar */}
+        <div className="h-[70vh] min-h-[560px] md:h-full md:min-h-0 md:sticky md:top-24 flex flex-col gap-4 min-h-0">
+          <div className="bg-card rounded-3xl shadow-sm p-4 space-y-3 flex flex-col min-h-0 max-h-[320px]">
             <h2 className="text-sm font-semibold text-slate-900">Suggested questions</h2>
-            <ScrollArea className="h-[320px] pr-2">
+            <ScrollArea className="flex-1 min-h-0 pr-2">
               <div className="space-y-3">
                 <div className="space-y-1">
                   <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">Day 1</p>
@@ -541,7 +541,7 @@ export default function NewJoinerBuddyPage() {
             </ScrollArea>
           </div>
 
-          <div className="bg-card rounded-3xl shadow-sm p-4 space-y-3">
+          <div className="bg-card rounded-3xl shadow-sm p-4 space-y-3 flex flex-col min-h-0 flex-1">
             <h2 className="text-sm font-semibold text-slate-900">Sources</h2>
             {!lastAssistantMessage && (
               <p className="text-sm text-slate-600">
@@ -549,46 +549,48 @@ export default function NewJoinerBuddyPage() {
               </p>
             )}
 
-            {lastAssistantMessage && uniqueSources.length > 0 && (
-              <div className="space-y-2">
-                {uniqueSources.map((src, idx) => (
-                  <div
-                    key={idx}
-                    className="rounded-2xl border border-border bg-background px-3 py-2 text-sm text-slate-700"
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="font-medium text-slate-900">
-                        {src.title || 'Untitled'}
-                        {src.section ? (
-                          <span className="ml-1 text-xs font-normal text-slate-500">
-                            ({src.section})
-                          </span>
-                        ) : null}
+            <ScrollArea className="flex-1 min-h-0 pr-2">
+              {lastAssistantMessage && uniqueSources.length > 0 && (
+                <div className="space-y-2">
+                  {uniqueSources.map((src, idx) => (
+                    <div
+                      key={idx}
+                      className="rounded-2xl border border-border bg-background px-3 py-2 text-sm text-slate-700"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="font-medium text-slate-900">
+                          {src.title || 'Untitled'}
+                          {src.section ? (
+                            <span className="ml-1 text-xs font-normal text-slate-500">
+                              ({src.section})
+                            </span>
+                          ) : null}
+                        </div>
+                        <span className="text-[11px] uppercase tracking-wide text-slate-500">
+                          Source {idx + 1}
+                        </span>
                       </div>
-                      <span className="text-[11px] uppercase tracking-wide text-slate-500">
-                        Source {idx + 1}
-                      </span>
+                      {src.link && (
+                        <a
+                          className="mt-2 inline-flex text-xs text-blue-700 hover:underline"
+                          href={src.link}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          Open document
+                        </a>
+                      )}
                     </div>
-                    {src.link && (
-                      <a
-                        className="mt-2 inline-flex text-xs text-blue-700 hover:underline"
-                        href={src.link}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        Open document
-                      </a>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
+                  ))}
+                </div>
+              )}
 
-            {lastAssistantMessage && uniqueSources.length === 0 && (
-              <p className="text-sm text-slate-600">
-                No sources were returned for the last answer.
-              </p>
-            )}
+              {lastAssistantMessage && uniqueSources.length === 0 && (
+                <p className="text-sm text-slate-600">
+                  No sources were returned for the last answer.
+                </p>
+              )}
+            </ScrollArea>
 
             {lastAssistantMessage && (
               <div className="pt-2 border-t border-border space-y-2">
@@ -646,27 +648,33 @@ export default function NewJoinerBuddyPage() {
             )}
           </div>
 
-          <div className="bg-card rounded-3xl shadow-sm p-4 space-y-3">
+          <div className="bg-card rounded-3xl shadow-sm p-4 space-y-3 flex flex-col min-h-0 max-h-[220px]">
             <h3 className="text-sm font-semibold text-slate-900">Day 1 checklist (example)</h3>
             <p className="text-xs text-slate-600">
               This is a generic checklist. Exact steps can vary by team and location.
             </p>
-            <ul className="text-xs text-slate-700 space-y-1 list-disc pl-4">
-              <li>Confirm your reporting manager and work location.</li>
-              <li>Complete HR onboarding formalities and document upload.</li>
-              <li>Set up corporate email, Teams, and VPN as per IT instructions.</li>
-              <li>Review RTO / work-from-home expectations with your manager.</li>
-              <li>Check mandatory trainings and due dates (InfoSec, POSH, etc.).</li>
-            </ul>
+            <ScrollArea className="flex-1 min-h-0 pr-2">
+              <div className="space-y-3">
+                <ul className="text-xs text-slate-700 space-y-1 list-disc pl-4">
+                  <li>Confirm your reporting manager and work location.</li>
+                  <li>Complete HR onboarding formalities and document upload.</li>
+                  <li>Set up corporate email, Teams, and VPN as per IT instructions.</li>
+                  <li>Review RTO / work-from-home expectations with your manager.</li>
+                  <li>Check mandatory trainings and due dates (InfoSec, POSH, etc.).</li>
+                </ul>
 
-            <h3 className="mt-3 text-sm font-semibold text-slate-900">First-week checklist</h3>
-            <ul className="text-xs text-slate-700 space-y-1 list-disc pl-4">
-              <li>Understand your role, project, and key deliverables for the first 30-90 days.</li>
-              <li>Clarify working hours, leave application process, and escalation paths.</li>
-              <li>Meet your immediate team and key stakeholders.</li>
-              <li>Bookmark key systems: HR portal, timesheet, expense tool, travel desk.</li>
-              <li>Note important email IDs (HR, IT helpdesk, Travel Desk, InfoSec).</li>
-            </ul>
+                <div>
+                  <h3 className="text-sm font-semibold text-slate-900">First-week checklist</h3>
+                  <ul className="mt-2 text-xs text-slate-700 space-y-1 list-disc pl-4">
+                    <li>Understand your role, project, and key deliverables for the first 30-90 days.</li>
+                    <li>Clarify working hours, leave application process, and escalation paths.</li>
+                    <li>Meet your immediate team and key stakeholders.</li>
+                    <li>Bookmark key systems: HR portal, timesheet, expense tool, travel desk.</li>
+                    <li>Note important email IDs (HR, IT helpdesk, Travel Desk, InfoSec).</li>
+                  </ul>
+                </div>
+              </div>
+            </ScrollArea>
           </div>
         </div>
       </div>

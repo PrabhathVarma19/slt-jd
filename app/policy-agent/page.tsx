@@ -81,7 +81,6 @@ type Feedback = 'up' | 'down' | null;
 export default function PolicyAgentPage() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
-  const [answerStyle, setAnswerStyle] = useState<'standard' | 'how_to'>('standard');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [sources, setSources] = useState<PolicySource[]>([]);
@@ -108,7 +107,7 @@ export default function PolicyAgentPage() {
   const lastUserMessage = [...messages].reverse().find((m) => m.role === 'user');
 
   const shouldShowServiceDeskCta = (() => {
-    if (!lastUserMessage || answerStyle !== 'how_to') return false;
+    if (!lastUserMessage) return false;
     const q = lastUserMessage.content.toLowerCase();
     // Simple keyword heuristic for IT / access type questions
     return (
@@ -126,7 +125,7 @@ export default function PolicyAgentPage() {
   })();
 
   const shouldShowTravelDeskCta = (() => {
-    if (!lastUserMessage || answerStyle !== 'how_to') return false;
+    if (!lastUserMessage) return false;
     const q = lastUserMessage.content.toLowerCase();
     return (
       q.includes('travel') ||
@@ -236,10 +235,7 @@ export default function PolicyAgentPage() {
     }
 
     const now = new Date().toISOString();
-    const apiUserContent =
-      answerStyle === 'how_to'
-        ? `${trimmed}\n\nPlease answer this as a numbered step-by-step how-to, with 3-8 steps and each step on its own line.`
-        : trimmed;
+    const apiUserContent = trimmed;
 
     const nextMessages: ChatMessage[] = [
       ...messages,
@@ -266,7 +262,7 @@ export default function PolicyAgentPage() {
             { role: 'user', content: apiUserContent, createdAt: now },
           ],
           mode: 'default',
-          style: answerStyle,
+          style: 'standard',
         }),
       });
       const data: PolicyAgentResponse & { error?: string } = await res.json();
@@ -337,39 +333,13 @@ export default function PolicyAgentPage() {
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+      <div className="grid gap-6 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] md:h-[calc(100vh-220px)] min-h-[560px]">
         {/* Left: chat surface */}
-        <div className="bg-card rounded-3xl shadow-sm p-4 sm:p-6 flex flex-col gap-4 h-[560px]">
+        <div className="bg-card rounded-3xl shadow-sm p-4 sm:p-6 flex flex-col gap-4 h-[70vh] min-h-[560px] md:h-full md:min-h-0">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="space-y-0.5">
               <p className="text-sm font-semibold text-slate-900">Conversation</p>
               <p className="text-xs text-slate-500">Ask your own question, or pick a suggested one on the right.</p>
-            </div>
-            <div className="inline-flex rounded-full bg-muted p-1 text-xs font-medium text-slate-700">
-              <button
-                type="button"
-                onClick={() => setAnswerStyle('standard')}
-                className={`rounded-full px-3 py-1 transition ${
-                  answerStyle === 'standard'
-                    ? 'bg-card text-slate-900 shadow-sm'
-                    : 'text-slate-500 hover:text-slate-900'
-                }`}
-                disabled={isLoading}
-              >
-                Standard
-              </button>
-              <button
-                type="button"
-                onClick={() => setAnswerStyle('how_to')}
-                className={`rounded-full px-3 py-1 transition ${
-                  answerStyle === 'how_to'
-                    ? 'bg-card text-slate-900 shadow-sm'
-                    : 'text-slate-500 hover:text-slate-900'
-                }`}
-                disabled={isLoading}
-              >
-                How-to
-              </button>
             </div>
           </div>
 
@@ -490,11 +460,11 @@ export default function PolicyAgentPage() {
           </div>
         </div>
 
-        {/* Right: suggested questions + sources */}
-        <div className="space-y-4">
-          <div className="bg-card rounded-3xl shadow-sm p-4 space-y-3">
+        {/* Right: sidebar */}
+        <div className="h-[70vh] min-h-[560px] md:h-full md:min-h-0 md:sticky md:top-24 flex flex-col gap-4 min-h-0">
+          <div className="bg-card rounded-3xl shadow-sm p-4 space-y-3 flex flex-col min-h-0 max-h-[320px]">
             <h2 className="text-sm font-semibold text-slate-900">Suggested questions</h2>
-            <ScrollArea className="h-[320px] pr-2">
+            <ScrollArea className="flex-1 min-h-0 pr-2">
               <div className="space-y-3">
                 <div className="flex flex-wrap gap-2">
                   {QUICK_QUESTIONS.map((q) => (
@@ -537,7 +507,7 @@ export default function PolicyAgentPage() {
             </ScrollArea>
           </div>
 
-          <div className="bg-card rounded-3xl shadow-sm p-4 space-y-3">
+          <div className="bg-card rounded-3xl shadow-sm p-4 space-y-3 flex flex-col min-h-0 flex-1">
             <h2 className="text-sm font-semibold text-slate-900">Sources</h2>
 
             {!lastAssistantMessage && (
@@ -546,49 +516,51 @@ export default function PolicyAgentPage() {
               </p>
             )}
 
-            {lastAssistantMessage && sourcesGrouped.length > 0 && (
-              <div className="space-y-2">
-                {sourcesGrouped.map((src, idx) => (
-                  <div
-                    key={idx}
-                    className="rounded-2xl border border-border bg-background px-3 py-2 text-sm text-slate-700"
-                  >
-                    <div className="flex items-center justify-between gap-2">
-                      <div className="font-medium text-slate-900">{src.title}</div>
-                      <span className="text-[11px] uppercase tracking-wide text-slate-500">
-                        Source {idx + 1}
-                      </span>
+            <ScrollArea className="flex-1 min-h-0 pr-2">
+              {lastAssistantMessage && sourcesGrouped.length > 0 && (
+                <div className="space-y-2">
+                  {sourcesGrouped.map((src, idx) => (
+                    <div
+                      key={idx}
+                      className="rounded-2xl border border-border bg-background px-3 py-2 text-sm text-slate-700"
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="font-medium text-slate-900">{src.title}</div>
+                        <span className="text-[11px] uppercase tracking-wide text-slate-500">
+                          Source {idx + 1}
+                        </span>
+                      </div>
+                      {(src.sections.length > 0 || src.pages.length > 0) && (
+                        <p className="mt-1 text-xs text-slate-600">
+                          {src.sections.length > 0 && (
+                            <span>Sections: {src.sections.join(', ')}.</span>
+                          )}{' '}
+                          {src.pages.length > 0 && (
+                            <span>Pages: {src.pages.join(', ')}.</span>
+                          )}
+                        </p>
+                      )}
+                      {src.link && (
+                        <a
+                          className="mt-2 inline-flex text-xs text-blue-700 hover:underline"
+                          href={src.link}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          Open document
+                        </a>
+                      )}
                     </div>
-                    {(src.sections.length > 0 || src.pages.length > 0) && (
-                      <p className="mt-1 text-xs text-slate-600">
-                        {src.sections.length > 0 && (
-                          <span>Sections: {src.sections.join(', ')}.</span>
-                        )}{' '}
-                        {src.pages.length > 0 && (
-                          <span>Pages: {src.pages.join(', ')}.</span>
-                        )}
-                      </p>
-                    )}
-                    {src.link && (
-                      <a
-                        className="mt-2 inline-flex text-xs text-blue-700 hover:underline"
-                        href={src.link}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        Open document
-                      </a>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
+                  ))}
+                </div>
+              )}
 
-            {lastAssistantMessage && sourcesGrouped.length === 0 && (
-              <p className="text-sm text-slate-600">
-                No sources were returned for the last answer.
-              </p>
-            )}
+              {lastAssistantMessage && sourcesGrouped.length === 0 && (
+                <p className="text-sm text-slate-600">
+                  No sources were returned for the last answer.
+                </p>
+              )}
+            </ScrollArea>
 
             {lastAssistantMessage && (
               <div className="pt-2 border-t border-border space-y-2">
@@ -633,6 +605,23 @@ export default function PolicyAgentPage() {
                       className="inline-flex items-center justify-center rounded-full bg-blue-600 px-4 py-2 text-xs font-medium text-white hover:bg-blue-700 self-start"
                     >
                       Open Service Desk
+                    </Link>
+                  </div>
+                )}
+
+                {shouldShowTravelDeskCta && lastUserMessage && (
+                  <div className="rounded-2xl bg-indigo-50 px-3 py-2 text-[11px] text-indigo-900 flex flex-col gap-2">
+                    <p>
+                      Need to send a structured travel request? Open Travel Desk with your question pre-filled.
+                    </p>
+                    <Link
+                      href={{
+                        pathname: '/travel-desk',
+                        query: { details: lastUserMessage.content },
+                      }}
+                      className="inline-flex items-center justify-center rounded-full bg-indigo-600 px-4 py-2 text-xs font-medium text-white hover:bg-indigo-700 self-start"
+                    >
+                      Open Travel Desk
                     </Link>
                   </div>
                 )}
