@@ -555,7 +555,7 @@ export default function NewJoinerBuddyPage() {
 
             <ScrollArea className="flex-1 min-h-0 pr-2">
               {lastAssistantMessage && uniqueSources.length > 0 && (
-                <div className="space-y-2 pb-32">
+                <div className="space-y-2">
                   {uniqueSources.map((src, idx) => (
                     <div
                       key={idx}
@@ -590,67 +590,67 @@ export default function NewJoinerBuddyPage() {
               )}
 
               {lastAssistantMessage && uniqueSources.length === 0 && (
-                <p className="text-sm text-slate-600 pb-32">
+                <p className="text-sm text-slate-600">
                   No sources were returned for the last answer.
                 </p>
               )}
             </ScrollArea>
-
-            {lastAssistantMessage && (
-              <div className="pt-2 border-t border-border space-y-2">
-                <div className="flex items-center justify-between gap-2 text-xs text-slate-600">
-                  <span>Was this answer helpful?</span>
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      className={`rounded-full border px-2 py-1 transition ${
-                        feedback === 'up'
-                          ? 'border-green-500 bg-green-50 text-green-700'
-                          : 'border-border bg-card hover:border-green-400 hover:text-green-700'
-                      }`}
-                      onClick={() => handleFeedback('up')}
-                    >
-                      Yes
-                    </button>
-                    <button
-                      type="button"
-                      className={`rounded-full border px-2 py-1 transition ${
-                        feedback === 'down'
-                          ? 'border-red-500 bg-red-50 text-red-700'
-                          : 'border-border bg-card hover:border-red-400 hover:text-red-700'
-                      }`}
-                      onClick={() => handleFeedback('down')}
-                    >
-                      No
-                    </button>
-                  </div>
-                </div>
-
-                {showHrLink && lastUserMessage && (
-                  <a
-                    href={`mailto:hr@trianz.com?subject=Question%20about%20policy&body=${encodeURIComponent(
-                      lastUserMessage.content
-                    )}`}
-                    className="inline-flex text-[11px] text-blue-700 hover:underline"
-                  >
-                    Email HR this question
-                  </a>
-                )}
-
-                {shouldShowServiceDeskCta && lastUserMessage && (
-                  <Link
-                    href={{
-                      pathname: '/service-desk',
-                      query: { details: lastUserMessage.content },
-                    }}
-                    className="inline-flex items-center rounded-full bg-blue-600 px-4 py-2 text-[11px] font-medium text-white hover:bg-blue-700 w-fit"
-                  >
-                    Open Service Desk for this
-                  </Link>
-                )}
-              </div>
-            )}
           </div>
+
+          {lastAssistantMessage && (
+            <div className="bg-card rounded-3xl shadow-sm p-4 space-y-3">
+              <div className="flex items-center justify-between gap-2 text-xs text-slate-600">
+                <span>Was this answer helpful?</span>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    className={`rounded-full border px-2 py-1 transition ${
+                      feedback === 'up'
+                        ? 'border-green-500 bg-green-50 text-green-700'
+                        : 'border-border bg-card hover:border-green-400 hover:text-green-700'
+                    }`}
+                    onClick={() => handleFeedback('up')}
+                  >
+                    Yes
+                  </button>
+                  <button
+                    type="button"
+                    className={`rounded-full border px-2 py-1 transition ${
+                      feedback === 'down'
+                        ? 'border-red-500 bg-red-50 text-red-700'
+                        : 'border-border bg-card hover:border-red-400 hover:text-red-700'
+                    }`}
+                    onClick={() => handleFeedback('down')}
+                  >
+                    No
+                  </button>
+                </div>
+              </div>
+
+              {showHrLink && lastUserMessage && (
+                <a
+                  href={`mailto:hr@trianz.com?subject=Question%20about%20policy&body=${encodeURIComponent(
+                    lastUserMessage.content
+                  )}`}
+                  className="inline-flex text-[11px] text-blue-700 hover:underline"
+                >
+                  Email HR this question
+                </a>
+              )}
+
+              {shouldShowServiceDeskCta && lastUserMessage && (
+                <Link
+                  href={{
+                    pathname: '/service-desk',
+                    query: { details: lastUserMessage.content },
+                  }}
+                  className="inline-flex items-center rounded-full bg-blue-600 px-4 py-2 text-[11px] font-medium text-white hover:bg-blue-700 w-fit"
+                >
+                  Open Service Desk for this
+                </Link>
+              )}
+            </div>
+          )}
 
           <div className="bg-card rounded-3xl shadow-sm p-4 space-y-3 flex flex-col min-h-0 max-h-[220px]">
             <h3 className="text-sm font-semibold text-slate-900">Day 1 checklist (example)</h3>
