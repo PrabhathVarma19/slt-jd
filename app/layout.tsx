@@ -23,8 +23,8 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <body className="font-sans antialiased">
-        <div className="min-h-screen bg-white">
-          <header className="border-b border-gray-200 bg-white/95 backdrop-blur-sm sticky top-0 z-50">
+        <div className="min-h-screen bg-background">
+          <header className="border-b border-gray-200 bg-background/95 backdrop-blur-sm sticky top-0 z-50">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="flex h-16 items-center justify-start">
                 <Link

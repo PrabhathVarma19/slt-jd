@@ -5,6 +5,13 @@ import Link from 'next/link';
 import Button from '@/components/ui/button';
 import Input from '@/components/ui/input';
 import Textarea from '@/components/ui/textarea';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from '@/components/ui/card';
 
 type RequestType =
   | ''
@@ -253,14 +260,14 @@ export default function ServiceDeskPage() {
           href="/"
           className="inline-flex items-center text-xs font-medium text-blue-700 hover:underline"
         >
-          ← Back to Home
+          &lt;- Back to Home
         </Link>
       </div>
 
       <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
         <div className="space-y-2">
           <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
-            Service Desk · IT &amp; access
+            Service Desk | IT &amp; access
           </p>
           <h1 className="text-2xl font-semibold text-gray-900">
             Raise structured IT and access requests.
@@ -273,214 +280,220 @@ export default function ServiceDeskPage() {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1.3fr)]">
-        <div className="space-y-6 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-          <h2 className="text-sm font-semibold text-gray-900">Request details</h2>
-
-          <div className="grid gap-4 md:grid-cols-3">
-            <div className="space-y-1.5">
-              <label className="text-xs font-medium text-gray-700">
-                Name <span className="text-red-500">*</span>
-              </label>
-              <Input
-                value={form.name}
-                onChange={(e) => handleChange('name', e.target.value)}
-                placeholder="Name as per Govt ID"
-              />
-            </div>
-            <div className="space-y-1.5">
-              <label className="text-xs font-medium text-gray-700">
-                Employee ID <span className="text-red-500">*</span>
-              </label>
-              <Input
-                value={form.employeeId}
-                onChange={(e) => handleChange('employeeId', e.target.value)}
-                placeholder="e.g., 12345"
-              />
-            </div>
-            <div className="space-y-1.5">
-              <label className="text-xs font-medium text-gray-700">
-                Email <span className="text-red-500">*</span>
-              </label>
-              <Input
-                type="email"
-                value={form.email}
-                onChange={(e) => handleChange('email', e.target.value)}
-                placeholder="you@trianz.com"
-              />
-            </div>
-          </div>
-
-          <div className="space-y-1.5">
-            <label className="text-xs font-medium text-gray-700">
-              Details <span className="text-red-500">*</span>
-            </label>
-            <Textarea
-              rows={4}
-              value={form.details}
-              onChange={(e) => handleChange('details', e.target.value)}
-              placeholder="Explain the request in simple language. Include any error messages, systems, or links if relevant."
-            />
-            <p className="text-[11px] text-gray-500">
-              You can fill this first in your own words. Beacon can then suggest category, system,
-              impact and other fields.
-            </p>
-            <Button
-              size="sm"
-              variant="secondary"
-              type="button"
-              onClick={handleSuggestFromDetails}
-              disabled={isSuggesting || !form.details.trim()}
-            >
-              {isSuggesting ? 'Let Beacon suggest fields…' : 'Let Beacon suggest fields'}
-            </Button>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="space-y-1.5">
-              <label className="text-xs font-medium text-gray-700">
-                Category <span className="text-red-500">*</span>
-              </label>
-              <select
-                className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-xs text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                value={form.requestType}
-                onChange={(e) => handleChange('requestType', e.target.value as RequestType)}
-                disabled={isSubmitting}
-              >
-                <option value="" disabled>
-                  Choose a category
-                </option>
-                <option value="access">System / application access</option>
-                <option value="hardware">Hardware / devices</option>
-                <option value="software">Software install</option>
-                <option value="subscription">Subscription / SaaS access</option>
-                <option value="password">Password / account issue</option>
-                <option value="other">Other IT request</option>
-              </select>
-            </div>
-            <div className="space-y-1.5">
-              <label className="text-xs font-medium text-gray-700">
-                Subcategory / system or application <span className="text-red-500">*</span>
-              </label>
-              <Input
-                autoComplete="off"
-                value={form.system}
-                onChange={(e) => handleChange('system', e.target.value)}
-                placeholder="e.g., VPN, Cursor, GitLab, ERP"
-              />
-            </div>
-          </div>
-
-          <div className="space-y-1.5">
-            <label className="text-xs font-medium text-gray-700">Subscription / license?</label>
-            <div className="flex items-center gap-2 text-xs text-gray-700">
-              <input
-                id="isSubscription"
-                type="checkbox"
-                className="h-3 w-3 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                checked={form.isSubscription}
-                onChange={(e) => handleChange('isSubscription', e.target.checked ? 'true' : 'false')}
-                disabled={isSubmitting}
-              />
-              <label htmlFor="isSubscription">
-                This request is about a paid subscription or license.
-              </label>
-            </div>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="space-y-1.5">
-              <label className="text-xs font-medium text-gray-700">Project / client (optional)</label>
-              <Input
-                value={form.project}
-                onChange={(e) => handleChange('project', e.target.value)}
-                placeholder="For billing / context"
-              />
-            </div>
-            <div className="space-y-1.5">
-              <label className="text-xs font-medium text-gray-700">
-                Manager / approver email (optional)
-              </label>
-              <Input
-                type="email"
-                value={form.managerEmail}
-                onChange={(e) => handleChange('managerEmail', e.target.value)}
-                placeholder="manager@trianz.com"
-              />
-            </div>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="space-y-1.5">
-              <label className="text-xs font-medium text-gray-700">Impact</label>
-              <select
-                className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-xs text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                value={form.impact}
-                onChange={(e) => handleChange('impact', e.target.value as ImpactLevel)}
-                disabled={isSubmitting}
-              >
-                <option value="blocker">Blocker – cannot work</option>
-                <option value="high">High – severely impacts work</option>
-                <option value="medium">Medium – can work with difficulty</option>
-                <option value="low">Low – minor issue</option>
-              </select>
-            </div>
-
-            <div className="space-y-1.5">
-              <label className="text-xs font-medium text-gray-700">Duration</label>
-              <div className="flex flex-wrap gap-2">
-                <button
-                  type="button"
-                  onClick={() => handleChange('durationType', 'permanent')}
-                  className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${
-                    form.durationType === 'permanent'
-                      ? 'border-blue-600 bg-blue-50 text-blue-700'
-                      : 'border-gray-200 bg-white text-gray-700 hover:border-blue-300'
-                  }`}
-                  disabled={isSubmitting}
-                >
-                  Permanent
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleChange('durationType', 'temporary')}
-                  className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${
-                    form.durationType === 'temporary'
-                      ? 'border-blue-600 bg-blue-50 text-blue-700'
-                      : 'border-gray-200 bg-white text-gray-700 hover:border-blue-300'
-                  }`}
-                  disabled={isSubmitting}
-                >
-                  Temporary
-                </button>
+        <Card className="space-y-6">
+          <CardHeader>
+            <CardTitle>Service Desk - IT &amp; access</CardTitle>
+            <CardDescription>
+              Raise IT and access requests; Beacon helps suggest category, system and impact.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="grid gap-4 md:grid-cols-3">
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-gray-700">
+                  Name <span className="text-red-500">*</span>
+                </label>
+                <Input
+                  value={form.name}
+                  onChange={(e) => handleChange('name', e.target.value)}
+                  placeholder="Name as per Govt ID"
+                />
               </div>
-              {form.durationType === 'temporary' && (
-                <div className="mt-2 space-y-1">
-                  <label className="text-xs font-medium text-gray-700">Requested until</label>
-                  <Input
-                    type="date"
-                    value={form.durationUntil}
-                    onChange={(e) => handleChange('durationUntil', e.target.value)}
-                  />
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-gray-700">
+                  Employee ID <span className="text-red-500">*</span>
+                </label>
+                <Input
+                  value={form.employeeId}
+                  onChange={(e) => handleChange('employeeId', e.target.value)}
+                  placeholder="e.g., 12345"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-gray-700">
+                  Email <span className="text-red-500">*</span>
+                </label>
+                <Input
+                  type="email"
+                  value={form.email}
+                  onChange={(e) => handleChange('email', e.target.value)}
+                  placeholder="you@trianz.com"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-gray-700">
+                Details <span className="text-red-500">*</span>
+              </label>
+              <Textarea
+                rows={4}
+                value={form.details}
+                onChange={(e) => handleChange('details', e.target.value)}
+                placeholder="Explain the request in simple language. Include any error messages, systems, or links if relevant."
+              />
+              <p className="text-[11px] text-gray-500">
+                You can fill this first in your own words. Beacon can then suggest category, system,
+                impact and other fields.
+              </p>
+              <Button
+                size="sm"
+                variant="secondary"
+                type="button"
+                onClick={handleSuggestFromDetails}
+                disabled={isSuggesting || !form.details.trim()}
+              >
+                {isSuggesting ? 'Let Beacon suggest fields...' : 'Let Beacon suggest fields'}
+              </Button>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-gray-700">
+                  Category <span className="text-red-500">*</span>
+                </label>
+                <select
+                  className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-xs text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  value={form.requestType}
+                  onChange={(e) => handleChange('requestType', e.target.value as RequestType)}
+                  disabled={isSubmitting}
+                >
+                  <option value="" disabled>
+                    Choose a category
+                  </option>
+                  <option value="access">System / application access</option>
+                  <option value="hardware">Hardware / devices</option>
+                  <option value="software">Software install</option>
+                  <option value="subscription">Subscription / SaaS access</option>
+                  <option value="password">Password / account issue</option>
+                  <option value="other">Other IT request</option>
+                </select>
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-gray-700">
+                  Subcategory / system or application <span className="text-red-500">*</span>
+                </label>
+                <Input
+                  autoComplete="off"
+                  value={form.system}
+                  onChange={(e) => handleChange('system', e.target.value)}
+                  placeholder="e.g., VPN, Cursor, GitLab, ERP"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-gray-700">Subscription / license?</label>
+              <div className="flex items-center gap-2 text-xs text-gray-700">
+                <input
+                  id="isSubscription"
+                  type="checkbox"
+                  className="h-3 w-3 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  checked={form.isSubscription}
+                  onChange={(e) => handleChange('isSubscription', e.target.checked ? 'true' : 'false')}
+                  disabled={isSubmitting}
+                />
+                <label htmlFor="isSubscription">
+                  This request is about a paid subscription or license.
+                </label>
+              </div>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-gray-700">Project / client (optional)</label>
+                <Input
+                  value={form.project}
+                  onChange={(e) => handleChange('project', e.target.value)}
+                  placeholder="For billing / context"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-gray-700">
+                  Manager / approver email (optional)
+                </label>
+                <Input
+                  type="email"
+                  value={form.managerEmail}
+                  onChange={(e) => handleChange('managerEmail', e.target.value)}
+                  placeholder="manager@trianz.com"
+                />
+              </div>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-gray-700">Impact</label>
+                <select
+                  className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-xs text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  value={form.impact}
+                  onChange={(e) => handleChange('impact', e.target.value as ImpactLevel)}
+                  disabled={isSubmitting}
+                >
+                  <option value="blocker">Blocker - cannot work</option>
+                  <option value="high">High - severely impacts work</option>
+                  <option value="medium">Medium - can work with difficulty</option>
+                  <option value="low">Low - minor issue</option>
+                </select>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-gray-700">Duration</label>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handleChange('durationType', 'permanent')}
+                    className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${
+                      form.durationType === 'permanent'
+                        ? 'border-blue-600 bg-blue-50 text-blue-700'
+                        : 'border-gray-200 bg-white text-gray-700 hover:border-blue-300'
+                    }`}
+                    disabled={isSubmitting}
+                  >
+                    Permanent
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleChange('durationType', 'temporary')}
+                    className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${
+                      form.durationType === 'temporary'
+                        ? 'border-blue-600 bg-blue-50 text-blue-700'
+                        : 'border-gray-200 bg-white text-gray-700 hover:border-blue-300'
+                    }`}
+                    disabled={isSubmitting}
+                  >
+                    Temporary
+                  </button>
                 </div>
-              )}
+                {form.durationType === 'temporary' && (
+                  <div className="mt-2 space-y-1">
+                    <label className="text-xs font-medium text-gray-700">Requested until</label>
+                    <Input
+                      type="date"
+                      value={form.durationUntil}
+                      onChange={(e) => handleChange('durationUntil', e.target.value)}
+                    />
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
 
-          {error && (
-            <div className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-800">
-              {error}
+            {error && (
+              <div className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-800">
+                {error}
+              </div>
+            )}
+
+            <div className="flex items-center justify-between pt-2">
+              <p className="text-xs text-gray-500">
+                Beacon will send this request to the IT Service Desk with your email as reply-to.
+              </p>
+              <Button size="sm" onClick={handleSubmit} disabled={!canSubmit}>
+                {isSubmitting ? 'Submitting...' : 'Submit IT request'}
+              </Button>
             </div>
-          )}
-
-          <div className="flex items-center justify-between pt-2">
-            <p className="text-xs text-gray-500">
-              Beacon will send this request to the IT Service Desk with your email as reply‑to.
-            </p>
-            <Button size="sm" onClick={handleSubmit} disabled={!canSubmit}>
-              {isSubmitting ? 'Submitting…' : 'Submit IT request'}
-            </Button>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm space-y-3 text-sm text-gray-700">

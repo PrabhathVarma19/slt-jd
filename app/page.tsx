@@ -1,156 +1,319 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
+import { ChevronRight } from 'lucide-react';
 import Button from '@/components/ui/button';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from '@/components/ui/card';
 
-type AgentCategory = 'Leadership' | 'Org-wide';
+type ToolBucket = 'Ask' | 'Requests' | 'Outputs';
 
-interface AgentCard {
+interface Tool {
   title: string;
   description: string;
-  link: string;
-  category: AgentCategory;
+  href: string;
+  bucket: ToolBucket;
+  initials: string;
   accent: string;
-  label: string;
 }
 
-const AGENTS: AgentCard[] = [
+const TOOLS: Tool[] = [
   {
     title: 'Ask Beacon',
-    description: 'Policy and how-to assistant with grounded answers and key rules.',
-    link: '/policy-agent',
-    category: 'Org-wide',
-    accent: 'from-sky-500 to-blue-600',
-    label: 'Policy & how-to',
+    description: 'Get policy and "how do I..." answers with citations.',
+    href: '/policy-agent',
+    bucket: 'Ask',
+    initials: 'AB',
+    accent: 'bg-sky-100 text-sky-700',
   },
   {
     title: 'New Joiner Buddy',
-    description: 'Day-1 and week-1 helper for new associates: setup, RTO, leave and basics.',
-    link: '/new-joiner',
-    category: 'Org-wide',
-    accent: 'from-emerald-500 to-teal-600',
-    label: 'Onboarding',
-  },
-  {
-    title: 'Create JD',
-    description: 'Generate, edit and save SLT/CXO-ready job descriptions with AI.',
-    link: '/jd',
-    category: 'Leadership',
-    accent: 'from-indigo-500 to-purple-600',
-    label: 'Hiring',
-  },
-  {
-    title: 'Weekly Initiatives',
-    description: 'Turn team updates into CIO-ready digest, run-of-show and action register.',
-    link: '/weekly-brief',
-    category: 'Leadership',
-    accent: 'from-amber-500 to-orange-500',
-    label: 'CIO brief',
-  },
-  {
-    title: 'Comms Hub',
-    description: 'Convert raw notes into exec newsletters or targeted team emails.',
-    link: '/comms-hub',
-    category: 'Leadership',
-    accent: 'from-fuchsia-500 to-pink-500',
-    label: 'Exec comms',
-  },
-  {
-    title: 'Travel Desk',
-    description: 'Prepare policy-aware travel summaries and email drafts for the travel desk.',
-    link: '/travel-desk',
-    category: 'Org-wide',
-    accent: 'from-cyan-500 to-sky-500',
-    label: 'Travel & expenses',
-  },
-  {
-    title: 'Expenses & Fusion Coach',
-    description: 'Explain reimbursable expenses and Fusion steps in clear, numbered actions.',
-    link: '/expenses-coach',
-    category: 'Org-wide',
-    accent: 'from-teal-500 to-emerald-600',
-    label: 'Expenses',
+    description: 'Help new joiners through their first 90 days.',
+    href: '/new-joiner',
+    bucket: 'Ask',
+    initials: 'NJ',
+    accent: 'bg-emerald-100 text-emerald-700',
   },
   {
     title: 'Service Desk',
-    description: 'Raise IT and access requests in a structured, policy-aware format.',
-    link: '/service-desk',
-    category: 'Org-wide',
-    accent: 'from-slate-500 to-gray-700',
-    label: 'IT & access',
+    description: 'Format and email IT / access requests.',
+    href: '/service-desk',
+    bucket: 'Requests',
+    initials: 'SD',
+    accent: 'bg-slate-100 text-slate-700',
+  },
+  {
+    title: 'Travel Desk',
+    description: 'Create travel request emails with all required details.',
+    href: '/travel-desk',
+    bucket: 'Requests',
+    initials: 'TD',
+    accent: 'bg-cyan-100 text-cyan-700',
+  },
+  {
+    title: 'Comms Hub',
+    description: 'Draft newsletters and change notices from updates.',
+    href: '/comms-hub',
+    bucket: 'Outputs',
+    initials: 'CH',
+    accent: 'bg-fuchsia-100 text-fuchsia-700',
+  },
+  {
+    title: 'Weekly Initiatives',
+    description: 'Turn weekly updates into a CIO / SLT brief.',
+    href: '/weekly-brief',
+    bucket: 'Outputs',
+    initials: 'WI',
+    accent: 'bg-amber-100 text-amber-700',
+  },
+  {
+    title: 'Create JD',
+    description: 'Generate structured role descriptions and skill requirements.',
+    href: '/jd',
+    bucket: 'Outputs',
+    initials: 'JD',
+    accent: 'bg-indigo-100 text-indigo-700',
+  },
+  {
+    title: 'Expenses & Fusion Coach',
+    description: 'Explain reimbursable expenses and Fusion steps in clear actions.',
+    href: '/expenses-coach',
+    bucket: 'Outputs',
+    initials: 'EX',
+    accent: 'bg-teal-100 text-teal-700',
   },
 ];
 
-const leadershipAgents = AGENTS.filter((a) => a.category === 'Leadership');
-const orgAgents = AGENTS.filter((a) => a.category === 'Org-wide');
+const BUCKET_LABELS: Record<ToolBucket, string> = {
+  Ask: 'Ask',
+  Requests: 'Requests',
+  Outputs: 'Outputs',
+};
+type ToolFilter = 'All' | ToolBucket;
+
+const FILTERS: { id: ToolFilter; label: string }[] = [
+  { id: 'All', label: 'All' },
+  { id: 'Ask', label: 'Ask' },
+  { id: 'Requests', label: 'Requests' },
+  { id: 'Outputs', label: 'Outputs' },
+];
 
 export default function Home() {
+  const [activeFilter, setActiveFilter] = useState<ToolFilter>('All');
+
+  const filteredTools =
+    activeFilter === 'All' ? TOOLS : TOOLS.filter((tool) => tool.bucket === activeFilter);
+
   return (
-    <div className="space-y-12">
-      <section className="rounded-2xl border border-gray-200 bg-white px-8 py-10 shadow-sm">
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-          <div className="space-y-3 max-w-2xl">
-            <p className="text-sm font-semibold uppercase tracking-wide text-blue-700">
-              Beacon workspace
-            </p>
-            <h1 className="text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">
-              AI agents for leaders and teams at Trianz.
-            </h1>
-            <p className="text-base text-gray-600">
-              Use Beacon to draft JDs, prep CIO initiatives, generate exec-ready comms, answer policy
-              questions, and guide new joiners—without digging through email threads and PDFs.
-            </p>
-            <div className="flex flex-wrap gap-3">
-              <Link href="/policy-agent">
-                <Button>Ask Beacon</Button>
-              </Link>
-              <Link href="/jd">
-                <Button variant="secondary">Create JD</Button>
-              </Link>
-            </div>
+    <div className="space-y-10">
+      {/* Hero */}
+      <section className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
+        {/* Text column */}
+        <div className="space-y-6">
+          <div className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
+            Beacon
           </div>
-          <div className="rounded-xl border border-gray-200 bg-gray-50 px-6 py-5 text-sm text-gray-700 shadow-inner max-w-md">
-            <h3 className="text-base font-semibold text-gray-900">What Beacon helps with</h3>
-            <ul className="mt-3 space-y-2">
-              <li>• Draft and refine SLT/CXO job descriptions</li>
-              <li>• Turn weekly updates into a CIO-ready brief</li>
-              <li>• Generate newsletters and single-team updates</li>
-              <li>• Answer policy and “how do I…” questions with citations</li>
-              <li>• Guide new joiners through their first days</li>
-            </ul>
+
+          <h1 className="text-3xl font-semibold text-slate-900 sm:text-4xl">
+            Beacon - the Trianz AI desk for answers and requests.
+          </h1>
+
+          <p className="max-w-xl text-base text-slate-600">
+            Ask policy questions with citations, raise IT and travel requests, and generate
+            leadership updates - all in one place, grounded in Trianz policies and systems.
+          </p>
+
+          <div className="flex flex-wrap items-center gap-3">
+            <Button asChild className="rounded-full px-5">
+              <Link href="/policy-agent">Ask Beacon</Link>
+            </Button>
+            <Button asChild variant="outline" className="rounded-full px-5">
+              <Link href="/service-desk">Raise IT request</Link>
+            </Button>
+            <button
+              type="button"
+              onClick={() => {
+                const el = document.getElementById('tools');
+                if (el) {
+                  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              }}
+              className="text-sm text-slate-500 underline-offset-4 hover:underline"
+            >
+              See all tools
+            </button>
           </div>
+
+          <p className="text-xs text-slate-400">Built for Trianz. Content updated Dec 2025.</p>
+        </div>
+
+        {/* Preview cluster */}
+        <div className="relative h-64 md:h-72">
+          <div className="absolute inset-0 rounded-full bg-indigo-100/40 blur-3xl" />
+
+          <Card className="absolute left-0 top-4 w-64 rounded-2xl bg-white/90 shadow-md backdrop-blur">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-xs font-medium text-slate-900">Ask Beacon</CardTitle>
+              <CardDescription className="text-[11px] text-slate-500">
+                Policy and &quot;how do I...&quot; answers with citations.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2 text-xs text-slate-800">
+              <div className="rounded-2xl bg-slate-50 px-3 py-2">
+                How many days do I need to be in office?
+              </div>
+              <div className="rounded-2xl bg-indigo-50 px-3 py-2 text-[11px]">
+                Beacon: Minimum three days per week as per roster, unless you have an approved
+                exception. See Return to Office Policy, section 3.
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="absolute right-0 bottom-2 w-64 rounded-2xl bg-white/90 shadow-md backdrop-blur">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-xs font-medium text-slate-900">
+                Raise an IT request
+              </CardTitle>
+              <CardDescription className="text-[11px] text-slate-500">
+                Type one sentence about what you need.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2 text-[11px] text-slate-800">
+              <div className="rounded-2xl bg-slate-50 px-3 py-2">
+                My laptop is not turning on, please arrange support.
+              </div>
+              <div className="rounded-2xl bg-slate-50 px-3 py-2">
+                I need Power BI Pro subscription access for client reporting.
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </section>
 
-      <section className="space-y-6">
-        <div className="grid gap-4 md:grid-cols-3">
-          {AGENTS.map((agent) => (
-            <Link
-              key={agent.title}
-              href={agent.link}
-              className="group rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:border-gray-300 hover:shadow-md"
+      {/* What Beacon helps with */}
+      <section className="space-y-4">
+        <h2 className="text-xl font-semibold text-slate-900">What you can do with Beacon</h2>
+        <div className="grid gap-6 md:grid-cols-3">
+          <Card className="rounded-2xl bg-card shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+            <CardHeader className="space-y-2">
+              <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-sky-100 text-xs font-semibold text-sky-700">
+                  Q
+                </span>
+                Ask Beacon
+              </CardTitle>
+              <CardDescription className="text-sm text-slate-600">
+                Get policy and &quot;how do I...&quot; answers with citations from internal docs.
+              </CardDescription>
+            </CardHeader>
+          </Card>
+
+          <Card className="rounded-2xl bg-card shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+            <CardHeader className="space-y-2">
+              <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-xs font-semibold text-slate-700">
+                  IT
+                </span>
+                Service Desk &amp; Travel Desk
+              </CardTitle>
+              <CardDescription className="text-sm text-slate-600">
+                Turn plain language into structured IT and travel requests, emailed to the right
+                queues.
+              </CardDescription>
+            </CardHeader>
+          </Card>
+
+          <Card className="rounded-2xl bg-card shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+            <CardHeader className="space-y-2">
+              <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-indigo-100 text-xs font-semibold text-indigo-700">
+                  C
+                </span>
+                Comms &amp; updates
+              </CardTitle>
+              <CardDescription className="text-sm text-slate-600">
+                Turn weekly updates into briefs, newsletters and change notices for teams.
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </div>
+      </section>
+
+      {/* Tools launcher with category chips */}
+      <section id="tools" className="space-y-4">
+        <h2 className="text-xl font-semibold text-slate-900">Tools in Beacon</h2>
+        <p className="text-sm text-slate-600">Organized by how you use them.</p>
+
+        {/* Category chips */}
+        <div className="flex flex-wrap gap-2">
+          {FILTERS.map((filter) => {
+            const isActive = filter.id === activeFilter;
+            return (
+              <button
+                key={filter.id}
+                type="button"
+                onClick={() => setActiveFilter(filter.id)}
+                className={[
+                  'rounded-full px-4 py-1.5 text-sm font-medium transition',
+                  isActive
+                    ? 'bg-slate-900 text-white shadow-sm'
+                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200',
+                ].join(' ')}
+              >
+                {filter.label}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Cards grid for selected category */}
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {filteredTools.map((tool) => (
+            <Card
+              key={tool.title}
+              className="flex flex-col justify-between rounded-2xl bg-card shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
             >
-              <div className="flex items-start gap-3">
-                <div
-                  className={`flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br ${agent.accent} text-xs font-semibold text-white`}
-                >
-                  {agent.label.slice(0, 2).toUpperCase()}
+              <Link href={tool.href} className="flex h-full flex-col justify-between">
+                <CardContent className="space-y-3 p-4">
+                  <div className="flex items-center gap-3">
+                    <div
+                      className={`flex h-9 w-9 items-center justify-center rounded-full text-xs font-semibold ${tool.accent}`}
+                    >
+                      {tool.initials}
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-slate-900">{tool.title}</p>
+                    </div>
+                  </div>
+                  <p className="text-xs text-slate-600">{tool.description}</p>
+                </CardContent>
+                <div className="flex items-center justify-between px-4 pb-3 pt-0 text-xs text-slate-600">
+                  <span className="font-medium">Open {tool.title}</span>
+                  <ChevronRight className="h-4 w-4 text-slate-400" aria-hidden="true" />
                 </div>
-                <div className="space-y-1">
-                  <p className="text-[11px] font-medium uppercase tracking-wide text-gray-500">
-                    {agent.label}
-                  </p>
-                  <h3 className="text-sm font-semibold text-gray-900 group-hover:text-gray-950">
-                    {agent.title}
-                  </h3>
-                  <p className="text-xs text-gray-600">{agent.description}</p>
-                </div>
-              </div>
-              <div className="mt-4 text-xs font-medium text-blue-700 group-hover:underline">
-                {agent.title}
-              </div>
-            </Link>
+              </Link>
+            </Card>
           ))}
+        </div>
+      </section>
+
+      {/* Trust strip */}
+      <section className="pb-4">
+        <div className="rounded-2xl bg-card px-4 py-4 text-sm shadow-sm">
+          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            How Beacon answers
+          </p>
+          <div className="mt-2 space-y-1 text-xs text-slate-600 md:text-sm">
+            <p>• Grounded in internal sources (policies, HR/IT docs).</p>
+            <p>• Citations included (document and section).</p>
+            <p>• Uses approved email workflows; does not bypass approvals.</p>
+          </div>
         </div>
       </section>
     </div>

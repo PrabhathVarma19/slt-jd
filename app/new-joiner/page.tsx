@@ -1,9 +1,13 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import Button from '@/components/ui/button';
 import Textarea from '@/components/ui/textarea';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { BackToHome } from '@/components/ui/back-to-home';
+import { ErrorBar } from '@/components/ui/error-bar';
+import { Spinner } from '@/components/ui/spinner';
 
 type ChatRole = 'user' | 'assistant';
 
@@ -68,6 +72,10 @@ export default function NewJoinerBuddyPage() {
   const [feedback, setFeedback] = useState<Feedback>(null);
   const [showHrLink, setShowHrLink] = useState(false);
   const messagesRef = useRef<HTMLDivElement | null>(null);
+  const viewportRef = useRef<HTMLElement | null>(null);
+  const [isAtBottom, setIsAtBottom] = useState(true);
+  const [hasUnread, setHasUnread] = useState(false);
+  const prevAssistantCountRef = useRef(0);
 
   const formatTime = (iso: string) => {
     try {
@@ -124,11 +132,64 @@ export default function NewJoinerBuddyPage() {
     }
   }, [recentQuestions]);
 
+  const scrollToBottom = (behavior: ScrollBehavior = 'auto') => {
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+    viewport.scrollTo({ top: viewport.scrollHeight, behavior });
+  };
+
   useEffect(() => {
-    if (!messagesRef.current) return;
-    const el = messagesRef.current;
-    el.scrollTop = el.scrollHeight;
-  }, [messages]);
+    const root = messagesRef.current;
+    if (!root) return;
+    const viewport = root.querySelector(
+      '[data-radix-scroll-area-viewport]'
+    ) as HTMLElement | null;
+    if (!viewport) return;
+
+    viewportRef.current = viewport;
+
+    const onScroll = () => {
+      const distanceFromBottom =
+        viewport.scrollHeight - (viewport.scrollTop + viewport.clientHeight);
+      const atBottom = distanceFromBottom < 80;
+      setIsAtBottom(atBottom);
+      if (atBottom) setHasUnread(false);
+    };
+
+    viewport.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => viewport.removeEventListener('scroll', onScroll);
+  }, []);
+
+  useEffect(() => {
+    const assistantCount = messages.reduce(
+      (count, m) => (m.role === 'assistant' ? count + 1 : count),
+      0
+    );
+    const prevAssistantCount = prevAssistantCountRef.current;
+    const lastMessage = messages[messages.length - 1];
+    const isNewAssistantMessage = assistantCount > prevAssistantCount;
+
+    if (isAtBottom) {
+      requestAnimationFrame(() => scrollToBottom('auto'));
+    } else if (isNewAssistantMessage && lastMessage?.role === 'assistant') {
+      setHasUnread(true);
+    }
+
+    prevAssistantCountRef.current = assistantCount;
+  }, [messages, isAtBottom]);
+
+  useEffect(() => {
+    if (!isAtBottom) return;
+    if (!isLoading) return;
+    requestAnimationFrame(() => scrollToBottom('auto'));
+  }, [isLoading, isAtBottom]);
+
+  useEffect(() => {
+    if (!error) return;
+    const t = setTimeout(() => setError(null), 8000);
+    return () => clearTimeout(t);
+  }, [error]);
 
   const handleAsk = async (questionOverride?: string) => {
     const raw = questionOverride ?? input;
@@ -218,46 +279,32 @@ export default function NewJoinerBuddyPage() {
     setIsLoading(false);
   };
 
+  const uniqueSources = useMemo(() => {
+    if (!sources) return [];
+    return sources.filter(
+      (src, index, all) =>
+        all.findIndex((s) => (s.title || '').trim() === (src.title || '').trim()) === index
+    );
+  }, [sources]);
+
   return (
-    <div className="space-y-6">
-      <div className="mb-2">
-        <Link
-          href="/"
-          className="inline-flex items-center text-xs font-medium text-blue-700 hover:underline"
-        >
-          ← Back to Home
-        </Link>
-      </div>
-      <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-        <div className="space-y-2">
-          <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
-            Beacon · New Joiner Buddy
-          </p>
-          <h1 className="text-2xl font-semibold text-gray-900 mt-1">
-            Get quick answers for your first weeks at Trianz.
-          </h1>
-          <p className="text-sm text-gray-600">
-            Ask about day-one tasks, IT setup, RTO expectations, travel and expenses. Answers are
-            grounded in the same policies powering Ask Beacon and will say when you should contact
-            HR, IT or your manager.
-          </p>
-          <p className="text-xs text-gray-500">
-            Use this for: 1) Day 1 and Week 1 questions, 2) basic HR / RTO / leave queries, 3) how
-            to request laptop, VPN and submit expenses.
-          </p>
-        </div>
+    <div className="max-w-6xl mx-auto px-4 py-6 space-y-6">
+      <div className="space-y-2">
+        <BackToHome />
+        <h1 className="text-2xl font-semibold text-slate-900">New Joiner Buddy</h1>
+        <p className="text-sm text-slate-600">
+          Get quick, policy-grounded answers for day one, IT setup, RTO, travel and expenses.
+        </p>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1.1fr)]">
-        <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm flex flex-col">
-          <div className="mb-4 space-y-3">
-            <label className="text-xs font-medium text-gray-700 uppercase tracking-wide">
-              Quick questions
-            </label>
-
+      <div className="grid gap-6 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+        {/* Left: chat surface */}
+        <div className="bg-card rounded-3xl shadow-sm p-4 sm:p-6 flex flex-col gap-4 min-h-[560px]">
+          <div className="space-y-2">
+            <p className="text-sm font-semibold text-slate-900">Quick questions</p>
             <div className="space-y-2">
               <div className="space-y-1">
-                <span className="block text-[11px] font-medium text-gray-500">Day 1</span>
+                <span className="block text-[11px] font-medium text-slate-500">Day 1</span>
                 <div className="flex flex-wrap gap-2">
                   {DAY_ONE_QUESTIONS.map((q) => (
                     <Button
@@ -265,7 +312,7 @@ export default function NewJoinerBuddyPage() {
                       type="button"
                       size="sm"
                       variant="secondary"
-                      className="whitespace-nowrap text-xs"
+                      className="whitespace-nowrap text-xs rounded-full"
                       onClick={() => handleAsk(q)}
                       disabled={isLoading}
                     >
@@ -274,8 +321,9 @@ export default function NewJoinerBuddyPage() {
                   ))}
                 </div>
               </div>
+
               <div className="space-y-1">
-                <span className="block text-[11px] font-medium text-gray-500">Access &amp; IT</span>
+                <span className="block text-[11px] font-medium text-slate-500">Access &amp; IT</span>
                 <div className="flex flex-wrap gap-2">
                   {ACCESS_IT_QUESTIONS.map((q) => (
                     <Button
@@ -283,7 +331,7 @@ export default function NewJoinerBuddyPage() {
                       type="button"
                       size="sm"
                       variant="secondary"
-                      className="whitespace-nowrap text-xs"
+                      className="whitespace-nowrap text-xs rounded-full"
                       onClick={() => handleAsk(q)}
                       disabled={isLoading}
                     >
@@ -292,8 +340,9 @@ export default function NewJoinerBuddyPage() {
                   ))}
                 </div>
               </div>
+
               <div className="space-y-1">
-                <span className="block text-[11px] font-medium text-gray-500">Policies &amp; leave</span>
+                <span className="block text-[11px] font-medium text-slate-500">Policies &amp; leave</span>
                 <div className="flex flex-wrap gap-2">
                   {POLICIES_QUESTIONS.map((q) => (
                     <Button
@@ -301,7 +350,7 @@ export default function NewJoinerBuddyPage() {
                       type="button"
                       size="sm"
                       variant="secondary"
-                      className="whitespace-nowrap text-xs"
+                      className="whitespace-nowrap text-xs rounded-full"
                       onClick={() => handleAsk(q)}
                       disabled={isLoading}
                     >
@@ -310,8 +359,9 @@ export default function NewJoinerBuddyPage() {
                   ))}
                 </div>
               </div>
+
               <div className="space-y-1">
-                <span className="block text-[11px] font-medium text-gray-500">Travel &amp; expenses</span>
+                <span className="block text-[11px] font-medium text-slate-500">Travel &amp; expenses</span>
                 <div className="flex flex-wrap gap-2">
                   {TRAVEL_EXPENSE_QUESTIONS.map((q) => (
                     <Button
@@ -319,7 +369,7 @@ export default function NewJoinerBuddyPage() {
                       type="button"
                       size="sm"
                       variant="secondary"
-                      className="whitespace-nowrap text-xs"
+                      className="whitespace-nowrap text-xs rounded-full"
                       onClick={() => handleAsk(q)}
                       disabled={isLoading}
                     >
@@ -328,8 +378,9 @@ export default function NewJoinerBuddyPage() {
                   ))}
                 </div>
               </div>
+
               <div className="space-y-1">
-                <span className="block text-[11px] font-medium text-gray-500">Security &amp; Infosec</span>
+                <span className="block text-[11px] font-medium text-slate-500">Security &amp; Infosec</span>
                 <div className="flex flex-wrap gap-2">
                   {SECURITY_QUESTIONS.map((q) => (
                     <Button
@@ -337,7 +388,7 @@ export default function NewJoinerBuddyPage() {
                       type="button"
                       size="sm"
                       variant="secondary"
-                      className="whitespace-nowrap text-xs"
+                      className="whitespace-nowrap text-xs rounded-full"
                       onClick={() => handleAsk(q)}
                       disabled={isLoading}
                     >
@@ -349,15 +400,15 @@ export default function NewJoinerBuddyPage() {
             </div>
 
             {recentQuestions.length > 0 && (
-              <div className="flex flex-wrap gap-2 items-center">
-                <span className="text-[11px] font-medium text-gray-500">Recent</span>
+              <div className="flex flex-wrap gap-2 items-center pt-1">
+                <span className="text-[11px] font-medium text-slate-500">Recent</span>
                 {recentQuestions.map((q) => (
                   <Button
                     key={q}
                     type="button"
                     size="sm"
                     variant="ghost"
-                    className="whitespace-nowrap text-xs text-gray-600"
+                    className="whitespace-nowrap text-xs text-slate-600 rounded-full"
                     onClick={() => handleAsk(q)}
                     disabled={isLoading}
                   >
@@ -366,180 +417,209 @@ export default function NewJoinerBuddyPage() {
                 ))}
               </div>
             )}
-          </div>
 
-          {messages.length > 0 && (
-            <div className="mt-2 flex justify-end">
-              <button
-                type="button"
-                className="text-[11px] text-blue-700 hover:underline"
-                onClick={handleResetConversation}
-              >
-                New conversation
-              </button>
-            </div>
-          )}
-
-          {error && (
-            <div className="mb-3 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
-              {error}
-            </div>
-          )}
-
-          <div
-            ref={messagesRef}
-            className="chat-scroll flex-1 space-y-4 overflow-y-auto pr-1 rounded-lg bg-gray-50 p-3 max-h-[420px]"
-          >
-            {messages.length === 0 && (
-              <div className="flex justify-start">
-                <div className="inline-flex max-w-md flex-col gap-1 rounded-2xl bg-white px-3 py-2 text-sm text-gray-700 shadow-sm">
-                  <span className="text-[11px] font-medium uppercase tracking-wide text-blue-600">
-                    Buddy
-                  </span>
-                  <p>
-                    Try asking &quot;What should I do on my first day?&quot; or
-                    &quot;How do I request a laptop and VPN access?&quot;. You can ask follow-up questions
-                    in the same thread.
-                  </p>
-                </div>
-              </div>
-            )}
-            {messages.map((msg, idx) => (
-              <div
-                key={idx}
-                className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-              >
-                <div
-                  className={`inline-flex max-w-md flex-col gap-1 rounded-2xl px-3 py-2 text-sm whitespace-pre-wrap shadow-sm ${
-                    msg.role === 'user'
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-white text-gray-900'
-                  }`}
+            {messages.length > 0 && (
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  className="text-[11px] text-blue-700 hover:underline"
+                  onClick={handleResetConversation}
                 >
-                  <span className="text-[11px] font-medium uppercase tracking-wide opacity-70">
-                    {msg.role === 'user' ? 'You' : 'Buddy'}
-                  </span>
-                  <p>{msg.content}</p>
-                  {msg.createdAt && (
-                    <span className="text-[10px] text-gray-300 self-end">
-                      {formatTime(msg.createdAt)}
-                    </span>
-                  )}
-                </div>
-              </div>
-            ))}
-            {isLoading && (
-              <div className="flex justify-start">
-                <div className="inline-flex items-center gap-1 rounded-2xl bg-gray-100 px-3 py-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-gray-500 animate-bounce [animation-delay:-0.2s]" />
-                  <span className="h-1.5 w-1.5 rounded-full bg-gray-400 animate-bounce" />
-                  <span className="h-1.5 w-1.5 rounded-full bg-gray-300 animate-bounce [animation-delay:0.2s]" />
-                </div>
+                  New conversation
+                </button>
               </div>
             )}
           </div>
 
-            {lastAssistantMessage && (
-              <div className="mt-3 space-y-2 text-xs text-gray-500">
-                <div className="flex items-center justify-end gap-2">
-                  <span>Did this answer help?</span>
-                  <button
-                    type="button"
-                    className={`rounded-full border px-2 py-1 transition ${
-                      feedback === 'up'
-                        ? 'border-green-500 bg-green-50 text-green-700'
-                        : 'border-gray-200 bg-white hover:border-green-400 hover:text-green-700'
-                    }`}
-                    onClick={() => handleFeedback('up')}
-                  >
-                    Yes
-                  </button>
-                  <button
-                    type="button"
-                    className={`rounded-full border px-2 py-1 transition ${
-                      feedback === 'down'
-                        ? 'border-red-500 bg-red-50 text-red-700'
-                        : 'border-gray-200 bg-white hover:border-red-400 hover:text-red-700'
-                    }`}
-                    onClick={() => handleFeedback('down')}
-                  >
-                    No
-                  </button>
-                </div>
-
-                {showHrLink && lastUserMessage && (
-                  <div className="flex justify-end">
-                    <a
-                      href={`mailto:hr@trianz.com?subject=Question%20about%20policy&body=${encodeURIComponent(
-                        lastUserMessage.content
-                      )}`}
-                      className="text-[11px] text-blue-700 hover:underline"
-                    >
-                      Email HR this question
-                    </a>
+          <div className="relative flex-1">
+            <ScrollArea ref={messagesRef} className="h-full chat-scroll">
+              <div className="bg-muted rounded-2xl p-3 space-y-3">
+                {messages.length === 0 && (
+                  <div className="flex justify-start">
+                    <div className="inline-flex max-w-md flex-col gap-1 rounded-2xl bg-card px-3 py-2 text-sm text-slate-700 shadow-sm">
+                      <span className="text-[11px] font-medium uppercase tracking-wide text-blue-600">
+                        Buddy
+                      </span>
+                      <p>
+                        Try asking &quot;What should I do on my first day?&quot; or
+                        &quot;How do I request a laptop and VPN access?&quot;. You can ask follow-up questions
+                        in the same thread.
+                      </p>
+                    </div>
                   </div>
                 )}
 
-                {shouldShowServiceDeskCta && lastUserMessage && (
-                  <div className="flex justify-end">
-                    <Link
-                      href={{
-                        pathname: '/service-desk',
-                        query: { details: lastUserMessage.content },
-                      }}
-                      className="inline-flex items-center rounded-md bg-blue-600 px-3 py-1.5 text-[11px] font-medium text-white hover:bg-blue-700"
+                {messages.map((msg, idx) => (
+                  <div
+                    key={idx}
+                    className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                  >
+                    <div
+                      className={`inline-flex max-w-md flex-col gap-1 rounded-2xl px-3 py-2 text-sm whitespace-pre-wrap shadow-sm ${
+                        msg.role === 'user'
+                          ? 'bg-blue-600 text-white'
+                          : 'bg-card text-slate-900'
+                      }`}
                     >
-                      Open Service Desk for this
-                    </Link>
+                      <span className="text-[11px] font-medium uppercase tracking-wide opacity-70">
+                        {msg.role === 'user' ? 'You' : 'Buddy'}
+                      </span>
+                      <p>{msg.content}</p>
+                      {msg.createdAt && (
+                        <span className="text-[10px] text-slate-400 self-end">
+                          {formatTime(msg.createdAt)}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+
+                {isLoading && (
+                  <div className="flex justify-start">
+                    <div className="inline-flex items-center gap-1 rounded-2xl bg-slate-100 px-3 py-2">
+                      <span className="h-1.5 w-1.5 rounded-full bg-slate-500 animate-bounce [animation-delay:-0.2s]" />
+                      <span className="h-1.5 w-1.5 rounded-full bg-slate-400 animate-bounce" />
+                      <span className="h-1.5 w-1.5 rounded-full bg-slate-300 animate-bounce [animation-delay:0.2s]" />
+                    </div>
                   </div>
                 )}
               </div>
-            )}
+            </ScrollArea>
 
-          <div className="mt-4 space-y-2 border-t border-gray-100 pt-4">
-            <label className="text-sm font-medium text-gray-700">Ask a question</label>
-            <Textarea
-              rows={2}
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder="e.g., What should I do before my first day?"
-            />
-            <div className="flex items-center justify-between">
-              <span className="text-xs text-gray-500">
-                Press Enter to send. Shift+Enter for a new line.
-              </span>
-              <Button size="sm" onClick={() => handleAsk()} disabled={isLoading || !input.trim()}>
-                {isLoading ? 'Answering...' : 'Ask'}
+            {hasUnread && !isAtBottom && (
+              <Button
+                type="button"
+                size="sm"
+                variant="secondary"
+                className="absolute bottom-3 right-3 rounded-full shadow-sm"
+                onClick={() => {
+                  scrollToBottom('smooth');
+                  setHasUnread(false);
+                }}
+              >
+                Jump to latest
+              </Button>
+            )}
+          </div>
+
+          {lastAssistantMessage && (
+            <div className="space-y-2 text-xs text-slate-500">
+              <div className="flex items-center justify-end gap-2">
+                <span>Did this answer help?</span>
+                <button
+                  type="button"
+                  className={`rounded-full border px-2 py-1 transition ${
+                    feedback === 'up'
+                      ? 'border-green-500 bg-green-50 text-green-700'
+                      : 'border-border bg-card hover:border-green-400 hover:text-green-700'
+                  }`}
+                  onClick={() => handleFeedback('up')}
+                >
+                  Yes
+                </button>
+                <button
+                  type="button"
+                  className={`rounded-full border px-2 py-1 transition ${
+                    feedback === 'down'
+                      ? 'border-red-500 bg-red-50 text-red-700'
+                      : 'border-border bg-card hover:border-red-400 hover:text-red-700'
+                  }`}
+                  onClick={() => handleFeedback('down')}
+                >
+                  No
+                </button>
+              </div>
+
+              {showHrLink && lastUserMessage && (
+                <div className="flex justify-end">
+                  <a
+                    href={`mailto:hr@trianz.com?subject=Question%20about%20policy&body=${encodeURIComponent(
+                      lastUserMessage.content
+                    )}`}
+                    className="text-[11px] text-blue-700 hover:underline"
+                  >
+                    Email HR this question
+                  </a>
+                </div>
+              )}
+
+              {shouldShowServiceDeskCta && lastUserMessage && (
+                <div className="flex justify-end">
+                  <Link
+                    href={{
+                      pathname: '/service-desk',
+                      query: { details: lastUserMessage.content },
+                    }}
+                    className="inline-flex items-center rounded-full bg-blue-600 px-4 py-2 text-[11px] font-medium text-white hover:bg-blue-700"
+                  >
+                    Open Service Desk for this
+                  </Link>
+                </div>
+              )}
+            </div>
+          )}
+
+          {error && <ErrorBar message={error} className="mt-2" />}
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-slate-700">Ask a question</label>
+            <div className="flex items-end gap-3">
+              <Textarea
+                rows={3}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder="e.g., What should I do before my first day?"
+                className="flex-1 resize-none rounded-2xl"
+              />
+              <Button
+                className="rounded-full px-5"
+                onClick={() => handleAsk()}
+                disabled={isLoading || !input.trim()}
+              >
+                {isLoading ? (
+                  <span className="inline-flex items-center gap-2">
+                    <Spinner />
+                    Asking...
+                  </span>
+                ) : (
+                  'Ask'
+                )}
               </Button>
             </div>
+            <p className="text-xs text-slate-500">
+              Press Enter to send. Shift+Enter for a new line.
+            </p>
           </div>
         </div>
 
-        <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm space-y-4">
-          <h2 className="text-lg font-semibold text-gray-900">Sources</h2>
-          {!lastAssistantMessage && (
-            <p className="text-sm text-gray-600">
-              After the buddy answers, you&apos;ll see which documents and sections were used here.
-            </p>
-          )}
-          {lastAssistantMessage && sources && sources.length > 0 && (
-            <div className="space-y-2">
-              {sources
-                .filter(
-                  (src, index, all) =>
-                    all.findIndex((s) => (s.title || '').trim() === (src.title || '').trim()) === index
-                )
-                .map((src, idx) => (
-                  <div key={idx} className="rounded-md border border-gray-200 p-3 text-sm text-gray-700">
+        {/* Right: sources + checklist */}
+        <div className="space-y-4">
+          <div className="bg-card rounded-3xl shadow-sm p-4 space-y-3">
+            <h2 className="text-sm font-semibold text-slate-900">Sources</h2>
+            {!lastAssistantMessage && (
+              <p className="text-sm text-slate-600">
+                Sources will appear here after the buddy answers.
+              </p>
+            )}
+
+            {lastAssistantMessage && uniqueSources.length > 0 && (
+              <div className="space-y-2">
+                {uniqueSources.map((src, idx) => (
+                  <div
+                    key={idx}
+                    className="rounded-2xl border border-border bg-background px-3 py-2 text-sm text-slate-700"
+                  >
                     <div className="flex items-center justify-between">
-                      <div className="font-medium text-gray-900">
+                      <div className="font-medium text-slate-900">
                         {src.title || 'Untitled'}
                         {src.section ? (
-                          <span className="ml-1 text-xs font-normal text-gray-500">({src.section})</span>
+                          <span className="ml-1 text-xs font-normal text-slate-500">
+                            ({src.section})
+                          </span>
                         ) : null}
                       </div>
-                      <span className="text-xs uppercase tracking-wide text-gray-500">
+                      <span className="text-[11px] uppercase tracking-wide text-slate-500">
                         Source {idx + 1}
                       </span>
                     </div>
@@ -555,20 +635,22 @@ export default function NewJoinerBuddyPage() {
                     )}
                   </div>
                 ))}
-            </div>
-          )}
-          {lastAssistantMessage && (!sources || sources.length === 0) && (
-            <p className="text-sm text-gray-600">
-              No specific sources were returned for the last answer.
-            </p>
-          )}
+              </div>
+            )}
 
-          <div className="mt-4 rounded-lg border border-gray-100 bg-gray-50 p-4 space-y-3">
-            <h3 className="text-sm font-semibold text-gray-900">Day 1 checklist (example)</h3>
-            <p className="text-xs text-gray-600">
+            {lastAssistantMessage && uniqueSources.length === 0 && (
+              <p className="text-sm text-slate-600">
+                No sources were returned for the last answer.
+              </p>
+            )}
+          </div>
+
+          <div className="bg-card rounded-3xl shadow-sm p-4 space-y-3">
+            <h3 className="text-sm font-semibold text-slate-900">Day 1 checklist (example)</h3>
+            <p className="text-xs text-slate-600">
               This is a generic checklist. Exact steps can vary by team and location.
             </p>
-            <ul className="text-xs text-gray-700 space-y-1 list-disc pl-4">
+            <ul className="text-xs text-slate-700 space-y-1 list-disc pl-4">
               <li>Confirm your reporting manager and work location.</li>
               <li>Complete HR onboarding formalities and document upload.</li>
               <li>Set up corporate email, Teams, and VPN as per IT instructions.</li>
@@ -576,9 +658,9 @@ export default function NewJoinerBuddyPage() {
               <li>Check mandatory trainings and due dates (InfoSec, POSH, etc.).</li>
             </ul>
 
-            <h3 className="mt-3 text-sm font-semibold text-gray-900">First-week checklist</h3>
-            <ul className="text-xs text-gray-700 space-y-1 list-disc pl-4">
-              <li>Understand your role, project, and key deliverables for the first 30–90 days.</li>
+            <h3 className="mt-3 text-sm font-semibold text-slate-900">First-week checklist</h3>
+            <ul className="text-xs text-slate-700 space-y-1 list-disc pl-4">
+              <li>Understand your role, project, and key deliverables for the first 30-90 days.</li>
               <li>Clarify working hours, leave application process, and escalation paths.</li>
               <li>Meet your immediate team and key stakeholders.</li>
               <li>Bookmark key systems: HR portal, timesheet, expense tool, travel desk.</li>
@@ -588,11 +670,11 @@ export default function NewJoinerBuddyPage() {
         </div>
       </div>
 
-      <div className="rounded-lg border border-gray-100 bg-gray-50 px-4 py-3 text-[11px] text-gray-500">
+      <div className="rounded-2xl bg-card shadow-sm px-4 py-3 text-xs text-slate-600">
         New Joiner Buddy is intended to guide associates through their first weeks at Trianz. Answers
         come from internal policies and onboarding material and are kept conservative; for anything
         unclear or personal (payroll, contracts, performance), please confirm with your manager or HR
-        at hr@trianz.com. Built for Trianz · Content last updated Dec 2025.
+        at hr@trianz.com.
       </div>
     </div>
   );

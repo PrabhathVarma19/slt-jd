@@ -6,6 +6,13 @@ import Button from '@/components/ui/button';
 import Input from '@/components/ui/input';
 import Textarea from '@/components/ui/textarea';
 import { formatDate } from '@/lib/utils';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from '@/components/ui/card';
 
 type View = 'form' | 'review';
 
@@ -151,168 +158,176 @@ export default function TravelDeskPage() {
           </div>
         </div>
 
-        <div className="max-w-4xl rounded-lg border border-gray-200 bg-white p-6 shadow-sm space-y-4">
-          {error && (
-            <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
-              {error}
-            </div>
-          )}
-
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="space-y-1">
-              <label className="text-sm font-medium text-gray-700">
-                Name as per Govt ID <span className="text-red-500">*</span>
-              </label>
-              <Input
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="As printed on passport / Govt ID"
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="text-sm font-medium text-gray-700">
-                Employee ID <span className="text-red-500">*</span>
-              </label>
-              <Input
-                value={employeeId}
-                onChange={(e) => setEmployeeId(e.target.value)}
-                placeholder="e.g., 12345"
-              />
-            </div>
-          </div>
-
-          <div className="grid gap-4 sm:grid-cols-3">
-            <div className="space-y-1">
-              <label className="text-sm font-medium text-gray-700">
-                Mobile number <span className="text-red-500">*</span>
-              </label>
-              <Input
-                value={mobile}
-                onChange={(e) => setMobile(e.target.value)}
-                placeholder="e.g., +91-9876543210"
-              />
-            </div>
-            <div className="space-y-1 sm:col-span-2">
-              <label className="text-sm font-medium text-gray-700">
-                Email <span className="text-red-500">*</span>
-              </label>
-              <Input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@trianz.com"
-              />
-            </div>
-          </div>
-
-          <div className="grid gap-4 sm:grid-cols-3">
-            <div className="space-y-1">
-              <label className="text-sm font-medium text-gray-700">
-                Grade <span className="text-red-500">*</span>
-              </label>
-              <Input
-                value={grade}
-                onChange={(e) => setGrade(e.target.value)}
-                placeholder="e.g., 5, 7, 9"
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="text-sm font-medium text-gray-700">
-                Onward from (city) <span className="text-red-500">*</span>
-              </label>
-              <Input
-                value={origin}
-                onChange={(e) => setOrigin(e.target.value)}
-                placeholder="e.g., Bangalore"
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="text-sm font-medium text-gray-700">
-                Destination city <span className="text-red-500">*</span>
-              </label>
-              <Input
-                value={destination}
-                onChange={(e) => setDestination(e.target.value)}
-                placeholder="e.g., Dubai"
-              />
-            </div>
-          </div>
-
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="space-y-1">
-              <label className="text-sm font-medium text-gray-700">
-                Onward date <span className="text-red-500">*</span>
-              </label>
-              <Input
-                type="date"
-                value={departDate}
-                onChange={(e) => setDepartDate(e.target.value)}
-                min={new Date().toISOString().split('T')[0]}
-              />
-            </div>
-            <div className="space-y-1">
-              <div className="flex items-center justify-between">
-                <label className="text-sm font-medium text-gray-700">Return date</label>
-                <label className="flex items-center gap-2 text-xs text-gray-600">
-                  <input
-                    type="checkbox"
-                    className="h-3 w-3 rounded border-gray-300"
-                    checked={isOneWay}
-                    onChange={(e) => setIsOneWay(e.target.checked)}
-                  />
-                  One-way (no return yet)
-                </label>
+        <Card className="max-w-4xl">
+          <CardHeader>
+            <CardTitle>Travel Desk</CardTitle>
+            <CardDescription>
+              Prepare and send structured travel requests; Beacon helps summarise and format your ask.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {error && (
+              <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+                {error}
               </div>
-              {!isOneWay && (
+            )}
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-gray-700">
+                  Name as per Govt ID <span className="text-red-500">*</span>
+                </label>
+                <Input
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="As printed on passport / Govt ID"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-gray-700">
+                  Employee ID <span className="text-red-500">*</span>
+                </label>
+                <Input
+                  value={employeeId}
+                  onChange={(e) => setEmployeeId(e.target.value)}
+                  placeholder="e.g., 12345"
+                />
+              </div>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-3">
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-gray-700">
+                  Mobile number <span className="text-red-500">*</span>
+                </label>
+                <Input
+                  value={mobile}
+                  onChange={(e) => setMobile(e.target.value)}
+                  placeholder="e.g., +91-9876543210"
+                />
+              </div>
+              <div className="space-y-1 sm:col-span-2">
+                <label className="text-sm font-medium text-gray-700">
+                  Email <span className="text-red-500">*</span>
+                </label>
+                <Input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@trianz.com"
+                />
+              </div>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-3">
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-gray-700">
+                  Grade <span className="text-red-500">*</span>
+                </label>
+                <Input
+                  value={grade}
+                  onChange={(e) => setGrade(e.target.value)}
+                  placeholder="e.g., 5, 7, 9"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-gray-700">
+                  Onward from (city) <span className="text-red-500">*</span>
+                </label>
+                <Input
+                  value={origin}
+                  onChange={(e) => setOrigin(e.target.value)}
+                  placeholder="e.g., Bangalore"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-gray-700">
+                  Destination city <span className="text-red-500">*</span>
+                </label>
+                <Input
+                  value={destination}
+                  onChange={(e) => setDestination(e.target.value)}
+                  placeholder="e.g., Dubai"
+                />
+              </div>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-gray-700">
+                  Onward date <span className="text-red-500">*</span>
+                </label>
                 <Input
                   type="date"
-                  value={returnDate}
-                  onChange={(e) => setReturnDate(e.target.value)}
-                  min={departDate || new Date().toISOString().split('T')[0]}
+                  value={departDate}
+                  onChange={(e) => setDepartDate(e.target.value)}
+                  min={new Date().toISOString().split('T')[0]}
                 />
-              )}
+              </div>
+              <div className="space-y-1">
+                <div className="flex items-center justify-between">
+                  <label className="text-sm font-medium text-gray-700">Return date</label>
+                  <label className="flex items-center gap-2 text-xs text-gray-600">
+                    <input
+                      type="checkbox"
+                      className="h-3 w-3 rounded border-gray-300"
+                      checked={isOneWay}
+                      onChange={(e) => setIsOneWay(e.target.checked)}
+                    />
+                    One-way (no return yet)
+                  </label>
+                </div>
+                {!isOneWay && (
+                  <Input
+                    type="date"
+                    value={returnDate}
+                    onChange={(e) => setReturnDate(e.target.value)}
+                    min={departDate || new Date().toISOString().split('T')[0]}
+                  />
+                )}
+              </div>
             </div>
-          </div>
 
-          <div className="space-y-1">
-            <label className="text-sm font-medium text-gray-700">
-              Purpose of travel <span className="text-red-500">*</span>
-            </label>
-            <Textarea
-              rows={3}
-              value={purpose}
-              onChange={(e) => setPurpose(e.target.value)}
-              placeholder="e.g., Client presentation, internal workshop, implementation go-live, etc."
-            />
-          </div>
+            <div className="space-y-1">
+              <label className="text-sm font-medium text-gray-700">
+                Purpose of travel <span className="text-red-500">*</span>
+              </label>
+              <Textarea
+                rows={3}
+                value={purpose}
+                onChange={(e) => setPurpose(e.target.value)}
+                placeholder="e.g., Client presentation, internal workshop, implementation go-live, etc."
+              />
+            </div>
 
-          <div className="space-y-1">
-            <label className="text-sm font-medium text-gray-700">Preferred mode (optional)</label>
-            <Input
-              value={modePreference}
-              onChange={(e) => setModePreference(e.target.value)}
-              placeholder="e.g., Air, Rail (overnight train), Road"
-            />
-          </div>
+            <div className="space-y-1">
+              <label className="text-sm font-medium text-gray-700">Preferred mode (optional)</label>
+              <Input
+                value={modePreference}
+                onChange={(e) => setModePreference(e.target.value)}
+                placeholder="e.g., Air, Rail (overnight train), Road"
+              />
+            </div>
 
-          <div className="space-y-1">
-            <label className="text-sm font-medium text-gray-700">
-              Additional details (optional)
-            </label>
-            <Textarea
-              rows={3}
-              value={extraDetails}
-              onChange={(e) => setExtraDetails(e.target.value)}
-              placeholder="Any constraints, client SLAs, cost considerations, or approvals already taken."
-            />
-          </div>
+            <div className="space-y-1">
+              <label className="text-sm font-medium text-gray-700">
+                Additional details (optional)
+              </label>
+              <Textarea
+                rows={3}
+                value={extraDetails}
+                onChange={(e) => setExtraDetails(e.target.value)}
+                placeholder="Any constraints, client SLAs, cost considerations, or approvals already taken."
+              />
+            </div>
 
-          <div className="flex items-center gap-3 pt-2">
-            <Button onClick={handlePrepareRequest} disabled={!canSubmit}>
-              Prepare travel request
-            </Button>
-          </div>
-        </div>
+            <div className="flex items-center gap-3 pt-2">
+              <Button onClick={handlePrepareRequest} disabled={!canSubmit}>
+                Prepare travel request
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
 
         {showSuccessModal && (
           <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/40">
@@ -354,14 +369,20 @@ export default function TravelDeskPage() {
           </div>
         </div>
 
-        <div className="mx-auto max-w-3xl rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-          {error && (
-            <div className="mb-4 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
-              {error}
-            </div>
-          )}
+        <Card className="mx-auto max-w-3xl">
+          <CardHeader>
+            <CardTitle>Review your travel request</CardTitle>
+            <CardDescription>
+              Please review the details below. Click Confirm to send the request to the Travel Desk.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {error && (
+              <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+                {error}
+              </div>
+            )}
 
-          <div className="space-y-6">
             {/* Employee Details */}
             <div className="space-y-3">
               <h2 className="border-b border-gray-200 pb-2 text-lg font-semibold text-gray-900">
@@ -478,8 +499,8 @@ export default function TravelDeskPage() {
                 {isSubmitting ? 'Sending request...' : 'Confirm and send'}
               </Button>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </div>
     );
   }
