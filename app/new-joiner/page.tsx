@@ -299,7 +299,7 @@ export default function NewJoinerBuddyPage() {
 
       <div className="grid gap-6 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
         {/* Left: chat surface */}
-        <div className="bg-card rounded-3xl shadow-sm p-4 sm:p-6 flex flex-col gap-4 min-h-[560px]">
+        <div className="bg-card rounded-3xl shadow-sm p-4 sm:p-6 flex flex-col gap-4 h-[560px]">
           <div className="flex items-center justify-between gap-3">
             <div className="space-y-0.5">
               <p className="text-sm font-semibold text-slate-900">Conversation</p>
@@ -316,7 +316,7 @@ export default function NewJoinerBuddyPage() {
             )}
           </div>
 
-          <div className="relative flex-1">
+          <div className="relative flex-1 min-h-0">
             <ScrollArea ref={messagesRef} className="h-full chat-scroll">
               <div className="bg-muted rounded-2xl p-3 space-y-3">
                 {messages.length === 0 && (
@@ -386,63 +386,6 @@ export default function NewJoinerBuddyPage() {
               </Button>
             )}
           </div>
-
-          {lastAssistantMessage && (
-            <div className="space-y-2 text-xs text-slate-500">
-              <div className="flex items-center justify-end gap-2">
-                <span>Did this answer help?</span>
-                <button
-                  type="button"
-                  className={`rounded-full border px-2 py-1 transition ${
-                    feedback === 'up'
-                      ? 'border-green-500 bg-green-50 text-green-700'
-                      : 'border-border bg-card hover:border-green-400 hover:text-green-700'
-                  }`}
-                  onClick={() => handleFeedback('up')}
-                >
-                  Yes
-                </button>
-                <button
-                  type="button"
-                  className={`rounded-full border px-2 py-1 transition ${
-                    feedback === 'down'
-                      ? 'border-red-500 bg-red-50 text-red-700'
-                      : 'border-border bg-card hover:border-red-400 hover:text-red-700'
-                  }`}
-                  onClick={() => handleFeedback('down')}
-                >
-                  No
-                </button>
-              </div>
-
-              {showHrLink && lastUserMessage && (
-                <div className="flex justify-end">
-                  <a
-                    href={`mailto:hr@trianz.com?subject=Question%20about%20policy&body=${encodeURIComponent(
-                      lastUserMessage.content
-                    )}`}
-                    className="text-[11px] text-blue-700 hover:underline"
-                  >
-                    Email HR this question
-                  </a>
-                </div>
-              )}
-
-              {shouldShowServiceDeskCta && lastUserMessage && (
-                <div className="flex justify-end">
-                  <Link
-                    href={{
-                      pathname: '/service-desk',
-                      query: { details: lastUserMessage.content },
-                    }}
-                    className="inline-flex items-center rounded-full bg-blue-600 px-4 py-2 text-[11px] font-medium text-white hover:bg-blue-700"
-                  >
-                    Open Service Desk for this
-                  </Link>
-                </div>
-              )}
-            </div>
-          )}
 
           {error && <ErrorBar message={error} className="mt-2" />}
 
@@ -645,6 +588,61 @@ export default function NewJoinerBuddyPage() {
               <p className="text-sm text-slate-600">
                 No sources were returned for the last answer.
               </p>
+            )}
+
+            {lastAssistantMessage && (
+              <div className="pt-2 border-t border-border space-y-2">
+                <div className="flex items-center justify-between gap-2 text-xs text-slate-600">
+                  <span>Was this answer helpful?</span>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      className={`rounded-full border px-2 py-1 transition ${
+                        feedback === 'up'
+                          ? 'border-green-500 bg-green-50 text-green-700'
+                          : 'border-border bg-card hover:border-green-400 hover:text-green-700'
+                      }`}
+                      onClick={() => handleFeedback('up')}
+                    >
+                      Yes
+                    </button>
+                    <button
+                      type="button"
+                      className={`rounded-full border px-2 py-1 transition ${
+                        feedback === 'down'
+                          ? 'border-red-500 bg-red-50 text-red-700'
+                          : 'border-border bg-card hover:border-red-400 hover:text-red-700'
+                      }`}
+                      onClick={() => handleFeedback('down')}
+                    >
+                      No
+                    </button>
+                  </div>
+                </div>
+
+                {showHrLink && lastUserMessage && (
+                  <a
+                    href={`mailto:hr@trianz.com?subject=Question%20about%20policy&body=${encodeURIComponent(
+                      lastUserMessage.content
+                    )}`}
+                    className="inline-flex text-[11px] text-blue-700 hover:underline"
+                  >
+                    Email HR this question
+                  </a>
+                )}
+
+                {shouldShowServiceDeskCta && lastUserMessage && (
+                  <Link
+                    href={{
+                      pathname: '/service-desk',
+                      query: { details: lastUserMessage.content },
+                    }}
+                    className="inline-flex items-center rounded-full bg-blue-600 px-4 py-2 text-[11px] font-medium text-white hover:bg-blue-700 w-fit"
+                  >
+                    Open Service Desk for this
+                  </Link>
+                )}
+              </div>
             )}
           </div>
 
