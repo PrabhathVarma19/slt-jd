@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, Suspense } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
@@ -18,6 +18,21 @@ function LoginForm() {
 
   // Get redirect URL from query params
   const redirectTo = searchParams.get('redirect') || '/';
+
+  // Check if already logged in
+  useEffect(() => {
+    fetch('/api/auth/session')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.isAuthenticated || data.authenticated) {
+          // Already logged in, redirect to home or intended page
+          router.push(redirectTo);
+        }
+      })
+      .catch(() => {
+        // Not logged in, stay on login page
+      });
+  }, [router, redirectTo]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

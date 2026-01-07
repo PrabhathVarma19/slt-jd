@@ -145,9 +145,7 @@ export default function Home() {
       });
   }, []);
 
-  const buckets: ToolBucket[] = isAdmin
-    ? ['Ask', 'Requests', 'Outputs', 'Admin']
-    : ['Ask', 'Requests', 'Outputs'];
+  const buckets: ToolBucket[] = ['Ask', 'Requests', 'Outputs'];
 
   type PromptCategory =
     | 'Catch Up'
@@ -168,9 +166,7 @@ export default function Home() {
 
   const [activePromptCategory, setActivePromptCategory] = useState<PromptCategory>('Catch Up');
   type ToolCategory = 'All' | ToolBucket;
-  const TOOL_CATEGORIES: ToolCategory[] = isAdmin
-    ? ['All', 'Ask', 'Requests', 'Outputs', 'Admin']
-    : ['All', 'Ask', 'Requests', 'Outputs'];
+  const TOOL_CATEGORIES: ToolCategory[] = ['All', 'Ask', 'Requests', 'Outputs'];
   const [activeToolCategory, setActiveToolCategory] = useState<ToolCategory>('All');
 
   type PromptCard = {
@@ -321,14 +317,12 @@ export default function Home() {
     ],
   };
 
-  const ALL_TOOLS = isAdmin ? [...TOOLS, ...ADMIN_TOOLS] : TOOLS;
-
   const TOOL_GROUPS: Record<ToolCategory, Tool[]> = {
-    All: ALL_TOOLS,
-    Ask: ALL_TOOLS.filter((t) => t.bucket === 'Ask'),
-    Requests: ALL_TOOLS.filter((t) => t.bucket === 'Requests'),
-    Outputs: ALL_TOOLS.filter((t) => t.bucket === 'Outputs'),
-    Admin: isAdmin ? ALL_TOOLS.filter((t) => t.bucket === 'Admin') : [],
+    All: TOOLS,
+    Ask: TOOLS.filter((t) => t.bucket === 'Ask'),
+    Requests: TOOLS.filter((t) => t.bucket === 'Requests'),
+    Outputs: TOOLS.filter((t) => t.bucket === 'Outputs'),
+    Admin: [], // Admin tools shown separately below
   };
 
   return (
@@ -537,7 +531,7 @@ export default function Home() {
 
       {/* Tools (categorized like prompts) */}
       <section id="all-tools" className="space-y-5">
-                <div className="space-y-2">
+        <div className="space-y-2">
           <h2 className="text-2xl font-semibold tracking-tight text-slate-900">
             Tools
           </h2>
@@ -570,27 +564,64 @@ export default function Home() {
 
         <div className="grid gap-3 md:grid-cols-2">
           {TOOL_GROUPS[activeToolCategory].map((tool) => (
-                    <Link
-                      key={tool.title}
-                      href={tool.href}
+            <Link
+              key={tool.title}
+              href={tool.href}
               className="flex items-center justify-between gap-4 rounded-2xl bg-card px-4 py-3 shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-md"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div
-                          className={`flex h-9 w-9 items-center justify-center rounded-full text-xs font-semibold ${tool.accent}`}
-                        >
-                          {tool.initials}
-                        </div>
+            >
+              <div className="flex items-center gap-3">
+                <div
+                  className={`flex h-9 w-9 items-center justify-center rounded-full text-xs font-semibold ${tool.accent}`}
+                >
+                  {tool.initials}
+                </div>
                 <div className="space-y-0.5">
                   <p className="text-sm font-semibold text-slate-900">{tool.title}</p>
-                          <p className="text-xs text-slate-600">{tool.description}</p>
-                        </div>
-                      </div>
-                      <ChevronRight className="h-4 w-4 text-slate-400" aria-hidden="true" />
-                    </Link>
-                  ))}
+                  <p className="text-xs text-slate-600">{tool.description}</p>
+                </div>
+              </div>
+              <ChevronRight className="h-4 w-4 text-slate-400" aria-hidden="true" />
+            </Link>
+          ))}
         </div>
       </section>
+
+      {/* Admin Tools Section - Only shown to admins */}
+      {isAdmin && (
+        <section className="space-y-5 border-t border-gray-200 pt-8">
+          <div className="space-y-2">
+            <h2 className="text-2xl font-semibold tracking-tight text-slate-900">
+              Admin
+            </h2>
+            <p className="text-sm text-slate-600">
+              Administrative tools for managing tickets and users.
+            </p>
+          </div>
+
+          <div className="grid gap-3 md:grid-cols-2">
+            {ADMIN_TOOLS.map((tool) => (
+              <Link
+                key={tool.title}
+                href={tool.href}
+                className="flex items-center justify-between gap-4 rounded-2xl bg-card px-4 py-3 shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-md border-2 border-purple-100"
+              >
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`flex h-9 w-9 items-center justify-center rounded-full text-xs font-semibold ${tool.accent}`}
+                  >
+                    {tool.initials}
+                  </div>
+                  <div className="space-y-0.5">
+                    <p className="text-sm font-semibold text-slate-900">{tool.title}</p>
+                    <p className="text-xs text-slate-600">{tool.description}</p>
+                  </div>
+                </div>
+                <ChevronRight className="h-4 w-4 text-slate-400" aria-hidden="true" />
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Trust strip */}
       <section className="pb-4">

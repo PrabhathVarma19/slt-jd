@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Inter } from 'next/font/google';
+import { UserMenu } from '@/components/auth/user-menu';
 import './globals.css';
 
 const inter = Inter({ 
@@ -26,7 +27,7 @@ export default function RootLayout({
         <div className="min-h-screen bg-background">
           <header className="border-b border-gray-200 bg-background/95 backdrop-blur-sm sticky top-0 z-50">
             <div className="mx-auto w-full max-w-screen-2xl px-4 sm:px-6 lg:px-8">
-              <div className="flex h-16 items-center justify-start">
+              <div className="flex h-16 items-center justify-between">
                 <Link
                   href="/"
                   className="flex items-center gap-2 text-lg font-semibold tracking-tight text-gray-900"
@@ -40,6 +41,7 @@ export default function RootLayout({
                   />
                   <span>Beacon</span>
                 </Link>
+                <UserMenu />
               </div>
             </div>
           </header>
