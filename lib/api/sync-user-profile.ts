@@ -68,12 +68,18 @@ export async function syncUserProfile(email: string): Promise<SyncResult> {
 
     // If user doesn't exist, create them
     if (!user) {
-      // Create user with default EMPLOYEE role
+      // Create user with default EMPLOYEE role and default password
+      // Default password: test123 (for non-prod) - users should change on first login
+      const { hashPassword } = await import('@/lib/auth/password');
+      const defaultPassword = process.env.DEFAULT_USER_PASSWORD || 'test123';
+      const passwordHash = await hashPassword(defaultPassword);
+
       if (prisma) {
         // Create user
         user = await prisma.user.create({
           data: {
             email: normalizedEmail,
+            passwordHash,
             status: 'ACTIVE',
             profile: {
               create: profileData,
@@ -96,40 +102,57 @@ export async function syncUserProfile(email: string): Promise<SyncResult> {
         }
       } else {
         // Use Supabase
-        const { data: newUser } = await supabaseServer
+        const { data: newUser, error: userError } = await supabaseServer
           .from('User')
           .insert({
             email: normalizedEmail,
+            passwordHash,
             status: 'ACTIVE',
           })
           .select('id')
           .single();
 
-        if (newUser) {
-          user = newUser;
-          
-          // Create profile
-          await supabaseServer
-            .from('UserProfile')
+        if (userError || !newUser) {
+          console.error('Error creating user:', userError);
+          return {
+            success: false,
+            created: false,
+            updated: false,
+            error: userError?.message || 'Failed to create user',
+          };
+        }
+
+        user = newUser;
+        
+        // Create profile
+        const { error: profileError } = await supabaseServer
+          .from('UserProfile')
+          .insert({
+            ...profileData,
+            userId: newUser.id,
+          });
+
+        if (profileError) {
+          console.error('Error creating profile:', profileError);
+        }
+
+        // Assign EMPLOYEE role
+        const { data: employeeRole } = await supabaseServer
+          .from('Role')
+          .select('id')
+          .eq('type', 'EMPLOYEE')
+          .single();
+
+        if (employeeRole) {
+          const { error: roleError } = await supabaseServer
+            .from('UserRole')
             .insert({
-              ...profileData,
               userId: newUser.id,
+              roleId: employeeRole.id,
             });
 
-          // Assign EMPLOYEE role
-          const { data: employeeRole } = await supabaseServer
-            .from('Role')
-            .select('id')
-            .eq('type', 'EMPLOYEE')
-            .single();
-
-          if (employeeRole) {
-            await supabaseServer
-              .from('UserRole')
-              .insert({
-                userId: newUser.id,
-                roleId: employeeRole.id,
-              });
+          if (roleError) {
+            console.error('Error assigning role:', roleError);
           }
         }
       }

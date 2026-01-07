@@ -50,42 +50,101 @@ export async function POST(req: NextRequest) {
         .eq('email', normalizedEmail)
         .single();
 
-      if (userError || !userData) {
+      if (!userError && userData) {
+        // Get user roles - query UserRole and join Role
+        const { data: userRoles, error: rolesError } = await supabaseServer
+          .from('UserRole')
+          .select(`
+            roleId,
+            role:Role!inner(type)
+          `)
+          .eq('userId', userData.id)
+          .is('revokedAt', null);
+
+        if (!rolesError && userRoles && Array.isArray(userRoles)) {
+          roles = userRoles
+            .map((ur: any) => ur.role?.type)
+            .filter((type: string | undefined) => type !== undefined);
+        }
+
+        user = {
+          id: userData.id,
+          email: userData.email,
+          passwordHash: userData.passwordHash,
+          status: userData.status,
+        };
+      }
+    }
+
+    // If user doesn't exist, try to auto-create from API
+    if (!user) {
+      const syncResult = await syncUserProfile(normalizedEmail);
+      
+      if (!syncResult.success || !syncResult.created) {
         return NextResponse.json(
-          { error: 'Invalid email or password' },
+          { error: 'Account not found. Please contact IT support to create your account.' },
           { status: 401 }
         );
       }
 
-      // Get user roles - query UserRole and join Role
-      const { data: userRoles, error: rolesError } = await supabaseServer
-        .from('UserRole')
-        .select(`
-          roleId,
-          role:Role!inner(type)
-        `)
-        .eq('userId', userData.id)
-        .is('revokedAt', null);
+      // User was created, fetch them again
+      if (prisma) {
+        user = await prisma.user.findUnique({
+          where: { email: normalizedEmail },
+          include: {
+            roles: {
+              include: {
+                role: true,
+              },
+              where: {
+                revokedAt: null,
+              },
+            },
+          },
+        });
+        
+        if (user) {
+          roles = user.roles.map((ur: any) => ur.role.type);
+        }
+      } else {
+        const { data: newUser } = await supabaseServer
+          .from('User')
+          .select('id, email, "passwordHash", status')
+          .eq('email', normalizedEmail)
+          .single();
 
-      if (!rolesError && userRoles && Array.isArray(userRoles)) {
-        roles = userRoles
-          .map((ur: any) => ur.role?.type)
-          .filter((type: string | undefined) => type !== undefined);
+        if (newUser) {
+          const { data: userRoles } = await supabaseServer
+            .from('UserRole')
+            .select(`
+              roleId,
+              role:Role!inner(type)
+            `)
+            .eq('userId', newUser.id)
+            .is('revokedAt', null);
+
+          if (userRoles && Array.isArray(userRoles)) {
+            roles = userRoles
+              .map((ur: any) => ur.role?.type)
+              .filter((type: string | undefined) => type !== undefined);
+          }
+
+          user = {
+            id: newUser.id,
+            email: newUser.email,
+            passwordHash: newUser.passwordHash,
+            status: newUser.status,
+          };
+        }
       }
 
-      user = {
-        id: userData.id,
-        email: userData.email,
-        passwordHash: userData.passwordHash,
-        status: userData.status,
-      };
-    }
-
-    if (!user) {
-      return NextResponse.json(
-        { error: 'Invalid email or password' },
-        { status: 401 }
-      );
+      // If still no user after sync attempt, return error
+      if (!user) {
+        return NextResponse.json(
+          { error: 'Account not found. Please contact IT support.' },
+          { status: 401 }
+        );
+      }
     }
 
     if (user.status !== 'ACTIVE') {
