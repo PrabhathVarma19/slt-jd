@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { hashPassword, verifyPassword } from '@/lib/auth/password';
 import { createSession } from '@/lib/auth/session';
 import { prisma } from '@/lib/prisma';
+import { supabaseServer } from '@/lib/supabase/server';
 
 export async function POST(req: NextRequest) {
   try {
@@ -17,29 +18,67 @@ export async function POST(req: NextRequest) {
     // Normalize email (lowercase, trim)
     const normalizedEmail = email.toLowerCase().trim();
 
-    // TODO: Once Prisma client is generated, replace this with actual DB query
-    // For now, this is a placeholder that will fail gracefully
-    if (!prisma) {
-      return NextResponse.json(
-        { error: 'Database not initialized. Please run: npx prisma generate && npm run db:push' },
-        { status: 503 }
-      );
-    }
+    let user: any = null;
+    let roles: string[] = [];
 
-    // Find user by email
-    const user = await prisma.user.findUnique({
-      where: { email: normalizedEmail },
-      include: {
-        roles: {
-          include: {
-            role: true,
-          },
-          where: {
-            revokedAt: null, // Only active roles
+    // Try Prisma first, fallback to Supabase if Prisma client not generated
+    if (prisma) {
+      // Use Prisma client
+      user = await prisma.user.findUnique({
+        where: { email: normalizedEmail },
+        include: {
+          roles: {
+            include: {
+              role: true,
+            },
+            where: {
+              revokedAt: null, // Only active roles
+            },
           },
         },
-      },
-    });
+      });
+      
+      if (user) {
+        roles = user.roles.map((ur: any) => ur.role.type);
+      }
+    } else {
+      // Fallback to Supabase direct queries
+      const { data: userData, error: userError } = await supabaseServer
+        .from('User')
+        .select('id, email, "passwordHash", status')
+        .eq('email', normalizedEmail)
+        .single();
+
+      if (userError || !userData) {
+        return NextResponse.json(
+          { error: 'Invalid email or password' },
+          { status: 401 }
+        );
+      }
+
+      // Get user roles - query UserRole and join Role
+      const { data: userRoles, error: rolesError } = await supabaseServer
+        .from('UserRole')
+        .select(`
+          roleId,
+          role:Role!inner(type)
+        `)
+        .eq('userId', userData.id)
+        .is('revokedAt', null);
+
+      if (!rolesError && userRoles && Array.isArray(userRoles)) {
+        roles = userRoles
+          .map((ur: any) => ur.role?.type)
+          .filter((type: string | undefined) => type !== undefined);
+      }
+
+      user = {
+        id: userData.id,
+        email: userData.email,
+        passwordHash: userData.passwordHash,
+        status: userData.status,
+      };
+    }
 
     if (!user) {
       return NextResponse.json(
@@ -70,9 +109,6 @@ export async function POST(req: NextRequest) {
         { status: 401 }
       );
     }
-
-    // Get user roles
-    const roles = user.roles.map((ur: any) => ur.role.type);
 
     // Create session
     await createSession({
