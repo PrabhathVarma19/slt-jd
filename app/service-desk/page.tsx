@@ -262,7 +262,7 @@ export default function ServiceDeskPage() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-4 space-y-6">
+    <div className="mx-auto w-full max-w-screen-2xl px-4 py-4 space-y-6">
       <div className="grid grid-cols-[auto_1fr] items-start gap-x-2 gap-y-1">
         <BackToHome label="" className="mt-1 text-xs" />
         <h1 className="text-2xl font-semibold text-slate-900">Service Desk</h1>

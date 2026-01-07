@@ -117,7 +117,9 @@ export default function Home() {
   ];
 
   const [activePromptCategory, setActivePromptCategory] = useState<PromptCategory>('Catch Up');
-  const [activeToolCategory, setActiveToolCategory] = useState<PromptCategory>('Catch Up');
+  type ToolCategory = 'All' | ToolBucket;
+  const TOOL_CATEGORIES: ToolCategory[] = ['All', 'Ask', 'Requests', 'Outputs'];
+  const [activeToolCategory, setActiveToolCategory] = useState<ToolCategory>('All');
 
   type PromptCard = {
     title: string;
@@ -267,15 +269,11 @@ export default function Home() {
     ],
   };
 
-  const TOOL_GROUPS: Record<PromptCategory, Tool[]> = {
-    'Catch Up': TOOLS.filter((t) =>
-      ['/weekly-brief', '/comms-hub'].includes(t.href)
-    ),
-    Ask: TOOLS.filter((t) => ['/policy-agent', '/new-joiner', '/expenses-coach'].includes(t.href)),
-    Requests: TOOLS.filter((t) => ['/service-desk', '/travel-desk'].includes(t.href)),
-    Create: TOOLS.filter((t) => ['/comms-hub', '/jd', '/weekly-brief'].includes(t.href)),
-    Summarize: TOOLS.filter((t) => ['/weekly-brief', '/policy-agent', '/comms-hub'].includes(t.href)),
-    Onboard: TOOLS.filter((t) => ['/new-joiner', '/policy-agent', '/service-desk'].includes(t.href)),
+  const TOOL_GROUPS: Record<ToolCategory, Tool[]> = {
+    All: TOOLS,
+    Ask: TOOLS.filter((t) => t.bucket === 'Ask'),
+    Requests: TOOLS.filter((t) => t.bucket === 'Requests'),
+    Outputs: TOOLS.filter((t) => t.bucket === 'Outputs'),
   };
 
   return (
@@ -535,7 +533,7 @@ export default function Home() {
 
         {/* Pills */}
         <div className="flex flex-wrap gap-2">
-          {PROMPT_CATEGORIES.map((cat) => {
+          {TOOL_CATEGORIES.map((cat) => {
             const isActive = cat === activeToolCategory;
             return (
               <button
