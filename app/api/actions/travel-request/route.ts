@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sendMailViaGraph } from '@/lib/graph';
+import { requireAuth } from '@/lib/auth/require-auth';
+import { createTicket } from '@/lib/tickets/ticket-utils';
+import { prisma } from '@/lib/prisma';
+import { supabaseServer } from '@/lib/supabase/server';
 
 const REQUIRED_FIELDS = [
   'name',
@@ -19,6 +23,8 @@ export async function POST(req: NextRequest) {
   const travelDeskEmail = process.env.TRAVEL_DESK_EMAIL;
 
   try {
+    // Require authentication
+    const auth = await requireAuth();
     const body = await req.json();
 
     const missing: RequiredField[] = [];
@@ -46,10 +52,72 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    const subject = `Travel request: ${body.name} (${body.employeeId}) – ${body.origin} → ${body.destination}`;
+    // Create ticket in database first
+    let ticketNumber: string | null = null;
+    try {
+      // Find user by email to get userId
+      let userId = auth.userId;
+      
+      // If email doesn't match session, try to find user by email
+      if (body.email && body.email.toLowerCase() !== auth.email.toLowerCase()) {
+        if (prisma) {
+          const userByEmail = await prisma.user.findUnique({
+            where: { email: body.email.toLowerCase() },
+            select: { id: true },
+          });
+          if (userByEmail) {
+            userId = userByEmail.id;
+          }
+        } else {
+          const { data: userByEmail } = await supabaseServer
+            .from('User')
+            .select('id')
+            .eq('email', body.email.toLowerCase())
+            .single();
+          if (userByEmail) {
+            userId = userByEmail.id;
+          }
+        }
+      }
+
+      // Build description from trip details
+      const description = `Travel Request Details:
+Origin: ${body.origin}
+Destination: ${body.destination}
+Departure: ${body.departDate}
+${body.returnDate && !body.isOneWay ? `Return: ${body.returnDate}` : body.isOneWay ? 'Return: One-way trip' : ''}
+Purpose: ${body.purpose}
+${body.modePreference ? `Preferred mode: ${body.modePreference}` : ''}
+${body.extraDetails ? `Additional details: ${body.extraDetails}` : ''}`;
+
+      const ticket = await createTicket(
+        {
+          type: 'TRAVEL',
+          requesterId: userId,
+          title: `Travel: ${body.origin} → ${body.destination}`,
+          description,
+          category: 'travel_request',
+          subcategory: body.modePreference || undefined,
+          priority: 'MEDIUM', // Travel requests default to MEDIUM
+          domain: 'TRAVEL',
+        },
+        auth.userId
+      );
+
+      ticketNumber = ticket.ticketNumber;
+    } catch (ticketError: any) {
+      console.error('Failed to create ticket in database:', ticketError);
+      // Continue with email even if ticket creation fails
+    }
+
+    const subject = ticketNumber
+      ? `Travel request: ${ticketNumber} – ${body.name} (${body.employeeId}) – ${body.origin} → ${body.destination}`
+      : `Travel request: ${body.name} (${body.employeeId}) – ${body.origin} → ${body.destination}`;
 
     const htmlBody = `
-      <p>A new travel request was submitted from Beacon Travel Desk.</p>
+      ${ticketNumber 
+        ? `<p>A new travel request was submitted from Beacon Travel Desk.</p><p><strong>Ticket Number: ${ticketNumber}</strong></p>`
+        : '<p>A new travel request was submitted from Beacon Travel Desk.</p>'}
       <h3>Employee details</h3>
       <ul>
         <li><strong>Name as per Govt ID:</strong> ${body.name}</li>
@@ -86,6 +154,7 @@ export async function POST(req: NextRequest) {
 
     const textBodyLines = [
       'A new travel request was submitted from Beacon Travel Desk.',
+      ticketNumber ? `Ticket Number: ${ticketNumber}` : '',
       '',
       'Employee details',
       `Name as per Govt ID: ${body.name}`,
@@ -131,7 +200,10 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       status: 'queued',
-      message: 'Travel request emailed to the Travel Desk.',
+      message: ticketNumber
+        ? `Travel request created (${ticketNumber}) and emailed to the Travel Desk.`
+        : 'Travel request emailed to the Travel Desk.',
+      ticketNumber,
     });
   } catch (error: any) {
     console.error('Travel request action error:', error);

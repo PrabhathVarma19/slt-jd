@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sendMailViaGraph } from '@/lib/graph';
 import OpenAI from 'openai';
+import { requireAuth } from '@/lib/auth/require-auth';
+import { createTicket } from '@/lib/tickets/ticket-utils';
+import { prisma } from '@/lib/prisma';
+import { supabaseServer } from '@/lib/supabase/server';
 
 const REQUIRED_FIELDS = ['name', 'employeeId', 'email', 'requestType', 'details'] as const;
 
@@ -13,6 +17,8 @@ export async function POST(req: NextRequest) {
   const itDeskEmail = process.env.IT_SERVICEDESK_EMAIL;
 
   try {
+    // Require authentication
+    const auth = await requireAuth();
     const body = await req.json();
 
     const missing: RequiredField[] = [];
@@ -128,10 +134,78 @@ Respond with JSON only, no explanation.`;
     const requestLabel = requestTypeLabelMap[requestType] || requestType || 'IT request';
     const systemLabel = system?.trim() || 'General';
 
-    const subject = `IT Service – ${requestLabel} – ${name} (${employeeId}) – ${systemLabel}`;
+    // Create ticket in database first
+    let ticketNumber: string | null = null;
+    try {
+      // Find user by email to get userId
+      let userId = auth.userId;
+      
+      // If email doesn't match session, try to find user by email
+      if (email && email.toLowerCase() !== auth.email.toLowerCase()) {
+        if (prisma) {
+          const userByEmail = await prisma.user.findUnique({
+            where: { email: email.toLowerCase() },
+            select: { id: true },
+          });
+          if (userByEmail) {
+            userId = userByEmail.id;
+          }
+        } else {
+          const { data: userByEmail } = await supabaseServer
+            .from('User')
+            .select('id')
+            .eq('email', email.toLowerCase())
+            .single();
+          if (userByEmail) {
+            userId = userByEmail.id;
+          }
+        }
+      }
+
+      // Map requestType to category/subcategory
+      const category = requestType || 'other';
+      const subcategory = system || undefined;
+      
+      // Map impact to priority
+      const priorityMap: Record<string, 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT'> = {
+        blocker: 'URGENT',
+        high: 'HIGH',
+        medium: 'MEDIUM',
+        low: 'LOW',
+      };
+      const priority = impact ? priorityMap[impact.toLowerCase()] || 'MEDIUM' : 'MEDIUM';
+
+      const ticket = await createTicket(
+        {
+          type: 'IT',
+          requesterId: userId,
+          title: `${requestLabel} - ${systemLabel}`,
+          description: details,
+          category,
+          subcategory,
+          priority,
+          impact,
+          domain: 'IT',
+        },
+        auth.userId
+      );
+
+      ticketNumber = ticket.ticketNumber;
+    } catch (ticketError: any) {
+      console.error('Failed to create ticket in database:', ticketError);
+      // Continue with email even if ticket creation fails
+    }
+
+    const subject = ticketNumber 
+      ? `IT Service – ${ticketNumber} – ${requestLabel} – ${name} (${employeeId}) – ${systemLabel}`
+      : `IT Service – ${requestLabel} – ${name} (${employeeId}) – ${systemLabel}`;
 
     const htmlLines: string[] = [];
-    htmlLines.push('<p>A new IT / access service request was submitted from Beacon Service Desk.</p>');
+    if (ticketNumber) {
+      htmlLines.push(`<p>A new IT / access service request was submitted from Beacon Service Desk.</p><p><strong>Ticket Number: ${ticketNumber}</strong></p>`);
+    } else {
+      htmlLines.push('<p>A new IT / access service request was submitted from Beacon Service Desk.</p>');
+    }
     htmlLines.push('<h3>Employee details</h3>');
     htmlLines.push('<ul>');
     htmlLines.push(`<li><strong>Name:</strong> ${name}</li>`);
@@ -163,10 +237,18 @@ Respond with JSON only, no explanation.`;
       )}</p>` || '<p>No additional details were provided.</p>'
     );
 
+    // Add ticket number to email body if created
+    if (ticketNumber) {
+      htmlLines[0] = `<p>A new IT / access service request was submitted from Beacon Service Desk.</p><p><strong>Ticket Number: ${ticketNumber}</strong></p>`;
+    }
+
     const htmlBody = htmlLines.join('\n');
 
     const textLines: string[] = [];
     textLines.push('A new IT / access service request was submitted from Beacon Service Desk.');
+    if (ticketNumber) {
+      textLines.push(`Ticket Number: ${ticketNumber}`);
+    }
     textLines.push('');
     textLines.push('Employee details');
     textLines.push(`Name: ${name}`);
@@ -212,7 +294,10 @@ Respond with JSON only, no explanation.`;
 
     return NextResponse.json({
       status: 'queued',
-      message: 'IT service request emailed to the IT Service Desk.',
+      message: ticketNumber 
+        ? `IT service request created (${ticketNumber}) and emailed to the IT Service Desk.`
+        : 'IT service request emailed to the IT Service Desk.',
+      ticketNumber,
     });
   } catch (error: any) {
     console.error('IT service-desk action error:', error);
