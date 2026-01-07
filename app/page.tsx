@@ -338,7 +338,7 @@ export default function Home() {
             </CardContent>
           </Card>
 
-          <Card className="absolute bottom-2 right-0 z-10 w-64 translate-x-4 translate-y-3 rounded-2xl bg-white/90 shadow-md backdrop-blur sm:translate-x-8 sm:translate-y-6">
+          <Card className="absolute bottom-2 right-10 z-10 w-64 translate-x-1 translate-y-2 rounded-2xl bg-white/90 shadow-md backdrop-blur sm:right-14 sm:translate-x-2 sm:translate-y-4">
             <CardHeader className="pb-2">
               <CardTitle className="text-xs font-medium text-slate-900">
                 Raise an IT request
