@@ -338,13 +338,6 @@ export default function PolicyAgentPage() {
       <div className="grid gap-6 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] md:h-[calc(100vh-180px)] min-h-[560px]">
         {/* Left: chat surface */}
         <div className="bg-card rounded-3xl shadow-sm p-4 sm:p-6 flex flex-col gap-4 h-[70vh] min-h-[560px] md:h-full md:min-h-0">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="space-y-0.5">
-              <p className="text-sm font-semibold text-slate-900">Conversation</p>
-              <p className="text-xs text-slate-500">Ask your own question, or pick a suggested one on the right.</p>
-            </div>
-          </div>
-
           {messages.length > 0 && (
             <div className="flex justify-end">
               <button
@@ -355,6 +348,12 @@ export default function PolicyAgentPage() {
                 New conversation
               </button>
             </div>
+          )}
+
+          {messages.length === 0 && (
+            <p className="text-xs text-slate-500">
+              Ask your own question, or pick a suggested one on the right.
+            </p>
           )}
 
           {/* Grey chat surface (messages + composer) */}
@@ -522,7 +521,13 @@ export default function PolicyAgentPage() {
 
             <ScrollArea className="flex-1 min-h-0 pr-2">
               {lastAssistantMessage && sourcesGrouped.length > 0 && (
-                <div className="space-y-2 pb-24">
+                <div
+                  className={`space-y-2 ${
+                    lastAssistantMessage && lastUserMessage && (shouldShowServiceDeskCta || shouldShowTravelDeskCta)
+                      ? 'pb-28'
+                      : ''
+                  }`}
+                >
                   {sourcesGrouped.map((src, idx) => (
                     <div
                       key={idx}
@@ -560,77 +565,53 @@ export default function PolicyAgentPage() {
               )}
 
               {lastAssistantMessage && sourcesGrouped.length === 0 && (
-                <p className="text-sm text-slate-600 pb-24">
+                <p
+                  className={`text-sm text-slate-600 ${
+                    lastAssistantMessage && lastUserMessage && (shouldShowServiceDeskCta || shouldShowTravelDeskCta)
+                      ? 'pb-28'
+                      : ''
+                  }`}
+                >
                   No sources were returned for the last answer.
                 </p>
               )}
             </ScrollArea>
 
-            {lastAssistantMessage && (
-              <div className="pt-2 border-t border-border space-y-2 shrink-0">
-                <div className="flex items-center justify-between gap-2 text-xs text-slate-600">
-                  <span>Was this answer helpful?</span>
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      className={`rounded-full border px-2 py-1 transition ${
-                        feedback === 'up'
-                          ? 'border-green-500 bg-green-50 text-green-700'
-                          : 'border-border bg-card hover:border-green-400 hover:text-green-700'
-                      }`}
-                      onClick={() => handleFeedback('up')}
-                    >
-                      Yes
-                    </button>
-                    <button
-                      type="button"
-                      className={`rounded-full border px-2 py-1 transition ${
-                        feedback === 'down'
-                          ? 'border-red-500 bg-red-50 text-red-700'
-                          : 'border-border bg-card hover:border-red-400 hover:text-red-700'
-                      }`}
-                      onClick={() => handleFeedback('down')}
-                    >
-                      No
-                    </button>
-                  </div>
+            {lastAssistantMessage &&
+              lastUserMessage &&
+              (shouldShowServiceDeskCta || shouldShowTravelDeskCta) && (
+                <div className="pt-2 border-t border-border space-y-2 shrink-0">
+                  {shouldShowServiceDeskCta && (
+                    <div className="flex items-center justify-between gap-2 rounded-2xl bg-blue-50 px-3 py-2 text-xs text-blue-900">
+                      <span className="leading-snug">Open Service Desk with this question pre-filled.</span>
+                      <Link
+                        href={{
+                          pathname: '/service-desk',
+                          query: { details: lastUserMessage.content },
+                        }}
+                        className="inline-flex items-center justify-center rounded-full bg-blue-600 px-4 py-2 text-xs font-medium text-white hover:bg-blue-700"
+                      >
+                        Service Desk
+                      </Link>
+                    </div>
+                  )}
+
+                  {shouldShowTravelDeskCta && (
+                    <div className="flex items-center justify-between gap-2 rounded-2xl bg-indigo-50 px-3 py-2 text-xs text-indigo-900">
+                      <span className="leading-snug">Open Travel Desk with this question pre-filled.</span>
+                      <Link
+                        href={{
+                          pathname: '/travel-desk',
+                          query: { details: lastUserMessage.content },
+                        }}
+                        className="inline-flex items-center justify-center rounded-full bg-indigo-600 px-4 py-2 text-xs font-medium text-white hover:bg-indigo-700"
+                      >
+                        Travel Desk
+                      </Link>
+                    </div>
+                  )}
                 </div>
-
-                {shouldShowServiceDeskCta && lastUserMessage && (
-                  <div className="rounded-2xl bg-blue-50 px-3 py-2 text-[11px] text-blue-900 flex flex-col gap-2">
-                    <p>
-                      Need IT to actually do this? Open a Service Desk request with your question pre-filled.
-                    </p>
-                    <Link
-                      href={{
-                        pathname: '/service-desk',
-                        query: { details: lastUserMessage.content },
-                      }}
-                      className="inline-flex items-center justify-center rounded-full bg-blue-600 px-4 py-2 text-xs font-medium text-white hover:bg-blue-700 self-start"
-                    >
-                      Open Service Desk
-                    </Link>
-                  </div>
-                )}
-
-                {shouldShowTravelDeskCta && lastUserMessage && (
-                  <div className="rounded-2xl bg-indigo-50 px-3 py-2 text-[11px] text-indigo-900 flex flex-col gap-2">
-                    <p>
-                      Need to send a structured travel request? Open Travel Desk with your question pre-filled.
-                    </p>
-                    <Link
-                      href={{
-                        pathname: '/travel-desk',
-                        query: { details: lastUserMessage.content },
-                      }}
-                      className="inline-flex items-center justify-center rounded-full bg-indigo-600 px-4 py-2 text-xs font-medium text-white hover:bg-indigo-700 self-start"
-                    >
-                      Open Travel Desk
-                    </Link>
-                  </div>
-                )}
-              </div>
-            )}
+              )}
           </div>
         </div>
       </div>

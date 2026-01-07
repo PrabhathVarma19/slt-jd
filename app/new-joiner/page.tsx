@@ -302,12 +302,8 @@ export default function NewJoinerBuddyPage() {
       <div className="grid gap-6 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] md:h-[calc(100vh-180px)] min-h-[560px]">
         {/* Left: chat surface */}
         <div className="bg-card rounded-3xl shadow-sm p-4 sm:p-6 flex flex-col gap-4 h-[70vh] min-h-[560px] md:h-full md:min-h-0">
-          <div className="flex items-center justify-between gap-3">
-            <div className="space-y-0.5">
-              <p className="text-sm font-semibold text-slate-900">Conversation</p>
-              <p className="text-xs text-slate-500">Ask your own question, or pick a suggested one on the right.</p>
-            </div>
-            {messages.length > 0 && (
+          {messages.length > 0 && (
+            <div className="flex justify-end">
               <button
                 type="button"
                 className="text-[11px] text-blue-700 hover:underline"
@@ -315,8 +311,14 @@ export default function NewJoinerBuddyPage() {
               >
                 New conversation
               </button>
-            )}
-          </div>
+            </div>
+          )}
+
+          {messages.length === 0 && (
+            <p className="text-xs text-slate-500">
+              Ask your own question, or pick a suggested one on the right.
+            </p>
+          )}
 
           {/* Grey chat surface (messages + composer) */}
           <div className="flex flex-col flex-1 min-h-0 rounded-2xl bg-muted p-3">
@@ -555,7 +557,11 @@ export default function NewJoinerBuddyPage() {
 
             <ScrollArea className="flex-1 min-h-0 pr-2">
               {lastAssistantMessage && uniqueSources.length > 0 && (
-                <div className="space-y-2 pb-24">
+                <div
+                  className={`space-y-2 ${
+                    lastAssistantMessage && lastUserMessage && shouldShowServiceDeskCta ? 'pb-24' : ''
+                  }`}
+                >
                   {uniqueSources.map((src, idx) => (
                     <div
                       key={idx}
@@ -590,66 +596,45 @@ export default function NewJoinerBuddyPage() {
               )}
 
               {lastAssistantMessage && uniqueSources.length === 0 && (
-                <p className="text-sm text-slate-600 pb-24">
+                <p
+                  className={`text-sm text-slate-600 ${
+                    lastAssistantMessage && lastUserMessage && shouldShowServiceDeskCta ? 'pb-24' : ''
+                  }`}
+                >
                   No sources were returned for the last answer.
                 </p>
               )}
             </ScrollArea>
 
-            {lastAssistantMessage && (
-              <div className="pt-2 border-t border-border space-y-2 shrink-0">
-                <div className="flex items-center justify-between gap-2 text-xs text-slate-600">
-                  <span>Was this answer helpful?</span>
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      className={`rounded-full border px-2 py-1 transition ${
-                        feedback === 'up'
-                          ? 'border-green-500 bg-green-50 text-green-700'
-                          : 'border-border bg-card hover:border-green-400 hover:text-green-700'
-                      }`}
-                      onClick={() => handleFeedback('up')}
+            {lastAssistantMessage &&
+              lastUserMessage &&
+              shouldShowServiceDeskCta && (
+                <div className="pt-2 border-t border-border space-y-2 shrink-0">
+                  <div className="flex items-center justify-between gap-2 rounded-2xl bg-blue-50 px-3 py-2 text-xs text-blue-900">
+                    <span className="leading-snug">Open Service Desk with this question pre-filled.</span>
+                    <Link
+                      href={{
+                        pathname: '/service-desk',
+                        query: { details: lastUserMessage.content },
+                      }}
+                      className="inline-flex items-center justify-center rounded-full bg-blue-600 px-4 py-2 text-xs font-medium text-white hover:bg-blue-700"
                     >
-                      Yes
-                    </button>
-                    <button
-                      type="button"
-                      className={`rounded-full border px-2 py-1 transition ${
-                        feedback === 'down'
-                          ? 'border-red-500 bg-red-50 text-red-700'
-                          : 'border-border bg-card hover:border-red-400 hover:text-red-700'
-                      }`}
-                      onClick={() => handleFeedback('down')}
-                    >
-                      No
-                    </button>
+                      Service Desk
+                    </Link>
                   </div>
+
+                  {showHrLink && (
+                    <a
+                      href={`mailto:hr@trianz.com?subject=Question%20about%20policy&body=${encodeURIComponent(
+                        lastUserMessage.content
+                      )}`}
+                      className="inline-flex text-[11px] text-blue-700 hover:underline"
+                    >
+                      Email HR this question
+                    </a>
+                  )}
                 </div>
-
-                {showHrLink && lastUserMessage && (
-                  <a
-                    href={`mailto:hr@trianz.com?subject=Question%20about%20policy&body=${encodeURIComponent(
-                      lastUserMessage.content
-                    )}`}
-                    className="inline-flex text-[11px] text-blue-700 hover:underline"
-                  >
-                    Email HR this question
-                  </a>
-                )}
-
-                {shouldShowServiceDeskCta && lastUserMessage && (
-                  <Link
-                    href={{
-                      pathname: '/service-desk',
-                      query: { details: lastUserMessage.content },
-                    }}
-                    className="inline-flex items-center rounded-full bg-blue-600 px-4 py-2 text-[11px] font-medium text-white hover:bg-blue-700 w-fit"
-                  >
-                    Open Service Desk for this
-                  </Link>
-                )}
-              </div>
-            )}
+              )}
           </div>
 
           <div className="bg-card rounded-3xl shadow-sm p-4 space-y-3 flex flex-col min-h-0 max-h-[220px]">
