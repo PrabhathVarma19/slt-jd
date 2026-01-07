@@ -325,7 +325,7 @@ export default function PolicyAgentPage() {
   const sourcesGrouped = useMemo(() => groupSources(sources || []), [sources]);
 
   return (
-    <div className="mx-auto w-full max-w-7xl xl:max-w-[1440px] px-4 py-4 space-y-3">
+    <div className="mx-auto w-full max-w-screen-2xl px-4 py-4 space-y-3">
       <div className="space-y-1">
         <div className="flex items-center gap-2">
           <BackToHome label="" className="text-xs" />
@@ -420,46 +420,48 @@ export default function PolicyAgentPage() {
             {error && <ErrorBar message={error} className="mt-3" />}
 
             <div className="mt-3 space-y-2">
-              <div className="flex h-8 items-center justify-center">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  onClick={handleResetConversation}
-                  disabled={messages.length === 0 || isLoading}
-                  className={[
-                    'h-8 w-8 rounded-full border border-blue-200 text-blue-700 hover:bg-blue-50',
-                    messages.length === 0 ? 'opacity-0 pointer-events-none' : '',
-                  ].join(' ')}
-                  aria-label="New conversation"
-                  title="New conversation"
-                >
-                  <RotateCcw className="h-4 w-4" aria-hidden="true" />
-                </Button>
-              </div>
               <div className="flex items-end gap-3">
-              <Textarea
-                rows={2}
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder="e.g., What are the password rules? How many days do I need to be in office?"
-                className="flex-1 resize-none rounded-2xl bg-card"
-              />
-              <Button
-                className="rounded-full px-5"
-                onClick={() => handleAsk()}
-                disabled={isLoading || !input.trim()}
-              >
-                {isLoading ? (
-                  <span className="inline-flex items-center gap-2">
-                    <Spinner />
-                    Asking...
-                  </span>
-                ) : (
-                  'Ask'
-                )}
-              </Button>
+                <Textarea
+                  rows={2}
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  placeholder="e.g., What are the password rules? How many days do I need to be in office?"
+                  className="flex-1 resize-none rounded-2xl bg-card"
+                />
+
+                <div className="flex flex-col items-center gap-2">
+                  {/* reserved space so layout doesn't jump */}
+                  <div className={messages.length === 0 ? 'opacity-0 pointer-events-none' : ''}>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      onClick={handleResetConversation}
+                      disabled={messages.length === 0 || isLoading}
+                      className="h-8 w-8 rounded-full border border-blue-200 text-blue-700 hover:bg-blue-50"
+                      aria-label="New conversation"
+                      title="New conversation"
+                    >
+                      <RotateCcw className="h-4 w-4" aria-hidden="true" />
+                    </Button>
+                  </div>
+
+                  <Button
+                    className="rounded-full px-5"
+                    onClick={() => handleAsk()}
+                    disabled={isLoading || !input.trim()}
+                  >
+                    {isLoading ? (
+                      <span className="inline-flex items-center gap-2">
+                        <Spinner />
+                        Asking...
+                      </span>
+                    ) : (
+                      'Ask'
+                    )}
+                  </Button>
+                </div>
               </div>
               <p className="text-xs text-slate-500">
                 Press Enter to send. Shift+Enter for a new line.
