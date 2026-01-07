@@ -3,6 +3,7 @@ import { hashPassword, verifyPassword } from '@/lib/auth/password';
 import { createSession } from '@/lib/auth/session';
 import { prisma } from '@/lib/prisma';
 import { supabaseServer } from '@/lib/supabase/server';
+import { syncUserProfile } from '@/lib/api/sync-user-profile';
 
 export async function POST(req: NextRequest) {
   try {
@@ -117,8 +118,12 @@ export async function POST(req: NextRequest) {
       roles,
     });
 
-    // TODO: Sync user profile from Profile API (Feature D)
-    // This will be added in a later feature
+    // Sync user profile from external API (non-blocking)
+    // This runs in the background and won't block login if it fails
+    syncUserProfile(normalizedEmail).catch((error) => {
+      console.error('Background profile sync failed:', error);
+      // Don't throw - login should succeed even if sync fails
+    });
 
     return NextResponse.json({
       success: true,
