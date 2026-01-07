@@ -1,0 +1,169 @@
+'use client';
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { ErrorBar } from '@/components/ui/error-bar';
+
+export default function LoginPage() {
+  const router = useRouter();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setIsLoading(true);
+
+    try {
+      // TODO: Wire up actual auth API call
+      // For now, just simulate a delay
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      // Temporary: redirect to home for testing
+      // In real implementation, this will call /api/auth/login
+      router.push('/');
+    } catch (err: any) {
+      setError(err.message || 'Login failed. Please check your credentials.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSSO = () => {
+    // Placeholder - will be enabled when Azure AD SSO is implemented
+    setError('SSO login coming soon. Please use email and password for now.');
+  };
+
+  return (
+    <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-4 py-12">
+      <div className="w-full max-w-md space-y-6">
+        {/* Logo/Header */}
+        <div className="text-center space-y-2">
+          <h1 className="text-3xl font-semibold text-slate-900">Welcome to Beacon</h1>
+          <p className="text-sm text-slate-600">
+            Sign in to access your internal AI desk for answers and requests
+          </p>
+        </div>
+
+        {/* Login Card */}
+        <Card className="rounded-2xl shadow-sm">
+          <CardHeader className="space-y-1">
+            <CardTitle className="text-xl">Sign in</CardTitle>
+            <CardDescription>
+              Enter your email and password to continue
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {error && <ErrorBar message={error} />}
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <label htmlFor="email" className="text-sm font-medium text-gray-700">
+                  Email
+                </label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="you@trianz.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  disabled={isLoading}
+                  autoComplete="email"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="password" className="text-sm font-medium text-gray-700">
+                  Password
+                </label>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  disabled={isLoading}
+                  autoComplete="current-password"
+                />
+              </div>
+
+              <Button
+                type="submit"
+                className="w-full rounded-full"
+                disabled={isLoading || !email || !password}
+              >
+                {isLoading ? 'Signing in...' : 'Sign in'}
+              </Button>
+            </form>
+
+            {/* Divider */}
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t border-gray-200" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-card px-2 text-gray-500">Or continue with</span>
+              </div>
+            </div>
+
+            {/* SSO Button (Placeholder) */}
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full rounded-full"
+              onClick={handleSSO}
+              disabled={true}
+            >
+              <svg
+                className="mr-2 h-4 w-4"
+                viewBox="0 0 23 23"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M11.5 0C5.15 0 0 5.15 0 11.5S5.15 23 11.5 23 23 17.85 23 11.5 17.85 0 11.5 0Z"
+                  fill="#F25022"
+                />
+                <path
+                  d="M11.5 0C5.15 0 0 5.15 0 11.5S5.15 23 11.5 23 23 17.85 23 11.5 17.85 0 11.5 0Z"
+                  fill="#7FBA00"
+                />
+                <path
+                  d="M11.5 0C5.15 0 0 5.15 0 11.5S5.15 23 11.5 23 23 17.85 23 11.5 17.85 0 11.5 0Z"
+                  fill="#00A4EF"
+                />
+                <path
+                  d="M11.5 0C5.15 0 0 5.15 0 11.5S5.15 23 11.5 23 23 17.85 23 11.5 17.85 0 11.5 0Z"
+                  fill="#FFB900"
+                />
+                <path
+                  d="M11.5 4.6V18.4C8.28 18.4 5.75 15.87 5.75 12.65C5.75 9.43 8.28 6.9 11.5 6.9C14.72 6.9 17.25 9.43 17.25 12.65C17.25 15.87 14.72 18.4 11.5 18.4Z"
+                  fill="white"
+                />
+              </svg>
+              Sign in with Microsoft
+              <span className="ml-2 text-xs text-gray-400">(Coming soon)</span>
+            </Button>
+          </CardContent>
+        </Card>
+
+        {/* Footer */}
+        <p className="text-center text-xs text-gray-500">
+          Built for Trianz. Forgot your password?{' '}
+          <Link href="/" className="text-blue-600 hover:underline">
+            Contact IT Support
+          </Link>
+        </p>
+      </div>
+    </div>
+  );
+}
+

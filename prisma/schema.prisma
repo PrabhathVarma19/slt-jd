@@ -1,0 +1,317 @@
+// Prisma schema for Beacon Auth + RBAC + Ticketing
+// Database: Supabase Postgres
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// AUTH & RBAC
+// ============================================
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+enum RoleType {
+  EMPLOYEE
+  ENGINEER_IT
+  ENGINEER_TRAVEL
+  ADMIN_IT
+  ADMIN_TRAVEL
+  ADMIN_HR
+  SUPER_ADMIN
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  passwordHash String? // nullable for SSO-only users
+  status    UserStatus @default(ACTIVE)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  profile   UserProfile?
+  roles     UserRole[]
+  ticketsCreated Ticket[] @relation("TicketRequester")
+  ticketsAssigned TicketAssignment[]
+  ticketEvents TicketEvent[]
+  auditLogs AuditLog[]
+
+  @@index([email])
+  @@index([status])
+}
+
+model UserProfile {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+  employeeId      Int?     @unique
+  empName         String?
+  gradeCode       String?
+  location        String?
+  projectCode     String?
+  projectName     String?
+  orgGroup        String?
+  pmEmail         String?
+  dmEmail         String?
+  supervisorEmail String?
+  rawPayloadJson  Json?    // Store full API response for reference
+  lastSyncedAt    DateTime?
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([employeeId])
+  @@index([email])
+  @@index([projectCode])
+  @@index([orgGroup])
+}
+
+model Role {
+  id          String   @id @default(uuid())
+  type        RoleType @unique
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+
+  // Relations
+  users UserRole[]
+
+  @@index([type])
+}
+
+model UserRole {
+  id        String   @id @default(uuid())
+  userId    String
+  roleId    String
+  grantedBy String? // userId of admin who granted this
+  grantedAt DateTime @default(now())
+  revokedAt DateTime?
+  revokedBy String? // userId of admin who revoked this
+
+  // Relations
+  user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role Role  @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId])
+  @@index([userId])
+  @@index([roleId])
+}
+
+// ============================================
+// TICKETING
+// ============================================
+
+enum TicketType {
+  IT
+  TRAVEL
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  WAITING_ON_REQUESTER
+  RESOLVED
+  CLOSED
+}
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum TicketEventType {
+  CREATED
+  ASSIGNED
+  STATUS_CHANGED
+  PRIORITY_CHANGED
+  NOTE_ADDED
+  APPROVAL_REQUESTED
+  APPROVED
+  REJECTED
+}
+
+model Ticket {
+  id          String      @id @default(uuid())
+  ticketNumber String     @unique // Human-friendly: IT-000123, TR-000123
+  type        TicketType
+  requesterId String
+  title       String
+  description String
+  category    String? // IT category/subcategory
+  subcategory String?
+  priority    TicketPriority @default(MEDIUM)
+  impact      String? // Impact level from Service Desk form
+  status      TicketStatus @default(OPEN)
+  domain      String? // "IT" or "TRAVEL" for admin filtering
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  resolvedAt  DateTime?
+  closedAt    DateTime?
+
+  // Relations
+  requester   User       @relation("TicketRequester", fields: [requesterId], references: [id])
+  assignments TicketAssignment[]
+  events      TicketEvent[]
+  approvals   TicketApproval[]
+
+  @@index([requesterId])
+  @@index([status])
+  @@index([type])
+  @@index([domain])
+  @@index([createdAt])
+  @@index([ticketNumber])
+}
+
+model TicketAssignment {
+  id          String   @id @default(uuid())
+  ticketId    String
+  engineerId  String
+  assignedBy  String? // userId of admin who assigned
+  assignedAt  DateTime @default(now())
+  unassignedAt DateTime?
+  unassignedBy String? // userId of admin who unassigned
+
+  // Relations
+  ticket   Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  engineer User   @relation(fields: [engineerId], references: [id])
+
+  @@index([ticketId])
+  @@index([engineerId])
+  @@index([assignedAt])
+}
+
+model TicketEvent {
+  id        String        @id @default(uuid())
+  ticketId  String
+  type      TicketEventType
+  createdBy String
+  payload   Json? // Flexible JSON for event-specific data
+  createdAt DateTime      @default(now())
+
+  // Relations
+  ticket    Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  creator   User   @relation(fields: [createdBy], references: [id])
+
+  @@index([ticketId])
+  @@index([createdAt])
+  @@index([type])
+}
+
+model TicketApproval {
+  id          String   @id @default(uuid())
+  ticketId    String
+  approverEmail String // Email from UserProfile (pmEmail/dmEmail/supervisorEmail)
+  approverUserId String? // If approver exists in system
+  state       String   // PENDING, APPROVED, REJECTED
+  note        String?
+  requestedAt DateTime @default(now())
+  decidedAt   DateTime?
+
+  // Relations
+  ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  @@index([ticketId])
+  @@index([approverEmail])
+  @@index([state])
+}
+
+// ============================================
+// AUDIT LOG
+// ============================================
+
+enum AuditAction {
+  USER_CREATED
+  USER_UPDATED
+  USER_DELETED
+  ROLE_GRANTED
+  ROLE_REVOKED
+  TICKET_CREATED
+  TICKET_UPDATED
+  TICKET_DELETED
+  TICKET_ASSIGNED
+  TICKET_STATUS_CHANGED
+  LOGIN
+  LOGOUT
+  PROFILE_SYNCED
+}
+
+model AuditLog {
+  id        String      @id @default(uuid())
+  userId    String? // Nullable for system actions
+  action    AuditAction
+  resourceType String? // "User", "Ticket", "Role", etc.
+  resourceId String? // ID of the resource
+  details   Json? // Additional context
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime    @default(now())
+
+  // Relations
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([action])
+  @@index([resourceType, resourceId])
+  @@index([createdAt])
+}
+
+// ============================================
+// SUBSCRIPTIONS (for admin cost tracking)
+// ============================================
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELLED
+  EXPIRED
+}
+
+model SubscriptionCatalogItem {
+  id              String   @id @default(uuid())
+  vendor          String
+  sku             String
+  name            String
+  description     String?
+  unitCostMonthly Decimal  @db.Decimal(10, 2)
+  currency        String   @default("USD")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  instances SubscriptionInstance[]
+
+  @@unique([vendor, sku])
+  @@index([vendor])
+}
+
+model SubscriptionInstance {
+  id              String             @id @default(uuid())
+  catalogItemId   String
+  userId          String? // Nullable for team/department subscriptions
+  department      String?
+  startDate       DateTime
+  endDate         DateTime?
+  status          SubscriptionStatus @default(ACTIVE)
+  notes           String?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  // Relations
+  catalogItem SubscriptionCatalogItem @relation(fields: [catalogItemId], references: [id])
+
+  @@index([catalogItemId])
+  @@index([userId])
+  @@index([status])
+  @@index([startDate])
+}
+
