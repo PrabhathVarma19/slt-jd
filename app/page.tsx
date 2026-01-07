@@ -117,6 +117,7 @@ export default function Home() {
   ];
 
   const [activePromptCategory, setActivePromptCategory] = useState<PromptCategory>('Catch Up');
+  const [activeToolCategory, setActiveToolCategory] = useState<PromptCategory>('Catch Up');
 
   type PromptCard = {
     title: string;
@@ -266,16 +267,23 @@ export default function Home() {
     ],
   };
 
+  const TOOL_GROUPS: Record<PromptCategory, Tool[]> = {
+    'Catch Up': TOOLS.filter((t) =>
+      ['/weekly-brief', '/comms-hub'].includes(t.href)
+    ),
+    Ask: TOOLS.filter((t) => ['/policy-agent', '/new-joiner', '/expenses-coach'].includes(t.href)),
+    Requests: TOOLS.filter((t) => ['/service-desk', '/travel-desk'].includes(t.href)),
+    Create: TOOLS.filter((t) => ['/comms-hub', '/jd', '/weekly-brief'].includes(t.href)),
+    Summarize: TOOLS.filter((t) => ['/weekly-brief', '/policy-agent', '/comms-hub'].includes(t.href)),
+    Onboard: TOOLS.filter((t) => ['/new-joiner', '/policy-agent', '/service-desk'].includes(t.href)),
+  };
+
   return (
     <div className="space-y-10">
       {/* Hero */}
       <section className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
         {/* Text column */}
         <div className="space-y-6">
-          <div className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
-            Beacon
-          </div>
-
           <h1 className="text-3xl font-semibold text-slate-900 sm:text-4xl">
             Beacon - the Trianz AI desk for answers and requests.
           </h1>
@@ -295,7 +303,7 @@ export default function Home() {
             <button
               type="button"
               onClick={() => {
-                const el = document.getElementById('tools');
+                const el = document.getElementById('all-tools');
                 if (el) {
                   el.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
@@ -476,6 +484,104 @@ export default function Home() {
         <details className="rounded-2xl bg-card px-4 py-4 shadow-sm">
           <summary className="cursor-pointer select-none text-sm font-semibold text-slate-900">
             Browse all tools
+          </summary>
+          <div className="mt-4 space-y-4">
+            {buckets.map((bucket) => {
+              const tools = TOOLS.filter((t) => t.bucket === bucket);
+              return (
+                <div key={bucket} className="space-y-2">
+                  <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+                    {BUCKET_LABELS[bucket]}
+                  </h3>
+                  <div className="space-y-2">
+                    {tools.map((tool) => (
+                      <Link
+                        key={tool.title}
+                        href={tool.href}
+                        className="flex items-center justify-between gap-4 rounded-2xl bg-background px-4 py-3 shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-md"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div
+                            className={`flex h-9 w-9 items-center justify-center rounded-full text-xs font-semibold ${tool.accent}`}
+                          >
+                            {tool.initials}
+                          </div>
+                          <div className="space-y-0.5">
+                            <p className="text-sm font-semibold text-slate-900">{tool.title}</p>
+                            <p className="text-xs text-slate-600">{tool.description}</p>
+                          </div>
+                        </div>
+                        <ChevronRight className="h-4 w-4 text-slate-400" aria-hidden="true" />
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </details>
+      </section>
+
+      {/* Tools (categorized like prompts) */}
+      <section id="all-tools" className="space-y-5">
+        <div className="space-y-2">
+          <h2 className="text-2xl font-semibold tracking-tight text-slate-900">
+            Tools
+          </h2>
+          <p className="text-sm text-slate-600">
+            Jump straight into a tool, grouped by workflow.
+          </p>
+        </div>
+
+        {/* Pills */}
+        <div className="flex flex-wrap gap-2">
+          {PROMPT_CATEGORIES.map((cat) => {
+            const isActive = cat === activeToolCategory;
+            return (
+              <button
+                key={cat}
+                type="button"
+                onClick={() => setActiveToolCategory(cat)}
+                className={[
+                  'rounded-full px-4 py-2 text-sm font-medium transition',
+                  isActive
+                    ? 'bg-slate-900 text-white shadow-sm'
+                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200',
+                ].join(' ')}
+              >
+                {cat}
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="grid gap-3 md:grid-cols-2">
+          {TOOL_GROUPS[activeToolCategory].map((tool) => (
+            <Link
+              key={tool.title}
+              href={tool.href}
+              className="flex items-center justify-between gap-4 rounded-2xl bg-card px-4 py-3 shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-md"
+            >
+              <div className="flex items-center gap-3">
+                <div
+                  className={`flex h-9 w-9 items-center justify-center rounded-full text-xs font-semibold ${tool.accent}`}
+                >
+                  {tool.initials}
+                </div>
+                <div className="space-y-0.5">
+                  <p className="text-sm font-semibold text-slate-900">{tool.title}</p>
+                  <p className="text-xs text-slate-600">{tool.description}</p>
+                </div>
+              </div>
+              <ChevronRight className="h-4 w-4 text-slate-400" aria-hidden="true" />
+            </Link>
+          ))}
+        </div>
+
+        {/* Full list fallback */}
+        <details className="rounded-2xl bg-card px-4 py-4 shadow-sm">
+          <summary className="cursor-pointer select-none text-sm font-semibold text-slate-900">
+            Browse all tools (A / Requests / Outputs)
           </summary>
           <div className="mt-4 space-y-4">
             {buckets.map((bucket) => {
