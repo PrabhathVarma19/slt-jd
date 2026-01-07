@@ -21,13 +21,23 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      // TODO: Wire up actual auth API call
-      // For now, just simulate a delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-      // Temporary: redirect to home for testing
-      // In real implementation, this will call /api/auth/login
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Login failed. Please check your credentials.');
+      }
+
+      // Redirect to home or intended page
       router.push('/');
+      router.refresh(); // Refresh to update any server components that check auth
     } catch (err: any) {
       setError(err.message || 'Login failed. Please check your credentials.');
     } finally {
