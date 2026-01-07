@@ -326,12 +326,10 @@ export default function PolicyAgentPage() {
 
   return (
     <div className="mx-auto w-full max-w-screen-2xl px-4 py-4 space-y-3">
-      <div className="space-y-1">
-        <div className="flex items-center gap-2">
-          <BackToHome label="" className="text-xs" />
-          <h1 className="text-2xl font-semibold text-slate-900">Ask Beacon</h1>
-        </div>
-        <p className="text-sm text-slate-600">
+      <div className="grid grid-cols-[auto_1fr] items-start gap-x-2 gap-y-1">
+        <BackToHome label="" className="mt-1 text-xs" />
+        <h1 className="text-2xl font-semibold text-slate-900">Ask Beacon</h1>
+        <p className="col-start-2 text-sm text-slate-600">
           Ask policy and &quot;how do I...&quot; questions. Answers are grounded in internal Trianz policies with citations.
         </p>
       </div>
