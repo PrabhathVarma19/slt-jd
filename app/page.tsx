@@ -126,15 +126,21 @@ export default function Home() {
     fetch('/api/auth/session')
       .then((res) => res.json())
       .then((data) => {
-        if (data.isAuthenticated && data.user?.roles) {
+        // Check both isAuthenticated and authenticated properties
+        if ((data.isAuthenticated || data.authenticated) && data.user?.roles) {
           const roles = data.user.roles || [];
           setUserRoles(roles);
           // Check if user has any admin role
           const adminRoles = ['ADMIN_IT', 'ADMIN_TRAVEL', 'ADMIN_HR', 'SUPER_ADMIN'];
-          setIsAdmin(roles.some((role: string) => adminRoles.includes(role)));
+          const hasAdminRole = roles.some((role: string) => adminRoles.includes(role));
+          setIsAdmin(hasAdminRole);
+          console.log('Session check:', { roles, hasAdminRole, data });
+        } else {
+          console.log('No admin roles found:', data);
         }
       })
-      .catch(() => {
+      .catch((err) => {
+        console.error('Session check error:', err);
         // Not logged in or error
       });
   }, []);
