@@ -575,47 +575,6 @@ export default function Home() {
             </Link>
           ))}
         </div>
-
-        {/* Full list fallback */}
-        <details className="rounded-2xl bg-card px-4 py-4 shadow-sm">
-          <summary className="cursor-pointer select-none text-sm font-semibold text-slate-900">
-            Browse all tools (A / Requests / Outputs)
-          </summary>
-          <div className="mt-4 space-y-4">
-            {buckets.map((bucket) => {
-              const tools = TOOLS.filter((t) => t.bucket === bucket);
-              return (
-                <div key={bucket} className="space-y-2">
-                  <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
-                    {BUCKET_LABELS[bucket]}
-                  </h3>
-                  <div className="space-y-2">
-                    {tools.map((tool) => (
-                      <Link
-                        key={tool.title}
-                        href={tool.href}
-                        className="flex items-center justify-between gap-4 rounded-2xl bg-background px-4 py-3 shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-md"
-                      >
-                        <div className="flex items-center gap-3">
-                          <div
-                            className={`flex h-9 w-9 items-center justify-center rounded-full text-xs font-semibold ${tool.accent}`}
-                          >
-                            {tool.initials}
-                          </div>
-                          <div className="space-y-0.5">
-                            <p className="text-sm font-semibold text-slate-900">{tool.title}</p>
-                            <p className="text-xs text-slate-600">{tool.description}</p>
-                          </div>
-                        </div>
-                        <ChevronRight className="h-4 w-4 text-slate-400" aria-hidden="true" />
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </details>
       </section>
 
       {/* Trust strip */}
