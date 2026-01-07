@@ -24,13 +24,25 @@ export async function GET() {
           id: true,
           email: true,
           status: true,
+          profile: {
+            select: {
+              empName: true,
+            },
+          },
         },
       });
     } else {
       // Use Supabase fallback
       const { data: userData } = await supabaseServer
         .from('User')
-        .select('id, email, status')
+        .select(`
+          id,
+          email,
+          status,
+          profile:UserProfile (
+            empName
+          )
+        `)
         .eq('id', session.userId)
         .single();
       
@@ -52,6 +64,7 @@ export async function GET() {
       user: {
         id: user.id,
         email: user.email,
+        name: user.profile?.empName || (user.profile as any)?.empName,
         roles: session.roles || [],
       },
     });

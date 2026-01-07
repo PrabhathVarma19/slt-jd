@@ -54,6 +54,8 @@ function LoginForm() {
         throw new Error(data.error || 'Login failed. Please check your credentials.');
       }
 
+      // Add smooth transition
+      await new Promise((resolve) => setTimeout(resolve, 150));
       // Redirect to intended page or home
       router.push(redirectTo);
       router.refresh(); // Refresh to update any server components that check auth
