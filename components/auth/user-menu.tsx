@@ -1,15 +1,22 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import Button from '@/components/ui/button';
 
 export function UserMenu() {
   const router = useRouter();
+  const pathname = usePathname();
   const [user, setUser] = useState<{ email: string; roles?: string[] } | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Don't fetch session on login page
+    if (pathname === '/login') {
+      setLoading(false);
+      return;
+    }
+
     fetch('/api/auth/session')
       .then((res) => res.json())
       .then((data) => {
@@ -23,7 +30,7 @@ export function UserMenu() {
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [pathname]);
 
   const handleLogout = async () => {
     try {
@@ -34,6 +41,11 @@ export function UserMenu() {
       console.error('Logout error:', error);
     }
   };
+
+  // Hide user menu on login page
+  if (pathname === '/login') {
+    return null;
+  }
 
   if (loading) {
     return null;
