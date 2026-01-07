@@ -289,7 +289,7 @@ export default function NewJoinerBuddyPage() {
   }, [sources]);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-4 space-y-3">
+    <div className="mx-auto w-full max-w-7xl xl:max-w-[1440px] px-4 py-4 space-y-3">
       <div className="space-y-1">
         <div className="flex items-center gap-2">
           <BackToHome label="" className="text-xs" />
@@ -384,7 +384,7 @@ export default function NewJoinerBuddyPage() {
             {error && <ErrorBar message={error} className="mt-3" />}
 
             <div className="mt-3 space-y-2">
-              <div className="flex h-8 items-center justify-end">
+              <div className="flex h-8 items-center justify-center">
                 <Button
                   type="button"
                   variant="ghost"
@@ -392,7 +392,7 @@ export default function NewJoinerBuddyPage() {
                   onClick={handleResetConversation}
                   disabled={messages.length === 0 || isLoading}
                   className={[
-                    'h-8 w-8 rounded-full',
+                    'h-8 w-8 rounded-full border border-blue-200 text-blue-700 hover:bg-blue-50',
                     messages.length === 0 ? 'opacity-0 pointer-events-none' : '',
                   ].join(' ')}
                   aria-label="New conversation"
