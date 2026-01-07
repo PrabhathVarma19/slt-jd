@@ -299,9 +299,9 @@ export default function NewJoinerBuddyPage() {
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] md:h-[calc(100vh-180px)] min-h-[560px]">
+      <div className="grid gap-6 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] md:h-[calc(100vh-150px)] min-h-[620px]">
         {/* Left: chat surface */}
-        <div className="bg-card rounded-3xl shadow-sm p-4 sm:p-6 flex flex-col gap-4 h-[70vh] min-h-[560px] md:h-full md:min-h-0">
+        <div className="bg-card rounded-3xl shadow-sm p-4 sm:p-6 flex flex-col gap-4 h-[75vh] min-h-[620px] md:h-full md:min-h-0">
           {messages.length > 0 && (
             <div className="flex justify-end">
               <button
@@ -314,14 +314,13 @@ export default function NewJoinerBuddyPage() {
             </div>
           )}
 
-          {messages.length === 0 && (
-            <p className="text-xs text-slate-500">
-              Ask your own question, or pick a suggested one on the right.
-            </p>
-          )}
-
           {/* Grey chat surface (messages + composer) */}
           <div className="flex flex-col flex-1 min-h-0 rounded-2xl bg-muted p-3">
+            {messages.length === 0 && (
+              <p className="text-xs text-slate-600 mb-2">
+                Ask your own question, or pick a suggested one on the right.
+              </p>
+            )}
             <div className="relative flex-1 min-h-0">
               <ScrollArea ref={messagesRef} className="h-full chat-scroll">
                 <div className="space-y-3">
@@ -428,7 +427,7 @@ export default function NewJoinerBuddyPage() {
         </div>
 
         {/* Right: sidebar */}
-        <div className="h-[70vh] min-h-[560px] md:h-full md:min-h-0 md:sticky md:top-24 flex flex-col gap-4 min-h-0">
+        <div className="h-[75vh] min-h-[620px] md:h-full md:min-h-0 md:sticky md:top-24 flex flex-col gap-4 min-h-0">
           <div className="bg-card rounded-3xl shadow-sm p-4 space-y-3 flex flex-col min-h-0 max-h-[320px]">
             <h2 className="text-sm font-semibold text-slate-900">Suggested questions</h2>
             <ScrollArea className="flex-1 min-h-0 pr-2">
