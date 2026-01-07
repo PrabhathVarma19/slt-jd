@@ -319,7 +319,8 @@ export default function Home() {
         <div className="relative h-64 md:h-72">
           <div className="absolute inset-0 rounded-full bg-indigo-100/40 blur-3xl" />
 
-          <Card className="absolute left-0 top-4 w-64 rounded-2xl bg-white/90 shadow-md backdrop-blur">
+          {/* Keep Ask Beacon behind, IT request on top for nicer overlap */}
+          <Card className="absolute left-0 top-10 w-64 rounded-2xl bg-white/90 shadow-md backdrop-blur">
             <CardHeader className="pb-2">
               <CardTitle className="text-xs font-medium text-slate-900">Ask Beacon</CardTitle>
               <CardDescription className="text-[11px] text-slate-500">
@@ -337,7 +338,7 @@ export default function Home() {
             </CardContent>
           </Card>
 
-          <Card className="absolute right-0 bottom-2 w-64 rounded-2xl bg-white/90 shadow-md backdrop-blur">
+          <Card className="absolute right-0 top-2 z-10 w-64 rounded-2xl bg-white/90 shadow-md backdrop-blur">
             <CardHeader className="pb-2">
               <CardTitle className="text-xs font-medium text-slate-900">
                 Raise an IT request
