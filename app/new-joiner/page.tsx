@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
+import { RotateCcw } from 'lucide-react';
 import Button from '@/components/ui/button';
 import Textarea from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -302,18 +303,6 @@ export default function NewJoinerBuddyPage() {
       <div className="grid gap-6 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] md:h-[calc(100vh-150px)] min-h-[620px]">
         {/* Left: chat surface */}
         <div className="bg-card rounded-3xl shadow-sm p-4 sm:p-6 flex flex-col gap-4 h-[75vh] min-h-[620px] md:h-full md:min-h-0">
-          {messages.length > 0 && (
-            <div className="flex justify-end">
-              <button
-                type="button"
-                className="text-[11px] text-blue-700 hover:underline"
-                onClick={handleResetConversation}
-              >
-                New conversation
-              </button>
-            </div>
-          )}
-
           {/* Grey chat surface (messages + composer) */}
           <div className="flex flex-col flex-1 min-h-0 rounded-2xl bg-muted p-3">
             {messages.length === 0 && (
@@ -395,6 +384,23 @@ export default function NewJoinerBuddyPage() {
             {error && <ErrorBar message={error} className="mt-3" />}
 
             <div className="mt-3 space-y-2">
+              <div className="flex h-8 items-center justify-end">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  onClick={handleResetConversation}
+                  disabled={messages.length === 0 || isLoading}
+                  className={[
+                    'h-8 w-8 rounded-full',
+                    messages.length === 0 ? 'opacity-0 pointer-events-none' : '',
+                  ].join(' ')}
+                  aria-label="New conversation"
+                  title="New conversation"
+                >
+                  <RotateCcw className="h-4 w-4" aria-hidden="true" />
+                </Button>
+              </div>
               <div className="flex items-end gap-3">
               <Textarea
                 rows={2}
