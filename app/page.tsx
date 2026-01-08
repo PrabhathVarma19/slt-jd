@@ -117,8 +117,21 @@ const ADMIN_TOOLS: Tool[] = [
   },
 ];
 
+// Engineer tools - only shown to engineers
+const ENGINEER_TOOLS: Tool[] = [
+  {
+    title: 'My Tickets',
+    description: 'View and manage tickets assigned to you.',
+    href: '/engineer/tickets',
+    bucket: 'Admin',
+    initials: 'MT',
+    accent: 'bg-blue-100 text-blue-700',
+  },
+];
+
 export default function Home() {
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isEngineer, setIsEngineer] = useState(false);
   const [userRoles, setUserRoles] = useState<string[]>([]);
 
   useEffect(() => {
@@ -134,7 +147,13 @@ export default function Home() {
           const adminRoles = ['ADMIN_IT', 'ADMIN_TRAVEL', 'ADMIN_HR', 'SUPER_ADMIN'];
           const hasAdminRole = roles.some((role: string) => adminRoles.includes(role));
           setIsAdmin(hasAdminRole);
-          console.log('Session check:', { roles, hasAdminRole, data });
+          
+          // Check if user has any engineer role
+          const engineerRoles = ['ENGINEER_IT', 'ENGINEER_TRAVEL', 'ADMIN_IT', 'ADMIN_TRAVEL', 'SUPER_ADMIN'];
+          const hasEngineerRole = roles.some((role: string) => engineerRoles.includes(role));
+          setIsEngineer(hasEngineerRole);
+          
+          console.log('Session check:', { roles, hasAdminRole, hasEngineerRole, data });
         } else {
           console.log('No admin roles found:', data);
         }
@@ -604,6 +623,43 @@ export default function Home() {
                 key={tool.title}
                 href={tool.href}
                 className="flex items-center justify-between gap-4 rounded-2xl bg-card px-4 py-3 shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-md border-2 border-purple-100"
+              >
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`flex h-9 w-9 items-center justify-center rounded-full text-xs font-semibold ${tool.accent}`}
+                  >
+                    {tool.initials}
+                  </div>
+                  <div className="space-y-0.5">
+                    <p className="text-sm font-semibold text-slate-900">{tool.title}</p>
+                    <p className="text-xs text-slate-600">{tool.description}</p>
+                  </div>
+                </div>
+                <ChevronRight className="h-4 w-4 text-slate-400" aria-hidden="true" />
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Engineer Tools Section - Only shown to engineers */}
+      {isEngineer && (
+        <section className="space-y-5 border-t border-gray-200 pt-8">
+          <div className="space-y-2">
+            <h2 className="text-2xl font-semibold tracking-tight text-slate-900">
+              Engineer
+            </h2>
+            <p className="text-sm text-slate-600">
+              Tools for managing tickets assigned to you.
+            </p>
+          </div>
+
+          <div className="grid gap-3 md:grid-cols-2">
+            {ENGINEER_TOOLS.map((tool) => (
+              <Link
+                key={tool.title}
+                href={tool.href}
+                className="flex items-center justify-between gap-4 rounded-2xl bg-card px-4 py-3 shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-md border-2 border-blue-100"
               >
                 <div className="flex items-center gap-3">
                   <div
