@@ -4,7 +4,6 @@
  */
 
 import { getSession } from './session';
-import { prisma } from '@/lib/prisma';
 import { supabaseServer } from '@/lib/supabase/server';
 
 export type RoleType =
@@ -21,36 +20,22 @@ export type RoleType =
  */
 export async function getUserRoles(userId: string): Promise<RoleType[]> {
   try {
-    if (prisma) {
-      const userRoles = await prisma.userRole.findMany({
-        where: {
-          userId,
-          revokedAt: null, // Only active roles
-        },
-        include: {
-          role: true,
-        },
-      });
+    // Use Supabase
+    const { data: userRoles } = await supabaseServer
+      .from('UserRole')
+      .select(`
+        role:Role!inner(type)
+      `)
+      .eq('userId', userId)
+      .is('revokedAt', null);
 
-      return userRoles.map((ur: any) => ur.role.type as RoleType);
-    } else {
-      // Use Supabase
-      const { data: userRoles } = await supabaseServer
-        .from('UserRole')
-        .select(`
-          role:Role!inner(type)
-        `)
-        .eq('userId', userId)
-        .is('revokedAt', null);
-
-      if (!userRoles || !Array.isArray(userRoles)) {
-        return [];
-      }
-
-      return userRoles
-        .map((ur: any) => ur.role?.type)
-        .filter((type: string | undefined) => type !== undefined) as RoleType[];
+    if (!userRoles || !Array.isArray(userRoles)) {
+      return [];
     }
+
+    return userRoles
+      .map((ur: any) => ur.role?.type)
+      .filter((type: string | undefined) => type !== undefined) as RoleType[];
   } catch (error) {
     console.error('Error getting user roles:', error);
     return [];

@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { getSession } from '@/lib/auth/session';
-import { prisma } from '@/lib/prisma';
 import { supabaseServer } from '@/lib/supabase/server';
 
 export async function GET() {
@@ -15,41 +14,21 @@ export async function GET() {
     }
 
     // Verify user still exists and is active
-    let user: any = null;
+    const { data: userData } = await supabaseServer
+      .from('User')
+      .select(`
+        id,
+        email,
+        status,
+        profile:UserProfile (
+          empName
+        )
+      `)
+      .eq('id', session.userId)
+      .single();
     
-    if (prisma) {
-      user = await prisma.user.findUnique({
-        where: { id: session.userId },
-        select: {
-          id: true,
-          email: true,
-          status: true,
-          profile: {
-            select: {
-              empName: true,
-            },
-          },
-        },
-      });
-    } else {
-      // Use Supabase fallback
-      const { data: userData } = await supabaseServer
-        .from('User')
-        .select(`
-          id,
-          email,
-          status,
-          profile:UserProfile (
-            empName
-          )
-        `)
-        .eq('id', session.userId)
-        .single();
-      
-      if (userData) {
-        user = userData;
-      }
-    }
+    const user = userData;
+    const userProfile = Array.isArray(user?.profile) ? user.profile[0] : user?.profile;
 
     if (!user || user.status !== 'ACTIVE') {
       return NextResponse.json({ 
@@ -64,7 +43,7 @@ export async function GET() {
       user: {
         id: user.id,
         email: user.email,
-        name: user.profile?.empName || (user.profile as any)?.empName,
+        name: userProfile?.empName,
         roles: session.roles || [],
       },
     });

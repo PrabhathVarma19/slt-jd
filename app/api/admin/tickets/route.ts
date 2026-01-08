@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireSessionRole } from '@/lib/auth/rbac';
-import { prisma } from '@/lib/prisma';
 import { supabaseServer } from '@/lib/supabase/server';
 
 /**
@@ -31,71 +30,8 @@ export async function GET(req: NextRequest) {
     }
 
     try {
-      if (prisma) {
-        const where: any = {};
-        if (allowedDomain) {
-          where.domain = allowedDomain;
-        }
-        if (status) {
-          where.status = status;
-        }
-        if (type) {
-          where.type = type;
-        }
-
-        const [tickets, total] = await Promise.all([
-          prisma.ticket.findMany({
-            where,
-            include: {
-              requester: {
-                select: {
-                  id: true,
-                  email: true,
-                  profile: {
-                    select: {
-                      empName: true,
-                      employeeId: true,
-                    },
-                  },
-                },
-              },
-              assignments: {
-                where: {
-                  unassignedAt: null,
-                },
-                include: {
-                  engineer: {
-                    select: {
-                      id: true,
-                      email: true,
-                      profile: {
-                        select: {
-                          empName: true,
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-            },
-            orderBy: {
-              createdAt: 'desc',
-            },
-            take: limit,
-            skip: offset,
-          }),
-          prisma.ticket.count({ where }),
-        ]);
-
-        return NextResponse.json({
-          tickets,
-          total,
-          limit,
-          offset,
-        });
-      } else {
-        // Use Supabase
-        let query = supabaseServer
+      // Use Supabase
+      let query = supabaseServer
           .from('Ticket')
           .select(`
             *,
@@ -155,13 +91,12 @@ export async function GET(req: NextRequest) {
           assignments: assignments.filter((a: any) => a.ticketId === ticket.id),
         })) || [];
 
-        return NextResponse.json({
-          tickets: ticketsWithAssignments,
-          total: count || 0,
-          limit,
-          offset,
-        });
-      }
+      return NextResponse.json({
+        tickets: ticketsWithAssignments,
+        total: count || 0,
+        limit,
+        offset,
+      });
     } catch (dbError: any) {
       console.error('Database error fetching tickets:', dbError);
       throw dbError;

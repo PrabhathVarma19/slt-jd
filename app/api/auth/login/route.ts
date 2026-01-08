@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { hashPassword, verifyPassword } from '@/lib/auth/password';
 import { createSession } from '@/lib/auth/session';
-import { prisma } from '@/lib/prisma';
 import { supabaseServer } from '@/lib/supabase/server';
 import { syncUserProfile } from '@/lib/api/sync-user-profile';
 
@@ -22,58 +21,36 @@ export async function POST(req: NextRequest) {
     let user: any = null;
     let roles: string[] = [];
 
-    // Try Prisma first, fallback to Supabase if Prisma client not generated
-    if (prisma) {
-      // Use Prisma client
-      user = await prisma.user.findUnique({
-        where: { email: normalizedEmail },
-        include: {
-          roles: {
-            include: {
-              role: true,
-            },
-            where: {
-              revokedAt: null, // Only active roles
-            },
-          },
-        },
-      });
-      
-      if (user) {
-        roles = user.roles.map((ur: any) => ur.role.type);
+    // Use Supabase direct queries
+    const { data: userData, error: userError } = await supabaseServer
+      .from('User')
+      .select('id, email, "passwordHash", status')
+      .eq('email', normalizedEmail)
+      .single();
+
+    if (!userError && userData) {
+      // Get user roles - query UserRole and join Role
+      const { data: userRoles, error: rolesError } = await supabaseServer
+        .from('UserRole')
+        .select(`
+          roleId,
+          role:Role!inner(type)
+        `)
+        .eq('userId', userData.id)
+        .is('revokedAt', null);
+
+      if (!rolesError && userRoles && Array.isArray(userRoles)) {
+        roles = userRoles
+          .map((ur: any) => ur.role?.type)
+          .filter((type: string | undefined) => type !== undefined);
       }
-    } else {
-      // Fallback to Supabase direct queries
-      const { data: userData, error: userError } = await supabaseServer
-        .from('User')
-        .select('id, email, "passwordHash", status')
-        .eq('email', normalizedEmail)
-        .single();
 
-      if (!userError && userData) {
-        // Get user roles - query UserRole and join Role
-        const { data: userRoles, error: rolesError } = await supabaseServer
-          .from('UserRole')
-          .select(`
-            roleId,
-            role:Role!inner(type)
-          `)
-          .eq('userId', userData.id)
-          .is('revokedAt', null);
-
-        if (!rolesError && userRoles && Array.isArray(userRoles)) {
-          roles = userRoles
-            .map((ur: any) => ur.role?.type)
-            .filter((type: string | undefined) => type !== undefined);
-        }
-
-        user = {
-          id: userData.id,
-          email: userData.email,
-          passwordHash: userData.passwordHash,
-          status: userData.status,
-        };
-      }
+      user = {
+        id: userData.id,
+        email: userData.email,
+        passwordHash: userData.passwordHash,
+        status: userData.status,
+      };
     }
 
     // If user doesn't exist, try to auto-create from API
@@ -88,54 +65,34 @@ export async function POST(req: NextRequest) {
       }
 
       // User was created, fetch them again
-      if (prisma) {
-        user = await prisma.user.findUnique({
-          where: { email: normalizedEmail },
-          include: {
-            roles: {
-              include: {
-                role: true,
-              },
-              where: {
-                revokedAt: null,
-              },
-            },
-          },
-        });
-        
-        if (user) {
-          roles = user.roles.map((ur: any) => ur.role.type);
+      const { data: newUser } = await supabaseServer
+        .from('User')
+        .select('id, email, "passwordHash", status')
+        .eq('email', normalizedEmail)
+        .single();
+
+      if (newUser) {
+        const { data: userRoles } = await supabaseServer
+          .from('UserRole')
+          .select(`
+            roleId,
+            role:Role!inner(type)
+          `)
+          .eq('userId', newUser.id)
+          .is('revokedAt', null);
+
+        if (userRoles && Array.isArray(userRoles)) {
+          roles = userRoles
+            .map((ur: any) => ur.role?.type)
+            .filter((type: string | undefined) => type !== undefined);
         }
-      } else {
-        const { data: newUser } = await supabaseServer
-          .from('User')
-          .select('id, email, "passwordHash", status')
-          .eq('email', normalizedEmail)
-          .single();
 
-        if (newUser) {
-          const { data: userRoles } = await supabaseServer
-            .from('UserRole')
-            .select(`
-              roleId,
-              role:Role!inner(type)
-            `)
-            .eq('userId', newUser.id)
-            .is('revokedAt', null);
-
-          if (userRoles && Array.isArray(userRoles)) {
-            roles = userRoles
-              .map((ur: any) => ur.role?.type)
-              .filter((type: string | undefined) => type !== undefined);
-          }
-
-          user = {
-            id: newUser.id,
-            email: newUser.email,
-            passwordHash: newUser.passwordHash,
-            status: newUser.status,
-          };
-        }
+        user = {
+          id: newUser.id,
+          email: newUser.email,
+          passwordHash: newUser.passwordHash,
+          status: newUser.status,
+        };
       }
 
       // If still no user after sync attempt, return error

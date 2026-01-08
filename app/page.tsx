@@ -149,7 +149,7 @@ export default function Home() {
           setIsAdmin(hasAdminRole);
           
           // Check if user has any engineer role
-          const engineerRoles = ['ENGINEER_IT', 'ENGINEER_TRAVEL', 'ADMIN_IT', 'ADMIN_TRAVEL', 'SUPER_ADMIN'];
+          const engineerRoles = ['ENGINEER_IT', 'ADMIN_IT', 'SUPER_ADMIN'];
           const hasEngineerRole = roles.some((role: string) => engineerRoles.includes(role));
           setIsEngineer(hasEngineerRole);
           
@@ -550,7 +550,7 @@ export default function Home() {
 
       {/* Tools (categorized like prompts) */}
       <section id="all-tools" className="space-y-5">
-        <div className="space-y-2">
+                <div className="space-y-2">
           <h2 className="text-2xl font-semibold tracking-tight text-slate-900">
             Tools
           </h2>
@@ -583,25 +583,25 @@ export default function Home() {
 
         <div className="grid gap-3 md:grid-cols-2">
           {TOOL_GROUPS[activeToolCategory].map((tool) => (
-            <Link
-              key={tool.title}
-              href={tool.href}
+                    <Link
+                      key={tool.title}
+                      href={tool.href}
               className="flex items-center justify-between gap-4 rounded-2xl bg-card px-4 py-3 shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-md"
-            >
-              <div className="flex items-center gap-3">
-                <div
-                  className={`flex h-9 w-9 items-center justify-center rounded-full text-xs font-semibold ${tool.accent}`}
-                >
-                  {tool.initials}
-                </div>
+                    >
+                      <div className="flex items-center gap-3">
+                        <div
+                          className={`flex h-9 w-9 items-center justify-center rounded-full text-xs font-semibold ${tool.accent}`}
+                        >
+                          {tool.initials}
+                        </div>
                 <div className="space-y-0.5">
                   <p className="text-sm font-semibold text-slate-900">{tool.title}</p>
-                  <p className="text-xs text-slate-600">{tool.description}</p>
-                </div>
-              </div>
-              <ChevronRight className="h-4 w-4 text-slate-400" aria-hidden="true" />
-            </Link>
-          ))}
+                          <p className="text-xs text-slate-600">{tool.description}</p>
+                        </div>
+                      </div>
+                      <ChevronRight className="h-4 w-4 text-slate-400" aria-hidden="true" />
+                    </Link>
+                  ))}
         </div>
       </section>
 

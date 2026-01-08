@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireSessionRole } from '@/lib/auth/rbac';
-import { prisma } from '@/lib/prisma';
 import { supabaseServer } from '@/lib/supabase/server';
 
 /**
@@ -17,43 +16,8 @@ export async function GET(
     const userId = params.id;
 
     try {
-      if (prisma) {
-        const user = await prisma.user.findUnique({
-          where: { id: userId },
-          include: {
-            profile: true,
-            roles: {
-              include: {
-                role: true,
-              },
-              orderBy: {
-                grantedAt: 'desc',
-              },
-            },
-          },
-        });
-
-        if (!user) {
-          return NextResponse.json({ error: 'User not found' }, { status: 404 });
-        }
-
-        return NextResponse.json({
-          user: {
-            ...user,
-            roles: user.roles.map((ur: any) => ({
-              id: ur.role.id,
-              type: ur.role.type,
-              name: ur.role.name,
-              grantedAt: ur.grantedAt,
-              grantedBy: ur.grantedBy,
-              revokedAt: ur.revokedAt,
-              revokedBy: ur.revokedBy,
-            })),
-          },
-        });
-      } else {
-        // Use Supabase
-        const { data: user, error } = await supabaseServer
+      // Use Supabase
+      const { data: user, error } = await supabaseServer
           .from('User')
           .select(`
             *,
@@ -74,8 +38,7 @@ export async function GET(
           return NextResponse.json({ error: 'User not found' }, { status: 404 });
         }
 
-        return NextResponse.json({ user });
-      }
+      return NextResponse.json({ user });
     } catch (dbError: any) {
       console.error('Database error fetching user:', dbError);
       throw dbError;
@@ -105,103 +68,8 @@ export async function PATCH(
     const { status, roles } = body; // roles: array of role types to assign
 
     try {
-      if (prisma) {
-        const updates: any = {};
-
-        if (status) {
-          updates.status = status;
-        }
-
-        // Update user status if provided
-        if (Object.keys(updates).length > 0) {
-          await prisma.user.update({
-            where: { id: userId },
-            data: updates,
-          });
-        }
-
-        // Handle role assignments if provided
-        if (roles && Array.isArray(roles)) {
-          // Get all role IDs
-          const roleRecords = await prisma.role.findMany({
-            where: {
-              type: { in: roles },
-            },
-          });
-
-          const roleIds = roleRecords.map((r: any) => r.id);
-
-          // Get current active roles
-          const currentRoles = await prisma.userRole.findMany({
-            where: {
-              userId,
-              revokedAt: null,
-            },
-          });
-
-          const currentRoleIds = currentRoles.map((ur: any) => ur.roleId);
-
-          // Revoke roles not in the new list
-          const rolesToRevoke = currentRoleIds.filter((rid: string) => !roleIds.includes(rid));
-          if (rolesToRevoke.length > 0) {
-            await prisma.userRole.updateMany({
-              where: {
-                userId,
-                roleId: { in: rolesToRevoke },
-                revokedAt: null,
-              },
-              data: {
-                revokedAt: new Date(),
-                revokedBy: auth.userId,
-              },
-            });
-          }
-
-          // Grant new roles
-          const rolesToGrant = roleIds.filter((rid: string) => !currentRoleIds.includes(rid));
-          for (const roleId of rolesToGrant) {
-            await prisma.userRole.upsert({
-              where: {
-                userId_roleId: {
-                  userId,
-                  roleId,
-                },
-              },
-              update: {
-                revokedAt: null,
-                revokedBy: null,
-                grantedAt: new Date(),
-                grantedBy: auth.userId,
-              },
-              create: {
-                userId,
-                roleId,
-                grantedBy: auth.userId,
-              },
-            });
-          }
-        }
-
-        // Fetch updated user
-        const updatedUser = await prisma.user.findUnique({
-          where: { id: userId },
-          include: {
-            profile: true,
-            roles: {
-              where: {
-                revokedAt: null,
-              },
-              include: {
-                role: true,
-              },
-            },
-          },
-        });
-
-        return NextResponse.json({ user: updatedUser });
-      } else {
-        // Use Supabase
-        const updates: any = {};
+      // Use Supabase
+      const updates: any = {};
         if (status) {
           updates.status = status;
         }
@@ -306,8 +174,7 @@ export async function PATCH(
           .is('roles.revokedAt', null)
           .single();
 
-        return NextResponse.json({ user: updatedUser });
-      }
+      return NextResponse.json({ user: updatedUser });
     } catch (dbError: any) {
       console.error('Database error updating user:', dbError);
       throw dbError;

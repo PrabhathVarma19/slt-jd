@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/auth/session';
-import { prisma } from '@/lib/prisma';
 import { supabaseServer } from '@/lib/supabase/server';
 import { createTicketEvent } from '@/lib/tickets/ticket-utils';
 
 /**
  * GET /api/engineer/tickets/[id]
- * Get ticket details (only if assigned to current engineer)
+ * Get ticket details (if assigned to current engineer OR unassigned IT ticket)
  */
 export async function GET(
   req: NextRequest,
@@ -22,107 +21,74 @@ export async function GET(
     const ticketId = params.id;
 
     try {
-      if (prisma) {
-        // Check if ticket is assigned to this engineer
-        const assignment = await prisma.ticketAssignment.findFirst({
-          where: {
-            ticketId,
-            engineerId: session.userId,
-            unassignedAt: null,
-          },
-          include: {
-            ticket: {
-              include: {
-                requester: {
-                  select: {
-                    id: true,
-                    email: true,
-                    profile: {
-                      select: {
-                        empName: true,
-                        employeeId: true,
-                      },
-                    },
-                  },
-                },
-                events: {
-                  include: {
-                    creator: {
-                      select: {
-                        id: true,
-                        email: true,
-                        profile: {
-                          select: {
-                            empName: true,
-                          },
-                        },
-                      },
-                    },
-                  },
-                  orderBy: {
-                    createdAt: 'desc',
-                  },
-                },
-              },
-            },
-          },
-        });
+      // Use Supabase
+      // First check if ticket is assigned to this engineer
+      const { data: assignment } = await supabaseServer
+        .from('TicketAssignment')
+        .select('id')
+        .eq('ticketId', ticketId)
+        .eq('engineerId', session.userId)
+        .is('unassignedAt', null)
+        .single();
 
-        if (!assignment) {
-          return NextResponse.json({ error: 'Ticket not found or not assigned to you' }, { status: 404 });
-        }
-
-        return NextResponse.json({ ticket: assignment.ticket });
-      } else {
-        // Use Supabase
-        const { data: assignment, error: assignError } = await supabaseServer
-          .from('TicketAssignment')
-          .select(`
-            *,
-            ticket:Ticket!inner (
-              *,
-              requester:User!Ticket_requesterId_fkey (
-                id,
-                email,
-                profile:UserProfile (
-                  empName,
-                  employeeId
-                )
-              )
+      // Get ticket (assigned or unassigned IT ticket)
+      const { data: ticket, error: ticketError } = await supabaseServer
+        .from('Ticket')
+        .select(`
+          *,
+          requester:User!Ticket_requesterId_fkey (
+            id,
+            email,
+            profile:UserProfile (
+              empName,
+              employeeId
             )
-          `)
-          .eq('ticketId', ticketId)
-          .eq('engineerId', session.userId)
-          .is('unassignedAt', null)
-          .single();
+          )
+        `)
+        .eq('id', ticketId)
+        .single();
 
-        if (assignError || !assignment) {
-          return NextResponse.json({ error: 'Ticket not found or not assigned to you' }, { status: 404 });
-        }
-
-        // Fetch events
-        const { data: events } = await supabaseServer
-          .from('TicketEvent')
-          .select(`
-            *,
-            creator:User!TicketEvent_createdBy_fkey (
-              id,
-              email,
-              profile:UserProfile (
-                empName
-              )
-            )
-          `)
-          .eq('ticketId', ticketId)
-          .order('createdAt', { ascending: false });
-
-        const ticket = {
-          ...assignment.ticket,
-          events: events || [],
-        };
-
-        return NextResponse.json({ ticket });
+      if (ticketError || !ticket) {
+        return NextResponse.json({ error: 'Ticket not found' }, { status: 404 });
       }
+
+      // If ticket is assigned, must be assigned to this engineer
+      // If ticket is unassigned, must be IT ticket
+      if (assignment) {
+        // Ticket is assigned - verify it's assigned to this engineer (already checked above)
+      } else {
+        // Ticket is unassigned - must be IT ticket
+        if (ticket.domain !== 'IT') {
+          return NextResponse.json(
+            { error: 'Ticket not found or not assigned to you' },
+            { status: 404 }
+          );
+        }
+      }
+
+      // Fetch events
+      const { data: events } = await supabaseServer
+        .from('TicketEvent')
+        .select(`
+          *,
+          creator:User!TicketEvent_createdBy_fkey (
+            id,
+            email,
+            profile:UserProfile (
+              empName
+            )
+          )
+        `)
+        .eq('ticketId', ticketId)
+        .order('createdAt', { ascending: false });
+
+      const ticketWithEvents = {
+        ...ticket,
+        events: events || [],
+        isAssigned: !!assignment,
+      };
+
+      return NextResponse.json({ ticket: ticketWithEvents });
     } catch (dbError: any) {
       console.error('Database error fetching ticket:', dbError);
       return NextResponse.json(
@@ -157,142 +123,74 @@ export async function PATCH(
     const ticketId = params.id;
     const { status, note } = await req.json();
 
-    // Verify ticket is assigned to this engineer
+    // Verify ticket is assigned to this engineer (required for updates)
     try {
-      if (prisma) {
-        const assignment = await prisma.ticketAssignment.findFirst({
-          where: {
-            ticketId,
-            engineerId: session.userId,
-            unassignedAt: null,
-          },
-          include: {
-            ticket: true,
-          },
-        });
+      // Use Supabase
+      // Check assignment
+      const { data: assignment, error: assignError } = await supabaseServer
+        .from('TicketAssignment')
+        .select('*, ticket:Ticket!inner(*)')
+        .eq('ticketId', ticketId)
+        .eq('engineerId', session.userId)
+        .is('unassignedAt', null)
+        .single();
 
-        if (!assignment) {
-          return NextResponse.json(
-            { error: 'Ticket not found or not assigned to you' },
-            { status: 403 }
-          );
-        }
-
-        const ticket = assignment.ticket;
-        const updates: any = {};
-
-        // Update status
-        if (status && status !== ticket.status) {
-          updates.status = status;
-          if (status === 'RESOLVED' && !ticket.resolvedAt) {
-            updates.resolvedAt = new Date();
-          }
-          if (status === 'CLOSED' && !ticket.closedAt) {
-            updates.closedAt = new Date();
-          }
-
-          await createTicketEvent(ticketId, 'STATUS_CHANGED', session.userId, {
-            oldStatus: ticket.status,
-            newStatus: status,
-          });
-        }
-
-        // Add note
-        if (note && note.trim()) {
-          await createTicketEvent(ticketId, 'NOTE_ADDED', session.userId, {
-            note: note.trim(),
-          });
-        }
-
-        // Update ticket
-        const updatedTicket = await prisma.ticket.update({
-          where: { id: ticketId },
-          data: updates,
-          include: {
-            requester: {
-              select: {
-                id: true,
-                email: true,
-                profile: {
-                  select: {
-                    empName: true,
-                    employeeId: true,
-                  },
-                },
-              },
-            },
-          },
-        });
-
-        return NextResponse.json({ ticket: updatedTicket });
-      } else {
-        // Use Supabase
-        // Check assignment
-        const { data: assignment, error: assignError } = await supabaseServer
-          .from('TicketAssignment')
-          .select('*, ticket:Ticket!inner(*)')
-          .eq('ticketId', ticketId)
-          .eq('engineerId', session.userId)
-          .is('unassignedAt', null)
-          .single();
-
-        if (assignError || !assignment) {
-          return NextResponse.json(
-            { error: 'Ticket not found or not assigned to you' },
-            { status: 403 }
-          );
-        }
-
-        const ticket = assignment.ticket;
-        const updates: any = {};
-
-        // Update status
-        if (status && status !== ticket.status) {
-          updates.status = status;
-          if (status === 'RESOLVED' && !ticket.resolvedAt) {
-            updates.resolvedAt = new Date().toISOString();
-          }
-          if (status === 'CLOSED' && !ticket.closedAt) {
-            updates.closedAt = new Date().toISOString();
-          }
-
-          await createTicketEvent(ticketId, 'STATUS_CHANGED', session.userId, {
-            oldStatus: ticket.status,
-            newStatus: status,
-          });
-        }
-
-        // Add note
-        if (note && note.trim()) {
-          await createTicketEvent(ticketId, 'NOTE_ADDED', session.userId, {
-            note: note.trim(),
-          });
-        }
-
-        // Update ticket
-        const { data: updatedTicket, error: updateError } = await supabaseServer
-          .from('Ticket')
-          .update(updates)
-          .eq('id', ticketId)
-          .select(`
-            *,
-            requester:User!Ticket_requesterId_fkey (
-              id,
-              email,
-              profile:UserProfile (
-                empName,
-                employeeId
-              )
-            )
-          `)
-          .single();
-
-        if (updateError) {
-          throw new Error(updateError.message);
-        }
-
-        return NextResponse.json({ ticket: updatedTicket });
+      if (assignError || !assignment) {
+        return NextResponse.json(
+          { error: 'Ticket not found or not assigned to you' },
+          { status: 403 }
+        );
       }
+
+      const ticket = assignment.ticket;
+      const updates: any = {};
+
+      // Update status
+      if (status && status !== ticket.status) {
+        updates.status = status;
+        if (status === 'RESOLVED' && !ticket.resolvedAt) {
+          updates.resolvedAt = new Date().toISOString();
+        }
+        if (status === 'CLOSED' && !ticket.closedAt) {
+          updates.closedAt = new Date().toISOString();
+        }
+
+        await createTicketEvent(ticketId, 'STATUS_CHANGED', session.userId, {
+          oldStatus: ticket.status,
+          newStatus: status,
+        });
+      }
+
+      // Add note
+      if (note && note.trim()) {
+        await createTicketEvent(ticketId, 'NOTE_ADDED', session.userId, {
+          note: note.trim(),
+        });
+      }
+
+      // Update ticket
+      const { data: updatedTicket, error: updateError } = await supabaseServer
+        .from('Ticket')
+        .update(updates)
+        .eq('id', ticketId)
+        .select(`
+          *,
+          requester:User!Ticket_requesterId_fkey (
+            id,
+            email,
+            profile:UserProfile (
+              empName,
+              employeeId
+            )
+          )
+        `)
+        .single();
+
+      if (updateError) {
+        throw new Error(updateError.message);
+      }
+
+      return NextResponse.json({ ticket: updatedTicket });
     } catch (dbError: any) {
       console.error('Database error updating ticket:', dbError);
       return NextResponse.json(

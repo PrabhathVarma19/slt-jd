@@ -40,6 +40,7 @@ interface TicketData {
   domain: string;
   createdAt: string;
   resolvedAt?: string;
+  isAssigned?: boolean; // true if assigned to this engineer, false if unassigned
   requester: {
     id: string;
     email: string;
@@ -140,6 +141,29 @@ export default function EngineerTicketsPage() {
     }
   };
 
+  const claimTicket = async (ticketId: string, e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent opening ticket modal
+    try {
+      setUpdating(ticketId);
+      const res = await fetch(`/api/engineer/tickets/${ticketId}/claim`, {
+        method: 'POST',
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Failed to claim ticket');
+      }
+
+      showToast('Ticket claimed successfully', 'success');
+      fetchTickets();
+    } catch (error: any) {
+      console.error('Error claiming ticket:', error);
+      showToast(error.message || 'Failed to claim ticket', 'error');
+    } finally {
+      setUpdating(null);
+    }
+  };
+
   const addNote = async (ticketId: string) => {
     if (!noteText.trim()) {
       showToast('Please enter a note', 'error');
@@ -216,9 +240,9 @@ export default function EngineerTicketsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-semibold text-gray-900">My Assigned Tickets</h1>
+          <h1 className="text-3xl font-semibold text-gray-900">My Tickets</h1>
           <p className="mt-1 text-sm text-gray-600">
-            Manage tickets assigned to you
+            View assigned tickets and claim unassigned IT tickets
           </p>
         </div>
         <BackToHome />
@@ -250,7 +274,7 @@ export default function EngineerTicketsPage() {
         <Card>
           <CardContent className="py-12 text-center">
             <Ticket className="h-12 w-12 text-gray-300 mx-auto mb-3" />
-            <p className="text-sm text-gray-600">No tickets assigned to you</p>
+            <p className="text-sm text-gray-600">No tickets available</p>
           </CardContent>
         </Card>
       ) : (
@@ -258,16 +282,25 @@ export default function EngineerTicketsPage() {
           {tickets.map((ticket) => (
             <Card
               key={ticket.id}
-              className="cursor-pointer transition-shadow hover:shadow-md"
-              onClick={() => setSelectedTicket(ticket)}
+              className={`transition-shadow hover:shadow-md ${
+                ticket.isAssigned === false ? 'border-2 border-dashed border-blue-300' : ''
+              }`}
             >
               <CardContent className="p-6">
                 <div className="flex items-start justify-between">
-                  <div className="flex-1">
+                  <div
+                    className="flex-1 cursor-pointer"
+                    onClick={() => ticket.isAssigned !== false && setSelectedTicket(ticket)}
+                  >
                     <div className="flex items-center gap-2 mb-2">
                       <span className="font-semibold text-gray-900">
                         {ticket.ticketNumber}
                       </span>
+                      {ticket.isAssigned === false && (
+                        <Badge className="bg-orange-100 text-orange-800">
+                          Unassigned
+                        </Badge>
+                      )}
                       <Badge className={STATUS_COLORS[ticket.status]}>
                         <span className="flex items-center gap-1">
                           {STATUS_ICONS[ticket.status]}
@@ -294,7 +327,24 @@ export default function EngineerTicketsPage() {
                       )}
                     </div>
                   </div>
-                  <ChevronRight className="h-5 w-5 text-gray-400" />
+                  <div className="flex items-center gap-2">
+                    {ticket.isAssigned === false ? (
+                      <Button
+                        onClick={(e) => claimTicket(ticket.id, e)}
+                        disabled={updating === ticket.id}
+                        size="sm"
+                        variant="default"
+                      >
+                        {updating === ticket.id ? (
+                          <Spinner className="h-4 w-4" />
+                        ) : (
+                          'Claim'
+                        )}
+                      </Button>
+                    ) : (
+                      <ChevronRight className="h-5 w-5 text-gray-400 cursor-pointer" onClick={() => setSelectedTicket(ticket)} />
+                    )}
+                  </div>
                 </div>
               </CardContent>
             </Card>

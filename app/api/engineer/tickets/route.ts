@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/auth/session';
-import { prisma } from '@/lib/prisma';
 import { supabaseServer } from '@/lib/supabase/server';
 
 /**
@@ -15,13 +14,13 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Check if user has engineer role
+    // Check if user has IT engineer role (no travel engineers)
     const hasEngineerRole = session.roles?.some((role) =>
-      ['ENGINEER_IT', 'ENGINEER_TRAVEL', 'ADMIN_IT', 'ADMIN_TRAVEL', 'SUPER_ADMIN'].includes(role)
+      ['ENGINEER_IT', 'ADMIN_IT', 'SUPER_ADMIN'].includes(role)
     );
 
     if (!hasEngineerRole) {
-      return NextResponse.json({ error: 'Engineer role required' }, { status: 403 });
+      return NextResponse.json({ error: 'IT Engineer role required' }, { status: 403 });
     }
 
     const { searchParams } = new URL(req.url);
@@ -30,116 +29,104 @@ export async function GET(req: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '50');
     const offset = parseInt(searchParams.get('offset') || '0');
 
-    // Determine allowed domain based on roles
-    let allowedDomain: string | null = null;
-    if (!session.roles?.includes('SUPER_ADMIN')) {
-      if (session.roles?.includes('ENGINEER_IT') || session.roles?.includes('ADMIN_IT')) {
-        allowedDomain = 'IT';
-      } else if (session.roles?.includes('ENGINEER_TRAVEL') || session.roles?.includes('ADMIN_TRAVEL')) {
-        allowedDomain = 'TRAVEL';
-      }
-    }
+    // Engineers only see IT tickets
+    const allowedDomain = 'IT';
 
     try {
-      if (prisma) {
-        // Find active assignments for this engineer
-        const where: any = {
-          engineerId: session.userId,
-          unassignedAt: null,
-        };
-
-        const assignments = await prisma.ticketAssignment.findMany({
-          where,
-          include: {
-            ticket: {
-              include: {
-                requester: {
-                  select: {
-                    id: true,
-                    email: true,
-                    profile: {
-                      select: {
-                        empName: true,
-                        employeeId: true,
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
-        });
-
-        // Filter tickets
-        let tickets = assignments.map((a: any) => a.ticket).filter((ticket: any) => {
-          if (allowedDomain && ticket.domain !== allowedDomain) return false;
-          if (status && ticket.status !== status) return false;
-          if (type && ticket.type !== type) return false;
-          return true;
-        });
-
-        // Sort by createdAt desc
-        tickets.sort((a: any, b: any) => b.createdAt.getTime() - a.createdAt.getTime());
-
-        const total = tickets.length;
-        tickets = tickets.slice(offset, offset + limit);
-
-        return NextResponse.json({
-          tickets,
-          total,
-          limit,
-          offset,
-        });
-      } else {
-        // Use Supabase
-        // First get active assignments
-        let assignmentQuery = supabaseServer
-          .from('TicketAssignment')
-          .select(`
+      // Use Supabase
+      // Get tickets assigned to this engineer OR unassigned IT tickets
+      
+      // First, get assigned tickets
+      const { data: assignments } = await supabaseServer
+        .from('TicketAssignment')
+        .select(`
+          ticketId,
+          ticket:Ticket!inner (
             *,
-            ticket:Ticket!inner (
-              *,
-              requester:User!Ticket_requesterId_fkey (
-                id,
-                email,
-                profile:UserProfile (
-                  empName,
-                  employeeId
-                )
+            requester:User!Ticket_requesterId_fkey (
+              id,
+              email,
+              profile:UserProfile (
+                empName,
+                employeeId
               )
             )
-          `)
-          .eq('engineerId', session.userId)
-          .is('unassignedAt', null);
+          )
+        `)
+        .eq('engineerId', session.userId)
+        .is('unassignedAt', null);
 
-        const { data: assignments, error: assignError } = await assignmentQuery;
+      // Get unassigned IT tickets (tickets with no active assignments)
+      const { data: allITTickets } = await supabaseServer
+        .from('Ticket')
+        .select(`
+          *,
+          requester:User!Ticket_requesterId_fkey (
+            id,
+            email,
+            profile:UserProfile (
+              empName,
+              employeeId
+            )
+          ),
+          assignments:TicketAssignment!left (
+            id,
+            engineerId,
+            unassignedAt
+          )
+        `)
+        .eq('domain', 'IT');
 
-        if (assignError) {
-          throw new Error(assignError.message);
-        }
+      // Filter to get unassigned tickets (no active assignments)
+      const unassignedTickets = (allITTickets || []).filter((ticket: any) => {
+        const hasActiveAssignment = ticket.assignments?.some(
+          (a: any) => a.unassignedAt === null
+        );
+        return !hasActiveAssignment;
+      });
 
-        // Filter and transform tickets
-        let tickets = (assignments || [])
-          .map((a: any) => a.ticket)
-          .filter((ticket: any) => {
-            if (!ticket) return false;
-            if (allowedDomain && ticket.domain !== allowedDomain) return false;
-            if (status && ticket.status !== status) return false;
-            if (type && ticket.type !== type) return false;
-            return true;
-          })
-          .sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      // Combine assigned and unassigned tickets
+      const assignedTicketIds = new Set(
+        (assignments || []).map((a: any) => a.ticketId)
+      );
+      
+      let allTickets = [
+        ...(assignments || []).map((a: any) => ({
+          ...a.ticket,
+          isAssigned: true,
+        })),
+        ...unassignedTickets
+          .filter((t: any) => !assignedTicketIds.has(t.id))
+          .map((t: any) => ({
+            ...t,
+            isAssigned: false,
+            assignments: [],
+          })),
+      ];
 
-        const total = tickets.length;
-        tickets = tickets.slice(offset, offset + limit);
-
-        return NextResponse.json({
-          tickets,
-          total,
-          limit,
-          offset,
-        });
+      // Apply filters
+      if (status) {
+        allTickets = allTickets.filter((t: any) => t.status === status);
       }
+      if (type) {
+        allTickets = allTickets.filter((t: any) => t.type === type);
+      }
+
+      // Sort by createdAt desc
+      allTickets.sort(
+        (a: any, b: any) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+
+      const total = allTickets.length;
+      const tickets = allTickets.slice(offset, offset + limit);
+
+      return NextResponse.json({
+        tickets,
+        total,
+        limit,
+        offset,
+      });
     } catch (dbError: any) {
       console.error('Database error fetching engineer tickets:', dbError);
       return NextResponse.json(

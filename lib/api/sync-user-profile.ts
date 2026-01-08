@@ -3,7 +3,6 @@
  * Called on login and can be scheduled for nightly sync
  */
 
-import { prisma } from '@/lib/prisma';
 import { supabaseServer } from '@/lib/supabase/server';
 import { fetchUserProfile, transformProfileData, UserProfileApiResponse } from './user-profile';
 
@@ -35,33 +34,22 @@ export async function syncUserProfile(email: string): Promise<SyncResult> {
     const normalizedEmail = email.toLowerCase().trim();
 
     // Check if user exists
-    let user: any = null;
+    const { data: userData } = await supabaseServer
+      .from('User')
+      .select('id, email')
+      .eq('email', normalizedEmail)
+      .single();
+
+    let user: any = userData || null;
     let userProfile: any = null;
 
-    if (prisma) {
-      // Use Prisma
-      user = await prisma.user.findUnique({
-        where: { email: normalizedEmail },
-        include: { profile: true },
-      });
-      userProfile = user?.profile;
-    } else {
-      // Use Supabase
-      const { data: userData } = await supabaseServer
-        .from('User')
-        .select('id, email')
-        .eq('email', normalizedEmail)
+    if (userData) {
+      const { data: profileData } = await supabaseServer
+        .from('UserProfile')
+        .select('*')
+        .eq('userId', userData.id)
         .single();
-
-      if (userData) {
-        user = userData;
-        const { data: profileData } = await supabaseServer
-          .from('UserProfile')
-          .select('*')
-          .eq('userId', userData.id)
-          .single();
-        userProfile = profileData;
-      }
+      userProfile = profileData;
     }
 
     const profileData = transformProfileData(apiData, user?.id || '');
@@ -74,86 +62,58 @@ export async function syncUserProfile(email: string): Promise<SyncResult> {
       const defaultPassword = process.env.DEFAULT_USER_PASSWORD || 'test123';
       const passwordHash = await hashPassword(defaultPassword);
 
-      if (prisma) {
-        // Create user
-        user = await prisma.user.create({
-          data: {
-            email: normalizedEmail,
-            passwordHash,
-            status: 'ACTIVE',
-            profile: {
-              create: profileData,
-            },
-          },
+      // Use Supabase
+      const { data: newUser, error: userError } = await supabaseServer
+        .from('User')
+        .insert({
+          email: normalizedEmail,
+          passwordHash,
+          status: 'ACTIVE',
+        })
+        .select('id')
+        .single();
+
+      if (userError || !newUser) {
+        console.error('Error creating user:', userError);
+        return {
+          success: false,
+          created: false,
+          updated: false,
+          error: userError?.message || 'Failed to create user',
+        };
+      }
+
+      user = newUser;
+      
+      // Create profile
+      const { error: profileError } = await supabaseServer
+        .from('UserProfile')
+        .insert({
+          ...profileData,
+          userId: newUser.id,
         });
 
-        // Assign EMPLOYEE role
-        const employeeRole = await prisma.role.findUnique({
-          where: { type: 'EMPLOYEE' },
-        });
+      if (profileError) {
+        console.error('Error creating profile:', profileError);
+      }
 
-        if (employeeRole) {
-          await prisma.userRole.create({
-            data: {
-              userId: user.id,
-              roleId: employeeRole.id,
-            },
-          });
-        }
-      } else {
-        // Use Supabase
-        const { data: newUser, error: userError } = await supabaseServer
-          .from('User')
+      // Assign EMPLOYEE role
+      const { data: employeeRole } = await supabaseServer
+        .from('Role')
+        .select('id')
+        .eq('type', 'EMPLOYEE')
+        .single();
+
+      if (employeeRole) {
+        const { error: roleError } = await supabaseServer
+          .from('UserRole')
           .insert({
-            email: normalizedEmail,
-            passwordHash,
-            status: 'ACTIVE',
-          })
-          .select('id')
-          .single();
-
-        if (userError || !newUser) {
-          console.error('Error creating user:', userError);
-          return {
-            success: false,
-            created: false,
-            updated: false,
-            error: userError?.message || 'Failed to create user',
-          };
-        }
-
-        user = newUser;
-        
-        // Create profile
-        const { error: profileError } = await supabaseServer
-          .from('UserProfile')
-          .insert({
-            ...profileData,
             userId: newUser.id,
+            roleId: employeeRole.id,
           });
 
-        if (profileError) {
-          console.error('Error creating profile:', profileError);
-        }
-
-        // Assign EMPLOYEE role
-        const { data: employeeRole } = await supabaseServer
-          .from('Role')
-          .select('id')
-          .eq('type', 'EMPLOYEE')
-          .single();
-
-        if (employeeRole) {
-          const { error: roleError } = await supabaseServer
-            .from('UserRole')
-            .insert({
-              userId: newUser.id,
-              roleId: employeeRole.id,
-            });
-
-          if (roleError) {
-            console.error('Error assigning role:', roleError);
-          }
+        if (roleError) {
+          console.error('Error assigning role:', roleError);
         }
       }
 
@@ -165,32 +125,18 @@ export async function syncUserProfile(email: string): Promise<SyncResult> {
     }
 
     // Update existing profile
-    if (prisma) {
-      if (userProfile) {
-        await prisma.userProfile.update({
-          where: { userId: user.id },
-          data: profileData,
-        });
-      } else {
-        await prisma.userProfile.create({
-          data: profileData,
-        });
-      }
+    if (userProfile) {
+      await supabaseServer
+        .from('UserProfile')
+        .update(profileData)
+        .eq('userId', user.id);
     } else {
-      // Use Supabase
-      if (userProfile) {
-        await supabaseServer
-          .from('UserProfile')
-          .update(profileData)
-          .eq('userId', user.id);
-      } else {
-        await supabaseServer
-          .from('UserProfile')
-          .insert({
-            ...profileData,
-            userId: user.id,
-          });
-      }
+      await supabaseServer
+        .from('UserProfile')
+        .insert({
+          ...profileData,
+          userId: user.id,
+        });
     }
 
     return {

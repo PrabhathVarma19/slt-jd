@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { sendMailViaGraph } from '@/lib/graph';
 import { requireAuth } from '@/lib/auth/require-auth';
 import { createTicket } from '@/lib/tickets/ticket-utils';
-import { prisma } from '@/lib/prisma';
 import { supabaseServer } from '@/lib/supabase/server';
 
 const REQUIRED_FIELDS = [
@@ -60,23 +59,13 @@ export async function POST(req: NextRequest) {
       
       // If email doesn't match session, try to find user by email
       if (body.email && body.email.toLowerCase() !== auth.email.toLowerCase()) {
-        if (prisma) {
-          const userByEmail = await prisma.user.findUnique({
-            where: { email: body.email.toLowerCase() },
-            select: { id: true },
-          });
-          if (userByEmail) {
-            userId = userByEmail.id;
-          }
-        } else {
-          const { data: userByEmail } = await supabaseServer
-            .from('User')
-            .select('id')
-            .eq('email', body.email.toLowerCase())
-            .single();
-          if (userByEmail) {
-            userId = userByEmail.id;
-          }
+        const { data: userByEmail } = await supabaseServer
+          .from('User')
+          .select('id')
+          .eq('email', body.email.toLowerCase())
+          .single();
+        if (userByEmail) {
+          userId = userByEmail.id;
         }
       }
 
@@ -100,9 +89,28 @@ ${body.extraDetails ? `Additional details: ${body.extraDetails}` : ''}`;
           subcategory: body.modePreference || undefined,
           priority: 'MEDIUM', // Travel requests default to MEDIUM
           domain: 'TRAVEL',
+          status: 'PENDING_APPROVAL', // Travel tickets start with approval workflow
         },
         auth.userId
       );
+
+      // Create supervisor approval record
+      // Get requester's profile to find supervisor email
+      const { data: requesterProfile } = await supabaseServer
+        .from('UserProfile')
+        .select('supervisorEmail')
+        .eq('userId', userId)
+        .single();
+
+      if (requesterProfile?.supervisorEmail) {
+        await supabaseServer
+          .from('TicketApproval')
+          .insert({
+            ticketId: ticket.id,
+            approverEmail: requesterProfile.supervisorEmail,
+            state: 'PENDING',
+          });
+      }
 
       ticketNumber = ticket.ticketNumber;
     } catch (ticketError: any) {

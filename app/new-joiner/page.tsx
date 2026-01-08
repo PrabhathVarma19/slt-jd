@@ -321,7 +321,7 @@ export default function NewJoinerBuddyPage() {
                         Try asking &quot;What should I do on my first day?&quot; or
                         &quot;How do I request a laptop and VPN access?&quot;. You can ask follow-up questions
                         in the same thread.
-                      </p>
+          </p>
                     </div>
                   </div>
                 )}
@@ -427,10 +427,10 @@ export default function NewJoinerBuddyPage() {
               </div>
               <p className="text-xs text-slate-500">
                 Press Enter to send. Shift+Enter for a new line.
-              </p>
+          </p>
             </div>
-          </div>
         </div>
+      </div>
 
         {/* Right: sidebar */}
         <div className="h-[75vh] min-h-[620px] md:h-full md:min-h-0 md:sticky md:top-24 flex flex-col gap-4 min-h-0">
@@ -438,116 +438,116 @@ export default function NewJoinerBuddyPage() {
             <h2 className="text-sm font-semibold text-slate-900">Suggested questions</h2>
             <ScrollArea className="flex-1 min-h-0 pr-2">
               <div className="space-y-3">
-                <div className="space-y-1">
+              <div className="space-y-1">
                   <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">Day 1</p>
-                  <div className="flex flex-wrap gap-2">
-                    {DAY_ONE_QUESTIONS.map((q) => (
-                      <Button
-                        key={q}
-                        type="button"
-                        size="sm"
-                        variant="secondary"
+                <div className="flex flex-wrap gap-2">
+                  {DAY_ONE_QUESTIONS.map((q) => (
+                    <Button
+                      key={q}
+                      type="button"
+                      size="sm"
+                      variant="secondary"
                         className="whitespace-nowrap text-xs rounded-full"
-                        onClick={() => handleAsk(q)}
-                        disabled={isLoading}
-                      >
-                        {q}
-                      </Button>
-                    ))}
-                  </div>
+                      onClick={() => handleAsk(q)}
+                      disabled={isLoading}
+                    >
+                      {q}
+                    </Button>
+                  ))}
                 </div>
-                <div className="space-y-1">
+              </div>
+              <div className="space-y-1">
                   <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">Access and IT</p>
-                  <div className="flex flex-wrap gap-2">
-                    {ACCESS_IT_QUESTIONS.map((q) => (
-                      <Button
-                        key={q}
-                        type="button"
-                        size="sm"
-                        variant="secondary"
+                <div className="flex flex-wrap gap-2">
+                  {ACCESS_IT_QUESTIONS.map((q) => (
+                    <Button
+                      key={q}
+                      type="button"
+                      size="sm"
+                      variant="secondary"
                         className="whitespace-nowrap text-xs rounded-full"
-                        onClick={() => handleAsk(q)}
-                        disabled={isLoading}
-                      >
-                        {q}
-                      </Button>
-                    ))}
-                  </div>
+                      onClick={() => handleAsk(q)}
+                      disabled={isLoading}
+                    >
+                      {q}
+                    </Button>
+                  ))}
                 </div>
-                <div className="space-y-1">
+              </div>
+              <div className="space-y-1">
                   <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">Policies and leave</p>
-                  <div className="flex flex-wrap gap-2">
-                    {POLICIES_QUESTIONS.map((q) => (
-                      <Button
-                        key={q}
-                        type="button"
-                        size="sm"
-                        variant="secondary"
+                <div className="flex flex-wrap gap-2">
+                  {POLICIES_QUESTIONS.map((q) => (
+                    <Button
+                      key={q}
+                      type="button"
+                      size="sm"
+                      variant="secondary"
                         className="whitespace-nowrap text-xs rounded-full"
-                        onClick={() => handleAsk(q)}
-                        disabled={isLoading}
-                      >
-                        {q}
-                      </Button>
-                    ))}
-                  </div>
+                      onClick={() => handleAsk(q)}
+                      disabled={isLoading}
+                    >
+                      {q}
+                    </Button>
+                  ))}
                 </div>
-                <div className="space-y-1">
+              </div>
+              <div className="space-y-1">
                   <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">Travel and expenses</p>
-                  <div className="flex flex-wrap gap-2">
-                    {TRAVEL_EXPENSE_QUESTIONS.map((q) => (
-                      <Button
-                        key={q}
-                        type="button"
-                        size="sm"
-                        variant="secondary"
+                <div className="flex flex-wrap gap-2">
+                  {TRAVEL_EXPENSE_QUESTIONS.map((q) => (
+                    <Button
+                      key={q}
+                      type="button"
+                      size="sm"
+                      variant="secondary"
                         className="whitespace-nowrap text-xs rounded-full"
-                        onClick={() => handleAsk(q)}
-                        disabled={isLoading}
-                      >
-                        {q}
-                      </Button>
-                    ))}
-                  </div>
+                      onClick={() => handleAsk(q)}
+                      disabled={isLoading}
+                    >
+                      {q}
+                    </Button>
+                  ))}
                 </div>
-                <div className="space-y-1">
+              </div>
+              <div className="space-y-1">
                   <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">Security</p>
-                  <div className="flex flex-wrap gap-2">
-                    {SECURITY_QUESTIONS.map((q) => (
-                      <Button
-                        key={q}
-                        type="button"
-                        size="sm"
-                        variant="secondary"
+                <div className="flex flex-wrap gap-2">
+                  {SECURITY_QUESTIONS.map((q) => (
+                    <Button
+                      key={q}
+                      type="button"
+                      size="sm"
+                      variant="secondary"
                         className="whitespace-nowrap text-xs rounded-full"
-                        onClick={() => handleAsk(q)}
-                        disabled={isLoading}
-                      >
-                        {q}
-                      </Button>
-                    ))}
-                  </div>
+                      onClick={() => handleAsk(q)}
+                      disabled={isLoading}
+                    >
+                      {q}
+                    </Button>
+                  ))}
                 </div>
-                {recentQuestions.length > 0 && (
+              </div>
+            {recentQuestions.length > 0 && (
                   <div className="space-y-2">
                     <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">Recent</p>
                     <div className="flex flex-wrap gap-2">
-                      {recentQuestions.map((q) => (
-                        <Button
-                          key={q}
-                          type="button"
-                          size="sm"
-                          variant="ghost"
+                {recentQuestions.map((q) => (
+                  <Button
+                    key={q}
+                    type="button"
+                    size="sm"
+                    variant="ghost"
                           className="whitespace-nowrap text-xs text-slate-600 rounded-full"
-                          onClick={() => handleAsk(q)}
-                          disabled={isLoading}
-                        >
+                    onClick={() => handleAsk(q)}
+                    disabled={isLoading}
+                  >
                           {q.length > 44 ? `${q.slice(0, 41)}...` : q}
-                        </Button>
-                      ))}
-                    </div>
-                  </div>
-                )}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          )}
               </div>
             </ScrollArea>
           </div>
@@ -572,33 +572,33 @@ export default function NewJoinerBuddyPage() {
                       key={idx}
                       className="rounded-2xl border border-border bg-background px-3 py-2 text-sm text-slate-700"
                     >
-                      <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between">
                         <div className="font-medium text-slate-900">
-                          {src.title || 'Untitled'}
-                          {src.section ? (
+                        {src.title || 'Untitled'}
+                        {src.section ? (
                             <span className="ml-1 text-xs font-normal text-slate-500">
                               ({src.section})
                             </span>
-                          ) : null}
-                        </div>
-                        <span className="text-[11px] uppercase tracking-wide text-slate-500">
-                          Source {idx + 1}
-                        </span>
+                        ) : null}
                       </div>
-                      {src.link && (
-                        <a
-                          className="mt-2 inline-flex text-xs text-blue-700 hover:underline"
-                          href={src.link}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          Open document
-                        </a>
-                      )}
+                        <span className="text-[11px] uppercase tracking-wide text-slate-500">
+                        Source {idx + 1}
+                      </span>
                     </div>
-                  ))}
-                </div>
-              )}
+                    {src.link && (
+                      <a
+                        className="mt-2 inline-flex text-xs text-blue-700 hover:underline"
+                        href={src.link}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Open document
+                      </a>
+                    )}
+                  </div>
+                ))}
+            </div>
+          )}
 
               {lastAssistantMessage && uniqueSources.length === 0 && (
                 <p
@@ -607,8 +607,8 @@ export default function NewJoinerBuddyPage() {
                   }`}
                 >
                   No sources were returned for the last answer.
-                </p>
-              )}
+            </p>
+          )}
             </ScrollArea>
 
             {lastAssistantMessage &&
@@ -650,22 +650,22 @@ export default function NewJoinerBuddyPage() {
             <ScrollArea className="flex-1 min-h-0 pr-2">
               <div className="space-y-3">
                 <ul className="text-xs text-slate-700 space-y-1 list-disc pl-4">
-                  <li>Confirm your reporting manager and work location.</li>
-                  <li>Complete HR onboarding formalities and document upload.</li>
-                  <li>Set up corporate email, Teams, and VPN as per IT instructions.</li>
-                  <li>Review RTO / work-from-home expectations with your manager.</li>
-                  <li>Check mandatory trainings and due dates (InfoSec, POSH, etc.).</li>
-                </ul>
+              <li>Confirm your reporting manager and work location.</li>
+              <li>Complete HR onboarding formalities and document upload.</li>
+              <li>Set up corporate email, Teams, and VPN as per IT instructions.</li>
+              <li>Review RTO / work-from-home expectations with your manager.</li>
+              <li>Check mandatory trainings and due dates (InfoSec, POSH, etc.).</li>
+            </ul>
 
                 <div>
                   <h3 className="text-sm font-semibold text-slate-900">First-week checklist</h3>
                   <ul className="mt-2 text-xs text-slate-700 space-y-1 list-disc pl-4">
                     <li>Understand your role, project, and key deliverables for the first 30-90 days.</li>
-                    <li>Clarify working hours, leave application process, and escalation paths.</li>
-                    <li>Meet your immediate team and key stakeholders.</li>
-                    <li>Bookmark key systems: HR portal, timesheet, expense tool, travel desk.</li>
-                    <li>Note important email IDs (HR, IT helpdesk, Travel Desk, InfoSec).</li>
-                  </ul>
+              <li>Clarify working hours, leave application process, and escalation paths.</li>
+              <li>Meet your immediate team and key stakeholders.</li>
+              <li>Bookmark key systems: HR portal, timesheet, expense tool, travel desk.</li>
+              <li>Note important email IDs (HR, IT helpdesk, Travel Desk, InfoSec).</li>
+            </ul>
                 </div>
               </div>
             </ScrollArea>

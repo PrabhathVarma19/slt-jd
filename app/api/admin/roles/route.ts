@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireSessionRole } from '@/lib/auth/rbac';
-import { prisma } from '@/lib/prisma';
 import { supabaseServer } from '@/lib/supabase/server';
 
 /**
@@ -13,27 +12,17 @@ export async function GET(req: NextRequest) {
     const auth = await requireSessionRole(['SUPER_ADMIN', 'ADMIN_HR']);
 
     try {
-      if (prisma) {
-        const roles = await prisma.role.findMany({
-          orderBy: {
-            type: 'asc',
-          },
-        });
+      // Use Supabase
+      const { data: roles, error } = await supabaseServer
+        .from('Role')
+        .select('*')
+        .order('type', { ascending: true });
 
-        return NextResponse.json({ roles });
-      } else {
-        // Use Supabase
-        const { data: roles, error } = await supabaseServer
-          .from('Role')
-          .select('*')
-          .order('type', { ascending: true });
-
-        if (error) {
-          throw new Error(error.message);
-        }
-
-        return NextResponse.json({ roles: roles || [] });
+      if (error) {
+        throw new Error(error.message);
       }
+
+      return NextResponse.json({ roles: roles || [] });
     } catch (dbError: any) {
       console.error('Database error fetching roles:', dbError);
       throw dbError;

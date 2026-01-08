@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireSessionRole } from '@/lib/auth/rbac';
-import { prisma } from '@/lib/prisma';
 import { supabaseServer } from '@/lib/supabase/server';
 
 /**
@@ -20,64 +19,8 @@ export async function GET(req: NextRequest) {
     const offset = parseInt(searchParams.get('offset') || '0');
 
     try {
-      if (prisma) {
-        const where: any = {};
-        if (status) {
-          where.status = status;
-        }
-        if (search) {
-          where.OR = [
-            { email: { contains: search, mode: 'insensitive' } },
-            { profile: { empName: { contains: search, mode: 'insensitive' } } },
-          ];
-        }
-
-        const [users, total] = await Promise.all([
-          prisma.user.findMany({
-            where,
-            include: {
-              profile: true,
-              roles: {
-                where: {
-                  revokedAt: null,
-                },
-                include: {
-                  role: true,
-                },
-              },
-            },
-            orderBy: {
-              email: 'asc',
-            },
-            take: limit,
-            skip: offset,
-          }),
-          prisma.user.count({ where }),
-        ]);
-
-        return NextResponse.json({
-          users: users.map((user: any) => ({
-            id: user.id,
-            email: user.email,
-            status: user.status,
-            createdAt: user.createdAt,
-            updatedAt: user.updatedAt,
-            profile: user.profile,
-            roles: user.roles.map((ur: any) => ({
-              id: ur.role.id,
-              type: ur.role.type,
-              name: ur.role.name,
-              grantedAt: ur.grantedAt,
-              grantedBy: ur.grantedBy,
-            })),
-          })),
-          total,
-          limit,
-          offset,
-        });
-      } else {
-        // Use Supabase
-        let query = supabaseServer
+      // Use Supabase
+      let query = supabaseServer
           .from('User')
           .select(`
             *,
@@ -128,11 +71,10 @@ export async function GET(req: NextRequest) {
                 grantedBy: ur.grantedBy,
               })),
           })) || [],
-          total: count || 0,
-          limit,
-          offset,
-        });
-      }
+        total: count || 0,
+        limit,
+        offset,
+      });
     } catch (dbError: any) {
       console.error('Database error fetching users:', dbError);
       throw dbError;

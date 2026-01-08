@@ -3,7 +3,6 @@ import { sendMailViaGraph } from '@/lib/graph';
 import OpenAI from 'openai';
 import { requireAuth } from '@/lib/auth/require-auth';
 import { createTicket } from '@/lib/tickets/ticket-utils';
-import { prisma } from '@/lib/prisma';
 import { supabaseServer } from '@/lib/supabase/server';
 
 const REQUIRED_FIELDS = ['name', 'employeeId', 'email', 'requestType', 'details'] as const;
@@ -142,23 +141,13 @@ Respond with JSON only, no explanation.`;
       
       // If email doesn't match session, try to find user by email
       if (email && email.toLowerCase() !== auth.email.toLowerCase()) {
-        if (prisma) {
-          const userByEmail = await prisma.user.findUnique({
-            where: { email: email.toLowerCase() },
-            select: { id: true },
-          });
-          if (userByEmail) {
-            userId = userByEmail.id;
-          }
-        } else {
-          const { data: userByEmail } = await supabaseServer
-            .from('User')
-            .select('id')
-            .eq('email', email.toLowerCase())
-            .single();
-          if (userByEmail) {
-            userId = userByEmail.id;
-          }
+        const { data: userByEmail } = await supabaseServer
+          .from('User')
+          .select('id')
+          .eq('email', email.toLowerCase())
+          .single();
+        if (userByEmail) {
+          userId = userByEmail.id;
         }
       }
 

@@ -331,7 +331,7 @@ export default function PolicyAgentPage() {
         <h1 className="text-2xl font-semibold text-slate-900">Ask Beacon</h1>
         <p className="col-start-2 text-sm text-slate-600">
           Ask policy and &quot;how do I...&quot; questions. Answers are grounded in internal Trianz policies with citations.
-        </p>
+          </p>
       </div>
 
       <div className="grid gap-6 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] md:h-[calc(100vh-150px)] min-h-[620px]">
@@ -343,65 +343,65 @@ export default function PolicyAgentPage() {
               <p className="text-xs text-slate-600 mb-2">
                 Ask your own question, or pick a suggested one on the right.
               </p>
-            )}
+          )}
             <div className="relative flex-1 min-h-0">
               <ScrollArea ref={messagesRef} className="h-full chat-scroll">
                 <div className="space-y-3">
-                {messages.length === 0 && (
-                  <div className="flex justify-start">
+            {messages.length === 0 && (
+              <div className="flex justify-start">
                     <div className="inline-flex max-w-md flex-col gap-1 rounded-2xl bg-card px-3 py-2 text-sm text-slate-700 shadow-sm">
-                      <span className="text-[11px] font-medium uppercase tracking-wide text-blue-600">
-                        Beacon
-                      </span>
-                      <p>
-                        Start with a question like &quot;What is the return to office policy?&quot;, &quot;How do
-                        I raise a travel request?&quot; or &quot;Am I eligible for air travel in grade 6?&quot;. You
-                        can ask follow-up questions in the same thread.
-                      </p>
-                    </div>
-                  </div>
-                )}
+                  <span className="text-[11px] font-medium uppercase tracking-wide text-blue-600">
+                    Beacon
+                  </span>
+                  <p>
+                    Start with a question like &quot;What is the return to office policy?&quot;, &quot;How do
+                    I raise a travel request?&quot; or &quot;Am I eligible for air travel in grade 6?&quot;. You
+                    can ask follow-up questions in the same thread.
+                  </p>
+                </div>
+              </div>
+            )}
 
-                {messages.map((msg, idx) => (
-                  <div
-                    key={idx}
-                    className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                  >
-                    <div
-                      className={`inline-flex max-w-md flex-col gap-1 rounded-2xl px-3 py-2 text-sm whitespace-pre-wrap shadow-sm ${
-                        msg.role === 'user'
-                          ? 'bg-blue-600 text-white'
+            {messages.map((msg, idx) => (
+              <div
+                key={idx}
+                className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+              >
+                <div
+                  className={`inline-flex max-w-md flex-col gap-1 rounded-2xl px-3 py-2 text-sm whitespace-pre-wrap shadow-sm ${
+                    msg.role === 'user'
+                      ? 'bg-blue-600 text-white'
                           : 'bg-card text-slate-900'
-                      }`}
-                    >
-                      <span className="text-[11px] font-medium uppercase tracking-wide opacity-70">
-                        {msg.role === 'user' ? 'You' : 'Beacon'}
-                      </span>
-                      <p>{msg.content}</p>
-                      {msg.createdAt && (
+                  }`}
+                >
+                  <span className="text-[11px] font-medium uppercase tracking-wide opacity-70">
+                    {msg.role === 'user' ? 'You' : 'Beacon'}
+                  </span>
+                  <p>{msg.content}</p>
+                  {msg.createdAt && (
                         <span className="text-[10px] text-slate-400 self-end">
-                          {formatTime(msg.createdAt)}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                ))}
+                      {formatTime(msg.createdAt)}
+                    </span>
+                  )}
+                </div>
+              </div>
+            ))}
 
-                {isLoading && (
-                  <div className="flex justify-start">
+            {isLoading && (
+              <div className="flex justify-start">
                     <div className="inline-flex items-center gap-1 rounded-2xl bg-slate-100 px-3 py-2">
                       <span className="h-1.5 w-1.5 rounded-full bg-slate-500 animate-bounce [animation-delay:-0.2s]" />
                       <span className="h-1.5 w-1.5 rounded-full bg-slate-400 animate-bounce" />
                       <span className="h-1.5 w-1.5 rounded-full bg-slate-300 animate-bounce [animation-delay:0.2s]" />
-                    </div>
-                  </div>
-                )}
+                </div>
+              </div>
+            )}
                 </div>
               </ScrollArea>
 
               {hasUnread && !isAtBottom && (
                 <Button
-                  type="button"
+                    type="button"
                   size="sm"
                   variant="secondary"
                   className="absolute bottom-3 right-3 rounded-full shadow-sm"
@@ -412,18 +412,18 @@ export default function PolicyAgentPage() {
                 >
                   Jump to latest
                 </Button>
-              )}
-            </div>
+                )}
+              </div>
 
             {error && <ErrorBar message={error} className="mt-3" />}
 
             <div className="mt-3 space-y-2">
               <div className="flex items-end gap-3">
-                <Textarea
-                  rows={2}
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={handleKeyDown}
+            <Textarea
+              rows={2}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
                   placeholder="e.g., What are the password rules? How many days do I need to be in office?"
                   className="flex-1 resize-none rounded-2xl bg-card"
                 />
@@ -518,11 +518,11 @@ export default function PolicyAgentPage() {
           <div className="bg-card rounded-3xl shadow-sm p-4 space-y-3 flex flex-col min-h-0 flex-1 overflow-hidden">
             <h2 className="text-sm font-semibold text-slate-900">Sources</h2>
 
-            {!lastAssistantMessage && (
+          {!lastAssistantMessage && (
               <p className="text-sm text-slate-600">
                 Sources will appear here after Beacon answers.
-              </p>
-            )}
+            </p>
+          )}
 
             <ScrollArea className="flex-1 min-h-0 pr-2">
               {lastAssistantMessage && sourcesGrouped.length > 0 && (
@@ -541,33 +541,33 @@ export default function PolicyAgentPage() {
                       <div className="flex items-center justify-between gap-2">
                         <div className="font-medium text-slate-900">{src.title}</div>
                         <span className="text-[11px] uppercase tracking-wide text-slate-500">
-                          Source {idx + 1}
-                        </span>
-                      </div>
-                      {(src.sections.length > 0 || src.pages.length > 0) && (
+                      Source {idx + 1}
+                    </span>
+                  </div>
+                  {(src.sections.length > 0 || src.pages.length > 0) && (
                         <p className="mt-1 text-xs text-slate-600">
-                          {src.sections.length > 0 && (
-                            <span>Sections: {src.sections.join(', ')}.</span>
-                          )}{' '}
-                          {src.pages.length > 0 && (
-                            <span>Pages: {src.pages.join(', ')}.</span>
-                          )}
-                        </p>
+                      {src.sections.length > 0 && (
+                        <span>Sections: {src.sections.join(', ')}.</span>
+                      )}{' '}
+                      {src.pages.length > 0 && (
+                        <span>Pages: {src.pages.join(', ')}.</span>
                       )}
-                      {src.link && (
-                        <a
-                          className="mt-2 inline-flex text-xs text-blue-700 hover:underline"
-                          href={src.link}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          Open document
-                        </a>
-                      )}
-                    </div>
-                  ))}
+                    </p>
+                  )}
+                  {src.link && (
+                    <a
+                      className="mt-2 inline-flex text-xs text-blue-700 hover:underline"
+                      href={src.link}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Open document
+                    </a>
+                  )}
                 </div>
-              )}
+              ))}
+            </div>
+          )}
 
               {lastAssistantMessage && sourcesGrouped.length === 0 && (
                 <p
@@ -578,8 +578,8 @@ export default function PolicyAgentPage() {
                   }`}
                 >
                   No sources were returned for the last answer.
-                </p>
-              )}
+            </p>
+          )}
             </ScrollArea>
 
             {lastAssistantMessage &&
