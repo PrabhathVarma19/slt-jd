@@ -69,6 +69,8 @@ interface TicketDetails {
   updatedAt: string;
   resolvedAt?: string;
   closedAt?: string;
+  projectCode?: string;
+  projectName?: string;
   requester: {
     id: string;
     email: string;

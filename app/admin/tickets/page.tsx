@@ -31,6 +31,8 @@ interface Ticket {
   priority: TicketPriority;
   domain: string;
   createdAt: string;
+  projectCode?: string;
+  projectName?: string;
   requester: {
     id: string;
     email: string;

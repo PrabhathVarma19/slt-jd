@@ -40,6 +40,8 @@ interface TicketData {
   domain: string;
   createdAt: string;
   resolvedAt?: string;
+  projectCode?: string;
+  projectName?: string;
   isAssigned?: boolean; // true if assigned to this engineer, false if unassigned
   requester: {
     id: string;
