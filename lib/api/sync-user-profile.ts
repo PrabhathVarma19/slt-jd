@@ -4,7 +4,7 @@
  */
 
 import { supabaseServer } from '@/lib/supabase/server';
-import { fetchUserProfile, transformProfileData, UserProfileApiResponse } from './user-profile';
+import { fetchAllUserProfiles, transformProfileData, UserProfileApiResponse } from './user-profile';
 
 export interface SyncResult {
   success: boolean;
@@ -32,10 +32,10 @@ export async function syncUserProfile(email: string): Promise<SyncResult> {
       };
     }
 
-    // Fetch from external API
-    const apiData = await fetchUserProfile({ email });
+    // Fetch ALL profiles from external API (user can have multiple projects)
+    const allApiData = await fetchAllUserProfiles({ email });
     
-    if (!apiData) {
+    if (!allApiData || allApiData.length === 0) {
       return {
         success: false,
         created: false,
@@ -44,9 +44,12 @@ export async function syncUserProfile(email: string): Promise<SyncResult> {
       };
     }
 
+    // Use the first record as primary (for backward compatibility)
+    const primaryApiData = allApiData[0];
+    
     // Double-check email matches (API might return wrong user)
-    if (apiData.Email?.toLowerCase() !== normalizedEmail) {
-      console.warn(`Email mismatch: requested ${normalizedEmail}, API returned ${apiData.Email}`);
+    if (primaryApiData.Email?.toLowerCase() !== normalizedEmail) {
+      console.warn(`Email mismatch: requested ${normalizedEmail}, API returned ${primaryApiData.Email}`);
       return {
         success: false,
         created: false,
@@ -75,7 +78,11 @@ export async function syncUserProfile(email: string): Promise<SyncResult> {
       userProfile = profileData;
     }
 
-    const profileData = transformProfileData(apiData, user?.id || '');
+    // Transform primary profile data (for backward compatibility)
+    const profileData = transformProfileData(primaryApiData, user?.id || '');
+    
+    // Store ALL projects in rawPayloadJson for multiple project support
+    profileData.rawPayloadJson = allApiData.length > 1 ? allApiData : primaryApiData;
 
     // If user doesn't exist, create them
     if (!user) {

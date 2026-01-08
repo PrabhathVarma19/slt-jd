@@ -38,7 +38,8 @@ export async function GET() {
             pmEmail,
             dmEmail,
             supervisorEmail,
-            lastSyncedAt
+            lastSyncedAt,
+            rawPayloadJson
           )
         `)
         .eq('id', session.userId)

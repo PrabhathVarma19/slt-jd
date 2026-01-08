@@ -36,6 +36,7 @@ interface UserProfile {
   dmEmail?: string;
   supervisorEmail?: string;
   lastSyncedAt?: string;
+  rawPayloadJson?: any;
 }
 
 interface UserTicket {
@@ -294,12 +295,25 @@ export default function ProfilePage() {
               {userProfile?.projectCode && (
                 <div className="flex items-start gap-3">
                   <Briefcase className="h-5 w-5 text-gray-400 mt-0.5" />
-                  <div>
-                    <p className="text-xs text-gray-500">Project</p>
-                    <p className="text-sm font-medium">
-                      {userProfile.projectCode}
-                      {userProfile.projectName && ` - ${userProfile.projectName}`}
-                    </p>
+                  <div className="flex-1">
+                    <p className="text-xs text-gray-500">Project{userProfile.rawPayloadJson && Array.isArray(userProfile.rawPayloadJson) && userProfile.rawPayloadJson.length > 1 ? 's' : ''}</p>
+                    {userProfile.rawPayloadJson && Array.isArray(userProfile.rawPayloadJson) && userProfile.rawPayloadJson.length > 1 ? (
+                      // Multiple projects from API
+                      <div className="space-y-1 mt-1">
+                        {userProfile.rawPayloadJson.map((project: any, idx: number) => (
+                          <p key={idx} className="text-sm font-medium">
+                            {project.ProjectCode || project.projectCode}
+                            {project.ProjectName || project.projectName ? ` - ${project.ProjectName || project.projectName}` : ''}
+                          </p>
+                        ))}
+                      </div>
+                    ) : (
+                      // Single project (from projectCode field or single API response)
+                      <p className="text-sm font-medium">
+                        {userProfile.projectCode}
+                        {userProfile.projectName && ` - ${userProfile.projectName}`}
+                      </p>
+                    )}
                   </div>
                 </div>
               )}

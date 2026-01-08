@@ -27,10 +27,22 @@ export interface SyncUserProfileOptions {
 
 /**
  * Fetch user profile from external API
+ * Returns single record (first match) for backward compatibility
  */
 export async function fetchUserProfile(
   options: SyncUserProfileOptions
 ): Promise<UserProfileApiResponse | null> {
+  const allProfiles = await fetchAllUserProfiles(options);
+  return allProfiles && allProfiles.length > 0 ? allProfiles[0] : null;
+}
+
+/**
+ * Fetch ALL user profiles from external API (for users with multiple projects)
+ * Returns array of all matching records
+ */
+export async function fetchAllUserProfiles(
+  options: SyncUserProfileOptions
+): Promise<UserProfileApiResponse[] | null> {
   const apiUrl = process.env.USER_PROFILE_API_URL;
   const apiUsername = process.env.USER_PROFILE_API_USERNAME;
   const apiPassword = process.env.USER_PROFILE_API_PASSWORD;
@@ -108,14 +120,13 @@ export async function fetchUserProfile(
         console.warn(`No user found for email: ${options.email}`);
         return null;
       }
-      // Find matching user by email if multiple results
-      const matchingUser = data.find(
-        (item: any) => item.Email?.toLowerCase() === options.email.toLowerCase()
+      // Find ALL matching users by email (user can have multiple projects)
+      const matchingUsers = data.filter(
+        (item: any) => item.Email?.toLowerCase() === options.email.toLowerCase() && item.EmployeeId
       );
       
-      // Only return if we found an exact email match - don't fallback to first user
-      if (matchingUser && matchingUser.EmployeeId && matchingUser.Email?.toLowerCase() === options.email.toLowerCase()) {
-        return matchingUser as UserProfileApiResponse;
+      if (matchingUsers.length > 0) {
+        return matchingUsers as UserProfileApiResponse[];
       }
       
       // No exact match found
@@ -126,10 +137,14 @@ export async function fetchUserProfile(
     // Option 3: Nested in data property
     if (data && typeof data === 'object' && 'data' in data && data.data) {
       if (Array.isArray(data.data) && data.data.length > 0) {
-        return data.data[0] as UserProfileApiResponse;
+        // Filter by email if multiple results
+        const matchingUsers = data.data.filter(
+          (item: any) => item.Email?.toLowerCase() === options.email.toLowerCase() && item.EmployeeId
+        );
+        return matchingUsers.length > 0 ? matchingUsers as UserProfileApiResponse[] : null;
       }
-      if (data.data.EmployeeId) {
-        return data.data as UserProfileApiResponse;
+      if (data.data.EmployeeId && data.data.Email?.toLowerCase() === options.email.toLowerCase()) {
+        return [data.data as UserProfileApiResponse];
       }
     }
 
