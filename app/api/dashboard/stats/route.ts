@@ -110,20 +110,11 @@ export async function GET(req: NextRequest) {
       }
 
       // Get engineer workload
-      const { data: engineers } = await supabaseServer
-        .from('UserRole')
-        .select(`
-          userId,
-          user:User!inner(
-            id,
-            email,
-            profile:UserProfile(
-              empName
-            )
-          )
-        `)
-        .eq('roleId', (await supabaseServer.from('Role').select('id').eq('type', 'ENGINEER_IT').single()).data?.id || '')
-        .is('revokedAt', null);
+      const { data: engineerRole } = await supabaseServer
+        .from('Role')
+        .select('id')
+        .eq('type', 'ENGINEER_IT')
+        .single();
 
       const engineerWorkload: Array<{
         engineerId: string;
@@ -132,7 +123,24 @@ export async function GET(req: NextRequest) {
         assignedCount: number;
       }> = [];
 
-      if (engineers && ticketIds.length > 0) {
+      if (engineerRole?.id && ticketIds.length > 0) {
+        const { data: engineerUsers } = await supabaseServer
+          .from('UserRole')
+          .select(`
+            userId,
+            user:User!inner(
+              id,
+              email,
+              profile:UserProfile(
+                empName
+              )
+            )
+          `)
+          .eq('roleId', engineerRole.id)
+          .is('revokedAt', null);
+
+        const engineers = engineerUsers || [];
+
         for (const engineer of engineers) {
           const { data: assignments } = await supabaseServer
             .from('TicketAssignment')
@@ -141,10 +149,14 @@ export async function GET(req: NextRequest) {
             .in('ticketId', ticketIds)
             .is('unassignedAt', null);
 
+          const profile = Array.isArray(engineer.user.profile) 
+            ? engineer.user.profile[0] 
+            : engineer.user.profile;
+
           engineerWorkload.push({
             engineerId: engineer.userId,
             engineerEmail: engineer.user.email,
-            engineerName: engineer.user.profile?.empName,
+            engineerName: profile?.empName,
             assignedCount: (assignments || []).length,
           });
         }
