@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
+import Link from 'next/link';
 import { Avatar } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuItem, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { LogOut, User, Shield } from 'lucide-react';
@@ -100,10 +101,10 @@ export function UserMenu() {
             )}
           </div>
           <DropdownMenuItem>
-            <div className="flex items-center gap-2">
+            <Link href="/profile" className="flex items-center gap-2 w-full">
               <User className="h-4 w-4" />
               <span>Profile</span>
-            </div>
+            </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
