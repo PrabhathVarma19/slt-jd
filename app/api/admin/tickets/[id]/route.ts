@@ -202,12 +202,19 @@ export async function PATCH(
             .from('User')
             .select('id')
             .eq('id', engineerId)
-            .single();
+            .maybeSingle();
 
-          if (engineerError || !engineer) {
+          if (engineerError) {
             console.error('Engineer validation error:', engineerError);
             return NextResponse.json(
-              { error: engineerError?.message || 'Engineer not found' },
+              { error: engineerError?.message || 'Failed to validate engineer' },
+              { status: 500 }
+            );
+          }
+
+          if (!engineer) {
+            return NextResponse.json(
+              { error: 'Engineer not found' },
               { status: 400 }
             );
           }
@@ -236,13 +243,21 @@ export async function PATCH(
               assignedBy: auth.userId,
             })
             .select()
-            .single();
+            .maybeSingle();
 
-          if (assignError || !assignment) {
+          if (assignError) {
             console.error('Error creating assignment:', assignError);
             const errorMessage = assignError?.message || assignError?.details || assignError?.hint || 'Failed to assign engineer';
             return NextResponse.json(
               { error: errorMessage },
+              { status: 500 }
+            );
+          }
+
+          if (!assignment) {
+            console.error('Assignment created but no data returned');
+            return NextResponse.json(
+              { error: 'Failed to create assignment - no data returned' },
               { status: 500 }
             );
           }
