@@ -299,12 +299,16 @@ export default function ProfilePage() {
                     <p className="text-xs text-gray-500">Project{userProfile.rawPayloadJson && Array.isArray(userProfile.rawPayloadJson) && userProfile.rawPayloadJson.length > 1 ? 's' : ''}</p>
                     {userProfile.rawPayloadJson && Array.isArray(userProfile.rawPayloadJson) && userProfile.rawPayloadJson.length > 1 ? (
                       // Multiple projects from API
-                      <div className="space-y-1 mt-1">
+                      <div className="space-y-2 mt-1">
                         {userProfile.rawPayloadJson.map((project: any, idx: number) => (
-                          <p key={idx} className="text-sm font-medium">
-                            {project.ProjectCode || project.projectCode}
-                            {project.ProjectName || project.projectName ? ` - ${project.ProjectName || project.projectName}` : ''}
-                          </p>
+                          <div key={idx} className="text-sm font-medium">
+                            <span className="text-gray-900">
+                              {project.ProjectCode || project.projectCode || userProfile.projectCode}
+                            </span>
+                            {(project.ProjectName || project.projectName) && (
+                              <span className="text-gray-600"> - {project.ProjectName || project.projectName}</span>
+                            )}
+                          </div>
                         ))}
                       </div>
                     ) : (
