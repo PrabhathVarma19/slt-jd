@@ -197,8 +197,22 @@ export async function PATCH(
 
         // Handle assignment
         if (action === 'assign' && engineerId) {
+          // Validate engineer exists
+          const { data: engineer, error: engineerError } = await supabaseServer
+            .from('User')
+            .select('id')
+            .eq('id', engineerId)
+            .single();
+
+          if (engineerError || !engineer) {
+            return NextResponse.json(
+              { error: 'Engineer not found' },
+              { status: 400 }
+            );
+          }
+
           // Unassign existing
-          await supabaseServer
+          const { error: unassignError } = await supabaseServer
             .from('TicketAssignment')
             .update({
               unassignedAt: new Date().toISOString(),
@@ -207,12 +221,29 @@ export async function PATCH(
             .eq('ticketId', ticketId)
             .is('unassignedAt', null);
 
+          if (unassignError) {
+            console.error('Error unassigning existing assignment:', unassignError);
+            // Continue anyway - might not have existing assignment
+          }
+
           // Create new assignment
-          await supabaseServer.from('TicketAssignment').insert({
-            ticketId,
-            engineerId,
-            assignedBy: auth.userId,
-          });
+          const { data: assignment, error: assignError } = await supabaseServer
+            .from('TicketAssignment')
+            .insert({
+              ticketId,
+              engineerId,
+              assignedBy: auth.userId,
+            })
+            .select()
+            .single();
+
+          if (assignError || !assignment) {
+            console.error('Error creating assignment:', assignError);
+            return NextResponse.json(
+              { error: assignError?.message || 'Failed to assign engineer' },
+              { status: 500 }
+            );
+          }
 
           await createTicketEvent(ticketId, 'ASSIGNED', auth.userId, {
             engineerId,
