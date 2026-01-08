@@ -309,14 +309,24 @@ export default function AdminTicketsPage() {
                       <Badge className={PRIORITY_COLORS[ticket.priority]}>
                         {ticket.priority}
                       </Badge>
-                      <span className="font-mono text-sm font-semibold">
+                      <a
+                        href={`/tickets/${ticket.id}`}
+                        className="font-mono text-sm font-semibold hover:text-blue-600 hover:underline"
+                      >
                         {ticket.ticketNumber}
-                      </span>
+                      </a>
                       <span className="text-sm text-muted-foreground">
                         {ticket.type}
                       </span>
                     </div>
-                    <h3 className="font-semibold text-lg mb-1">{ticket.title}</h3>
+                    <h3 className="font-semibold text-lg mb-1">
+                      <a
+                        href={`/tickets/${ticket.id}`}
+                        className="hover:text-blue-600 hover:underline"
+                      >
+                        {ticket.title}
+                      </a>
+                    </h3>
                     <p className="text-sm text-muted-foreground mb-2 line-clamp-2">
                       {ticket.description}
                     </p>
