@@ -18,6 +18,20 @@ export interface SyncResult {
  */
 export async function syncUserProfile(email: string): Promise<SyncResult> {
   try {
+    // Skip profile sync for test/fake emails
+    const normalizedEmail = email.toLowerCase().trim();
+    const testEmails = ['user@trianz.com', 'test@trianz.com', 'admin@trianz.com'];
+    
+    if (testEmails.includes(normalizedEmail)) {
+      console.log(`Skipping profile sync for test email: ${normalizedEmail}`);
+      return {
+        success: true,
+        created: false,
+        updated: false,
+        error: 'Test email - profile sync skipped',
+      };
+    }
+
     // Fetch from external API
     const apiData = await fetchUserProfile({ email });
     
@@ -30,8 +44,17 @@ export async function syncUserProfile(email: string): Promise<SyncResult> {
       };
     }
 
-    // Normalize email
-    const normalizedEmail = email.toLowerCase().trim();
+    // Double-check email matches (API might return wrong user)
+    if (apiData.Email?.toLowerCase() !== normalizedEmail) {
+      console.warn(`Email mismatch: requested ${normalizedEmail}, API returned ${apiData.Email}`);
+      return {
+        success: false,
+        created: false,
+        updated: false,
+        error: 'Email mismatch - API returned different user',
+      };
+    }
+
 
     // Check if user exists
     const { data: userData } = await supabaseServer

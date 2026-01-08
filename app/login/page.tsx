@@ -56,6 +56,12 @@ function LoginForm() {
 
       // Add smooth transition
       await new Promise((resolve) => setTimeout(resolve, 150));
+      
+      // Dispatch custom event to notify UserMenu component
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new Event('beacon:login-success'));
+      }
+      
       // Redirect to intended page or home
       router.push(redirectTo);
       router.refresh(); // Refresh to update any server components that check auth

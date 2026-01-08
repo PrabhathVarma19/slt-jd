@@ -111,11 +111,16 @@ export async function fetchUserProfile(
       // Find matching user by email if multiple results
       const matchingUser = data.find(
         (item: any) => item.Email?.toLowerCase() === options.email.toLowerCase()
-      ) || data[0];
+      );
       
-      if (matchingUser && matchingUser.EmployeeId) {
+      // Only return if we found an exact email match - don't fallback to first user
+      if (matchingUser && matchingUser.EmployeeId && matchingUser.Email?.toLowerCase() === options.email.toLowerCase()) {
         return matchingUser as UserProfileApiResponse;
       }
+      
+      // No exact match found
+      console.warn(`No exact email match found for: ${options.email}. API returned ${data.length} result(s) but none matched.`);
+      return null;
     }
     
     // Option 3: Nested in data property

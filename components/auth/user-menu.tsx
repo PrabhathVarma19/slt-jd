@@ -21,19 +21,40 @@ export function UserMenu() {
       return;
     }
 
-    fetch('/api/auth/session')
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.isAuthenticated || data.authenticated) {
-          setUser(data.user);
-        }
-      })
-      .catch(() => {
-        // Not logged in
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    const fetchSession = () => {
+      fetch('/api/auth/session')
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.isAuthenticated || data.authenticated) {
+            setUser(data.user);
+          } else {
+            setUser(null);
+          }
+        })
+        .catch(() => {
+          // Not logged in
+          setUser(null);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    };
+
+    fetchSession();
+
+    // Listen for custom event when login succeeds (dispatched from login page)
+    const handleLoginSuccess = () => {
+      // Small delay to ensure session cookie is set
+      setTimeout(() => {
+        setLoading(true);
+        fetchSession();
+      }, 100);
+    };
+
+    window.addEventListener('beacon:login-success', handleLoginSuccess);
+    return () => {
+      window.removeEventListener('beacon:login-success', handleLoginSuccess);
+    };
   }, [pathname]);
 
   const handleLogout = async () => {
