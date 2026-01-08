@@ -205,8 +205,9 @@ export async function PATCH(
             .single();
 
           if (engineerError || !engineer) {
+            console.error('Engineer validation error:', engineerError);
             return NextResponse.json(
-              { error: 'Engineer not found' },
+              { error: engineerError?.message || 'Engineer not found' },
               { status: 400 }
             );
           }
@@ -239,8 +240,9 @@ export async function PATCH(
 
           if (assignError || !assignment) {
             console.error('Error creating assignment:', assignError);
+            const errorMessage = assignError?.message || assignError?.details || assignError?.hint || 'Failed to assign engineer';
             return NextResponse.json(
-              { error: assignError?.message || 'Failed to assign engineer' },
+              { error: errorMessage },
               { status: 500 }
             );
           }

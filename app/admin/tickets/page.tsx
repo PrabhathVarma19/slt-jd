@@ -205,7 +205,8 @@ export default function AdminTicketsPage() {
       });
 
       if (!res.ok) {
-        throw new Error('Failed to assign engineer');
+        const errorData = await res.json().catch(() => ({ error: 'Failed to assign engineer' }));
+        throw new Error(errorData.error || 'Failed to assign engineer');
       }
 
       showToast('Engineer assigned', 'success');
@@ -216,7 +217,7 @@ export default function AdminTicketsPage() {
       }
     } catch (error: any) {
       console.error('Error assigning engineer:', error);
-      showToast('Failed to assign engineer', 'error');
+      showToast(error.message || 'Failed to assign engineer', 'error');
     } finally {
       setUpdating(null);
     }
