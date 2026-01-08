@@ -14,7 +14,7 @@ interface ChatMessage {
   role: ChatRole;
   content: string;
   createdAt: string;
-  actionType?: 'password_reset' | 'account_unlock' | 'ticket_status' | 'kb_search' | null;
+  actionType?: 'password_reset' | 'account_unlock' | 'ticket_status' | 'kb_search' | 'create_request' | null;
   actionData?: any;
 }
 
