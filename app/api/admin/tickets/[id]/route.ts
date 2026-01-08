@@ -140,9 +140,17 @@ export async function PATCH(
           .from('Ticket')
           .select('*')
           .eq('id', ticketId)
-          .single();
+          .maybeSingle();
 
-        if (ticketError || !ticket) {
+        if (ticketError) {
+          console.error('Error fetching ticket:', ticketError);
+          return NextResponse.json(
+            { error: ticketError.message || 'Failed to fetch ticket' },
+            { status: 500 }
+          );
+        }
+
+        if (!ticket) {
           return NextResponse.json({ error: 'Ticket not found' }, { status: 404 });
         }
 
@@ -169,15 +177,23 @@ export async function PATCH(
           updates.priority = priority;
         }
 
-        const { data: updatedTicket, error: updateError } = await supabaseServer
-          .from('Ticket')
-          .update(updates)
-          .eq('id', ticketId)
-          .select()
-          .single();
+        let updatedTicket = ticket;
+        // Only update if there are actual changes
+        if (Object.keys(updates).length > 0) {
+          const { data: updated, error: updateError } = await supabaseServer
+            .from('Ticket')
+            .update(updates)
+            .eq('id', ticketId)
+            .select()
+            .maybeSingle();
 
-        if (updateError) {
-          throw new Error(updateError.message);
+          if (updateError) {
+            throw new Error(updateError.message);
+          }
+
+          if (updated) {
+            updatedTicket = updated;
+          }
         }
 
         // Create events
