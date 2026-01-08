@@ -201,6 +201,12 @@ export async function POST(req: NextRequest) {
       .eq('id', approval.ticketId)
       .single();
 
+    // Handle requester data (could be array or object from Supabase)
+    const requester = ticketData?.requester 
+      ? (Array.isArray(ticketData.requester) ? ticketData.requester[0] : ticketData.requester)
+      : null;
+    const requesterEmail = requester?.email;
+
     if (action === 'approve') {
       // Check if all travel admin approvals are complete
       const { data: allApprovals } = await supabaseServer
@@ -239,7 +245,7 @@ export async function POST(req: NextRequest) {
         });
 
         // Notify requester that all approvals are complete
-        if (ticketData?.requester?.email) {
+        if (requesterEmail) {
           try {
             const requesterSubject = `Travel Request Fully Approved: ${ticketData.ticketNumber}`;
             const requesterHtml = `
@@ -250,7 +256,7 @@ export async function POST(req: NextRequest) {
             `;
             
             await sendMailViaGraph({
-              to: [ticketData.requester.email],
+              to: [requesterEmail],
               subject: requesterSubject,
               htmlBody: requesterHtml,
               textBody: `Your travel request has been fully approved and is now being processed.\n\nTicket Number: ${ticketData.ticketNumber}\n\nThe travel desk will contact you with booking details.${note ? `\n\nTravel Admin Note: ${note}` : ''}`,
@@ -261,7 +267,7 @@ export async function POST(req: NextRequest) {
         }
       } else {
         // Notify requester that this admin approved (but others still pending)
-        if (ticketData?.requester?.email) {
+        if (requesterEmail) {
           try {
             const requesterSubject = `Travel Request Partially Approved: ${ticketData.ticketNumber}`;
             const requesterHtml = `
@@ -271,7 +277,7 @@ export async function POST(req: NextRequest) {
             `;
             
             await sendMailViaGraph({
-              to: [ticketData.requester.email],
+              to: [requesterEmail],
               subject: requesterSubject,
               htmlBody: requesterHtml,
               textBody: `Your travel request has been approved by a travel admin.\n\nTicket Number: ${ticketData.ticketNumber}\n\nWaiting for additional approvals before processing.`,

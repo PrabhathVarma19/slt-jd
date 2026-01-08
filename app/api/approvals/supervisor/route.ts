@@ -211,6 +211,12 @@ export async function POST(req: NextRequest) {
       .eq('id', approval.ticketId)
       .single();
 
+    // Handle requester data (could be array or object from Supabase)
+    const requester = ticketData?.requester 
+      ? (Array.isArray(ticketData.requester) ? ticketData.requester[0] : ticketData.requester)
+      : null;
+    const requesterEmail = requester?.email;
+
     // If approved, create travel admin approval record
     if (action === 'approve') {
       // Find travel admin users (users with ADMIN_TRAVEL role)
@@ -276,7 +282,7 @@ export async function POST(req: NextRequest) {
             
             await sendMailViaGraph({
               to: travelAdminEmails,
-              cc: ticketData?.requester?.email ? [ticketData.requester.email] : undefined,
+              cc: requesterEmail ? [requesterEmail] : undefined,
               subject: adminSubject,
               htmlBody: adminHtml,
               textBody: `A travel request has been approved by the supervisor and now requires your approval.\n\nTicket Number: ${ticketData?.ticketNumber}\n\n${ticketData?.description || ''}\n\nReview at: ${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/approvals/travel-admin`,
@@ -286,7 +292,7 @@ export async function POST(req: NextRequest) {
           }
 
           // Notify requester of supervisor approval
-          if (ticketData?.requester?.email) {
+          if (requesterEmail) {
             try {
               const requesterSubject = `Travel Request Approved by Supervisor: ${ticketData.ticketNumber}`;
               const requesterHtml = `
@@ -297,7 +303,7 @@ export async function POST(req: NextRequest) {
               `;
               
               await sendMailViaGraph({
-                to: [ticketData.requester.email],
+                to: [requesterEmail],
                 subject: requesterSubject,
                 htmlBody: requesterHtml,
                 textBody: `Your travel request has been approved by your supervisor.\n\nTicket Number: ${ticketData.ticketNumber}\n\nThe request is now pending travel admin approval.${note ? `\n\nSupervisor Note: ${note}` : ''}`,
@@ -330,7 +336,7 @@ export async function POST(req: NextRequest) {
       });
 
       // Notify requester of rejection
-      if (ticketData?.requester?.email) {
+      if (requesterEmail) {
         try {
           const requesterSubject = `Travel Request Rejected: ${ticketData.ticketNumber}`;
           const requesterHtml = `
@@ -341,7 +347,7 @@ export async function POST(req: NextRequest) {
           `;
           
           await sendMailViaGraph({
-            to: [ticketData.requester.email],
+            to: [requesterEmail],
             subject: requesterSubject,
             htmlBody: requesterHtml,
             textBody: `Your travel request has been rejected by your supervisor.\n\nTicket Number: ${ticketData.ticketNumber}${note ? `\n\nReason: ${note}` : ''}\n\nIf you have questions, please contact your supervisor.`,
