@@ -135,8 +135,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Handle ticket data (could be array or object from Supabase)
+    const ticket = Array.isArray(approval.ticket) ? approval.ticket[0] : approval.ticket;
+
     // Verify it's a travel ticket
-    if (approval.ticket?.type !== 'TRAVEL') {
+    if (ticket?.type !== 'TRAVEL') {
       return NextResponse.json(
         { error: 'Only travel tickets can be approved via this endpoint' },
         { status: 400 }
