@@ -292,7 +292,7 @@ export async function POST(req: NextRequest) {
           }
 
           // Notify requester of supervisor approval
-          if (requesterEmail) {
+          if (requesterEmail && ticketData) {
             try {
               const requesterSubject = `Travel Request Approved by Supervisor: ${ticketData.ticketNumber}`;
               const requesterHtml = `
@@ -336,7 +336,7 @@ export async function POST(req: NextRequest) {
       });
 
       // Notify requester of rejection
-      if (requesterEmail) {
+      if (requesterEmail && ticketData) {
         try {
           const requesterSubject = `Travel Request Rejected: ${ticketData.ticketNumber}`;
           const requesterHtml = `

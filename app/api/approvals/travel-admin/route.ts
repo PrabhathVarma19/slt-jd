@@ -245,7 +245,7 @@ export async function POST(req: NextRequest) {
         });
 
         // Notify requester that all approvals are complete
-        if (requesterEmail) {
+        if (requesterEmail && ticketData) {
           try {
             const requesterSubject = `Travel Request Fully Approved: ${ticketData.ticketNumber}`;
             const requesterHtml = `
@@ -267,7 +267,7 @@ export async function POST(req: NextRequest) {
         }
       } else {
         // Notify requester that this admin approved (but others still pending)
-        if (requesterEmail) {
+        if (requesterEmail && ticketData) {
           try {
             const requesterSubject = `Travel Request Partially Approved: ${ticketData.ticketNumber}`;
             const requesterHtml = `
@@ -309,7 +309,7 @@ export async function POST(req: NextRequest) {
       });
 
       // Notify requester of rejection
-      if (ticketData?.requester?.email) {
+      if (requesterEmail && ticketData) {
         try {
           const requesterSubject = `Travel Request Rejected: ${ticketData.ticketNumber}`;
           const requesterHtml = `
@@ -320,7 +320,7 @@ export async function POST(req: NextRequest) {
           `;
           
           await sendMailViaGraph({
-            to: [ticketData.requester.email],
+            to: [requesterEmail],
             subject: requesterSubject,
             htmlBody: requesterHtml,
             textBody: `Your travel request has been rejected by the travel admin.\n\nTicket Number: ${ticketData.ticketNumber}${note ? `\n\nReason: ${note}` : ''}\n\nIf you have questions, please contact the travel desk.`,
