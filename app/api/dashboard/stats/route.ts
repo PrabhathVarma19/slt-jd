@@ -149,13 +149,15 @@ export async function GET(req: NextRequest) {
             .in('ticketId', ticketIds)
             .is('unassignedAt', null);
 
-          const profile = Array.isArray(engineer.user.profile) 
-            ? engineer.user.profile[0] 
-            : engineer.user.profile;
+          // Handle user relation (could be array or object from Supabase)
+          const user = Array.isArray(engineer.user) ? engineer.user[0] : engineer.user;
+          const profile = user?.profile 
+            ? (Array.isArray(user.profile) ? user.profile[0] : user.profile)
+            : null;
 
           engineerWorkload.push({
             engineerId: engineer.userId,
-            engineerEmail: engineer.user.email,
+            engineerEmail: user?.email || '',
             engineerName: profile?.empName,
             assignedCount: (assignments || []).length,
           });
@@ -201,18 +203,26 @@ export async function GET(req: NextRequest) {
           closedCount: stats.byStatus.CLOSED,
         },
         engineerWorkload: engineerWorkload.sort((a, b) => b.assignedCount - a.assignedCount),
-        recentActivity: filteredRecentEvents.map((e: any) => ({
-          id: e.id,
-          ticketId: e.ticket?.id,
-          type: e.type,
-          createdAt: e.createdAt,
-          ticketNumber: e.ticket?.ticketNumber,
-          ticketTitle: e.ticket?.title,
-          ticketDomain: e.ticket?.domain,
-          creatorName: e.creator?.profile?.empName || e.creator?.email?.split('@')[0],
-          creatorEmail: e.creator?.email,
-          payload: e.payload,
-        })),
+        recentActivity: filteredRecentEvents.map((e: any) => {
+          // Handle creator relation (could be array or object from Supabase)
+          const creator = Array.isArray(e.creator) ? e.creator[0] : e.creator;
+          const creatorProfile = creator?.profile 
+            ? (Array.isArray(creator.profile) ? creator.profile[0] : creator.profile)
+            : null;
+          
+          return {
+            id: e.id,
+            ticketId: e.ticket?.id,
+            type: e.type,
+            createdAt: e.createdAt,
+            ticketNumber: e.ticket?.ticketNumber,
+            ticketTitle: e.ticket?.title,
+            ticketDomain: e.ticket?.domain,
+            creatorName: creatorProfile?.empName || creator?.email?.split('@')[0],
+            creatorEmail: creator?.email,
+            payload: e.payload,
+          };
+        }),
       });
     } catch (dbError: any) {
       console.error('Database error fetching dashboard stats:', dbError);
