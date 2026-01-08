@@ -414,7 +414,7 @@ export default function TicketDetailsPage() {
                               : `${approval.state} ${approval.decidedAt ? formatDate(approval.decidedAt) : ''}`}
                           </p>
                           {approval.note && (
-                            <p className="text-xs text-gray-600 mt-1 italic">"{approval.note}"</p>
+                            <p className="text-xs text-gray-600 mt-1 italic">&ldquo;{approval.note}&rdquo;</p>
                           )}
                         </div>
                       </div>
@@ -630,7 +630,7 @@ export default function TicketDetailsPage() {
                             </p>
                             {(item.data as TicketApproval).note && (
                               <p className="text-xs text-gray-600 mt-1 italic">
-                                "{(item.data as TicketApproval).note}"
+                                &ldquo;{(item.data as TicketApproval).note}&rdquo;
                               </p>
                             )}
                           </>
