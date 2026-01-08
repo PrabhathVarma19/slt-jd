@@ -82,6 +82,24 @@ export default function AdminDashboardPage() {
   const [engineerWorkload, setEngineerWorkload] = useState<EngineerWorkload[]>([]);
   const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([]);
   const [domainFilter, setDomainFilter] = useState<string>('');
+  const [userRoles, setUserRoles] = useState<string[]>([]);
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
+
+  useEffect(() => {
+    // Fetch user roles to determine if super admin
+    fetch('/api/auth/session')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.user?.roles) {
+          const roles = data.user.roles || [];
+          setUserRoles(roles);
+          setIsSuperAdmin(roles.includes('SUPER_ADMIN'));
+        }
+      })
+      .catch(() => {
+        // Ignore errors
+      });
+  }, []);
 
   useEffect(() => {
     fetchDashboardData();
@@ -195,15 +213,21 @@ export default function AdminDashboardPage() {
           </p>
         </div>
         <div className="flex items-center gap-4">
-          <select
-            value={domainFilter}
-            onChange={(e) => setDomainFilter(e.target.value)}
-            className="px-3 py-2 border rounded-md text-sm"
-          >
-            <option value="">All Domains</option>
-            <option value="IT">IT</option>
-            <option value="TRAVEL">Travel</option>
-          </select>
+          {isSuperAdmin ? (
+            <select
+              value={domainFilter}
+              onChange={(e) => setDomainFilter(e.target.value)}
+              className="px-3 py-2 border rounded-md text-sm"
+            >
+              <option value="">All Domains</option>
+              <option value="IT">IT</option>
+              <option value="TRAVEL">Travel</option>
+            </select>
+          ) : (
+            <Badge variant="outline" className="px-3 py-1">
+              {userRoles.includes('ADMIN_IT') ? 'IT Domain' : 'Travel Domain'}
+            </Badge>
+          )}
           <BackToHome />
         </div>
       </div>
