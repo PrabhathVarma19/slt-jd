@@ -242,9 +242,6 @@ export default function TicketDetailsPage() {
       case 'PRIORITY_CHANGED':
         return `${creatorName} changed priority from ${event.payload.oldPriority} to ${event.payload.newPriority}`;
       case 'NOTE_ADDED':
-        if (event.payload.fromRequester) {
-          return `${creatorName} added a comment`;
-        }
         return `${creatorName} added a note`;
       case 'APPROVAL_REQUESTED':
         return `Approval requested from ${event.payload.approverEmails?.join(', ') || 'approvers'}`;
@@ -606,17 +603,8 @@ export default function TicketDetailsPage() {
                               {getEventDescription(item.data as TicketEvent)}
                             </p>
                             {(item.data as TicketEvent).type === 'NOTE_ADDED' && (
-                              <div className={`mt-2 rounded-lg p-3 ${
-                                (item.data as TicketEvent).payload.fromRequester
-                                  ? 'bg-blue-50 border border-blue-200'
-                                  : 'bg-gray-50'
-                              }`}>
-                                {(item.data as TicketEvent).payload.fromRequester && (
-                                  <p className="text-xs font-medium text-blue-700 mb-1">
-                                    Comment from Requester
-                                  </p>
-                                )}
-                                <p className="text-sm text-gray-700 whitespace-pre-wrap">
+                              <div className="mt-2 rounded-lg bg-gray-50 p-3">
+                                <p className="text-sm text-gray-700">
                                   {(item.data as TicketEvent).payload.note}
                                 </p>
                               </div>
