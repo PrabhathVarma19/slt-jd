@@ -119,7 +119,44 @@ export default function ServiceDeskPage() {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [lastSubmitAt, setLastSubmitAt] = useState<string | null>(null);
   const [lastSubmitOutcome, setLastSubmitOutcome] = useState<'success' | 'error' | null>(null);
+  const [isEditingUserInfo, setIsEditingUserInfo] = useState(false);
+  const [isLoadingProfile, setIsLoadingProfile] = useState(true);
   const { showToast, ToastContainer } = useToast();
+
+  // Fetch user profile and auto-fill form
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await fetch('/api/profile');
+        if (res.ok) {
+          const data = await res.json();
+          const profile = data.user?.profile;
+          if (profile) {
+            setForm((prev) => ({
+              ...prev,
+              name: profile.empName || prev.name,
+              employeeId: profile.employeeId?.toString() || prev.employeeId,
+              email: data.user.email || prev.email,
+              grade: profile.gradeCode || prev.grade,
+              managerEmail: profile.supervisorEmail || prev.managerEmail,
+            }));
+          } else if (data.user?.email) {
+            // Even without profile, we have email from session
+            setForm((prev) => ({
+              ...prev,
+              email: data.user.email || prev.email,
+            }));
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch profile:', err);
+      } finally {
+        setIsLoadingProfile(false);
+      }
+    };
+
+    fetchProfile();
+  }, []);
 
   // Seed Details when navigated from Ask Beacon with ?details=...
   useEffect(() => {
@@ -275,9 +312,20 @@ export default function ServiceDeskPage() {
         {/* Left: form */}
         <div className="bg-card rounded-3xl shadow-sm p-6 space-y-6">
           <div className="space-y-1">
-            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-              Requester
-            </p>
+            <div className="flex items-center justify-between">
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                Requester
+              </p>
+              {!isEditingUserInfo && (form.name || form.email) && (
+                <button
+                  type="button"
+                  onClick={() => setIsEditingUserInfo(true)}
+                  className="text-xs text-blue-600 hover:text-blue-700 hover:underline"
+                >
+                  Edit
+                </button>
+              )}
+            </div>
           <div className="grid gap-4 md:grid-cols-3">
             <div className="space-y-1.5">
               <label className="text-xs font-medium text-gray-700">
@@ -287,6 +335,8 @@ export default function ServiceDeskPage() {
                 value={form.name}
                 onChange={(e) => handleChange('name', e.target.value)}
                 placeholder="Name as per Govt ID"
+                disabled={!isEditingUserInfo && !!form.name}
+                className={!isEditingUserInfo && form.name ? 'bg-gray-50' : ''}
               />
             </div>
             <div className="space-y-1.5">
@@ -297,6 +347,8 @@ export default function ServiceDeskPage() {
                 value={form.employeeId}
                 onChange={(e) => handleChange('employeeId', e.target.value)}
                 placeholder="e.g., 12345"
+                disabled={!isEditingUserInfo && !!form.employeeId}
+                className={!isEditingUserInfo && form.employeeId ? 'bg-gray-50' : ''}
               />
             </div>
             <div className="space-y-1.5">
@@ -308,9 +360,22 @@ export default function ServiceDeskPage() {
                 value={form.email}
                 onChange={(e) => handleChange('email', e.target.value)}
                 placeholder="you@trianz.com"
+                disabled={!isEditingUserInfo && !!form.email}
+                className={!isEditingUserInfo && form.email ? 'bg-gray-50' : ''}
               />
               </div>
             </div>
+            {isEditingUserInfo && (
+              <div className="col-span-3">
+                <button
+                  type="button"
+                  onClick={() => setIsEditingUserInfo(false)}
+                  className="text-xs text-gray-600 hover:text-gray-700 hover:underline"
+                >
+                  Cancel editing
+                </button>
+              </div>
+            )}
           </div>
 
           <div className="space-y-1">

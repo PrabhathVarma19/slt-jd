@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from '@/components/ui/button';
 import Input from '@/components/ui/input';
 import Textarea from '@/components/ui/textarea';
@@ -42,7 +42,38 @@ export default function TravelDeskPage() {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [lastSubmitAt, setLastSubmitAt] = useState<string | null>(null);
   const [lastSubmitOutcome, setLastSubmitOutcome] = useState<'success' | 'error' | null>(null);
+  const [isEditingUserInfo, setIsEditingUserInfo] = useState(false);
+  const [isLoadingProfile, setIsLoadingProfile] = useState(true);
   const { showToast, ToastContainer } = useToast();
+
+  // Fetch user profile and auto-fill form
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await fetch('/api/profile');
+        if (res.ok) {
+          const data = await res.json();
+          const profile = data.user?.profile;
+          if (profile) {
+            setName(profile.empName || name);
+            setEmployeeId(profile.employeeId?.toString() || employeeId);
+            setEmail(data.user.email || email);
+            setGrade(profile.gradeCode || grade);
+          } else if (data.user?.email) {
+            // Even without profile, we have email from session
+            setEmail(data.user.email || email);
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch profile:', err);
+      } finally {
+        setIsLoadingProfile(false);
+      }
+    };
+
+    fetchProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const canSubmit =
     name.trim() &&
@@ -173,6 +204,23 @@ export default function TravelDeskPage() {
             </div>
           )}
 
+          <div className="space-y-1">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                Employee Information
+              </p>
+              {!isEditingUserInfo && (name || email) && (
+                <button
+                  type="button"
+                  onClick={() => setIsEditingUserInfo(true)}
+                  className="text-xs text-blue-600 hover:text-blue-700 hover:underline"
+                >
+                  Edit
+                </button>
+              )}
+            </div>
+          </div>
+
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-1">
               <label className="text-sm font-medium text-gray-700">
@@ -182,6 +230,8 @@ export default function TravelDeskPage() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="As printed on passport / Govt ID"
+                disabled={!isEditingUserInfo && !!name}
+                className={!isEditingUserInfo && name ? 'bg-gray-50' : ''}
               />
             </div>
             <div className="space-y-1">
@@ -192,6 +242,8 @@ export default function TravelDeskPage() {
                 value={employeeId}
                 onChange={(e) => setEmployeeId(e.target.value)}
                 placeholder="e.g., 12345"
+                disabled={!isEditingUserInfo && !!employeeId}
+                className={!isEditingUserInfo && employeeId ? 'bg-gray-50' : ''}
               />
             </div>
           </div>
@@ -216,6 +268,8 @@ export default function TravelDeskPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@trianz.com"
+                disabled={!isEditingUserInfo && !!email}
+                className={!isEditingUserInfo && email ? 'bg-gray-50' : ''}
               />
             </div>
           </div>
@@ -229,8 +283,21 @@ export default function TravelDeskPage() {
                 value={grade}
                 onChange={(e) => setGrade(e.target.value)}
                 placeholder="e.g., 5, 7, 9"
+                disabled={!isEditingUserInfo && !!grade}
+                className={!isEditingUserInfo && grade ? 'bg-gray-50' : ''}
               />
             </div>
+            {isEditingUserInfo && (
+              <div className="sm:col-span-3">
+                <button
+                  type="button"
+                  onClick={() => setIsEditingUserInfo(false)}
+                  className="text-xs text-gray-600 hover:text-gray-700 hover:underline"
+                >
+                  Cancel editing
+                </button>
+              </div>
+            )}
             <div className="space-y-1">
               <label className="text-sm font-medium text-gray-700">
                 Onward from (city) <span className="text-red-500">*</span>
