@@ -312,7 +312,14 @@ export default function EngineerTicketsPage() {
                       </Badge>
                       <Badge variant="outline">{ticket.type}</Badge>
                     </div>
-                    <h3 className="font-medium text-gray-900 mb-1">{ticket.title}</h3>
+                    <h3 className="font-medium text-gray-900 mb-1">
+                      <a
+                        href={`/tickets/${ticket.id}`}
+                        className="hover:text-blue-600 hover:underline"
+                      >
+                        {ticket.title}
+                      </a>
+                    </h3>
                     <p className="text-sm text-gray-600 line-clamp-2 mb-3">
                       {ticket.description}
                     </p>

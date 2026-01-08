@@ -39,7 +39,7 @@ export async function GET(
       }
 
       // Fetch related data
-      const [requesterResult, assignments, events] = await Promise.all([
+      const [requesterResult, assignments, events, approvals] = await Promise.all([
         supabaseServer
           .from('User')
           .select(`
@@ -82,6 +82,11 @@ export async function GET(
           `)
           .eq('ticketId', ticketId)
           .order('createdAt', { ascending: false }),
+        supabaseServer
+          .from('TicketApproval')
+          .select('*')
+          .eq('ticketId', ticketId)
+          .order('requestedAt', { ascending: false }),
       ]);
 
       const requester = requesterResult.data;
@@ -98,7 +103,7 @@ export async function GET(
           } : null,
           assignments: assignments.data || [],
           events: events.data || [],
-          approvals: [], // TODO: Implement approvals
+          approvals: approvals.data || [],
         },
       });
     } catch (dbError: any) {

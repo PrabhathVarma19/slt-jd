@@ -393,7 +393,12 @@ export default function ProfilePage() {
                             </Badge>
                           </div>
                           <h3 className="font-medium text-gray-900 mb-1">
-                            {ticket.title}
+                            <a
+                              href={`/tickets/${ticket.id}`}
+                              className="hover:text-blue-600 hover:underline"
+                            >
+                              {ticket.title}
+                            </a>
                           </h3>
                           <p className="text-sm text-gray-600 line-clamp-2 mb-2">
                             {ticket.description}
