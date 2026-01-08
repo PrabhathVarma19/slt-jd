@@ -111,7 +111,11 @@ export async function fetchAllUserProfiles(
     // Handle different response formats
     // Option 1: Direct object
     if (data && typeof data === 'object' && 'EmployeeId' in data) {
-      return data as UserProfileApiResponse;
+      // Check if email matches
+      if (data.Email?.toLowerCase() === options.email.toLowerCase()) {
+        return [data as UserProfileApiResponse];
+      }
+      return null;
     }
     
     // Option 2: Array with single item (most likely for this API)
