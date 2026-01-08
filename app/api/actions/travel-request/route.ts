@@ -110,6 +110,29 @@ ${body.extraDetails ? `Additional details: ${body.extraDetails}` : ''}`;
             approverEmail: requesterProfile.supervisorEmail,
             state: 'PENDING',
           });
+
+        // Send email notification to supervisor
+        try {
+          const supervisorSubject = `Travel Request Approval Required: ${ticket.ticketNumber}`;
+          const supervisorHtml = `
+            <p>A new travel request requires your approval.</p>
+            <p><strong>Ticket Number:</strong> ${ticket.ticketNumber}</p>
+            <h3>Request Details</h3>
+            <p>${description.replace(/\n/g, '<br>')}</p>
+            <p><a href="${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/approvals/supervisor">Review and Approve</a></p>
+          `;
+          
+          await sendMailViaGraph({
+            to: [requesterProfile.supervisorEmail],
+            cc: [body.email],
+            subject: supervisorSubject,
+            htmlBody: supervisorHtml,
+            textBody: `A new travel request requires your approval.\n\nTicket Number: ${ticket.ticketNumber}\n\n${description}\n\nReview at: ${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/approvals/supervisor`,
+          });
+        } catch (emailError) {
+          console.error('Failed to send supervisor notification email:', emailError);
+          // Don't fail the request if email fails
+        }
       }
 
       ticketNumber = ticket.ticketNumber;

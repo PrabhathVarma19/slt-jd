@@ -132,6 +132,8 @@ const ENGINEER_TOOLS: Tool[] = [
 export default function Home() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isEngineer, setIsEngineer] = useState(false);
+  const [isSupervisor, setIsSupervisor] = useState(false);
+  const [isTravelAdmin, setIsTravelAdmin] = useState(false);
   const [userRoles, setUserRoles] = useState<string[]>([]);
 
   useEffect(() => {
@@ -153,7 +155,16 @@ export default function Home() {
           const hasEngineerRole = roles.some((role: string) => engineerRoles.includes(role));
           setIsEngineer(hasEngineerRole);
           
-          console.log('Session check:', { roles, hasAdminRole, hasEngineerRole, data });
+          // Check if user is a supervisor (anyone can be a supervisor if they have approvals pending)
+          // We'll show the link if they're logged in - the API will handle authorization
+          setIsSupervisor(true); // Show to all logged-in users, API handles auth
+          
+          // Check if user has travel admin role
+          const travelAdminRoles = ['ADMIN_TRAVEL', 'SUPER_ADMIN'];
+          const hasTravelAdminRole = roles.some((role: string) => travelAdminRoles.includes(role));
+          setIsTravelAdmin(hasTravelAdminRole);
+          
+          console.log('Session check:', { roles, hasAdminRole, hasEngineerRole, hasTravelAdminRole, data });
         } else {
           console.log('No admin roles found:', data);
         }
@@ -675,6 +686,57 @@ export default function Home() {
                 <ChevronRight className="h-4 w-4 text-slate-400" aria-hidden="true" />
               </Link>
             ))}
+          </div>
+        </section>
+      )}
+
+      {/* Approvals Section */}
+      {(isSupervisor || isTravelAdmin) && (
+        <section className="space-y-5 border-t border-gray-200 pt-8">
+          <div className="space-y-2">
+            <h2 className="text-2xl font-semibold tracking-tight text-slate-900">
+              Approvals
+            </h2>
+            <p className="text-sm text-slate-600">
+              Review and approve travel requests.
+            </p>
+          </div>
+
+          <div className="grid gap-3 md:grid-cols-2">
+            {isSupervisor && (
+              <Link
+                href="/approvals/supervisor"
+                className="flex items-center justify-between gap-4 rounded-2xl bg-card px-4 py-3 shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-md border-2 border-green-100"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full text-xs font-semibold bg-green-100 text-green-700">
+                    SA
+                  </div>
+                  <div className="space-y-0.5">
+                    <p className="text-sm font-semibold text-slate-900">Supervisor Approvals</p>
+                    <p className="text-xs text-slate-600">Approve travel requests from your team</p>
+                  </div>
+                </div>
+                <ChevronRight className="h-4 w-4 text-slate-400" aria-hidden="true" />
+              </Link>
+            )}
+            {isTravelAdmin && (
+              <Link
+                href="/approvals/travel-admin"
+                className="flex items-center justify-between gap-4 rounded-2xl bg-card px-4 py-3 shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-md border-2 border-purple-100"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full text-xs font-semibold bg-purple-100 text-purple-700">
+                    TA
+                  </div>
+                  <div className="space-y-0.5">
+                    <p className="text-sm font-semibold text-slate-900">Travel Admin Approvals</p>
+                    <p className="text-xs text-slate-600">Final approval for travel requests</p>
+                  </div>
+                </div>
+                <ChevronRight className="h-4 w-4 text-slate-400" aria-hidden="true" />
+              </Link>
+            )}
           </div>
         </section>
       )}
