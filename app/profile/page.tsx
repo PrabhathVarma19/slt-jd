@@ -95,6 +95,19 @@ export default function ProfilePage() {
   useEffect(() => {
     fetchProfile();
     fetchTickets();
+
+    // Listen for login success event to refresh profile
+    const handleLoginSuccess = () => {
+      setTimeout(() => {
+        fetchProfile();
+        fetchTickets();
+      }, 100);
+    };
+
+    window.addEventListener('beacon:login-success', handleLoginSuccess);
+    return () => {
+      window.removeEventListener('beacon:login-success', handleLoginSuccess);
+    };
   }, []);
 
   const fetchProfile = async () => {

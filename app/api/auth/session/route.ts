@@ -13,6 +13,11 @@ export async function GET() {
       }, { status: 401 });
     }
 
+    // Check if this is a test email - test emails should not have synced profile data
+    const normalizedEmail = session.email?.toLowerCase().trim();
+    const testEmails = ['user@trianz.com', 'test@trianz.com', 'admin@trianz.com'];
+    const isTestEmail = normalizedEmail && testEmails.includes(normalizedEmail);
+
     // Verify user still exists and is active
     const { data: userData } = await supabaseServer
       .from('User')
@@ -37,13 +42,16 @@ export async function GET() {
       }, { status: 401 });
     }
 
+    // For test emails, don't return profile name (they shouldn't have synced data)
+    const userName = isTestEmail ? null : userProfile?.empName;
+
     return NextResponse.json({
       isAuthenticated: true,
       authenticated: true,
       user: {
         id: user.id,
         email: user.email,
-        name: userProfile?.empName,
+        name: userName,
         roles: session.roles || [],
       },
     });
