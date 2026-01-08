@@ -24,6 +24,8 @@ import {
   Shield,
   FileText,
   Tag,
+  HelpCircle,
+  Info,
 } from 'lucide-react';
 
 type TicketStatus = 'OPEN' | 'IN_PROGRESS' | 'WAITING_ON_REQUESTER' | 'RESOLVED' | 'CLOSED' | 'PENDING_APPROVAL';
@@ -119,6 +121,15 @@ const STATUS_ICONS: Record<TicketStatus, React.ReactNode> = {
   PENDING_APPROVAL: <Shield className="h-4 w-4" />,
 };
 
+const STATUS_DESCRIPTIONS: Record<TicketStatus, string> = {
+  OPEN: 'Your ticket has been created and is waiting to be assigned to an engineer.',
+  IN_PROGRESS: 'An engineer is actively working on your ticket.',
+  WAITING_ON_REQUESTER: 'The engineer needs more information from you. Please check for updates or questions.',
+  RESOLVED: 'Your ticket has been resolved. Please verify if everything is working as expected.',
+  CLOSED: 'This ticket has been closed. If you need further assistance, please create a new ticket.',
+  PENDING_APPROVAL: 'Your request is pending approval from your supervisor and/or travel admin.',
+};
+
 export default function TicketDetailsPage() {
   const router = useRouter();
   const params = useParams();
@@ -160,25 +171,24 @@ export default function TicketDetailsPage() {
 
     try {
       setAddingNote(true);
-      const endpoint = ticket.isAssignedEngineer
-        ? `/api/engineer/tickets/${ticketId}`
-        : `/api/admin/tickets/${ticketId}`;
-
-      const res = await fetch(endpoint, {
+      
+      // Use unified endpoint for all users
+      const res = await fetch(`/api/tickets/${ticketId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ note: noteText.trim() }),
+        body: JSON.stringify({ comment: noteText.trim() }),
       });
 
       if (!res.ok) {
-        throw new Error('Failed to add note');
+        const data = await res.json();
+        throw new Error(data.error || 'Failed to add comment');
       }
 
       setNoteText('');
-      fetchTicket(); // Refresh to show new note
-    } catch (error) {
-      console.error('Error adding note:', error);
-      alert('Failed to add note');
+      fetchTicket(); // Refresh to show new comment
+    } catch (error: any) {
+      console.error('Error adding comment:', error);
+      alert(error.message || 'Failed to add comment');
     } finally {
       setAddingNote(false);
     }
@@ -283,6 +293,7 @@ export default function TicketDetailsPage() {
   ].sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
 
   const canAddNotes = ticket.isAssignedEngineer || ticket.isAdmin;
+  const canAddComments = ticket.isRequester || ticket.isAssignedEngineer || ticket.isAdmin;
 
   return (
     <div className="space-y-6">
@@ -316,6 +327,21 @@ export default function TicketDetailsPage() {
                 <Badge variant="outline">{ticket.type}</Badge>
               </div>
               <h2 className="text-lg font-semibold text-gray-900 mt-2">{ticket.title}</h2>
+              
+              {/* Status Description for Regular Users */}
+              {ticket.isRequester && !ticket.isAdmin && (
+                <div className="mt-3 rounded-lg bg-blue-50 border border-blue-200 p-3">
+                  <div className="flex items-start gap-2">
+                    <Info className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="text-xs font-medium text-blue-900">Status Information</p>
+                      <p className="text-xs text-blue-700 mt-0.5">
+                        {STATUS_DESCRIPTIONS[ticket.status]}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </CardHeader>
@@ -445,18 +471,75 @@ export default function TicketDetailsPage() {
         </CardContent>
       </Card>
 
-      {/* Add Note Section */}
-      {canAddNotes && (
+      {/* Contact Support Section for Regular Users */}
+      {ticket.isRequester && !ticket.isAdmin && (
+        <Card className="border-blue-200 bg-blue-50">
+          <CardContent className="pt-6">
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex-1">
+                <h3 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                  <HelpCircle className="h-5 w-5 text-blue-600" />
+                  Need Help?
+                </h3>
+                <p className="text-sm text-gray-600 mb-3">
+                  Have a question or need to provide additional information about this ticket?
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {ticket.assignments.length > 0 && (
+                    <a
+                      href={`mailto:${ticket.assignments[0].engineer.email}?subject=Re: ${ticket.ticketNumber} - ${ticket.title}`}
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-blue-300 rounded-md text-sm font-medium text-blue-700 hover:bg-blue-50 transition-colors"
+                    >
+                      <Mail className="h-4 w-4" />
+                      Email Assigned Engineer
+                    </a>
+                  )}
+                  {ticket.domain === 'IT' && (
+                    <a
+                      href={`mailto:${process.env.NEXT_PUBLIC_IT_SERVICEDESK_EMAIL || 'it-support@trianz.com'}?subject=${ticket.ticketNumber} - ${ticket.title}`}
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-blue-300 rounded-md text-sm font-medium text-blue-700 hover:bg-blue-50 transition-colors"
+                    >
+                      <Mail className="h-4 w-4" />
+                      Contact IT Support
+                    </a>
+                  )}
+                  {ticket.domain === 'TRAVEL' && (
+                    <a
+                      href={`mailto:${process.env.NEXT_PUBLIC_TRAVEL_DESK_EMAIL || 'travel@trianz.com'}?subject=${ticket.ticketNumber} - ${ticket.title}`}
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-blue-300 rounded-md text-sm font-medium text-blue-700 hover:bg-blue-50 transition-colors"
+                    >
+                      <Mail className="h-4 w-4" />
+                      Contact Travel Desk
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Add Comment/Note Section */}
+      {canAddComments && (
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">Add Note</CardTitle>
+            <CardTitle className="text-lg">
+              {ticket.isRequester && !ticket.isAdmin ? 'Add Comment or Question' : 'Add Note'}
+            </CardTitle>
+            {ticket.isRequester && !ticket.isAdmin && (
+              <p className="text-sm text-gray-600 mt-1">
+                Add a comment or question. The assigned engineer or admin will see this and can respond.
+              </p>
+            )}
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
               <textarea
                 className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 rows={3}
-                placeholder="Add a note or comment..."
+                placeholder={ticket.isRequester && !ticket.isAdmin 
+                  ? "Add a comment, question, or provide additional information..."
+                  : "Add a note or comment..."}
                 value={noteText}
                 onChange={(e) => setNoteText(e.target.value)}
                 disabled={addingNote}
@@ -474,7 +557,7 @@ export default function TicketDetailsPage() {
                 ) : (
                   <>
                     <MessageSquare className="h-4 w-4 mr-2" />
-                    Add Note
+                    {ticket.isRequester && !ticket.isAdmin ? 'Add Comment' : 'Add Note'}
                   </>
                 )}
               </Button>

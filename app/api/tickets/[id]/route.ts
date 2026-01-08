@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/auth/session';
 import { supabaseServer } from '@/lib/supabase/server';
+import { createTicketEvent } from '@/lib/tickets/ticket-utils';
 
 /**
  * GET /api/tickets/[id]
@@ -163,6 +164,90 @@ export async function GET(
     console.error('Error fetching ticket:', error);
     return NextResponse.json(
       { error: 'Failed to fetch ticket' },
+      { status: 500 }
+    );
+  }
+}
+
+/**
+ * PATCH /api/tickets/[id]
+ * Add comment/note to ticket (for requesters, engineers, and admins)
+ */
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const session = await getSession();
+
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const ticketId = params.id;
+    const { comment } = await req.json();
+
+    if (!comment || !comment.trim()) {
+      return NextResponse.json(
+        { error: 'Comment is required' },
+        { status: 400 }
+      );
+    }
+
+    try {
+      // Get ticket to verify access
+      const { data: ticket, error: ticketError } = await supabaseServer
+        .from('Ticket')
+        .select('*')
+        .eq('id', ticketId)
+        .single();
+
+      if (ticketError || !ticket) {
+        return NextResponse.json({ error: 'Ticket not found' }, { status: 404 });
+      }
+
+      // Check permissions: requester, assigned engineer, or admin can add comments
+      const isRequester = ticket.requesterId === session.userId;
+      
+      const { data: assignment } = await supabaseServer
+        .from('TicketAssignment')
+        .select('id')
+        .eq('ticketId', ticketId)
+        .eq('engineerId', session.userId)
+        .is('unassignedAt', null)
+        .single();
+
+      const isAssignedEngineer = !!assignment;
+
+      const isAdmin = session.roles?.some((role: string) =>
+        ['ADMIN_IT', 'ADMIN_TRAVEL', 'SUPER_ADMIN'].includes(role)
+      );
+
+      if (!isRequester && !isAssignedEngineer && !isAdmin) {
+        return NextResponse.json({ error: 'Access denied' }, { status: 403 });
+      }
+
+      // Add comment as a NOTE_ADDED event
+      await createTicketEvent(ticketId, 'NOTE_ADDED', session.userId, {
+        note: comment.trim(),
+        fromRequester: isRequester,
+      });
+
+      return NextResponse.json({
+        success: true,
+        message: 'Comment added successfully',
+      });
+    } catch (dbError: any) {
+      console.error('Database error adding comment:', dbError);
+      return NextResponse.json(
+        { error: 'Failed to add comment' },
+        { status: 500 }
+      );
+    }
+  } catch (error: any) {
+    console.error('Error adding comment:', error);
+    return NextResponse.json(
+      { error: 'Failed to add comment' },
       { status: 500 }
     );
   }
