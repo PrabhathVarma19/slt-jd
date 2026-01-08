@@ -166,6 +166,8 @@ export default function ProfilePage() {
   const isAdmin = profile.roles?.some((role) =>
     ['ADMIN_IT', 'ADMIN_TRAVEL', 'ADMIN_HR', 'SUPER_ADMIN'].includes(role)
   );
+  const hasProfileData = userProfile && userProfile.employeeId;
+  const isPredefinedAccount = !hasProfileData;
 
   return (
     <div className="space-y-6">
@@ -205,6 +207,47 @@ export default function ProfilePage() {
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
+              {isPredefinedAccount && (
+                <div className="mb-4 rounded-lg bg-blue-50 border border-blue-200 p-3">
+                  <div className="flex items-start gap-2">
+                    <AlertCircle className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="text-xs font-medium text-blue-900">Predefined Account</p>
+                      <p className="text-xs text-blue-700 mt-0.5">
+                        Profile information is not synced from external systems for this account.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {!hasProfileData && (
+                <div className="space-y-3 pb-2 border-b">
+                  <div className="flex items-start gap-3">
+                    <Mail className="h-5 w-5 text-gray-400 mt-0.5" />
+                    <div>
+                      <p className="text-xs text-gray-500">Email</p>
+                      <p className="text-sm font-medium">{profile.email}</p>
+                    </div>
+                  </div>
+                  {profile.roles && profile.roles.length > 0 && (
+                    <div className="flex items-start gap-3">
+                      <Shield className="h-5 w-5 text-gray-400 mt-0.5" />
+                      <div>
+                        <p className="text-xs text-gray-500">Roles</p>
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          {profile.roles.map((role) => (
+                            <Badge key={role} className="bg-gray-100 text-gray-700 text-xs">
+                              {role.replace(/_/g, ' ')}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
               {userProfile?.employeeId && (
                 <div className="flex items-start gap-3">
                   <User className="h-5 w-5 text-gray-400 mt-0.5" />
