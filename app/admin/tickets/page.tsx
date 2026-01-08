@@ -14,8 +14,10 @@ import {
   CardContent,
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Search, Shield, Clock, CheckCircle, XCircle } from 'lucide-react';
 
-type TicketStatus = 'OPEN' | 'IN_PROGRESS' | 'WAITING_ON_REQUESTER' | 'RESOLVED' | 'CLOSED';
+type TicketStatus = 'OPEN' | 'IN_PROGRESS' | 'WAITING_ON_REQUESTER' | 'RESOLVED' | 'CLOSED' | 'PENDING_APPROVAL';
 type TicketPriority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
 type TicketType = 'IT' | 'TRAVEL';
 
@@ -47,6 +49,13 @@ interface Ticket {
       };
     };
   }>;
+  approvals?: Array<{
+    id: string;
+    approverEmail: string;
+    state: 'PENDING' | 'APPROVED' | 'REJECTED';
+    requestedAt: string;
+    decidedAt?: string;
+  }>;
 }
 
 interface Engineer {
@@ -64,6 +73,7 @@ const STATUS_COLORS: Record<TicketStatus, string> = {
   WAITING_ON_REQUESTER: 'bg-orange-100 text-orange-800',
   RESOLVED: 'bg-green-100 text-green-800',
   CLOSED: 'bg-gray-100 text-gray-800',
+  PENDING_APPROVAL: 'bg-purple-100 text-purple-800',
 };
 
 const PRIORITY_COLORS: Record<TicketPriority, string> = {
@@ -85,12 +95,20 @@ export default function AdminTicketsPage() {
   // Filters
   const [domainFilter, setDomainFilter] = useState<string>('');
   const [statusFilter, setStatusFilter] = useState<string>('');
+  const [priorityFilter, setPriorityFilter] = useState<string>('');
+  const [assignedFilter, setAssignedFilter] = useState<string>('');
+  const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
   const [assignEngineerId, setAssignEngineerId] = useState<string>('');
 
   useEffect(() => {
-    fetchTickets();
-  }, [domainFilter, statusFilter]);
+    // Debounce search
+    const timeoutId = setTimeout(() => {
+      fetchTickets();
+    }, searchQuery ? 300 : 0);
+
+    return () => clearTimeout(timeoutId);
+  }, [domainFilter, statusFilter, priorityFilter, assignedFilter, searchQuery]);
 
   useEffect(() => {
     fetchEngineers();
@@ -102,6 +120,9 @@ export default function AdminTicketsPage() {
       const params = new URLSearchParams();
       if (domainFilter) params.append('domain', domainFilter);
       if (statusFilter) params.append('status', statusFilter);
+      if (priorityFilter) params.append('priority', priorityFilter);
+      if (assignedFilter) params.append('assigned', assignedFilter);
+      if (searchQuery.trim()) params.append('search', searchQuery.trim());
 
       const res = await fetch(`/api/admin/tickets?${params.toString()}`);
       if (!res.ok) {
@@ -249,36 +270,81 @@ export default function AdminTicketsPage() {
         <BackToHome />
       </div>
 
-      {/* Filters */}
+      {/* Search and Filters */}
       <Card>
         <CardContent className="pt-6">
-          <div className="flex gap-4 flex-wrap">
+          <div className="space-y-4">
+            {/* Search */}
             <div>
-              <label className="text-sm font-medium mb-1 block">Domain</label>
-              <select
-                value={domainFilter}
-                onChange={(e) => setDomainFilter(e.target.value)}
-                className="px-3 py-2 border rounded-md"
-              >
-                <option value="">All</option>
-                <option value="IT">IT</option>
-                <option value="TRAVEL">Travel</option>
-              </select>
+              <label className="text-sm font-medium mb-1 block">Search</label>
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Input
+                  type="text"
+                  placeholder="Search by ticket number, title, or description..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
             </div>
-            <div>
-              <label className="text-sm font-medium mb-1 block">Status</label>
-              <select
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-                className="px-3 py-2 border rounded-md"
-              >
-                <option value="">All</option>
-                <option value="OPEN">Open</option>
-                <option value="IN_PROGRESS">In Progress</option>
-                <option value="WAITING_ON_REQUESTER">Waiting on Requester</option>
-                <option value="RESOLVED">Resolved</option>
-                <option value="CLOSED">Closed</option>
-              </select>
+
+            {/* Filters */}
+            <div className="flex gap-4 flex-wrap">
+              <div>
+                <label className="text-sm font-medium mb-1 block">Domain</label>
+                <select
+                  value={domainFilter}
+                  onChange={(e) => setDomainFilter(e.target.value)}
+                  className="px-3 py-2 border rounded-md text-sm"
+                >
+                  <option value="">All</option>
+                  <option value="IT">IT</option>
+                  <option value="TRAVEL">Travel</option>
+                </select>
+              </div>
+              <div>
+                <label className="text-sm font-medium mb-1 block">Status</label>
+                <select
+                  value={statusFilter}
+                  onChange={(e) => setStatusFilter(e.target.value)}
+                  className="px-3 py-2 border rounded-md text-sm"
+                >
+                  <option value="">All</option>
+                  <option value="OPEN">Open</option>
+                  <option value="IN_PROGRESS">In Progress</option>
+                  <option value="WAITING_ON_REQUESTER">Waiting on Requester</option>
+                  <option value="RESOLVED">Resolved</option>
+                  <option value="CLOSED">Closed</option>
+                  <option value="PENDING_APPROVAL">Pending Approval</option>
+                </select>
+              </div>
+              <div>
+                <label className="text-sm font-medium mb-1 block">Priority</label>
+                <select
+                  value={priorityFilter}
+                  onChange={(e) => setPriorityFilter(e.target.value)}
+                  className="px-3 py-2 border rounded-md text-sm"
+                >
+                  <option value="">All</option>
+                  <option value="LOW">Low</option>
+                  <option value="MEDIUM">Medium</option>
+                  <option value="HIGH">High</option>
+                  <option value="URGENT">Urgent</option>
+                </select>
+              </div>
+              <div>
+                <label className="text-sm font-medium mb-1 block">Assignment</label>
+                <select
+                  value={assignedFilter}
+                  onChange={(e) => setAssignedFilter(e.target.value)}
+                  className="px-3 py-2 border rounded-md text-sm"
+                >
+                  <option value="">All</option>
+                  <option value="true">Assigned</option>
+                  <option value="false">Unassigned</option>
+                </select>
+              </div>
             </div>
           </div>
         </CardContent>
@@ -318,6 +384,29 @@ export default function AdminTicketsPage() {
                       <span className="text-sm text-muted-foreground">
                         {ticket.type}
                       </span>
+                      {/* Approval Status Badge */}
+                      {ticket.approvals && ticket.approvals.length > 0 && (
+                        <div className="flex items-center gap-1">
+                          {ticket.approvals.some((a) => a.state === 'PENDING') && (
+                            <Badge className="bg-yellow-100 text-yellow-800 border-yellow-300">
+                              <Clock className="h-3 w-3 mr-1" />
+                              {ticket.approvals.filter((a) => a.state === 'PENDING').length} Pending
+                            </Badge>
+                          )}
+                          {ticket.approvals.every((a) => a.state === 'APPROVED') && ticket.approvals.length > 0 && (
+                            <Badge className="bg-green-100 text-green-800 border-green-300">
+                              <CheckCircle className="h-3 w-3 mr-1" />
+                              Approved
+                            </Badge>
+                          )}
+                          {ticket.approvals.some((a) => a.state === 'REJECTED') && (
+                            <Badge className="bg-red-100 text-red-800 border-red-300">
+                              <XCircle className="h-3 w-3 mr-1" />
+                              Rejected
+                            </Badge>
+                          )}
+                        </div>
+                      )}
                     </div>
                     <h3 className="font-semibold text-lg mb-1">
                       <a

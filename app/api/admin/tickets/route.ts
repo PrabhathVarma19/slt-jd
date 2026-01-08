@@ -16,6 +16,9 @@ export async function GET(req: NextRequest) {
     const domain = searchParams.get('domain'); // 'IT' or 'TRAVEL'
     const status = searchParams.get('status');
     const type = searchParams.get('type');
+    const priority = searchParams.get('priority');
+    const search = searchParams.get('search'); // Search in ticket number, title, description
+    const assigned = searchParams.get('assigned'); // 'true', 'false', or null for all
     const limit = parseInt(searchParams.get('limit') || '50');
     const offset = parseInt(searchParams.get('offset') || '0');
 
@@ -54,6 +57,13 @@ export async function GET(req: NextRequest) {
         if (type) {
           query = query.eq('type', type);
         }
+        if (priority) {
+          query = query.eq('priority', priority);
+        }
+        if (search) {
+          // Search in ticketNumber, title, description
+          query = query.or(`ticketNumber.ilike.%${search}%,title.ilike.%${search}%,description.ilike.%${search}%`);
+        }
 
         const { data: tickets, error, count } = await query
           .order('createdAt', { ascending: false })
@@ -63,33 +73,50 @@ export async function GET(req: NextRequest) {
           throw new Error(error.message);
         }
 
-        // Fetch assignments separately
+        // Fetch assignments and approvals separately
         const ticketIds = tickets?.map((t: any) => t.id) || [];
         let assignments: any[] = [];
+        let approvals: any[] = [];
+        
         if (ticketIds.length > 0) {
-          const { data: assignData } = await supabaseServer
-            .from('TicketAssignment')
-            .select(`
-              *,
-              engineer:User!TicketAssignment_engineerId_fkey (
-                id,
-                email,
-                profile:UserProfile (
-                  empName
+          const [assignData, approvalData] = await Promise.all([
+            supabaseServer
+              .from('TicketAssignment')
+              .select(`
+                *,
+                engineer:User!TicketAssignment_engineerId_fkey (
+                  id,
+                  email,
+                  profile:UserProfile (
+                    empName
+                  )
                 )
-              )
-            `)
-            .in('ticketId', ticketIds)
-            .is('unassignedAt', null);
+              `)
+              .in('ticketId', ticketIds)
+              .is('unassignedAt', null),
+            supabaseServer
+              .from('TicketApproval')
+              .select('*')
+              .in('ticketId', ticketIds),
+          ]);
 
-          assignments = assignData || [];
+          assignments = assignData.data || [];
+          approvals = approvalData.data || [];
         }
 
-        // Merge assignments into tickets
-        const ticketsWithAssignments = tickets?.map((ticket: any) => ({
+        // Merge assignments and approvals into tickets
+        let ticketsWithAssignments = tickets?.map((ticket: any) => ({
           ...ticket,
           assignments: assignments.filter((a: any) => a.ticketId === ticket.id),
+          approvals: approvals.filter((a: any) => a.ticketId === ticket.id),
         })) || [];
+
+        // Filter by assigned/unassigned if requested
+        if (assigned === 'true') {
+          ticketsWithAssignments = ticketsWithAssignments.filter((t: any) => t.assignments.length > 0);
+        } else if (assigned === 'false') {
+          ticketsWithAssignments = ticketsWithAssignments.filter((t: any) => t.assignments.length === 0);
+        }
 
       return NextResponse.json({
         tickets: ticketsWithAssignments,
