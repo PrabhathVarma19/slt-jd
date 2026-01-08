@@ -25,6 +25,8 @@ export default function TravelDeskPage() {
   const [mobile, setMobile] = useState('');
   const [email, setEmail] = useState('');
   const [grade, setGrade] = useState('');
+  const [projectCode, setProjectCode] = useState('');
+  const [projectName, setProjectName] = useState('');
   const [origin, setOrigin] = useState('');
   const [destination, setDestination] = useState('');
   const [departDate, setDepartDate] = useState('');
@@ -44,6 +46,7 @@ export default function TravelDeskPage() {
   const [lastSubmitOutcome, setLastSubmitOutcome] = useState<'success' | 'error' | null>(null);
   const [isEditingUserInfo, setIsEditingUserInfo] = useState(false);
   const [isLoadingProfile, setIsLoadingProfile] = useState(true);
+  const [userProjects, setUserProjects] = useState<Array<{ code: string; name: string }>>([]);
   const { showToast, ToastContainer } = useToast();
 
   // Fetch user profile and auto-fill form
@@ -55,6 +58,30 @@ export default function TravelDeskPage() {
           const data = await res.json();
           const profile = data.user?.profile;
           if (profile) {
+            // Extract projects from rawPayloadJson if multiple, or use single projectCode
+            let projects: Array<{ code: string; name: string }> = [];
+            if (profile.rawPayloadJson && Array.isArray(profile.rawPayloadJson) && profile.rawPayloadJson.length > 1) {
+              // Multiple projects
+              projects = profile.rawPayloadJson.map((p: any) => ({
+                code: p.ProjectCode || p.projectCode || '',
+                name: p.ProjectName || p.projectName || '',
+              }));
+            } else if (profile.projectCode) {
+              // Single project
+              projects = [{
+                code: profile.projectCode,
+                name: profile.projectName || '',
+              }];
+            }
+
+            setUserProjects(projects);
+
+            // Auto-select first project if only one
+            if (projects.length === 1) {
+              setProjectCode(projects[0].code);
+              setProjectName(projects[0].name);
+            }
+
             setName(profile.empName || name);
             setEmployeeId(profile.employeeId?.toString() || employeeId);
             setEmail(data.user.email || email);
@@ -81,6 +108,7 @@ export default function TravelDeskPage() {
     mobile.trim() &&
     email.trim() &&
     grade.trim() &&
+    (userProjects.length <= 1 || projectCode.trim()) && // Project required if multiple projects
     origin.trim() &&
     destination.trim() &&
     departDate.trim() &&
@@ -92,6 +120,8 @@ export default function TravelDeskPage() {
     setMobile('');
     setEmail('');
     setGrade('');
+    setProjectCode('');
+    setProjectName('');
     setOrigin('');
     setDestination('');
     setDepartDate('');
@@ -106,7 +136,11 @@ export default function TravelDeskPage() {
 
   const handlePrepareRequest = () => {
     if (!canSubmit) {
-      setError('Please fill the required fields (marked with *).');
+      if (userProjects.length > 1 && !projectCode.trim()) {
+        setError('Please select a project code.');
+      } else {
+        setError('Please fill the required fields (marked with *).');
+      }
       return;
     }
     setError(null);
@@ -298,6 +332,37 @@ export default function TravelDeskPage() {
                 </button>
               </div>
             )}
+          </div>
+
+          {userProjects.length > 1 && (
+            <div className="space-y-1">
+              <label className="text-sm font-medium text-gray-700">
+                Project Code <span className="text-red-500">*</span>
+              </label>
+              <select
+                className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                value={projectCode}
+                onChange={(e) => {
+                  const selected = userProjects.find(p => p.code === e.target.value);
+                  setProjectCode(e.target.value);
+                  setProjectName(selected?.name || '');
+                }}
+                disabled={isSubmitting}
+              >
+                <option value="">Select a project</option>
+                {userProjects.map((project) => (
+                  <option key={project.code} value={project.code}>
+                    {project.code}{project.name ? ` - ${project.name}` : ''}
+                  </option>
+                ))}
+              </select>
+              <p className="text-xs text-gray-500">
+                Select which project this request is for
+              </p>
+            </div>
+          )}
+
+          <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-1">
               <label className="text-sm font-medium text-gray-700">
                 Onward from (city) <span className="text-red-500">*</span>

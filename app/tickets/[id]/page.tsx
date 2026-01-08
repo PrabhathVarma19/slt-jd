@@ -325,6 +325,11 @@ export default function TicketDetailsPage() {
                   {ticket.priority}
                 </Badge>
                 <Badge variant="outline">{ticket.type}</Badge>
+                {ticket.projectCode && (
+                  <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
+                    {ticket.projectCode}{ticket.projectName ? ` - ${ticket.projectName}` : ''}
+                  </Badge>
+                )}
               </div>
               <h2 className="text-lg font-semibold text-gray-900 mt-2">{ticket.title}</h2>
               

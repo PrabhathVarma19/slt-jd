@@ -90,6 +90,8 @@ ${body.extraDetails ? `Additional details: ${body.extraDetails}` : ''}`;
           priority: 'MEDIUM', // Travel requests default to MEDIUM
           domain: 'TRAVEL',
           status: 'PENDING_APPROVAL', // Travel tickets start with approval workflow
+          projectCode: body.projectCode,
+          projectName: body.projectName,
         },
         auth.userId
       );
@@ -156,6 +158,7 @@ ${body.extraDetails ? `Additional details: ${body.extraDetails}` : ''}`;
         <li><strong>Mobile:</strong> ${body.mobile}</li>
         <li><strong>Grade:</strong> ${body.grade}</li>
         <li><strong>Email:</strong> ${body.email}</li>
+        ${body.projectCode ? `<li><strong>Project Code:</strong> ${body.projectCode}${body.projectName ? ` - ${body.projectName}` : ''}</li>` : ''}
       </ul>
       <h3>Trip details</h3>
       <ul>
@@ -193,6 +196,7 @@ ${body.extraDetails ? `Additional details: ${body.extraDetails}` : ''}`;
       `Mobile: ${body.mobile}`,
       `Grade: ${body.grade}`,
       `Email: ${body.email}`,
+      body.projectCode ? `Project Code: ${body.projectCode}${body.projectName ? ` - ${body.projectName}` : ''}` : '',
       '',
       'Trip details',
       `Origin: ${body.origin}`,

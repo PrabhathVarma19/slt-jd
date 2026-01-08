@@ -296,6 +296,11 @@ export default function EngineerTicketsPage() {
                       <span className="font-semibold text-gray-900">
                         {ticket.ticketNumber}
                       </span>
+                      {ticket.projectCode && (
+                        <Badge variant="outline" className="text-xs">
+                          {ticket.projectCode}{ticket.projectName ? ` - ${ticket.projectName}` : ''}
+                        </Badge>
+                      )}
                       {ticket.isAssigned === false && (
                         <Badge className="bg-orange-100 text-orange-800">
                           Unassigned

@@ -49,6 +49,8 @@ interface UserTicket {
   priority: TicketPriority;
   createdAt: string;
   resolvedAt?: string;
+  projectCode?: string;
+  projectName?: string;
   assignments?: Array<{
     engineer?: {
       email: string;
@@ -422,6 +424,11 @@ export default function ProfilePage() {
                             <Badge className={PRIORITY_COLORS[ticket.priority]}>
                               {ticket.priority}
                             </Badge>
+                            {ticket.projectCode && (
+                              <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
+                                {ticket.projectCode}{ticket.projectName ? ` - ${ticket.projectName}` : ''}
+                              </Badge>
+                            )}
                           </div>
                           <h3 className="font-medium text-gray-900 mb-1">
                             <a

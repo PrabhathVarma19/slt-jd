@@ -60,6 +60,8 @@ export async function POST(req: NextRequest) {
       durationType,
       durationUntil,
       project,
+      projectCode,
+      projectName,
       managerEmail,
       impact,
       details,
@@ -175,6 +177,8 @@ Respond with JSON only, no explanation.`;
           priority,
           impact,
           domain: 'IT',
+          projectCode: projectCode,
+          projectName: projectName,
         },
         auth.userId
       );
@@ -253,6 +257,9 @@ Respond with JSON only, no explanation.`;
     if (reason) textLines.push(`Reason / use case: ${reason}`);
     if (durationType) textLines.push(`Duration: ${durationType}`);
     if (durationUntil) textLines.push(`Requested until: ${durationUntil}`);
+    if (projectCode) {
+      textLines.push(`Project Code: ${projectCode}${projectName ? ` - ${projectName}` : ''}`);
+    }
     if (project) textLines.push(`Project / client: ${project}`);
     if (impact) textLines.push(`Impact: ${impact}`);
     if (managerEmail) textLines.push(`Manager / approver email: ${managerEmail}`);

@@ -7,6 +7,8 @@ import Textarea from '@/components/ui/textarea';
 import { BackToHome } from '@/components/ui/back-to-home';
 import { Spinner } from '@/components/ui/spinner';
 import { useToast } from '@/lib/hooks/useToast';
+import { ViewToggle } from '@/components/service-desk/view-toggle';
+import { ChatInterface } from '@/components/service-desk/chat-interface';
 
 type RequestType =
   | ''
@@ -27,6 +29,8 @@ interface ItServiceFormState {
   requestType: RequestType;
   system: string;
   project: string;
+  projectCode: string;
+  projectName: string;
   managerEmail: string;
   impact: ImpactLevel;
   durationType: DurationType;
@@ -50,6 +54,8 @@ const initialFormState: ItServiceFormState = {
   requestType: '',
   system: '',
   project: '',
+  projectCode: '',
+  projectName: '',
   managerEmail: '',
   impact: 'medium',
   durationType: 'temporary',
@@ -110,6 +116,7 @@ function requestTypeLabel(rt: RequestType): string {
 }
 
 export default function ServiceDeskPage() {
+  const [viewMode, setViewMode] = useState<'chat' | 'form'>('form'); // Default to form for safety
   const [form, setForm] = useState<ItServiceFormState>(initialFormState);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuggesting, setIsSuggesting] = useState(false);
@@ -121,6 +128,7 @@ export default function ServiceDeskPage() {
   const [lastSubmitOutcome, setLastSubmitOutcome] = useState<'success' | 'error' | null>(null);
   const [isEditingUserInfo, setIsEditingUserInfo] = useState(false);
   const [isLoadingProfile, setIsLoadingProfile] = useState(true);
+  const [userProjects, setUserProjects] = useState<Array<{ code: string; name: string }>>([]);
   const { showToast, ToastContainer } = useToast();
 
   // Fetch user profile and auto-fill form
@@ -132,6 +140,33 @@ export default function ServiceDeskPage() {
           const data = await res.json();
           const profile = data.user?.profile;
           if (profile) {
+            // Extract projects from rawPayloadJson if multiple, or use single projectCode
+            let projects: Array<{ code: string; name: string }> = [];
+            if (profile.rawPayloadJson && Array.isArray(profile.rawPayloadJson) && profile.rawPayloadJson.length > 1) {
+              // Multiple projects
+              projects = profile.rawPayloadJson.map((p: any) => ({
+                code: p.ProjectCode || p.projectCode || '',
+                name: p.ProjectName || p.projectName || '',
+              }));
+            } else if (profile.projectCode) {
+              // Single project
+              projects = [{
+                code: profile.projectCode,
+                name: profile.projectName || '',
+              }];
+            }
+
+            setUserProjects(projects);
+
+            // Auto-select first project if only one
+            if (projects.length === 1) {
+              setForm((prev) => ({
+                ...prev,
+                projectCode: projects[0].code,
+                projectName: projects[0].name,
+              }));
+            }
+
             setForm((prev) => ({
               ...prev,
               name: profile.empName || prev.name,
@@ -252,6 +287,7 @@ export default function ServiceDeskPage() {
     !!form.details.trim() &&
     !!form.requestType &&
     !!form.system.trim() &&
+    (userProjects.length <= 1 || !!form.projectCode.trim()) && // Project required if multiple projects
     !isSubmitting;
 
   const handleSubmit = async () => {
@@ -300,17 +336,25 @@ export default function ServiceDeskPage() {
 
   return (
     <div className="mx-auto w-full max-w-screen-2xl px-4 py-4 space-y-6">
-      <div className="grid grid-cols-[auto_1fr] items-start gap-x-2 gap-y-1">
-        <BackToHome label="" className="mt-1 text-xs" />
-        <h1 className="text-2xl font-semibold text-slate-900">Service Desk</h1>
-        <p className="col-start-2 text-sm text-slate-600">
-          Raise structured IT and access requests. Beacon can suggest category, system and impact.
-        </p>
+      <div className="flex items-start justify-between gap-4">
+        <div className="grid grid-cols-[auto_1fr] items-start gap-x-2 gap-y-1 flex-1">
+          <BackToHome label="" className="mt-1 text-xs" />
+          <h1 className="text-2xl font-semibold text-slate-900">Service Desk</h1>
+          <p className="col-start-2 text-sm text-slate-600">
+            {viewMode === 'chat' 
+              ? 'Chat with Beacon to submit IT requests or get help with self-service actions.'
+              : 'Raise structured IT and access requests. Beacon can suggest category, system and impact.'}
+          </p>
+        </div>
+        <ViewToggle value={viewMode} onChange={setViewMode} />
       </div>
 
-      <div className="grid gap-6 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
-        {/* Left: form */}
-        <div className="bg-card rounded-3xl shadow-sm p-6 space-y-6">
+      {viewMode === 'chat' ? (
+        <ChatInterface />
+      ) : (
+        <div className="grid gap-6 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+          {/* Left: form */}
+          <div className="bg-card rounded-3xl shadow-sm p-6 space-y-6">
           <div className="space-y-1">
             <div className="flex items-center justify-between">
               <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
@@ -458,6 +502,37 @@ export default function ServiceDeskPage() {
               </label>
             </div>
           </div>
+
+          {userProjects.length > 1 && (
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-gray-700">
+                Project Code <span className="text-red-500">*</span>
+              </label>
+              <select
+                className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-xs text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                value={form.projectCode}
+                onChange={(e) => {
+                  const selected = userProjects.find(p => p.code === e.target.value);
+                  setForm((prev) => ({
+                    ...prev,
+                    projectCode: e.target.value,
+                    projectName: selected?.name || '',
+                  }));
+                }}
+                disabled={isSubmitting}
+              >
+                <option value="">Select a project</option>
+                {userProjects.map((project) => (
+                  <option key={project.code} value={project.code}>
+                    {project.code}{project.name ? ` - ${project.name}` : ''}
+                  </option>
+                ))}
+              </select>
+              <p className="text-[11px] text-gray-500">
+                Select which project this request is for
+              </p>
+            </div>
+          )}
 
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-1.5">
@@ -639,7 +714,8 @@ export default function ServiceDeskPage() {
             or contact IT / InfoSec.
           </div>
         </div>
-      </div>
+        </div>
+      )}
 
       {showSuccessModal && (
         <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/40">

@@ -384,6 +384,11 @@ export default function AdminTicketsPage() {
                       <span className="text-sm text-muted-foreground">
                         {ticket.type}
                       </span>
+                      {ticket.projectCode && (
+                        <Badge variant="outline" className="text-xs">
+                          {ticket.projectCode}{ticket.projectName ? ` - ${ticket.projectName}` : ''}
+                        </Badge>
+                      )}
                       {/* Approval Status Badge */}
                       {ticket.approvals && ticket.approvals.length > 0 && (
                         <div className="flex items-center gap-1">

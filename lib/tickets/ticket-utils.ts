@@ -80,6 +80,8 @@ export interface CreateTicketInput {
   impact?: string;
   domain?: string;
   status?: TicketStatus; // Optional status, defaults to 'OPEN'
+  projectCode?: string;
+  projectName?: string;
 }
 
 export async function createTicket(
@@ -107,6 +109,8 @@ export async function createTicket(
         impact: input.impact,
         status,
         domain,
+        projectCode: input.projectCode,
+        projectName: input.projectName,
       })
       .select('id, ticketNumber')
       .single();
