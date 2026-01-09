@@ -1,0 +1,257 @@
+# SHARED SECURITY RESPONSIBILITY MODEL POLICY
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. PURPOSE
+2. OBJECTIVES
+3. SCOPE
+4. POLICY STATEMENT
+   - 4.1 Cloud Shared Responsibilities – Provider vs Customer
+   - 4.2 Responsibility
+     - 4.2.1 Security & Compliance Accountability
+     - 4.2.2 Data Classification & Management
+     - 4.2.3 Client & End-point protection
+     - 4.2.4 Identity & Access Management
+     - 4.2.5 Application-Level Controls
+     - 4.2.6 Network Control
+     - 4.2.7 Host Infrastructure
+     - 4.2.8 Physical Security
+   - 4.3 Provider Responsibility
+   - 4.4 Customer Responsibility
+5. ROLES & RESPONSIBILITIES
+6. APPLICABLE STANDARDS
+7. EXCEPTION(S)
+8. ANNEXURE – CSP & CSC RESPONSIBILITIES TEMPLATE
+9. ISO CONTROL MAPPING
+
+## 1. Purpose
+The purpose of this policy is to provide security and compliance responsibilities shared between the Service Provider and the Customer when hosted in the Cloud along with the supply chain partner’s management.
+
+## 2. Objectives
+The objective of the Shared Security Responsibility Model Policy is to facilitate effective implementation of the security and controls for the different cloud service models.
+
+## 3. Scope
+This policy document covers the Shared Security Responsibility Model in the Cloud where Trianz acts as a Cloud Service Customer (CSC) or Cloud Service Provider (CSP) for the different Managed Cloud Service Models.
+
+## 4. Policy Statement
+
+### 4.1 Cloud Shared Responsibilities – Provider vs Customer:
+- **On-Prem**: The Customer is responsible for all aspects of the On-prem infrastructure.
+- **IaaS (Infrastructure as a Service)**: The Provider supplies infrastructure (servers and networking devices/services), while the Customer is responsible for installing software, provisioning virtual servers, containers, and controlling configurations.
+- **PaaS (Platform as a Service)**: The Provider offers a computing platform and technical stack, allowing the Customer to focus on building and managing applications (e.g., AWS Lambda).
+- **SaaS (Software as a Service)**: The Provider delivers the entire infrastructure and application, with the Customer only needing to log in and use the application.
+- **Identity**: Defines the user through identifiers such as user ID or employee number.
+- **Authentication**: Verifies the user's identity based on credentials.
+- **Authorization**: Determines user access rights.
+- **Accountability**: Ensures actions performed by the user are traceable for accountability.
+- **Customer Content**: Includes data, text, images, audio, video, customer-developed software, configured machine images, and customer code. Provider-managed account information is not classified as Customer Content.
+
+### 4.2 Responsibility:
+
+#### 4.2.1 Security & Compliance Accountability:
+- The Customer is ultimately accountable for security and compliance, regardless of the Cloud Service Model.
+- The Customer must ensure that all shared security responsibilities throughout the supply chain, including those of the service provider, are documented, implemented, and managed.
+- The Customer is responsible for the security and compliance of the platform.
+
+#### 4.2.2 Data Classification & Management:
+- The Customer must securely identify, label, and classify data to meet compliance obligations across all Cloud Service Models.
+- Providers must provide written contracts detailing how customer data security and privacy will be managed in the Cloud.
+- The Provider’s commitments should include security and privacy practices, limitations on customer data use, and adherence to regulatory compliance, along with evidence of certifications and audit reports available to the customer.
+- The Customer should periodically verify that the cloud provider meets these controls and consider switching providers if data protection needs are not addressed.
+- In the IaaS Service Model, the Provider's capabilities are limited to enabling the Customer’s virtual environment to accommodate data classification capabilities. The Customer is responsible for configuration.
+
+### 4.2.2 Data Protection Responsibilities
+- **PaaS Service Model**: 
+  - The Provider's capabilities are limited to enabling the Customer's virtual environment and application to accommodate the required data classification capabilities.
+  - The Provider is responsible for authentication, while the Customer must configure and handle authorization for user data access.
+  
+- **SaaS Service Model**: 
+  - The Provider must enable data protection, user authentication, and user authorization.
+  - The Customer is responsible for configuring data authorization for users based on defined roles.
+
+### 4.2.3 Client & End-point Protection
+- The Provider is responsible for enabling end-point protection for cloud services across all service models.
+- The Customer must ensure the security of devices connecting to cloud services.
+- The Customer must ensure that all cloud-connecting endpoint devices are:
+  - Hardened
+  - Patched
+  - Encrypted
+  - Secured with mobile management solutions that provide remote wipe services in case of theft.
+- The Provider must facilitate mobile management capabilities for the Customer's endpoint devices, which must be configured by the Customer in the SaaS Model.
+
+### 4.2.4 Identity & Access Management
+- Identity & Access Management (IAM) enables the implementation of IAAA principles: Identity, Authentication, Authorization, and Accountability on the cloud platform.
+  
+- **IaaS Service Model**: 
+  - The Provider delivers IAM capabilities, while the Customer must configure and manage IAM controls.
+  
+- **PaaS & SaaS Service Models**: 
+  - IAM controls are a shared responsibility between the Customer and Provider.
+  - The following must be considered and implemented for an effective solution:
+    - Identity provider
+    - Identity services configuration
+    - User roles
+    - User identities configuration
+    - Access control configuration
+  
+- The Customer must assess additional security considerations before implementation, including:
+  - Just in Time (JIT) administrative access
+  - Multi-Factor Authentication
+  - Role-Based Access Control (RBAC) capabilities (own or third-party applications)
+
+### 4.2.5 Application-Level Controls
+- Application-level controls are necessary to secure the application layer from security breaches.
+  
+- **IaaS Service Model**: 
+  - The Customer is responsible for protecting the application layer deployed on Virtual Machines/Containers from attacks, breaches, or compromises.
+  - The Customer must deploy skilled administrators to manage and secure the application and underlying hosts.
+  
+- **PaaS Service Model**: 
+  - Application controls are a shared responsibility between the Customer and Provider.
+  - The Provider delivers application controls with default configurations, which the Customer must configure to meet security and business needs.
+  
+- **SaaS Service Model**: 
+  - The Provider is responsible for application layer security controls and compliance.
+  - The Customer can use audit reports from the Provider to evidence application layer controls.
+
+### 4.2.6 Network Control
+- Network control secures and configures inter/intra connectivity of the platform.
+- The network elements to be secured include, but are not limited to:
+  - Virtual Machines
+  - Containers
+  - Pods
+  - Virtual networks
+  - Perimeter devices
+  - Gateways
+  - Proxies
+  - Load balancers
+  - DNS solutions
+  
+- **IaaS Service Model**: 
+  - The Provider is responsible for network security of the underlying infrastructure across regions and availability zones.
+  - The Customer is responsible for network security of devices and services deployed in the infrastructure instances they manage.
+  
+- **PaaS & SaaS Service Models**: 
+  - Network security control is abstracted from the Customer and provided as part of the service by the Provider, who holds responsibility for network security control.
+
+### 4.2.7 Host Infrastructure
+- Host infrastructure security controls include protecting, managing, and securing compute, storage, and platform services.
+- Key controls for host infrastructure include:
+  - OS configuration
+  - Hardening
+  - Patching
+  - Access control management
+  - Identity control configurations
+  
+- **IaaS Service Model**: 
+  - Host infrastructure security is a shared responsibility between the Customer and Provider.
+  - The Provider ensures host security is deployed on the underlying hardware for the VMs hosted for the Customer.
+  - The Provider is responsible for VM freeze in case of required reboots for patches and must adhere to the SLA promised to the Customer.
+
+### 4.2.8 Physical Security:
+- The physical security of buildings and facilities hosting servers, storage, and network equipment for cloud services must be considered.
+- Providers are responsible for defining policies, procedures, and processes for the physical security of the infrastructure.
+- Providers must ensure promised uptime by designing and deploying high availability for power, HVAC, and network connectivity.
+- Providers are required to enable disaster recovery management for the physical environment.
+- Customers have the right, as part of their agreement with the provider, to obtain audit and compliance certifications, which can serve as compliance evidence for the customer's audit standards.
+- If a key compromise involves a Key Encryption Key (KEK) or a master key, all keys derived from it must be revoked and replaced.
+- If a working key is compromised, the data associated with that key must be revoked and re-encrypted with a new working key according to policy.
+- Any key compromise must trigger an investigation involving the Information Security team, followed by a root-cause analysis and detailed remediation.
+
+### 4.3 Provider Responsibility:
+- All customer content must be stored only in the geographic location chosen by the customer, and the provider cannot move it without explicit permission.
+- The provider must enable customers to download, delete, and transfer their data out of the provider's infrastructure as needed.
+- Customers must be enabled by the provider to encrypt their content using their own keys.
+- The provider must provision a crypto-delete feature for customers to delete their content and customer encryption keys.
+- The provider must enable customers to use various security techniques, such as encryption and tokenization, to protect their content.
+- Agreements between the provider and customer must clearly state the approvals required for sharing data to comply with laws and binding orders from government and regulatory bodies.
+- The provider must regularly provide details about requests from law enforcement, government, and regulatory bodies to its customers.
+- The provider must implement the finalized Security and Service Risk Management (SSRM) with the customer, documenting and testing the operation of security control implementations, including interdependencies and integration validation.
+- The provider must manage, monitor, and audit service performance according to the agreed SSRM with the customer.
+- The provider must maintain an inventory of all supplier partners in the supply chain and ensure transparency with customers regarding this list.
+- The provider must ensure that the following are stated in service agreements with customers:
+  - Scope, characteristics, and location of the business relationship and services offered.
+  - Information security requirements expected from customers, including SSRM.
+  - Change management process.
+  - Logging and monitoring capabilities.
+  - Incident management and communication procedures.
+  - Right to audit and availability of third-party assessments for customers.
+  - Clauses related to service termination.
+  - Requirements for interoperability and portability.
+  - Data privacy.
+- The provider must list and ensure that all policies required for maintaining Confidentiality, Integrity, Availability (CIA), and Privacy (P) of both the provider and customers are available with supply chain partners. Minimum service level requirements must not exceed client SLAs and must be signed with supply chain partners.
+- The provider must periodically evaluate and update risk factors, IT governance policies, and procedures for all supply chain partners.
+- The provider must ensure that any required security certification standards (e.g., ISO 27001, PCI DSS) for customers are active with supply chain partners.
+- The provider must ensure that all supply chain partners undergo security assessments at least once a year.
+
+### 4.4 Customer Responsibility:
+- Customers must include the following in agreements with the provider and other supply chain organizations:
+  - Right to audit.
+  - Service termination clause.
+  - Third-party security assessments.
+  - Interoperability and portability requirements.
+  - Data privacy requirements.
+- Customers must periodically review the governance policies and procedures of supply chain partners, including the provider.
+- Customers must conduct periodic security assessments of all organizations servicing them, including the provider.
+- Customers must review agreements with supply chain organizations, including the provider, at least annually.
+- Customers must maintain an inventory of supply chain organizations and the services they provide.
+
+### 5. Roles & Responsibilities
+
+**5.1 Roles**
+- **Project/Platform/Product Management Team**: Adhere to the SSRM policy.
+- **Customer/Provider Role**: Engage internally and externally.
+- **Product Owner/Project Manager**: Validate the SSRM controls implemented as per the policy.
+- **Operations Manager**: Validate that the SSRM process and responsibilities are adhered to as per the policy.
+- **InfoSec & Compliance Team**: Validate compliance with the SSRM policy.
+
+### 6. Applicable Standards
+- NIST.SP.500-322
+- NIST.SP.500-292
+- PCI DSS Cloud Computing Guidelines
+
+### 7. Exception(s)
+- There are no exceptions to this policy.
+
+### 8. Annexure – CSP & CSC Responsibilities Template
+- **Responsibility/Area**: 
+  - **IAM**: 
+    - Tool: KeyCloak - Yes
+  - **Encryption at Rest**: 
+    - Tool: Hashicorp - No
+    - Tool: KMS - Yes
+  - **Shared**: 
+    - Shared Responsibility - Yes
+
+### 9. ISO Control Mapping
+- **Category of Control**: Technological Controls
+- **Document Name as per ISO 27001:2022**: 
+  - 5.23 Information security for use of cloud services shall be established in accordance with the organization's information security requirements.
+
+### Document Control
+- **Owner**: CISO
+- **Release ID**: SSRM-POL-01
+
+### Version History
+- **0.1** (20th Jun 22): Initial Version
+- **0.2** (18th Jul 22): Amendments to include post-internal review inputs on Transparency & Accountability
+- **1.0** (11th Aug 22): Approved and Baselined
+- **1.1** (26-April-2023): Reviewed with no changes; migrated to new template
+- **2.0** (12-May-2023): Approved and Baselined
+- **3.0** (23-Feb-23): For Approval
+- **3.1** (28-May-25): Reviewed with no changes; migrated to new template
+
+### Contact Information
+- **Email**: infosec@trianz.com
+- **Phone**: [Not provided]
+
+### Copyright Notice
+The content in this document is copyrighted; any unauthorized use may violate copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz name and its products are subject to trademark and copyright protections.

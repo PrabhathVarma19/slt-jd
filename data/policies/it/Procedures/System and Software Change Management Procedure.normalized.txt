@@ -1,0 +1,474 @@
+# System and Software Change Management Procedure
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. Objectives
+2. Scope
+3. Introduction
+4. Entry Criteria
+5. Inputs
+6. Process Description
+   - 6.1 Normal Change Process
+   - 6.2 Standard Change Process
+   - 6.3 Emergency Change Process
+   - 6.4 Post Implementation Review
+7. Exit Criteria and Output
+8. Roles and Responsibilities
+9. Process Flow
+10. Measurement
+11. Standards Addressed
+12. Appendix A
+    - 12.1 Guidelines for Risk and Priority Assessment
+        - 12.1.1 Risk Assessment
+        - 12.1.2 Risk Assessment Questionnaire
+13. ISO Control Mapping(s)
+
+## 1. Objectives
+The objective of this process is to ensure that changes are recorded in a controlled manner and that the changes are evaluated, authorized, prioritized, planned, tested, implemented, and documented. The specific goals include:
+- Providing standardized methods and procedures for efficient and prompt handling of all changes.
+- Recording all changes to service assets and configuration items in the Configuration Management Database (CMDB).
+- Responding to customer’s changing business requirements while maximizing value and reducing incidents, disruption, and rework.
+- Aligning services with business needs in response to business and IT requests for change.
+
+## 2. Scope
+This process applies to all Trianz users, third parties, and Trianz Information System resources. A change within the environment is defined as any modification that has the potential to impact shared network, computing, or business applications by altering its existing state. This includes, but is not limited to:
+- System Hardware
+- System Software
+- Business and Management Application or Service
+- Databases
+
+## 3. Introduction
+Service and infrastructure changes can negatively impact service continuity unless managed efficiently and effectively. An effective change management process adds value to the business by:
+- Prioritizing and responding to business change proposals.
+- Contributing to governance, legal, contractual, and regulatory compliance.
+- Reducing failed changes, thereby minimizing service disruption, defects, and rework.
+- Delivering changes promptly to meet business timelines.
+- Improving estimations of quality, time, and cost of change.
+- Assessing risks associated with the transition of services (introduction, modification, or disposal).
+
+## 4. Entry Criteria
+- A Request for Change (RFC) must be raised by an authorized person.
+
+## 5. Inputs
+A Request for Change (RFC) is initiated due to the identification of a ‘need for change’. Requests can originate from any part of the organization or from any contracted service provider. All requests for change require appropriate sponsorship and authorization. 
+
+A need for change may arise for various reasons:
+- Proactively, to seek business benefits such as reducing costs, improving services, or enhancing support effectiveness.
+- Reactively, as a means of resolving errors and adapting to changing circumstances.
+
+### 6. Process Description
+This section outlines the activities involved in the Change Management Process, following the conventional Change Management framework, which includes the following components:
+- **Classification**: Initiation (justification), Review (entitlement, evaluation), Planning (Risk & Impact Analysis, Change design and development, plan preparation, scheduling), Approval, Implementation (implementation and testing), and Closure.
+
+Changes are classified into the following types:
+1. Normal Change
+2. Standard Change
+3. Emergency Change
+
+### 6.1 Normal Change Process
+**Objective of Normal Change:**
+- Utilize standardized procedures for efficient and prompt handling of normal changes.
+- Respond to customer business requirements while maximizing value and minimizing incidents, disruption, and re-work.
+- Align services with business needs based on business and IT requests for change.
+- Improve future changes by learning from past mistakes and successes.
+
+**Definition of Normal Change:**
+- A normal change meets established enterprise change management lead-time requirements and follows the complete change management process. It will be reviewed by the Change Advisory Board (CAB) for changes with risk levels 4 and 5 only.
+
+**Examples of Normal Changes:**
+- Software upgrades
+- Hardware upgrades
+- Application enhancements
+
+### 6.2 Standard Change Process
+**Objective of Standard Change:**
+- Use standardized procedures for efficient and prompt handling of standard changes.
+- Respond to customer business requirements while maximizing value and minimizing incidents, disruption, and re-work.
+- Align services with business needs based on business and IT requests for change.
+- Improve future changes by learning from past mistakes and successes.
+
+**Characteristics of Standard Change:**
+- Established and approved procedure for implementation.
+- Repeatable with minimum risk.
+- Low risk and pre-approved.
+- Routine with a proven track record of success.
+- Minimal complexity.
+- Accepted change window.
+- Approved standard operating procedure (SOP) for implementation.
+
+**Approval Process:**
+- A standard change needs to be approved only once; subsequent occurrences require a record but do not need approval.
+
+**Examples of Standard Changes:**
+- Install and rack new equipment
+- Internet site maintenance
+- Weekly reboots
+- Building new servers
+- Download and installation of Virus DAT files
+
+### 6.3 Emergency Change Process
+An emergency change is defined as any change that has a high impact on business operations, is not optional, and needs immediate implementation. Most emergency change requests will be linked to a corresponding incident record. 
+
+**Documentation Requirements:**
+- Documentation for emergency changes is the same as for any change.
+
+**Responsibilities:**
+- The change coordinator must meet all documentation requirements within one working day of the change implementation.
+
+**Criteria for Emergency Change:**
+- To resolve or prevent a major incident.
+- To implement a critical security patch (e.g., a virus outbreak).
+- Changes at risk levels 1, 2, or 3 with a requested lead time of less than one business day.
+- Changes at risk levels 4 or 5 with a requested lead time of less than eight business days.
+
+### 6.4 Post Implementation Review
+Post implementation reviews are conducted at two levels:
+- By the change coordinator (for all risk levels).
+- By the Change Advisory Board (CAB) (for risk levels 4, 5, and all failed changes).
+
+**Post Implementation Review Process:**
+- The coordinator performs a review of all changes after implementation activities are completed, regardless of risk levels.
+
+**Aspects Reviewed:**
+- Performance
+- Security
+- Functionality
+
+**Outcomes of the Review:**
+- If successful, the change status is updated to ‘installed successfully’.
+- If not implemented as advertised, follow-up actions (including the implementation of a back-out plan) will be taken by the coordinator.
+- If the change fails, the status is updated to ‘backed out’, ‘installed with issues’, or ‘partially installed’, with reasons for failure documented.
+- The CAB performs post implementation reviews on successful changes.
+
+### 7. Exit Criteria and Output
+The following items must be produced as part of the exit criteria for change management:
+- Approved and scheduled Change Requests
+- Forward Schedule of Change
+- Configuration Items updated and maintained through the Change process
+- Change reports
+- CAB minutes and actions
+- Rejected Changes with proper justification
+
+### 8. Roles and Responsibilities
+
+#### Change Coordinator
+- Identifies the business, service, or technical needs of the change.
+- Creates and updates change records with relevant information.
+- Refers to the Configuration Management Database (CMDB) to assess the change for risk, impact, urgency, and priority.
+- Continually evaluates the risk of the change.
+- Updates the change record timely with the appropriate status and results.
+- Works with the Change Approver and Change Manager to ensure all change issues are communicated and records reflect all changes.
+- Builds and tests changes or coordinates with relevant personnel for building and testing of changes.
+- Implements the approved changes.
+- Manages the installation of the changes.
+
+#### Change Approver
+- Assesses the change for risk, impact, urgency, and priority.
+- Reviews implementation plans, backout plans, test plans, and test results for implementation readiness and approves/rejects the change.
+- Works with the Change Coordinator to ensure all issues surrounding a change have been resolved and communicated to all essential areas.
+- Conducts root cause analysis in case of failed changes and incidents caused by changes.
+
+#### Change Manager
+- Reviews change records for procedural compliance, information quality, and completeness.
+- Ensures that all changes are appropriately planned and communicated.
+- Rejects or schedules changes via the change management tool.
+- Integrates new changes into the existing change schedule.
+- Identifies conflicts in the schedule and negotiates adjustments with relevant parties.
+- Provides inputs to and participates in CAB meetings.
+- Schedules and attends all meetings concerning the change management process.
+- Highlights pertinent/required change activities for the Manager’s review report by the end of day Tuesday and ensures representation at the Managers’ review meeting.
+- Challenges the activities of other areas for readiness at any of the change review meetings.
+- Facilitates expedited and emergency changes as per the process.
+
+#### Change Advisory Board (CAB)
+- A group of people that advises the enterprise Change Manager in the assessment, prioritization, scheduling, and post-implementation of changes.
+- Participates in all Change Advisory Board (CAB) meetings.
+- Reviews ‘Requests for Standard Changes (Pre-approved changes)’ and advises the enterprise Change Manager to approve/reject the requests.
+- Reviews and verifies whether the correct risk level, impact, urgency, and priority are assigned for the changes.
+
+### 9. Measurement
+
+**Key Performance Indicators (KPI) and Definitions:**
+
+- **Number of Major Changes:** This refers to the total number of major changes assessed by the Change Advisory Board (CAB).
+  
+- **Number of CAB Meetings:** This indicates the total number of meetings held by the Change Advisory Board (CAB).
+
+- **Time for Change Approval/Rejection:** This is the average time taken from registering a Request for Change (RFC) with Change Management until a decision is made (either approval or rejection).
+
+- **Change Acceptance Rate:** This is calculated based on the number of accepted versus rejected RFCs.
+
+- **Number of Emergency Changes:** This refers to the total number of emergency changes assessed by the Emergency Change Advisory Board (ECAB).
+
+### 10. Standards Addressed
+
+**ISO 20001:**
+- **8.5.1 Change Management:** A change management policy shall be established and documented.
+- **8.5.1.1 Change Management Policy:** The organization and interested parties shall make decisions on the approval and priority of requests for change.
+
+**CMMI-DEV:**
+- **Process Area:** Change Management practices must be followed as per the defined standards.
+
+### 11. Appendix A: Guidelines for Risk and Priority Assessment
+
+#### 11.1 Risk Assessment
+
+- **Risk Level Calculation:** Risk level is determined using two methods:
+  - Risk assessment questionnaire.
+  - Configuration Item (CI) criticality, which is assessed by:
+    - Environment (Production/QA/Testing/Dev).
+    - Production based on the business value of the CI.
+    - QA/Testing/Dev with associated risk values for each environment.
+  
+- The overall risk level for a particular change is the greater of the two calculated values.
+
+#### 11.1.2 Risk Assessment Questionnaire
+
+- **Risk Levels:** There are five risk levels:
+  - Level 1: Minimal Risk
+  - Level 2: Low Risk
+  - Level 3: Medium Risk
+  - Level 4: High Risk
+  - Level 5: Extreme Risk
+
+- The risk involved in implementing a change is based on the overall risk assessment score. The formula for calculating the overall risk level is:
+  
+  \[
+  \text{Overall Risk Level} = \frac{(Risk 1 \times Weight 1) + (Risk 2 \times Weight 2) + \ldots + (Risk n \times Weight n)}{(Weight 1 + Weight 2 + \ldots + Weight n)}
+  \]
+
+- The calculated risk must be rounded up to the next highest whole number to ensure no risk is downplayed. For example:
+  - 3.00001 becomes 4.
+  - 4.91 becomes 5.
+
+- **Assessment Factors:** The risk assessment questionnaire includes factors with the following weightage for scoring (1-5):
+  - **Degree of Visibility of the Change within the Organization:**
+    - Visible and communicated to all Heads of departments: 5
+    - Visible and communicated to one Head of department: 4
+    - Visible and communicated to multiple departments: 3
+
+### 1. Visibility of Change to IT Customers
+- Very High visibility: 5 points
+- High visibility: 4 points
+- Medium visibility: 3 points
+- Low visibility: 2 points
+- Minimal visibility: 1 point
+
+### 2. Difficulty of Back Out
+- Impossible or undesirable to back out: 5 points
+- Difficult to back out: 4 points
+- Possible to back out, but not easily executed: 3 points
+- Back out is in place and easily executed: 2 points
+- Minimal back out: 1 point
+
+### 3. Degree of Experience with Change
+- New technology, no experience: 5 points
+- New technology, limited experience: 4 points
+- Existing technology, some experience: 3 points
+- Existing technology, considerable experience: 2 points
+- Existing technology, a lot of experience: 1 point
+
+### 4. Time to Complete Change
+- More than six months: 5 points
+- Six months or less: 4 points
+- One quarter or less: 3 points
+- One month or less: 2 points
+- One week or less: 1 point
+
+### 5. Impact on Other Systems or Applications
+- More than one critical business application affected: 5 points
+- One critical business application affected: 4 points
+- More than four non-critical business applications affected: 3 points
+- Four or fewer non-critical business applications affected: 2 points
+- No impact on applications: 1 point
+
+### 6. Change to Business Process
+- Considerable and complex change required: 5 points
+- Moderate change required: 4 points
+- Little change required: 3 points
+- Minimal change: 2 points
+- No change: 1 point
+
+### 7. Priority and Impact
+- **Critical Urgency**: Extensive/Wide Spread Impact
+- **High Urgency**: Significant/Large Impact
+- **Medium Urgency**: Moderate Impact
+- **Low Urgency**: Minor/Localized Impact
+
+### 8. ISO Control Mapping
+- **Category of Control**: Technological
+  - **ISO 27001:2022 Control**: 8.32 Change management
+    - **Document Name**: System and Software Change Management Procedure
+    - Control Changes to information processing facilities and information systems shall be subject to change management procedures.
+  - **ISO 27001:2022 Control**: 8.19 Installation of software
+
+### 6. Operational Systems Control
+
+Procedures and measures shall be implemented to securely manage software installation on operational systems.
+
+### Document Control
+
+- **Owner:** CISO  
+- **Release ID:** SSLM-PROC-0054  
+
+### Version History
+
+1. **Version 0.0**  
+   - **Date:** 26-Feb-07  
+   - **Author:** Jyotessh GNair  
+   - **Change Description:** Draft  
+
+2. **Version 1.0**  
+   - **Date:** 26-Feb-07  
+   - **Author:** Jyotessh GNair  
+   - **Approver:** Zulfikar Deen  
+   - **Change Description:** Approved Baseline.  
+
+3. **Version 1.1**  
+   - **Date:** 14-May-09  
+   - **Author:** Bharatee B R  
+   - **Change Description:** Consolidated the controls related to software license management and risk assessment.  
+
+4. **Version 2.0**  
+   - **Date:** 04-Jun-09  
+   - **Author:** Balu Nair  
+   - **Change Description:** Baselined Approval for Baseline.  
+
+5. **Version 2.1**  
+   - **Date:** 30-Dec-10  
+   - **Author:** Chakravarthi  
+   - **Change Description:** Formatted entire document for QMG review.  
+
+6. **Version 3.0**  
+   - **Date:** 30-Dec-10  
+   - **Author:** Chakravarthi  
+   - **Change Description:** Baselined Request for baseline.  
+
+7. **Version 3.1**  
+   - **Date:** 24-May-11  
+   - **Author:** Srilakshmi  
+   - **Change Description:** Modified release ID in header and cover page for consistency.  
+
+8. **Version 4.0**  
+   - **Date:** 24-May-11  
+   - **Author:** Srilakshmi  
+   - **Change Description:** Baselined Approval for Baseline.  
+
+9. **Version 4.1**  
+   - **Date:** 3-Aug-11  
+   - **Author:** Sudharsana  
+   - **Change Description:** 
+     - Replaced Owner with Management Representative in place of CIO. 
+     - Removed "Retention period is 3 Years" row from Document Classification Scheme.  
+
+10. **Version 5.0**  
+    - **Date:** 3-Aug-11  
+    - **Author:** Sudharsana  
+    - **Change Description:** Approved and Baselined Request for baseline.  
+
+11. **Version 6.0**  
+    - **Date:** 08-Nov-12  
+    - **Author:** Balu Nair  
+    - **Change Description:** 
+      - Modified the Blue Book Process Assets template format. 
+      - Changed the Logo.  
+
+12. **Version 6.1**  
+    - **Date:** 29-Apr-19  
+    - **Author:** Balu Nair  
+    - **Reviewer:** Joshy VM  
+    - **Change Description:** 
+      - Information classification modified. 
+      - Trianz logo modified.  
+
+13. **Version 7.0**  
+    - **Date:** 14-May-19  
+    - **Author:** Balu Nair  
+    - **Reviewer:** Ganesh Arunachala  
+    - **Change Description:** Approved for Baselined Release.  
+
+14. **Version 7.1**  
+    - **Date:** 12-May-20  
+    - **Author:** Balu Nair  
+    - **Reviewer:** Phani Krishna  
+    - **Change Description:** Migrated to the new template for review.  
+
+15. **Version 8.0**  
+    - **Date:** 15-May-20  
+    - **Author:** Balu Nair  
+    - **Reviewer:** Phani Krishna  
+    - **Change Description:** Approved and Baselined for Approval.  
+
+16. **Version 8.1**  
+    - **Date:** 28-Jan-21  
+    - **Author:** Ankur Rastogi  
+    - **Reviewer:** Rakesh  
+    - **Change Description:** Change Management for review.
+
+### 9.0 Document Updates
+- **Date:** 28-Jan-21  
+  **Prepared by:** Ankur Rakesh Vivek Sambasivam  
+  **Status:** For Approval  
+  **Outcome:** Approved and Baselined  
+
+### 9.1 Document Updates
+- **Date:** 21-Dec-21  
+  **Prepared by:** Karthik N  
+  **Status:** For Review  
+  **Outcome:** Updated the information classification and made formatting changes.  
+
+### 10.0 Document Updates
+- **Date:** 13-Jan-22  
+  **Prepared by:** Karthik N, Sivaramakrishnan N  
+  **Status:** For Approval  
+  **Outcome:** Approved and Baselined  
+
+### 10.1 Document Updates
+- **Date:** 12-Apr-23  
+  **Prepared by:** Karthik N and Asha Veeramalla  
+  **Status:** For Review  
+  **Outcome:** Moved the software licensing part to the system and software license management procedure.  
+
+### 11.0 Document Updates
+- **Date:** 09-May-23  
+  **Prepared by:** Karthik N, Srikanth M  
+  **Status:** For Approval  
+  **Outcome:** Approved and Baselined  
+
+### 11.1 Document Updates
+- **Date:** 11-Feb-24  
+  **Prepared by:** Shalini Vijaya, Srikanth M  
+  **Status:** For Review  
+  **Outcome:** Mapped with new ISO 27001:2022 controls.  
+
+### 12.0 Document Updates
+- **Date:** 23-Feb-24  
+  **Prepared by:** Shalini Vijaya, Srikanth M  
+  **Status:** For Approval  
+  **Outcome:** Approved and Baselined  
+
+### 12.1 Document Updates
+- **Date:** 28-May-25  
+  **Prepared by:** Kruti Vijaya  
+  **Status:** For Review  
+  **Outcome:** Migrated to New template.  
+
+### 13.0 Document Updates
+- **Date:** 29-May-25  
+  **Prepared by:** Kruti Vijaya, Srikanth M  
+  **Status:** For Approval  
+  **Outcome:** Approved and Baselined.  
+
+### Contact Information
+- **Email:** infosec@trianz.com  
+
+### Copyright Notice
+The content in this document is copyrighted; any unauthorized use – in part or full – may violate copyright, trademark, and other laws. This document may not be modified, reproduced, publicly displayed, performed, distributed, or used for any public or commercial purposes. The Trianz name and its products are subject to trademark and copyright protections, regardless of how and where referenced.

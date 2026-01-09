@@ -1,0 +1,117 @@
+# Policy on the Use of Mobile Computing and Communication Facilities
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. PURPOSE
+2. OBJECTIVES
+3. SCOPE
+4. POLICY STATEMENTS
+5. ROLES & RESPONSIBILITIES
+6. APPLICABLE STANDARDS
+7. ISO CONTROL MAPPING
+8. REFERENCE POLICIES & PROCEDURES
+9. EXCEPTIONS(S)
+
+## 1. Purpose
+The purpose of the mobile computing and communication facilities policy is to:
+- Prevent misuse of electronic communications and computing resources.
+- Ensure employees are not exposed to unethical behavior such as error, fraud, defamation, breach of copyright, unlawful discrimination, illegal activity, privacy violations, and computing resource service interruptions.
+
+## 1.1 Mobile Computing
+Mobile Computing facilities include, but are not limited to:
+- Laptops, mobile phones, and other portable computing devices.
+- Media, CD-ROMs, DVDs, disks, pen drives, and memory storage devices.
+- Video conferencing.
+
+## 1.2 Communication Facilities
+Communication facilities include, but are not limited to:
+- E-mail.
+- Internet.
+- Mobile phones, VOIP phones, Skype, Microsoft Teams, Kaizala.
+- Forums, blogs, and other internet-based communications tools.
+
+## 2. Objectives
+The objectives of this Policy are to:
+- Facilitate the efficient, effective, responsible, and lawful use of Trianz computing and communication facilities.
+- Safeguard the interests of Trianz and all authorized users of its computing and communication facilities.
+- Provide guidelines and instructions to authorized users in the appropriate use of Trianz’s computing and communication facilities.
+
+## 3. Scope
+This policy applies to all Trianz Associates and contractors having access to Trianz Mobile computing and communication facilities.
+
+## 4. Policy Statements
+- Trianz shall ensure effective measures are in place to protect confidential information regarding the use of mobile computing and communication facilities.
+- Protection measures are established to avoid unauthorized access to or disclosure of confidential data stored and processed by these facilities.
+- Mobile devices, including laptops, smartphones, and tablet computers, can enhance productivity but also present significant risks to Trianz’s information assets.
+- Employees may use their own equipment (BYOD) to connect to Trianz's network and systems, provided they install specific security controls as per the BYOD Policy.
+- IT will review devices and remove any Trianz data if the relationship with Trianz terminates, devices change, or in similar situations.
+- It is recommended to use encryption and other protection strategies (e.g., device management software, access controls, remote wiping) on any mobile device containing Confidential or Highly Confidential Information. Mobile devices accessing Trianz email must be protected using Multi-Factor Authentication (MFA).
+- Physically secure any mobile devices used to access or store Trianz information. Laptops must never be left unattended.
+- Associates must not take pictures with mobile phones/cameras inside any ODCs provided to customers as part of the MSA/SOW.
+- It is recommended not to connect mobile devices containing Trianz information to any unsecured network without an up-to-date firewall or other security controls in place.
+- Unsecured networks include home networks, hotel networks, open or for-pay wireless hotspots, convention networks, or any other network not approved or controlled by Trianz. Refer to the BYOD policy for more details on associate-owned devices.
+- Remote geolocation capabilities must be maintained for all mobile devices.
+- A remote wipe feature must be enabled on all Trianz-managed mobile devices to securely erase data if the device is lost.
+
+### 5. Roles & Responsibilities
+
+#### 5.1 All Associates
+- Associates are responsible for all activities on mobile computing and communication facilities initiated by their ID.
+- If a user suspects that the security of their computing and communication facilities has been breached or compromised, they must report it to the IS Team.
+
+#### 5.2 IS Team
+- The IS Team is responsible for responding to and investigating reported breaches.
+
+#### 5.3 InfoSec Team
+- The InfoSec Team conducts a bi-annual review of the policy on the use of mobile computing and communication facilities.
+
+### 6. Applicable Standards
+- ISO 27001:2022
+- ISO 27701:2019
+
+### 7. ISO Control Mapping
+- **Organizational Controls**: The policy on the use of mobile computing and communication facilities must identify, document, and implement rules for acceptable use and procedures for handling information and associated assets as per ISO 27001:2022 Control 5.10.
+
+### 8. Reference Policies & Procedures
+- BYOD Policy
+- Access Control Policy
+
+### 9. Exceptions
+- Exceptions to the Change Management Policy require formal written approval from the Information Security Assurance Team. Refer to the Exception Handling Policy for details.
+
+### Document Control
+- **Owner**: CISO
+- **Release ID**: MCCF-POL-0023
+
+### Version History
+- **1.00**: Initial release to Blue Book (09-Jan-14)
+- **1.01**: Change description of Cloud services in policy section 3 (14-Oct-16)
+- **2.00**: Approved by CISO, baselined (07-Dec-16)
+- **2.1**: Migrated to the new template, approved and baselined (12-May-20)
+- **3.0**: Updated the policy comments section, added more details on mobile computing (15-May-20)
+- **4.0**: Formatted the document for legibility, updated communication facilities (19-May-20)
+- **5.0**: Updated information classification, made minor changes (31-Jul-20)
+- **6.0**: Approved for baseline (11-Feb-21)
+- **6.1**: Updated objectives and roles and responsibilities (30-Jul-21)
+- **8.0**: Annual review, no changes (04-Jan-22)
+- **8.1**: Scope extended to products and services (15-Mar-22)
+- **9.0**: Reviewed with no changes (15-Mar-22)
+- **10.0**: Migrated to new template, approved and baselined (12-May-23)
+- **10.1**: Updated section on ISO Control Mapping (12-May-23)
+- **11.0**: For yearly review, approved and baselined (23-Feb-24)
+- **12.0**: Migrated to a new template, approved and baselined (29-May-25)
+
+### Contact Information
+- **Email**: infosec@trianz.com
+- **Phone**: [Not provided]
+
+### Copyright Notice
+The content in this document is copyrighted; any unauthorized use may violate copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly displayed, performed, or distributed for any public or commercial purposes. The Trianz name and its products are subject to trademark and copyright protections.

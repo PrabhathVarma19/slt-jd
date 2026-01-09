@@ -1,0 +1,464 @@
+Acceptable Usage Policy
+
+
+
+
+TRIANZ INTERNAL           trianz.com
+                         Statement of Confidentiality
+
+  The information contained in this document is internal to Trianz. It shall not be
+  disclosed, duplicated, or used for any purpose other than that stated herein, in
+  whole or in part, without the express written consent of Trianz.
+
+
+
+
+                            Information Classification
+
+     ☐ Public
+
+     ☒ Internal
+
+     ☐ Confidential
+
+     ☐ Restricted
+
+
+
+
+TRIANZ INTERNAL                                                                  2
+                            Table of Contents
+1.   PURPOSE                                    4
+
+2.   OBJECTIVE                                  4
+
+3.   SCOPE                                      4
+
+4.   POLICY STATEMENT                           4
+
+5.   ACCEPTABLE USE                             4
+
+6.   UNACCEPTABLE USE                           5
+
+     6.1 System and Network Activities          5
+
+     6.2 Email and Communications Activities    7
+
+7.   EXCEPTIONS(S)                              7
+
+8.   ISO CONTROL MAPPING(S)                     7
+
+
+
+
+ TRIANZ INTERNAL                                3
+1. Purpose
+   The purpose of this policy is to define the acceptable use of equipment and
+   computing services.
+
+
+
+2. Objective
+   The objective of this policy is to describe the acceptable use of information
+   technology equipment and services at Trianz.
+
+
+
+3. Scope
+   The scope of this policy is applicable to all Trianz managed business systems,
+   Trianz provided Client Services & Trianz developed products.
+
+
+
+4. Policy Statement
+ • The following activities are considered unacceptable with no exception. Under
+    no circumstances, an employee of TRIANZ or contractor or third-party service
+    provider authorized to engage in any activity that is illegal under local, state,
+    federal or international law while utilizing TRIANZ owned resources.
+
+ • The policy applies to all mentioned stakeholders working for Trianz products
+    and services.
+
+
+
+5. Acceptable Use
+  • Associates can install necessary utilities like software, application, only after
+      receiving an approval from IS and InfoSec & Data privacy assurance.
+
+  • All associates must respect and protect the confidentiality, integrity, availability,
+      and privacy of Trianz information & resources.
+
+  • All associates/users must respect and protect the intellectual property rights of
+      others by following the copyright laws.
+
+  • Users must take ownership and report all security related incidents in the tool.
+  • Users must use Trianz assets for official purposes only.
+  • Associates can use their mobile phones for accessing the outlook, VPN tokens
+      etc. in a secure manner and adhering to MDM policy.
+
+TRIANZ INTERNAL                                                                         4
+  • Associates can use personal laptops for their official use by adhering to BYOD
+        policy.
+  • Associates can browse internet sites that are safe by adhering to internet user
+        policy.
+
+
+
+6. Unacceptable Use
+
+  6.1 System and Network Activities
+    •     Violations of the rights of any person or company protected by copyright,
+          trade secret, patent or other intellectual property, or similar laws or
+          regulations, including, but not limited to, the installation or distribution of
+          "pirated" or other software products that are not appropriately licensed for
+          use by TRIANZ.
+
+    •     Unauthorized copying of copyrighted material including, but not limited to,
+          digitization and distribution of photographs from magazines, books or other
+          copyrighted sources, copyrighted music, and the installation of any
+          copyrighted software for which TRIANZ or the end user does not have an
+          active license is strictly prohibited.
+
+    •     Exporting software, technical information, encryption software or technology,
+          in violation of international or regional export control laws, is illegal. The
+          appropriate management should be consulted prior to the export of any
+          material that is in question.
+
+    •     Introduction of malicious programs into the network or server (e.g., viruses,
+          worms, Trojan Horses, e-mail bombs, etc.)
+
+    •     Revealing/sharing your account/access credentials to others or allowing use
+          of your account by others.
+
+    •     Using a TRIANZ computing asset to actively engage in procuring offensive
+          content or transmitting material that is in violation of POSH or hostile
+          workplace laws in the user's local jurisdiction.
+
+    •     Making fraudulent offers of products, items, or services originating from any
+          TRIANZ account.
+
+    •     Making statements about warranty/commitment, expressly or implied, unless
+          it is a part of normal job duties.
+
+TRIANZ INTERNAL                                                                       5
+    •   Any action causing disruptions to network communication, allows/causes
+        unauthorized access, network sniffing, pinged floods, packet spoofing, denial
+        of service, and forged routing information for malicious purposes.
+
+    •   Port scanning or security scanning is expressly prohibited unless prior
+        notification to is made to the IT department.
+
+    •   Executing any form of network monitoring which will intercept data not
+        intended for the employee's host unless this activity is a part of the
+        employee's normal job/duty.
+
+    •   Circumventing user authentication or security of any host, network, or
+        account.
+
+    •   Interfering with or denying service to any user other than the employee's host
+        (for example, denial of service attack).
+
+    •   Using any program/script/command, or sending messages of any kind, with
+        the intent to interfere with, or disable, a user's terminal session, via any means,
+        locally or via the Internet/Intranet/Extranet.
+
+    •   Providing information about, or lists of, TRIANZ employees to parties outside
+        TRIANZ.
+
+    •   Use of cloud computing services for work purposes must be formally
+        authorized by the IT Manager/CIO. The IT Manager/CIO shall ensure that
+        security, privacy, and all other IT management requirements will be
+        adequately addressed by the cloud computing vendor.
+
+    •   For any cloud services that require users to agree to terms of service, such
+        agreements must be reviewed and approved by the CISO/CIO.
+
+    •   The use of such cloud services must comply with the cloud security and data
+        privacy controls governing the handling of personally identifiable information,
+        corporate financial data or any other data owned or collected by Trianz.
+
+    •   Personal cloud services accounts may not be used for the storage,
+        manipulation    or   exchange     of   company-related      communications      or
+        company-owned data.
+
+
+
+
+TRIANZ INTERNAL                                                                         6
+  6.2 Email and Communications Activities
+     • Sending unsolicited email messages, including the sending of "junk mail" or
+        other advertising material to individuals who did not specifically request such
+        material.
+
+     • Any form of harassment via email, telephone, or paging, whether through
+        language, frequency, or size of messages.
+
+     • Unauthorized use, or forging, of email header information.
+     • Solicitation of email for any other email address, other than that of the
+        poster's account, with the intent to harass or to collect replies.
+
+     • Creating or forwarding "chain letters", "Ponzi" or other "pyramid" schemes of
+        any type.
+     • Use of unsolicited email originating from within TRIANZ's networks of other
+        Internet/Intranet/Extranet
+        service providers on behalf of, or to advertise, any service hosted by TRIANZ or
+        connected via TRIANZ’s network.
+
+     • Posting the same or similar non-business-related messages to large
+        numbers of Usenet newsgroups (newsgroup spam).
+
+
+
+
+7. Exceptions(s)
+    No Exceptions.
+
+
+
+
+8. ISO Control Mapping(s)
+
+
+      Category of             ISO 27001:2022 Control           Document Name as per
+      Control                                                  ISO 27001:2022
+    Organizational       5.10 Acceptable use of information and Acceptable Usage Policy
+    controls             other associated assets Control Rules
+                         for the acceptable use and procedures
+                         for handling in formation and other
+                         associated assets shall be identified,
+                         documented and implemented.
+
+TRIANZ INTERNAL                                                                           7
+                                      Document Control
+
+   Owner:           CISO                              Release            AU-POL-0003
+                                                      ID:
+
+
+ For Trianz Process Improvement Group (TPIG) Purpose Only
+
+ Version History
+
+
+Ver. Date     Author       Reviewer    Approver     Reason for        Change Description
+No.                                                  Change
+
+0.00 26-     Jyotessh                             Initial Draft
+     Feb-    G Nair
+     07
+1.00 26-     Jyotessh                             Baseline is        Approved
+     Feb-    G Nair                               approved by
+     07                                           Zulfikar Deen.
+1.01 30-     Bharatees                            Revised the        Changed the Policy
+     Jul-    ha B R                               policies in        statements,
+     08                                           accordance
+                                                  with the revised   Changed the template
+                                                  ISMS               Added Document
+                                                  Framework          Classification Scheme
+2.00 28-     Balu Nair                            Approval for       Baselined
+     Apr-                                         Baseline
+     09
+2.01 30-     Chakravar                            QMG review         Formatted entire
+     Dec-    thi                                                     document
+     10
+3.00 31-     Chakravar                            Request for        Baselined
+     Dec-    thi                                  Baseline
+     10
+3.01 06-     Srilakshmi                           To maintain        Modified Release ID in
+     May-                                         common             cover page and header
+     11                                           release id
+                                                  allocation for
+                                                  bluebook
+                                                  documents
+
+
+  TRIANZ INTERNAL                                                                         8
+4.00 06-  Srilakshmi    Request for     Baselined
+     May-               Baseline
+     11
+4.01 3-   Sudharsa      QMG review         •  Replace
+     Aug- na                                  Owner       with
+     11                                       Management
+                                              Representative
+                                              in place of CIO
+                                          • In Document
+                                              Classification
+                                              Scheme,
+                                              "Retention period
+                                              is 3
+                                              Years" row is
+                                              removed
+5.00 3-      Sudharsa   Request for     Approved           and
+     Aug-    na         baseline          Baselined
+     11
+5.01 14-     Venkates   QMG Review      Used new template as
+     Oct-    war                        per documentation
+     11      Reddy                      guidelines
+             GD
+                                        ‘Shall’ word is replaced
+                                        by ‘Will’ throughout
+                                        policy
+
+                                        Reviewed for continued
+                                        suitability
+
+6.00 14-     Venkates   Approval for    Baselined
+     Oct-    war        Baseline
+     11      Reddy
+             GD
+
+7.00 08-  Balu Nair     Standardization Modified the template
+     Nov-               of Blue Book    format
+     12                 Process Assets Changed the Logo
+
+
+
+
+  TRIANZ INTERNAL                                           9
+7.01 14-     Shishir                            Addition of      Modified Emergency
+     Oct-    and Balu                           Cloud services   Access of Password
+     16                                         as scope of      section
+                                                Certification.   TRIANZ Logo modified
+
+
+8.00 07-  Balu Nair                             Approved by      Baselined
+     Dec-                                       CISO
+     16
+
+
+
+8.01 29-     Balu Nair   Joshy VM                                Minor changes to the
+     Apr-                                                        contents, Information
+     19                                                          classification modified
+
+
+
+9.0   14-  Balu Nair                 Ganesh     Approved for     Baselined
+      May-                           Arunachala Release
+      19
+
+
+
+9.0   22-    Balu Nair   Karthik N              Review           Reviewed    and          no
+      Apr-                                                       changes observed
+      20
+
+
+
+9.1   11 -   Karthik N   Balu Nair              Review           Roles modified with
+      May                                                        CISO/CIO
+      -20                                                        Integrated with new
+                                                                 template
+
+
+9.2   12-  Karthik N     Balu Nair               Review          Added Acceptable use
+      May-                                                       after Phani review
+      20
+
+
+
+10.0 14-  Karthik N      Phani       Phani      For Approval     Approved and Baselined
+     May-                Krishna     Krishna
+     20
+
+
+
+
+  TRIANZ INTERNAL                                                                    10
+10.1 14-     Balu Nair   Phani                    Review         Updated the information
+     Jan-                Krishna                                 classification
+     21
+
+
+
+11.0 11-  Balu Nair      Phani       Phani        For Approval   Approved and Baselined
+     Feb-                Krishna     Krishna
+     21
+
+
+
+11.0 23-  Balu Nair      Karthik N                Annual Review No Changes
+     Dec-
+     21
+
+
+
+11.1 24-  Sanjana        Karthik N   Sivaramakri For Review      The scope has been
+     Feb-                            shnan N                     extended to products
+     22                                                          and services
+
+
+
+12.0 24-  Sanjana        Karthik N   Sivaramakri For Approval    Approved and baselined
+     Feb-                            shnan N
+     22
+
+
+
+12.1 25-  Krutideept Karthik N                    For Review        Exception Details
+     Feb- a, Shalini                                                has been changed.
+     23                                                             New template
+                                                                    change.
+                                                                    Editorial changes.
+                                                                    Objective and
+                                                                    Scope added.
+
+13.0 12-  Krutideept Karthik N       Srikanth M   For Approval   Approved           and
+     May- a                                                      Baselined.
+     23
+
+
+
+
+  TRIANZ INTERNAL                                                                  11
+13.1 15-  Beniyel S   Vijaya R                For Review     ISO Control
+     Feb-                                                    Mapping(s) has been
+     24                                                      added.
+
+
+
+14.0 23-  Beniyel S   Vijaya R   Srikanth M   For Approval   Approved and Baselined
+     Feb-
+     24
+
+
+
+14.1 16-  Vijaya R    Balu                    For Review     Migrated   to a new
+     Apr-                                                    Template    and yearly
+     2025                                                    review
+
+
+
+15.0 14-  Vijaya R    Balu       Srikanth M   For Approval   Approved and Baselined
+     May-
+     25
+
+
+
+
+  TRIANZ INTERNAL                                                             12
+                                Contact Information
+                                               Name
+
+                                               Email
+
+                                              Phone
+
+
+
+
+                                  Thank You
+                                     infosec@trianz.com
+
+
+
+
+ The content in this document is copyrighted; any unauthorized use – in part or full – may violate the
+ copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly
+   displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz
+ name and its products are subject to trademark and copyright protections, regardless of how and
+                                          where referenced.
+
+
+TRIANZ INTERNAL                                                                                      13
+

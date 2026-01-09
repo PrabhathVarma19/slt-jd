@@ -1,0 +1,213 @@
+Data Loss Prevention Policy
+
+
+
+
+TRIANZ INTERNAL               trianz.com
+                         Statement of Confidentiality
+
+  The information contained in this document is internal to Trianz. It shall not be
+  disclosed, duplicated, or used for any purpose other than that stated herein, in
+  whole or in part, without the express written consent of Trianz.
+
+
+
+
+                            Information Classification
+
+     ☐ Public
+
+     ☒ Internal
+
+     ☐ Confidential
+
+     ☐ Restricted
+
+
+
+
+TRIANZ INTERNAL                                                                  2
+                          Table of Contents
+1.   PURPOSE                                  4
+
+2.   SCOPE                                    4
+
+3.   OBJECTIVE                                4
+
+4.   POLICY                                   4
+
+5.   MONITORING                               5
+
+6.   COMPLIANCE                               5
+
+7.   EXCEPTION(S)                             5
+
+8.   ISO CLAUSE MAPPING                       5
+
+     Document Control                         6
+
+
+
+
+ TRIANZ INTERNAL                              3
+1. Purpose
+  The policy is designed to ensure that the users do not send sensitive or critical
+  information outside the corporate network. Data Loss Prevention (DLP) is the practice of
+  detecting and preventing data breaches, exfiltration, or unwanted destruction of sensitive
+  data.
+
+
+2. Scope
+  Scope of the Policy shall ensure the following:
+   1.   Network DLP
+   2.   End Point DLP
+   3.   Cloud DLP
+   4.   Storage DLP
+
+
+3. Objective
+  The objective of this policy is to ensure data protection and incident prevention for
+  Trianz’s business critical data and PII data that includes sensitive data as per applicable
+  regulations.
+
+
+4. Policy
+  DLP solution shall be adopted including data identification and classification so that the
+  Trianz can meet complex and evolving compliance standards
+  Trianz shall ensure that DLP is adopted across Network, Endpoint, Cloud and Storage.
+
+
+  Trianz’s Network DLP solutions must ensure prevention, monitoring and control the
+  flow of information that includes PII data via the company’s network, email or web.
+
+  Trianz Endpoint DLP Solutions must ensure solutions monitor endpoint devices, such
+  as servers, computers, laptops and mobile devices, on which Trianz’s critical information
+  is used, moved and stored.
+
+
+  Trianz’s Cloud DLP solutions must protect data stored in the cloud by encrypting
+  sensitive data and ensuring that the data is sent to only those cloud applications that are
+  authorized by Trianz.
+
+
+  Trianz’s Storage DLP Solutions must protect data stored in unstructured form residing
+  on a server or structured data residing on Databases.
+
+
+
+TRIANZ INTERNAL                                                                                 4
+  Trianz shall also ensure that the DLP solution is fully integrated within Trianz’s
+  cybersecurity architecture.
+
+
+5. Monitoring
+  IS operation team shall implement the required solutions, constantly monitor and analyse
+  data to identify potential violations of security policies.
+
+
+6. Compliance
+  InfoSec and Data Privacy Assurance Team will verify compliance of this policy through
+  internal and external audits etc.
+
+
+7. Exception(s)
+  Exceptions to the Data Loss Prevention shall follow the Exception handling policy. (For
+  e.g. For Finance and HR data with adequate safeguards)
+
+
+
+
+8. ISO Clause Mapping
+ Category of   ISO 27001:2022 Control                                 Document Name as per
+ Control                                                              ISO 27001:2022
+ Technological 8.11 Data Masking Control Data masking shall           Data Loss Prevention
+ controls      be used in accordance with the organization's          Policy
+               topic specific policy on access control and other
+               related topic-specific policies, and business
+               requirements, taking applicable legislation into
+               consideration.
+ Technological 8.12 Data Leakage Prevention Control Data              Data Loss Prevention
+ controls      leakage prevention measures shall be applied           Policy
+               to systems, networks and any other devices that
+               process, store or transmit sensitive information.
+
+
+
+
+TRIANZ INTERNAL                                                                              5
+      Document Control
+
+
+                                                          Release
+      Owner:             CISO                                             DLP-POL-0073
+                                                          ID:
+
+
+         For Trianz Process Improvement Group (TPIG) Purpose Only
+     Version History
+Ver. Date          Author       Reviewer     Approver     Reason for      Change Description
+No.                                                       Change
+
+0.1   12-Oct-2022 Shiva,         Srikanth                 Initial Draft
+                  Beniyel,      Mantena,
+                  Balu,         IS Team                                   None
+                  Vijaya
+
+1.00 12-Oct-2022 Shiva,         Srikanth     Srikanth     Approval for
+                 Beniyel,       Mantena,     Mantena      Baseline
+                 Balu,          IS Team                                   Baseline
+                 Vijaya
+
+1.0   28-March-     Krutideept Vijaya R      Srikanth M   For Review      Reviewed with no
+      2023          a                                                     changes
+
+1.1   10-May-       Rama     Vijaya                       For Review      Migrated to new template
+      2023          Madhavan                                              Editorial changes
+                                                                          Rephrased Purpose
+                                                                          and Monitoring
+
+2.0   12-May-       Rama     Vijaya          Srikanth M   For approval
+      2023          Madhavan                                              Approved and Baselined
+
+2.1   23-Jan-2024 Beniyel S     Balu Nair,                For Review      Migrated from standard
+                  Aishee G      Vijaya R                                  ISO 27001:2013 to ISO
+                                                                          27001:2022 mapping
+                                                                          updated.
+3.0   23-Feb-       Beniyel S   Balu Nair,   Srikanth M   For Approval
+      2024          Aishee G    Vijaya R                                  Approved and Baselined
+
+3.1   17-Apr-2025 Vijaya        Balu                      For Review      Migrated to a New
+                                                                          Template and Yearly
+                                                                          Review
+4.0   14-May-       Vijaya      Balu         Srikanth M   For Approval
+      2025                                                                Approved and Baselined
+
+
+
+
+  TRIANZ INTERNAL                                                                               6
+                                Contact Information
+                                               Name
+
+                                               Email
+
+                                              Phone
+
+
+
+
+                                  Thank You
+                                     infosec@trianz.com
+
+
+
+
+ The content in this document is copyrighted; any unauthorized use – in part or full – may violate the
+ copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly
+   displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz
+ name and its products are subject to trademark and copyright protections, regardless of how and
+                                          where referenced.
+
+
+TRIANZ INTERNAL                                                                                      7
+

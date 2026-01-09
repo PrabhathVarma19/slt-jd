@@ -1,0 +1,152 @@
+# Patch Management Policy
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. PURPOSE
+2. OBJECTIVE
+3. SCOPE
+4. POLICY STATEMENT
+   - 4.1 Trianz Owned Assets
+   - 4.2 Supplier Owned Assets
+5. PATCHING SCHEDULE
+6. MONITORING AND REPORTING
+7. ROLES AND RESPONSIBILITIES
+8. APPLICABLE STANDARDS
+9. ISO CONTROLS MAPPING
+10. REFERENCE POLICIES & PROCEDURES
+11. EXCEPTIONS(S)
+
+## 1. Purpose
+This document describes the Information Security requirements for maintaining up-to-date Security patches on all systems.
+
+## 2. Objective
+- The objective of this policy is to prevent the exploitation of vulnerabilities on computing and related systems.
+- All Systems, Servers, and Network Devices must be maintained, and security patches must be applied in a timely manner consistent with an assessment of risk.
+
+## 3. Scope
+This policy applies to all Systems, Network Devices, and Servers of Trianz which are on-premise or any Cloud-based infrastructure or service where Patch Management is Trianz’s responsibility. This includes systems that contain company or client data owned or managed by Trianz, regardless of location (On-prem or Cloud).
+
+## 4. Policy Statement
+
+### 4.1 Trianz Owned Assets
+- Systems, Servers, and infrastructure owned and managed by Trianz must have the latest security patches installed to protect against known and unknown vulnerabilities.
+- Security patches must be identified, reviewed, tested, and approved before implementation in the production environment.
+- All security patch updates must follow the Change control process to ensure successful completion.
+
+### 4.2 Supplier Owned Assets
+- Systems, Servers, and infrastructure owned by the Supplier and managed by Trianz/Supplier must have the latest security patches installed to protect against known and unknown vulnerabilities.
+- If patches are to be applied from the supplier's end, the contract must clearly specify this requirement.
+- Security patches must be identified, reviewed, tested, and approved before implementation in the production environment.
+- All security patch updates must follow the Change control process to ensure successful completion.
+- Trianz's supplier security policy must enforce security patch compliance by Suppliers/vendors through periodic vendor audits and SLA reviews.
+
+## 5. Patching Schedule
+
+### IT Infrastructure
+- **Monthly**: Apply critical security patches, security updates, general system updates, and critical third-party application patches and upgrades based on security recommendations.
+- **Quarterly**: Perform server updates.
+- **On-demand**: Deploy high/critical severity patches immediately based on security recommendations.
+
+### Printers, Peripherals, Switches, Routers, Firewalls, and Storage
+- **Quarterly**: Check for new firmware updates using OEM portals, emails, security blogs, etc.
+- **Vendor Update**: Upgrade firmware within a week of vendor notifications.
+
+#### 5.1.1.1 On-demand and Emergency Security Patching
+- The IS Security team will determine the risk and relevance of the patch, as well as when the system should be patched. All related critical, high, and business impact patches must be deployed immediately upon approval.
+
+#### 5.1.1.2 Zero-day Vulnerabilities
+- **Immediate Risk Assessment**: Identify affected systems, assess impact, and determine exposure.
+- **Emergency Patch Deployment**: Apply vendor-released patches or hotfixes as soon as they become available.
+- **Temporary Mitigations**: If no patch is available, implement workarounds such as disabling affected services, applying firewall rules, or restricting access.
+- **Expedited Testing**: Conduct rapid testing of patches in a controlled environment before deployment to prevent system disruptions.
+- **Prioritized Deployment**: Apply patches on critical systems first, followed by non-critical assets.
+- **Monitoring & Threat Intelligence**: Continuously monitor for new threats, indicators of compromise, and vendor updates.
+- **Incident Response Integration**: Align with the incident response process to contain, eradicate, and recover from potential exploitation.
+- **Post-Patch Review**: Validate successful updating of patches, conduct security testing, and update documentation for future reference.
+
+### 5. Exceptions
+- Exceptions to the patch management policy must be documented by the device/application owner, including justification, and necessary compensating controls must be implemented for systems, network devices, and security appliances that cannot be patched to resolve known vulnerabilities.
+
+### 6. Monitoring and Reporting
+- The IS Operation team shall generate and maintain patch implementation reports to summarize the outcome of each patching cycle.
+- These reports will be used to evaluate patch implementation, current patching levels of all systems, and to assess the current level of risk.
+
+### 7. Roles and Responsibilities
+- **System Owner**: Responsible for ensuring that the software they manage is maintained through regular software updates and patching.
+- **CIO**: Accountable for ensuring adherence to the software update and patching policy.
+- **IS Operation**: Responsible for the implementation and enforcement of this policy.
+- **InfoSec Team**: Conducts periodic/spot audits to ensure compliance.
+- **Product Owner/Project Manager**: Ensures all endpoint systems used for projects are patched.
+
+### 8. Applicable Standards
+- ISO 27001:2022
+- ISO 27701:2019
+
+### 9. ISO Controls Mapping
+- **Category of Control**: Technological Controls
+  - **ISO 27001:2022 Control**: 8.19 Installation of Software on Operational Systems
+  - **Document Name as per ISO 27001:2022**: Patch Management Policy
+
+### 10. Reference Policies & Procedures
+- Information Security Policy
+- IS Operations Process
+- System and Software Change Management Policy
+- System and Software Change Management Procedure
+
+### 11. Exceptions
+- Any exceptions to the Patch Management Policy require formal written approval from the Information Security & Data Privacy Assurance Team. Refer to the Exception Handling Policy for more details.
+
+### Document Control
+- **Owner**: CISO
+- **Release ID**: PATM-POL-0051
+
+### Version History
+- **0.01** (25-May-17): Creation of Patch Management Policy
+- **0.02** (12-May-18): Updated as standard & inclusion of metrics
+- **1.00** (20-Jun-18): Approval for baseline
+- **2.0** (15-May-20): Approved and baselined
+- **3.0** (31-July-20): Approved and baselined
+- **5.0** (30-July-21): Added Roles and Responsibilities
+- **5.1** (8-Nov-21): For Approval
+
+### 6.0 Review and Approval Process
+- Karthik N and Sivaramakrishnan N are responsible for review and approval.
+- The policy section 5 has been updated and approved.
+- The review conducted by Sivaramakrishnan N resulted in no changes.
+
+### 6.1 Scope Extension
+- As of 13-Mar-22, the scope has been extended to include products and services.
+
+### 7.0 Yearly Review
+- On 21-Mar-22, the yearly review was conducted by Sanjana and Sivaramakrishnan N, and is pending approval.
+
+### 7.1 Approval Status
+- The yearly review was approved and baselined on 12-May-23 by Balu Nair and Shalini Kumari, with format and changes completed.
+
+### 8.0 Yearly Review Update
+- On 12-May-23, the yearly review was conducted by Balu Nair and Srikanth Mantena.
+
+### 8.1 ISO Control Mapping Update
+- On 15-Feb-24, the section on ISO Control Mapping was updated to align with ISO 27001:2022 and approved by Vijaya and Balu.
+
+### 9.0 Supplier Owned Assets Review
+- On 23-Feb-24, the Supplier Owned Assets section and Patching Schedule (Zero Day Vulnerability) were modified and approved.
+
+### 10.0 Template Migration
+- On 14-May-25, the document was migrated to a new template and approved.
+
+### Contact Information
+- For inquiries, contact:  
+  - **Email:** infosec@trianz.com  
+  - **Phone:** [Not provided]  
+
+### Copyright Notice
+- The content in this document is copyrighted. Unauthorized use may violate copyright, trademark, and other laws. The document may not be modified, reproduced, or publicly displayed without permission.

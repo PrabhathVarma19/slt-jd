@@ -1,0 +1,393 @@
+Capacity Management
+Procedure
+
+
+
+
+TRIANZ INTERNAL       trianz.com
+                      Statement of Confidentiality
+
+  The information contained in this document is internal to Trianz. It shall not be
+  disclosed, duplicated, or used for any purpose other than that stated herein, in
+  whole or in part, without the express written consent of Trianz.
+
+
+
+
+                         Information Classification
+
+
+     ☐ Public
+
+     ☒ Internal
+
+     ☐ Confidential
+
+     ☐ Restricted
+
+
+
+
+TRIANZ INTERNAL                                                                  2
+                                Table of Contents
+1.   INTRODUCTION                                                        5
+
+     8.1 Objective(s)                                                    5
+
+     8.2 Scope                                                           5
+
+2.   ENTRY CRITERIA                                                      5
+
+3.   INPUTS                                                              6
+
+4.   PROCESS DESCRIPTION                                                 6
+
+     8.1 Capacity Management process flow steps                          6
+
+        4.1.1      Manage business capacity requirements                 6
+
+        4.1.2      Identify and agree SLAs                               6
+
+        4.1.3      Prepare and maintain capacity plan                    6
+
+        4.1.4      Monitor resource usage to balance supply and demand   7
+
+        4.1.5      Review for corrective actions                         7
+
+5.   EXIT CRITERIA                                                       7
+
+     8.1 Output                                                          7
+
+6.   ROLES AND RESPONSIBILITIES                                          7
+
+7.   PROCESS FLOW                                                        7
+
+8. PREREQUISITES                                                         8
+
+     8.1 Resource                                                        8
+
+     8.2 Training                                                        8
+
+     8.3 References                                                      8
+
+8.   ACRONYMS/ABBREVIATIONS                                              8
+
+9.   RELATED GUIDELINES, TEMPLATES AND CHECKLISTS                        8
+
+10. MEASUREMENT                                                          8
+
+11. STANDARDS ADDRESSED                                                  9
+
+     8.1 ISO Control Mapping                                             9
+
+
+ TRIANZ INTERNAL                                                         3
+12. TAILORING:    9
+
+13. APPENDIX B:   9
+
+
+
+
+TRIANZ INTERNAL   4
+1. Introduction
+  The Capacity Management is responsible for ensuring that the Capacity of the
+  IT Infrastructure matches the evolving demands of the business in the most
+  cost-effective and timely manner. Capacity Management is essentially a
+  balancing act; balancing:
+
+
+        •    Cost against Capacity – i.e. the need to ensure that processing Capacity
+             that is purchased is not only cost justifiable in terms of business need, but
+             also the need to make the most efficient use of those resources, and
+        •    Supply against demand – i.e. making sure that the available supply of
+             processing power matches the demands made on it by the business, both
+             now and in the future; it may also be necessary to manage or influence
+             the demand for a particular resource.
+
+
+  8.1       Objective(s)
+            The objective of Capacity Management is to understand the business
+            requirements, the organization’s operations, and the IT Infrastructure, to
+            ensure that all the current and future Capacity and performance aspects
+            of the business requirements are provided cost-effectively.
+
+
+
+
+  8.2 Scope
+            This procedure is applicable to all the Capacity management activities
+
+            handled by project teams for customers and internal stakeholders.
+
+
+
+2. Entry Criteria
+  •     Technology change
+  •     Major change in the business plan
+  •     New technology
+
+
+
+
+TRIANZ INTERNAL                                                                              5
+3. Inputs
+  •   MSA/SOW
+  •   SLAs
+  •   Business/Capacity forecasts
+  •   Technology details
+  •   Information on Changes
+  •   Component performance and capacity information
+
+
+
+
+4. Process Description
+
+  8.1 Capacity Management process flow steps
+
+      4.1.1   Manage business capacity requirements
+                  Based on the business plan/SOW, PM/project team identifies the
+                  resource capacity needed to meet the present and future business
+                  requirements. This includes-Human, Technical-HW/SW,
+                  Information/data. PM/project team quantifies the business impact
+                  for new or changed services.
+
+
+
+      4.1.2 Identify and agree SLAs
+                  PM/ project team identifies SLAs for all critical utilities, service
+                  components and services and monitors SLA compliance on periodic
+                  basis.
+
+
+
+      4.1.3 Prepare and maintain capacity plan
+                  PM/project team prepares high level capacity plan considering the
+                  business scenario and the allocated budget article. PM reviews the
+                  capacity plan once in 6 months for continued suitability and
+                  identifies gaps if any. Refer PM-Work Book-Capacity and availability
+                  tracker
+
+
+
+TRIANZ INTERNAL                                                                          6
+        4.1.4 Monitor resource usage to balance supply and demand
+                  PM/ Project team monitors capacity utilization. PM Assess capacity
+                  management effectiveness and efficiency by use of trend analysis
+                  for predicting the future capacity requirements and for fine tuning the
+                  utilization.
+
+
+
+        4.1.5 Review for corrective actions
+                  PM/Project team plans corrective actions and improvements
+                  wherever required and implements them for improving capacity
+                  management effectiveness.
+
+
+
+
+5. Exit Criteria
+    Action items identified are closed.
+
+
+
+
+  8.1        Output
+
+
+                  Capacity Plan (refer- PM Workbook- Capacity and availability
+                  management tracker)
+                  Performance and analysis reports (refer PM Workbook- Capacity
+                  Trend Utilization report).
+
+
+
+6. Roles and Responsibilities
+    PM decides to allocate the various capacity management activities to his team
+    members.
+
+
+
+7. Process Flow
+   <Ref- sec 4.1>
+
+
+
+TRIANZ INTERNAL                                                                             7
+8. Prerequisites
+
+  8.1       Resource
+          Project team
+
+
+  8.2       Training
+            Training in applicable Bluebook procedures
+
+
+  8.3       References
+
+
+             Document Name
+             ITIL V3-Capacity Management
+
+
+
+
+8. Acronyms/Abbreviations
+
+
+      Acronym/Abbreviation                 Expansion
+      MSA                                  Master Service Agreement
+
+      SLA                                  Service Level Agreement
+
+
+
+9. Related Guidelines, Templates and Checklists
+      Document Name
+      Capacity and availability tracker
+
+      Capacity Trend Utilization report
+
+
+
+10.     Measurement
+        % Utilization of various critical resources identified by Project team, to be
+        measured and analyzed monthly.
+
+
+
+
+TRIANZ INTERNAL                                                                         8
+11. Standards Addressed
+       ISO 27001:2022
+
+
+
+
+      8.1    ISO Control Mapping
+              Category of   ISO 27001:2022 Control         Document Name as
+              Control                                      per ISO 27001:2022
+              Technological 8.6 Capacity Management        Capacity
+              Controls                                     Management
+
+
+
+12.         Tailoring:
+Tailoring if any will be reviewed by PM and approved by Delivery Manager.
+
+
+
+13. Appendix B:
+<NA>
+
+
+
+
+ TRIANZ INTERNAL                                                                9
+                                        Document Control
+
+Owner:              CISO             Release ID:                SMCAPM_PROC_0147
+
+
+
+                    For Trianz Process Improvement Group (TPIG) Purpose Only
+Version History
+
+
+
+                                                                                  Change
+ Ver.                                                               Reason for
+           Date        Author        Reviewer      Approver                       Descript
+ No.                                                                 Change
+                                                                                    ion
+
+ 0.00   15-01-        Anupama       Rakesh         Rakesh       Initial Version   None
+        2021
+
+ 1.00   15-01-        Anupama       Rakesh         Rakesh       Request for       Baseline
+        2021                                                    Baseline          d
+
+ 1.1    15-Jul-22     Tejaswi       Deepti         Srikanth     For review        Update
+                                                                                  the
+                                                                                  Trianz
+                                                                                  Confiden
+                                                                                  tial to
+                                                                                  Internal
+                                                                                  and
+                                                                                  updated.
+                                                                                  Release
+                                                                                  ID
+ 2.0    15-Jul-22     Tejaswi       Deepti         Srikanth     For Approval      Reviewe
+                                                                                  d and
+                                                                                  Baseline
+                                                                                  d
+ 2.1    8-May-23      Sanjana,      ISDP Team      Srikanth     For review        Reviewe
+                      Rama                                                        d with no
+                      Madhavan                                                    changes
+
+ 3.0                                                                              Approve
+        15-May-       Rama                                                        d and
+                                    Vijaya         Srikanth M   For Approval
+        2023          Madhavan                                                    Baseline
+                                                                                  d
+                                                                                  Updated
+                                                   Srikanth M                         the
+  3.1   15-Feb-                                                                    section
+                           Vijaya      Balu                          For review
+        2024                                                                         ISO
+                                                                                   Control
+                                                                                  Mapping
+
+
+ TRIANZ INTERNAL                                                                              10
+                                                                 aligning
+                                                                  to ISO
+                                                                 27001:2
+                                                                    022
+4.0    23-Feb-                                                  Approve
+       2024        Shalini   Vijaya   Srikanth   For Approval   d and
+                                                                Baseline
+                                                                d
+4.1                                                             Migrated
+                                                                to a new
+       17-Apr-                                                  template
+                   Vijaya    Balu                For Review
+       2025                                                     and
+                                                                yearly
+                                                                review
+5.0                                                             Approve
+       14-May-25   Vijaya    Balu     Srikanth   For Approval   d and
+                                                                Baseline
+                                                                d
+
+
+
+
+TRIANZ INTERNAL                                                             11
+                                Contact Information
+                                               Name
+
+                                               Email
+
+                                              Phone
+
+
+
+
+                                  Thank You
+                                     infosec@trianz.com
+
+ The content in this document is copyrighted; any unauthorized use – in part or full – may violate the
+ copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly
+   displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz
+ name and its products are subject to trademark and copyright protections, regardless of how and
+                                          where referenced.
+
+
+
+
+TRIANZ INTERNAL                                                                                      12
+

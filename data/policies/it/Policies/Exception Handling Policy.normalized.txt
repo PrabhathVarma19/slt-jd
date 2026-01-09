@@ -1,0 +1,227 @@
+# Exception Handling Policy
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. PURPOSE
+2. SCOPE
+3. POLICY STATEMENT
+4. EXCEPTION REQUEST
+5. ISO CONTROL MAPPING
+
+## 1. Purpose
+The purpose of this Exception Handling Policy is to establish a structured approach for identifying, reporting, analyzing, and resolving exceptions within the organization. This ensures timely resolution, minimizes security risks, and maintains operational efficiency while complying with legal, regulatory, and organizational requirements.
+
+## 2. Scope
+This policy applies to all published Trianz-defined policies, procedures, and guidelines. It does not apply to any policies or procedures published by groups outside of the Trianz Information Security Management System.
+
+## 3. Policy Statement
+An exception to the ISMS/PIMS practices may be granted by the Product/Project Manager, IT Manager, and CISO for non-compliance resulting from:
+- Implementation of a solution with equivalent protection.
+- Implementation of a solution with superior protection.
+- Impending retirement of a legacy system.
+- Inability to implement the standard due to some limitation.
+
+### Additional Rules:
+- Exceptions are granted for a specific period, not exceeding one to three months or the end of the contract, whichever is earlier.
+- Exceptions are reviewed on a case-by-case basis; their approval renewal is not automatic.
+- The exception review process must log all findings and results in a central repository.
+- Approved exceptions must be periodically reviewed semi-annually by Information Systems, InfoSec, Compliance, and the unit requesting the exception.
+
+## 4. Exception Request
+All Exception Requests should be logged in the control document under the exception request feature. The process for approval is as follows:
+1. Exception ticket creation.
+2. IS Help Desk involvement.
+3. Reporting Manager Approval.
+4. IT Manager Approval (who can decide if further approval is required).
+5. If further approval is needed, the request goes to the CISO for final approval or rejection.
+
+### Responsibilities of the Exception Requestor:
+- Review and work with the IS team and InfoSec and Compliance team members to:
+  - Assess the risks created by the exception.
+  - Evaluate potential alternatives.
+  - Attain recommendations.
+
+### The Exception Request must include:
+- Description of the non-compliance.
+- Anticipated length of non-compliance.
+- Assessment of risk associated with the requested non-compliance.
+- Proposed plan for managing the risk associated with non-compliance.
+- Proposed metrics for evaluating the success of risk management.
+- Proposed review date to evaluate progress toward compliance.
+- Approval of the exception request by the Project Manager/Function Head via email and duly signed in the exception request form.
+
+- After InfoSec has reviewed the request and confirmed the details, the CISO will review and approve or reject the request.
+- If the non-compliance is due to a superior solution, an exception will normally be granted until the published standard or procedure can be revised to include the new solution. An exception request must still be submitted.
+
+## 5. ISO Control Mapping
+### Categories of Control:
+- **Organizational controls**: ISO 27001:2022 Control 5.1 to 5.37
+- **People controls**: ISO 27001:2022 Control 6.1 to 6.8
+- **Physical controls**: ISO 27001:2022 Control 7.1 to 7.14 and 8.1 to 8.34
+- **Technological controls**: Refer to the Exception Handling Policy.
+
+### 5 Document Control
+
+- **Owner:** CISO  
+- **Release ID:** EXCP-POL-055  
+
+#### Version History
+
+- **0.01**  
+  - **Date:** Initial Draft  
+  - **Author:** Joshy VM  
+  - **Reviewer:** Nil  
+  - **Approver:** Nil  
+
+- **0.02**  
+  - **Date:** 26-Aug-19  
+  - **Author:** Phani Krishna  
+  - **Reviewer:** Initial draft review  
+  - **Approver:** Nil  
+
+- **0.03**  
+  - **Date:** 11-Sep-19  
+  - **Author:** Karthik N  
+  - **Reviewer:** Phani Krishna  
+  - **Approver:** Initial draft review  
+  - **Reason for Change:** Attached the exception request form.  
+
+- **0.05**  
+  - **Date:** 13-Sep-19  
+  - **Author:** Karthik N  
+  - **Reviewer:** Phani Krishna & Balu Nair  
+  - **Approver:** Final review  
+  - **Reason for Change:** Review feedback incorporated.  
+
+- **0.06**  
+  - **Date:** 16-Sep-19  
+  - **Author:** Phani Krishna  
+  - **Reviewer:** Nil  
+  - **Approver:** Incorporated feedback from Vivek.  
+
+- **1.0**  
+  - **Date:** 16-Sep-19  
+  - **Author:** Karthik N  
+  - **Reviewer:** Phani Krishna  
+  - **Approver:** Vivek S  
+  - **Reason for Change:** Baselined.  
+
+- **1.1**  
+  - **Date:** 11-May-20  
+  - **Author:** Karthik N  
+  - **Reviewer:** Balu Nair  
+  - **Approver:** Nil  
+  - **Reason for Change:** 
+    1. Format change  
+    2. Tool-based integration added  
+
+- **2.0**  
+  - **Date:** 14-May-20  
+  - **Author:** Karthik N  
+  - **Reviewer:** Balu Nair  
+  - **Approver:** Phani Krishna  
+  - **Reason for Change:** Approved and baselined.  
+
+- **2.1**  
+  - **Date:** 25-Jan-21  
+  - **Author:** Karthik N  
+  - **Reviewer:** Phani Krishna  
+  - **Approver:** Nil  
+  - **Reason for Change:** Updated sections 3 and 4; updated information classification.  
+
+- **3.0**  
+  - **Date:** 25-Jan-21  
+  - **Author:** Karthik N  
+  - **Reviewer:** Phani Krishna  
+  - **Approver:** Phani Krishna  
+  - **Reason for Change:** Approved and baselined.  
+
+- **3.1**  
+  - **Date:** 21-Dec-21  
+  - **Author:** Divya G  
+  - **Reviewer:** Karthik N  
+  - **Approver:** Nil  
+  - **Reason for Change:** Removed section 5.  
+
+- **4.0**  
+  - **Date:** 13-Jan-22  
+  - **Author:** Divya G  
+  - **Reviewer:** Karthik N  
+  - **Approver:** Sivaramakrishnan N  
+  - **Reason for Change:** Approved and baselined.  
+
+- **4.1**  
+  - **Date:** 13-Mar-22  
+  - **Author:** Sanjana  
+  - **Reviewer:** Karthik N  
+  - **Approver:** Sivaramakrishnan N  
+  - **Reason for Change:** The scope has been extended to products and services.  
+
+- **5.0**  
+  - **Date:** 18-Mar-22  
+  - **Author:** Sanjana  
+  - **Reviewer:** Karthik N  
+  - **Approver:** Sivaramakrishnan N  
+  - **Reason for Change:** Approved and baselined.  
+
+- **5.1**  
+  - **Date:** 21-Apr-23  
+  - **Author:** Sanjana, Pallavi Chakrabarty  
+  - **Reviewer:** Karthik N  
+  - **Approver:** Nil  
+  - **Reason for Change:** New template change.  
+
+- **6.0**  
+  - **Date:** 12-May-23  
+  - **Author:** Sanjana  
+  - **Reviewer:** Karthik N  
+  - **Approver:** Srikanth M  
+  - **Reason for Change:** Approved and baselined.  
+
+- **6.1**  
+  - **Date:** 15-Feb-24  
+  - **Author:** Shalini  
+  - **Reviewer:** Vijaya  
+  - **Approver:** Srikanth  
+  - **Reason for Change:** Mapped with new ISO control from ISO 27001, 2022, 8.15.  
+
+- **7.0**  
+  - **Date:** 23-Feb-24  
+  - **Author:** Shalini  
+  - **Reviewer:** Vijaya  
+  - **Approver:** Srikanth  
+  - **Reason for Change:** Approved and baselined.  
+
+- **7.1**  
+  - **Date:** 16-Apr-25  
+  - **Author:** Vijaya  
+  - **Reviewer:** Pranesh & Chaitanya  
+  - **Approver:** Nil  
+  - **Reason for Change:** Periodicity for exceptions.
+
+### 7.0 Document Updates
+- **7.1 Update Date**: 5-May-2025
+  - **Updated By**: Vijaya Balu
+  - **Status**: For review
+  - **Notes**: Migrated to new template.
+
+- **7.2 Approval Date**: 15-May-2025
+  - **Updated By**: Vijaya Balu
+  - **Status**: For Approval
+  - **Notes**: Approved and Baselined.
+
+### Contact Information
+- **Name**: [Not specified]
+- **Email**: infosec@trianz.com
+- **Phone**: [Not specified]
+
+### Copyright Notice
+- The content in this document is copyrighted. Unauthorized use, in part or full, may violate copyright, trademark, and other laws. This document may not be modified, reproduced, publicly displayed, performed, distributed, or used for any public or commercial purposes. The Trianz name and its products are subject to trademark and copyright protections, regardless of how and where referenced.

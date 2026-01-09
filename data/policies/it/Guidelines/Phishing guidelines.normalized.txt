@@ -1,0 +1,128 @@
+# Phishing Guidelines
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public: Not classified
+- Internal: Classified
+- Confidential: Not classified
+- Restricted: Not classified
+
+## Table of Contents
+1. OVERVIEW
+2. PURPOSE
+3. TYPES OF PHISHING
+   - 3.1 Spear Phishing
+   - 3.2 Whaling
+   - 3.3 Clone Phishing
+   - 3.4 Vishing and Smishing
+   - 3.5 Pharming
+   - 3.6 Quishing or QR Phishing
+4. COMMON PHISHING INDICATORS
+5. WHAT TO DO IF YOU SUSPECT A PHISHING ATTEMPT
+6. BEST PRACTICES TO PROTECT NETWORK RESOURCES FROM PREVALENT PHISHING THREATS
+
+## 1. Overview
+Phishing is a type of cyberattack that uses fraudulent emails, text messages, phone calls, or websites to trick individuals into sharing sensitive data, downloading malware, or exposing themselves to cybercrime. It is a deceptive tactic where attackers impersonate legitimate entities to steal sensitive information. Recognizing and avoiding phishing attempts is crucial for protecting personal and organizational data.
+
+## 2. Purpose
+The phishing guidelines are essential for safeguarding both individual and organizational security. These guidelines empower employees to recognize and respond appropriately to phishing threats, thereby reducing the risk of data breaches and financial losses.
+
+## 3. Types of Phishing
+
+### 3.1 Spear Phishing
+- Spear phishing emails are sent to a select target, which could be an individual or organization.
+- Example: A spoofed email from the attacker (acting as a vendor) requesting a payment that appears to be an authentic request.
+- Attackers study their victims, making the emails appear to come from a trusted source. This is the most common phishing method on social media websites.
+
+### 3.2 Whaling
+- A whaling attack is a type of spear phishing targeting high-profile individuals or organizations.
+- Targets often include companies that conduct wire transfers and have suppliers abroad.
+- Cybercriminals impersonate senior managers to gain access to sensitive data or money, using information found online (including social media) to trick high-level employees into providing fraudulent transfers or personal data.
+
+### 3.3 Clone Phishing
+- The attacker creates an almost identical replica of a previously received message to deceive the victim.
+- The email is sent from an address similar to the legitimate sender, with the only difference being that the attachment or link is replaced with something malicious. It may claim to be a re-send or an updated version of the original.
+
+### 3.4 Vishing and Smishing
+- Vishing and smishing refer to phishing conducted over the phone.
+- In vishing, the victim receives a call with a voice message that appears to be from a known institution, creating a sense of urgency that leads the user to provide sensitive information.
+
+### 3.5 Pharming
+- Pharming is a phishing method that exploits cache poisoning in the Domain Name System (DNS), which converts website names into numeric IP addresses to direct visitors to IT services and devices.
+
+### 3.6 Quishing or QR Phishing
+- Quishing, or QR phishing, involves attackers using malicious QR codes to trick individuals into visiting harmful websites or downloading malware. Scanning a QR code may redirect users to sites designed to steal sensitive information, such as passwords or financial data. 
+
+### 4. Common Phishing Indicators
+1. **Generic Greetings**: Phishing emails often use impersonal salutations like "Dear Customer" instead of addressing you by name.
+2. **Urgent or Threatening Language**: Messages that create a sense of urgency, such as claiming your account will be suspended unless you act immediately, are common in phishing attempts.
+3. **Suspicious Links or Attachments**: Hover over links to check their destination URL. Be cautious of unexpected attachments, as they may contain malware.
+4. **Unusual Sender Email Addresses**: Phishers often use email addresses that mimic legitimate ones but may have slight variations or misspellings.
+5. **Spelling and Grammar Mistakes**: Frequent errors in emails can indicate phishing, as professional organizations typically proofread their communications.
+
+### 5. What to Do if You Suspect a Phishing Attempt
+- **Do Not Click on Links or Open Attachments**: Avoid interacting with any links or attachments in suspected phishing emails.
+- **Report the Incident**: Do not click on any links or download attachments. Use the report message feature in Outlook to report the email as phishing. Forward the suspicious email to IS@Trianz.com for examination.
+- **Check for Internal Emails**: Report any internal emails that contain suspicious messages. All internal emails are labeled with a green ribbon, while external emails are labeled with a red ribbon.
+- **External Email Warning**: If you receive an email marked as [EXTERNAL EMAIL], do not click on links or attachments or reply unless you recognize the sender and know the content is safe.
+
+### 6. Best Practices to Protect Network Resources from Phishing Threats
+- **Verify the Source**: Contact the organization directly using known contact information to verify the legitimacy of unexpected emails.
+- **Be Cautious with Personal Information**: Avoid providing sensitive information like passwords or credit card numbers in response to unsolicited requests.
+- **Use Security Software**: Keep antivirus and anti-malware software up to date to help detect and block phishing attempts.
+- **Educate Yourself and Others**: Regularly update your knowledge about phishing tactics and share this information to raise awareness.
+- **User Phishing Awareness Training**: Implement a standard anti-phishing training program and require employees to review training material annually.
+- **CLEAR Program Evolution**: Ensure a training check certifies that employees have retained information outlined in the training program.
+- **Identify Network Phishing Vulnerabilities**: Regularly assess and address potential vulnerabilities in the network.
+- **Enable Multi-Factor Authentication (MFA)**: Activating strong MFA is an effective way to protect internet-facing business accounts from phishing threats.
+- **Implement Strong Password Policies**: Enforce a password strength policy that requires minimum character length, inclusion of numbers, special characters, and case sensitivity, while prohibiting easily guessable passwords.
+
+### 3. Security Measures
+
+1. **Password Management**: Users must not recycle previously used passwords.
+
+2. **DNS Filtering and Firewall**: 
+   - Implement DNS filtering or firewall deny lists to block known malicious sites.
+
+3. **Anti-Virus Solutions**: 
+   - Implement anti-virus solutions to mitigate malware and prevent execution of malware from malicious hyperlinks or email attachments.
+
+4. **File Restriction Policies**: 
+   - Implement file restriction policies to prevent downloading and executing high-risk file extensions (e.g., .exe, .scr). These file types are unnecessary for daily operations and should be heavily restricted on standard business accounts.
+
+5. **Mandatory Training**: 
+   - All associates are required to attend training conducted by the Infosec and IS Team.
+
+6. **Simulation Tests**: 
+   - All associates must participate in simulation tests administered by the IS team. These tests are designed to help associates recognize and respond to phishing threats in realistic, hands-on scenarios.
+
+### 4. Document Control
+
+- **Owner**: Management Representative
+- **Release ID**: PHIS-GUID-0080
+
+### 5. Version History
+
+- **Version 0.1**: 
+  - Author: Vijaya Balu, Rajeswari Pranesh, Siva
+  - Reviewer: None
+  - Approver: None
+  - Date: 6-Jun-2025
+  - Change Description: Initial Review
+
+- **Version 1.0**: 
+  - Author: Vijaya Balu, Rajeswari Pranesh, Siva
+  - Reviewer: Srikanth Mantena
+  - Approver: None
+  - Date: 28-Aug-2025
+  - Change Description: Approved and Baselined
+
+### 6. Contact Information
+
+- **Email**: infosec@trianz.com
+
+### 7. Copyright Notice
+
+The content in this document is copyrighted. Unauthorized use, in part or full, may violate copyright, trademark, and other laws. This document may not be modified, reproduced, publicly displayed, performed, distributed, or used for any public or commercial purposes. The Trianz name and its products are subject to trademark and copyright protections.

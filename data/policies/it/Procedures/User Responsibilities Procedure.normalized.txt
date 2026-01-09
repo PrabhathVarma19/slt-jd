@@ -1,0 +1,300 @@
+# User Responsibilities Procedure
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. OBJECTIVE
+2. SCOPE
+3. RESPONSIBILITIES
+   - 3.1 Password Use
+   - 3.2 Clear Desk and Clear Screen
+4. SECURITY AND DATA PRIVACY ROLE - DELIVERY
+5. SECURITY AND DATA PRIVACY ROLE - FUNCTIONS
+6. ISO CONTROLS MAPPING
+
+## 1. Objective
+The objective of this document is to ensure that Information Asset users are aware of their responsibilities for maintaining effective access controls, particularly regarding the use of passwords and the security of user equipment.
+
+## 2. Scope
+This document is applicable to all users of information assets at Trianz.
+
+## 3. Responsibilities
+
+### 3.1 Password Use
+- Users shall be issued a unique user ID and initial password to log on to the local system.
+- Users must change their password at the time of the first login according to the following rules:
+  - The password must contain alphanumeric characters and be non-dictionary.
+  - The password must consist of a minimum of 8 characters.
+  - The password must include a mix of uppercase letters, lowercase letters, numbers, and/or special characters.
+- Passwords must be changed according to the Password Security Policy.
+- Users shall not share their individual passwords with any other users.
+
+### 3.2 Clear Desk and Clear Screen
+- Employees must lock away all confidential and valuable documents (both paper and magnetic) in cabinets or desk drawers when the desk is unattended for an extended period (e.g., during meetings, lunch, or overnight).
+- All wastepaper containing information or data must be placed in confidential waste shredding bins. This type of wastepaper must not be disposed of in normal rubbish bins or unclassified paper recycling bins.
+- Personal computers, computer terminals, and printers must not be left logged on when unattended and should be protected by key locks, passwords, or other controls when not in use.
+- Employees must lock their PCs when away from the desk using “Ctrl + Alt + Delete” and log off computers and laptops when unattended. A password-protected screensaver should be activated, and at the end of work, all applications must be closed, and the workstation/laptop logged off or shut down. Laptops should be secured with a cable lock.
+- All PCs, laptops, and workstations must have a password-protected screensaver with automatic activation set to 10 minutes.
+- Employees shall not store any video/audio/games on their computers.
+- Incoming and outgoing mail points and unattended fax machines must be protected.
+- Photocopiers should be locked or otherwise protected from unauthorized use outside normal working hours.
+- Users should not store confidential information on personal computers; file servers should be used for storing confidential information to ensure appropriate access restrictions and regular backups.
+- Sensitive or classified information printed must be cleared from printers immediately.
+- Users should collect printouts from network printers immediately and check the contents for completeness. If printing is incomplete and the user does not wish to continue, they should press the ‘Cancel Job’ button to cancel the current print job.
+
+### 4. Security and Data Privacy Role - Delivery
+
+- Ensure compliance with Infosec Policies and Procedures.
+- Ensure compliance with Data Privacy Policies and Procedures.
+- Ensure compliance with Client Specified Security Controls as defined in the Master Service Agreement (MSA) and Statement of Work (SOW).
+- Ensure compliance with Client Specified Data Privacy Controls as defined in the MSA and SOW.
+- Ensure adherence to standards and regulatory compliance as per Client and Trianz.
+- Ensure readiness for both Internal and External Audits, as well as Client Audits.
+- Ensure Infosec compliance as per the following Security Controls:
+
+#### SECURITY CONTROLS
+
+- **Asset Management**
+  - Maintain an inventory of Client Assets.
+  - Manage asset risk.
+  - Maintain an inventory of Trianz Assets, including derived data like log files.
+  - Make asset location decisions.
+  - Ensure multi-tenancy and client data isolation for cloud projects only.
+  - Implement zoning.
+  - Filter incoming and outgoing traffic.
+  - Utilize a Web Application Firewall.
+
+- **Access Management**
+  - Implement user-based access control.
+  - Manage user access.
+  - Manage privileged access.
+  - Control root admin access.
+  - Implement inactivation procedures.
+  - Use Single Sign-On (SSO).
+  - Implement Multi-Factor Authentication (MFA).
+  - Manage passwords.
+  
+- **Data Encryption**
+  - Encrypt data at rest, including databases, backups, and volumes.
+  - Encrypt data in transmission.
+  - Manage encryption keys.
+
+- **Data Retention and Disposal**
+  - Define retention periods.
+  - Ensure secure disposal of data.
+
+- **Patch Management and Malware Protection**
+  - Manage backup locations and decisions.
+  - Determine backup frequency.
+  - Implement incremental and full backups.
+  
+- **Log Management**
+  - Control access to logs.
+  - Conduct audits of logs.
+
+- **System Hardening**
+  - Harden servers, applications, and operating systems.
+
+- **Vulnerability and Penetration Assessment**
+- **Network Security**
+- **Licensing**
+- **Training**
+- **Change Management**
+- **Configuration Management**
+- **Incident Management**
+- **Security Controls Contract Compliance**
+- **Secure ODC Maintenance** (if applicable)
+- **BCP Testing & Reporting** (if applicable)
+- **Secure SDLC** (if applicable)
+
+#### Data Privacy
+- Implement Privacy by Design.
+- Conduct data diagnostics.
+- Maintain a personal data inventory.
+- Perform Data Privacy Impact Assessments, including data diagnostics, inventory, and flows.
+- Manage Data Privacy Risks.
+- Notify in case of Data Privacy Breaches.
+- Comply with Data Protection Contract commitments.
+- Manage vendors, including signing agreements like Non-Disclosure Agreements (NDA), Data Processing Agreements (DPA), Supplier Agreements, and conducting vendor security assessments.
+
+### 1. Filtering Incoming and Outgoing Traffic
+
+### 2. Web Application Firewall
+
+### 3. Access Management
+
+#### 3.1 User Based Access Control
+
+#### 3.2 User Access Management
+
+#### 3.3 Privileged Access Management
+
+#### 3.4 Root Admin
+
+#### 3.5 Inactivation
+
+### 4. Single Sign-On (SSO)
+
+### 5. Multi-Factor Authentication (MFA)
+
+### 6. Password Management
+
+### 7. Encryption of Data
+- **At Rest**: Data must be encrypted when stored.
+- **Database**: Databases must utilize encryption.
+- **Backup**: Backup data must be encrypted.
+- **Volume**: Volume data must be encrypted.
+- **Transmission**: Data must be encrypted during transmission.
+
+### 8. Key Management
+
+### 9. Data Retention and Disposal
+- **Retention Period Definition**: Define the retention period for data.
+- **Secure Disposal**: Ensure secure disposal of data.
+
+### 10. Patch Management and Malware Protection
+
+### 11. Backup Management
+- **Backup Location Decision**: Determine the location for backups.
+- **Frequency Decision**: Decide how often backups are performed.
+- **Incremental Backup**: Implement incremental backups.
+- **Full Backup**: Implement full backups.
+
+### 12. Log Management
+- **Access to Logs**: Control access to logs.
+- **Audit of Logs**: Conduct audits of logs.
+
+### 13. Hardening
+- **Server**: Harden server configurations.
+- **Application**: Harden application configurations.
+- **Operating System (OS)**: Harden operating system configurations.
+
+### 14. Network Security
+
+### 15. Licensing
+
+### 16. Trainings
+
+### 17. Change Management
+
+### 18. Configuration Management
+
+### 19. Incident Management
+
+### 20. Security Controls Contract Compliance
+
+### 21. Data Diagnostics
+- **Personal Data Inventory**: Maintain an inventory of personal data.
+- **Data Privacy Impact Assessment**: Conduct assessments on data diagnostics, inventory, and flows.
+- **Data Privacy Risk Management**: Manage risks related to data privacy.
+- **Data Privacy Breach Notification**: Notify relevant parties in case of a data breach.
+- **Data Protection Contract Commitments Compliance**: Ensure compliance with data protection contracts.
+
+### 22. Vendor Management
+- **Vendor Management**: Manage vendor agreements such as NDAs, DPAs, Supplier Agreements, and conduct Vendor Security Assessments.
+
+### 6. ISO Controls Mapping
+- **Category of Control**: Organizational Controls
+  - **ISO 27001:2022 Control 5.2**: Information Security Roles and Responsibilities
+  - **Document Name**: User Responsibilities Procedure
+  - **ISO 27001:2022 Control 5.3**: Segregation of Duties
+
+### Document Control
+- **Owner**: CISO
+- **Release ID**: URP-PROC-0057
+
+### Version History
+- **Version 0.0**: Initial draft on 26-Feb-07 by Jyotessh G Nair.
+- **Version 0.1**: Review on 26-Feb-07 by Jyotessh G Nair, incorporating feedback.
+- **Version 1.0**: Approved Baseline on 26-Feb-07 by Jyotessh G Nair and Zulfikar Deen.
+- **Version 1.1**: Consolidated User Responsibilities for Password Use and Clear Desk Clear Screen on 28-Apr-09 by Bharatee sha B R.
+- **Version 2.0**: Baselined on 03-Jun-09 by Balu Nair.
+- **Version 2.1**: Formatted entire document on 13-May-10 by Balu Nair.
+- **Version 3.0**: Baselined on 19-May-10 by Balu Nair.
+- **Version 3.1**: Modified Release ID on 24-May-11 by Srilakshmi.
+- **Version 4.0**: Baselined on 24-May-11 by Srilakshmi.
+- **Version 4.1**: Changes approved on 3-Aug-11 by Sudharsana, including replacing Owner with Management Representative in place of CIO and updates in Document Classification.
+
+### 5.0 Approval History
+- **3-Aug-11**: Sudharsana requested a baseline, which was approved and baselined.
+
+### 6.0 QMG Review
+- **28-Sep-12**: Sudharsana conducted a QMG review, formatted as per the latest template format.
+
+### 7.0 Standardization of Blue Book Process Assets
+- **08-Nov-12**: Balu Nair modified the template format and changed the logo.
+  
+### 7.1 Clear Desk and Clear Screen Policy Update
+- **14-Oct-16**: Sriharsha modified the Clear Desk and Clear Screen section by adding cloud services responsibility for the administrator/user. The Trianz logo was also modified.
+
+### 8.0 CISO Approval
+- **07-Dec-16**: Balu Nair received approval from the CISO, and the document was baselined.
+
+### 8.1 Information Classification Update
+- **29-Apr-19**: Balu Nair modified the information classification and the Trianz logo.
+
+### 9.0 Release Approval
+- **14-May-19**: Balu Nair, Ganesh Arunachal approved the release, and the document was baselined.
+
+### 9.1 Annual Review Migration
+- **15-May-20**: Balu Nair, Phani Krishna migrated the document to the new template during the annual review.
+
+### 10.0 Approval Process
+- **15-May-20**: Balu Nair, Phani Krishna submitted the document for approval, which was approved and baselined.
+
+### 10.1 Information Security and Data Privacy Update
+- **3-Feb-21**: Vijaya Rajeswari reviewed the document, adding delivery and function SPOC roles and responsibilities for Infosec and Data Privacy. The information classification was updated.
+
+### 11.0 Approval Confirmation
+- **3-Feb-21**: Vijaya Rajeswari submitted the document for approval, which was approved and baselined.
+
+### 11.0 Review with No Changes
+- **3-Jan-22**: Karthik N reviewed the document, noting no changes.
+
+### 11.1 Annual Review Minor Changes
+- **05-Apr-23**: Balu Nair and Asha Veeramalla made minor changes to the procedure as part of the annual review and updated to a new template.
+
+### 12.0 Annual Review Approval
+- **09-May-23**: Balu Nair received approval from Srikanth Mantena for the annual review, and the document was baselined.
+
+### 12.0 ISO Control Mapping Update
+- **Date:** 15-Feb-2024
+- **Reviewed by:** Vijaya Balu Srikanth Mantena
+- **Status:** For review
+- **Notes:** Updated the section to align with ISO 27001:2022.
+
+### 13.0 Approval of ISO Control Mapping
+- **Date:** 23-Feb-2024
+- **Reviewed by:** Vijaya Balu Srikanth Mantena
+- **Status:** For approval
+- **Notes:** Approved and baselined.
+
+### 13.1 Migration to New Template
+- **Date:** 28-May-2025
+- **Reviewed by:** Kruti Vijaya
+- **Status:** For review
+- **Notes:** Migrated to new template.
+
+### 14.0 Approval of New Template Migration
+- **Date:** 29-May-2025
+- **Reviewed by:** Kruti Vijaya Srikanth Mantena
+- **Status:** For approval
+- **Notes:** Approved and baselined.
+
+### Contact Information
+- **Name:** [Not specified]
+- **Email:** [Not specified]
+- **Phone:** [Not specified]
+
+### Thank You
+- **Contact Email:** infosec@trianz.com
+
+### Copyright Notice
+- The content in this document is copyrighted. Unauthorized use, in part or full, may violate copyright, trademark, and other laws. This document may not be modified, reproduced, publicly displayed, performed, distributed, or used for any public or commercial purposes. The Trianz name and its products are subject to trademark and copyright protections.

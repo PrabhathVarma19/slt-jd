@@ -1,0 +1,125 @@
+# Phishing Guidelines
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. Overview
+2. Purpose
+3. Types of Phishing
+   - 3.1 Spear Phishing
+   - 3.2 Whaling
+   - 3.3 Clone Phishing
+   - 3.4 Vishing and Smishing
+   - 3.5 Pharming
+   - 3.6 Quishing or QR Phishing
+4. Common Phishing Indicators
+5. What to Do If You Suspect a Phishing Attempt
+6. Best Practices to Protect Network Resources from Prevalent Phishing Threats
+
+## 1. Overview
+Phishing is a type of cyberattack that uses fraudulent emails, text messages, phone calls, or websites to trick people into sharing sensitive data, downloading malware, or otherwise exposing themselves to cybercrime. It is a deceptive tactic where attackers impersonate legitimate entities to steal sensitive information. Recognizing and avoiding phishing attempts is crucial to protect personal and organizational data.
+
+## 2. Purpose
+The phishing guidelines are essential for safeguarding both individual and organizational security. These guidelines empower employees to recognize and respond appropriately to phishing threats, thereby reducing the risk of data breaches and financial losses.
+
+## 3. Types of Phishing
+### 3.1 Spear Phishing
+- Spear phishing emails are sent to a select target, which could be an individual or organization. 
+- Example: A spoofed email from the attacker (acting as a vendor) requesting a payment that appears to be an authentic request.
+- These attacks are effective because attackers study their victims, making the emails appear to come from trusted sources.
+
+### 3.2 Whaling
+- A whaling attack is a type of spear phishing targeting high-profile individuals or organizations, often those that conduct wire transfers.
+- Cybercriminals impersonate senior managers to gain access to sensitive data or money, using information found online to trick high-level employees into making fraudulent transfers or sharing personal data.
+
+### 3.3 Clone Phishing
+- The attacker creates a nearly identical replica of a previously received message to deceive the victim.
+- The email is sent from an address similar to the legitimate sender, with the only difference being that the attachment or link is replaced with something malicious.
+
+### 3.4 Vishing and Smishing
+- **Vishing**: Phishing conducted over the phone, where the victim receives a call that appears to be from a known institution, creating urgency to provide sensitive information.
+- **Smishing**: Malicious text messages are sent to induce users to click on a harmful link or provide personal information.
+
+### 3.5 Pharming
+- This method exploits cache poisoning related to the Domain Name System (DNS), redirecting users to fraudulent websites without their knowledge.
+
+### 3.6 Quishing or QR Phishing
+- Quishing involves the use of malicious QR codes that redirect users to harmful websites or prompt them to download malware.
+- Scanning a QR code may lead to sites designed to steal sensitive information, such as passwords or financial data.
+
+## 4. Common Phishing Indicators
+1. **Generic Greetings**: Phishing emails often use impersonal salutations like "Dear Customer" instead of addressing you by name.
+2. **Urgent or Threatening Language**: Messages that create a sense of urgency, such as claiming your account will be suspended unless you act immediately, are common in phishing attempts.
+
+### 4. Suspicious Links or Attachments
+- Hover over links to check their destination URL.
+- Be cautious of unexpected attachments, as they may contain malware.
+
+### 5. Unusual Sender Email Addresses
+- Phishers often use email addresses that mimic legitimate ones, featuring slight variations or misspellings.
+
+### 6. Spelling and Grammar Mistakes
+- Professional organizations typically proofread their communications. Frequent errors can indicate phishing.
+
+### 7. What to Do if You Suspect a Phishing Attempt
+- **Do Not Click on Links or Open Attachments:** If you suspect an email is phishing, avoid interacting with any links or attachments.
+- **Report the Incident:** 
+  - Do not click on any links within the email or download any attachments.
+  - Use the report message feature in Outlook to report the email as phishing.
+  - Forward the suspicious email to IS@Trianz.com for examination.
+- **Check for Internal Emails:** 
+  - Report if you receive an email internally that appears suspicious. Internal emails are labeled with a green ribbon, while external emails are labeled with a red ribbon.
+  - If you see “[EXTERNAL EMAIL]”, do not click links or attachments or reply unless you recognize the sender and know the content is safe.
+
+### 8. Best Practices to Protect Network Resources from Phishing Threats
+- **Verify the Source:** Contact the organization directly using known contact information to verify legitimacy if you receive an unexpected email.
+- **Be Cautious with Personal Information:** Avoid providing sensitive information like passwords or credit card numbers in response to unsolicited requests.
+- **Use Security Software:** Keep antivirus and anti-malware software up to date to help detect and block phishing attempts.
+- **Educate Yourself and Others:** Regularly update your knowledge about phishing tactics and share this information to raise awareness.
+- **User Phishing Awareness Training:** 
+  - Implement a standard anti-phishing training program.
+  - Require employees to review phishing training material annually.
+  - Ensure the CLEAR program evolves with a training check that certifies employee retention of training information.
+- **Identify Network Phishing Vulnerabilities:**
+  - **Enable MFA:** Activating strong Multi-Factor Authentication (MFA) protects internet-facing business accounts from phishing threats.
+  - **Implement Strong Password Policies:** 
+    - Passwords must adhere to a strength policy requiring minimum character length, numbers, special characters, and case sensitivity.
+    - Prohibit users from recycling previously used passwords.
+  - **Implement DNS Filtering or Firewall Denylists:** Block known malicious sites.
+  - **Implement Anti-Virus Solutions:** Mitigate malware and stop execution if a malicious hyperlink or attachment is opened.
+  - **Implement File Restriction Policies:** Prevent downloading and executing high-risk file extensions (e.g., .exe, .scr) that are unnecessary for daily operations.
+- **Mandatory Training:** All associates must attend training conducted by the Infosec and IS Team.
+- **Simulation Test:** All associates are required to participate in simulation tests administered by the IS team to better recognize and respond to phishing threats in realistic scenarios.
+
+### Document Control
+- **Owner:** Management
+- **Release ID:** PHIS-GUID-0080
+- **Version History:**
+  - **Version No.:** 0.1
+    - **Author:** Vijaya
+    - **Reviewer:** Balu, Pranesh & Rajeswari
+    - **Approver:** Siva Srikanth Mantena
+    - **Date:** 6-Jun-2025
+    - **Reason for Change:** Initial Review
+  - **Version No.:** 1.0
+    - **Author:** Vijaya
+    - **Reviewer:** Balu, Pranesh & Rajeswari
+    - **Approver:** Siva Srikanth Mantena
+    - **Date:** 28-Aug-2025
+    - **Reason for Change:** Approved and Baselined
+
+### Contact Information
+- **Name:** Thank You
+- **Email:** infosec@trianz.com
+- **Phone:** [Not Provided] 
+
+**Note:** The content in this document is copyrighted; any unauthorized use may violate copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly displayed, performed, or distributed for any public or commercial purposes. The Trianz name and its products are subject to trademark and copyright protection.
+
+It appears that the text provided does not contain any specific policy rules or structured information to rewrite. If you have additional content or specific sections from the policy document that need to be reformatted, please provide that text, and I will assist you in rewriting it accordingly.

@@ -1,0 +1,342 @@
+SECURE SYSTEM ARCHITECTURE
+AND ENGINEERING PRINCIPLES
+
+
+
+
+TRIANZ INTERNAL          trianz.com
+                      Statement of Confidentiality
+
+  The information contained in this document is internal to Trianz. It shall not be
+  disclosed, duplicated, or used for any purpose other than that stated herein, in
+  whole or in part, without the express written consent of Trianz.
+
+
+
+
+                         Information Classification
+
+
+     ☐ Public
+
+     ☒ Internal
+
+     ☐ Confidential
+
+     ☐ Restricted
+
+
+
+
+TRIANZ INTERNAL                                                                  2
+                           Table of Contents
+1.   OBJECTIVES                                4
+
+2.   SCOPE                                     4
+
+3.   SECURITY PRINCIPLES                       4
+
+4.   SECURITY FOUNDATION                       4
+
+5.   RISK BASED                                6
+
+6.   SECURE DEVELOPMENT                        6
+
+7.   SECURE IMPLEMENTATION                     6
+
+8.   EASE OF USE                               7
+
+9.   REDUCE VULNERABILITIES                    7
+
+10. REFERENCE(S)                               8
+
+11. ISO CONTROL MAPPING                        8
+
+
+
+
+ TRIANZ INTERNAL                               3
+1. Objectives
+    The objective of this procedure is to provide the guidelines on secure system
+    architecture and engineering principles that are established in the organization.
+
+
+
+2. Scope
+    This procedure is applicable to all new and existing systems and application
+    architecture developed at Trianz.
+
+    The procedure applies to all managed Trianz products and services.
+
+
+
+3. Security Principles
+      •   Security Foundation
+      •   Risk Based
+      •   Ease of Use
+      •   Increase Flexibility
+      •   Reduce Vulnerabilities
+      •   Security by design
+      •   Defense in depth
+      •   Security by default
+      •   Fail Securely
+      •   Never trust inputs from external sources or applications
+      •   Secure deployment
+      •   Always assume breach - design or implement controls accordingly.
+      •   Always follow least privilege or default deny rules.
+      •   Always design usability and manageability and least functionality in mind.
+
+
+
+
+4. Security Foundation
+          The principles related to Security foundation are specified below
+
+
+
+
+TRIANZ INTERNAL                                                                     4
+       • To establish a sound security policy as the “foundation”, the Information
+         Security Policy is defined and implemented. The policy identifies security
+         objectives like
+       • To ensure confidentiality, integrity and availability of critical information at
+         all times
+       • To protect information assets
+       • To protect critical information from unauthorized access, use, disclosure,
+         modification, and disposal, whether intentional or unintentional
+       • To Implement security requirements from the initial level of the project
+         initiation
+       • Understanding the security requirements
+       • Implementation of security requirements such as
+       • User authentication
+       • Secure session controls
+       • LDAP authentication
+       • Role based security implemented
+       • Rule or Role or attribute based access control with least privilege or default
+         deny policy.
+       • Tracking the user activities while changing the data
+       • Data is encrypted at database level to avoid the access to other users
+       • User activities are tracking while read access at database level. (Query
+         band implementation)
+       • Participating in the evaluation of security products
+       • Define physical and logical security boundaries
+       • Physical Access – Access control mechanism is implemented
+       • Logical access at application or product level is provided based on the
+         requirements
+       • Ensure that project team to develop and validate secure application
+       • Define security standards like encryption algorithms to be used, etc as per
+          the project requirements
+       • Train the team on the defined standards
+       • Periodically perform Threat Modeling on the applications and cover all the
+          known threats, attack patterns and vulnerabilities as per Threat Modeling
+          procedure.
+
+
+TRIANZ INTERNAL                                                                       5
+       • Security shall be designed and integrated at all architecture layers (DB,
+         network, application, platform etc.)
+       • Implement DLP and Dynamic access management wherever required.
+       • Always follow secure design principles and perform security-oriented
+         design reviews.
+       • Follow system hardening procedures and perform TVM regularly.
+       • Trianz shall design or architecture information systems by following zero-
+         trust principles in mind.
+       • Wherever possible use immutable infrastructure.
+
+
+
+
+5. Risk Based
+       • Perform Risk Assessment, the risk treatment should ensure the risk handling
+         for reducing the risk to acceptable level which is applicable for all projects
+       • Based on the risk assessment, all the required controls like encryption,
+         integrity checks, digital signatures, data validation, tokenization,
+         anonymization, Pseudonymization need to be implemented.
+       • Implement control that can detect, prevent and respond to security events,
+          incidents, attacks.
+
+
+
+
+6. Secure Development
+       • Secure Development shall adopt "Microsoft Secure Development
+         guidelines" or an equivalent methodology of Secure Software Development
+          Life Cycle.
+
+
+
+
+7. Secure Implementation
+
+
+       • Multilayer access approach implementation can protect an asset from
+         unauthorized access or modification
+
+
+TRIANZ INTERNAL                                                                     6
+       • By Implementing layered security, the project team will protect application
+         layer, Database layer, Integration layer and Data
+       • Application layer will be protected like LDAP authentication, Credentials
+       • Technical review compliance will be verified by Delivery Assurance in check
+         points and toll gates
+
+
+
+
+8. Ease of Use
+
+
+       • Where possible, base security on open standards for portability and
+         interoperability will be implemented
+       • Use common language in developing security requirements
+       • Design security to allow for regular adoption of new technology, new
+         platforms and including a secure and logical technology upgrade process
+
+
+9. Reduce Vulnerabilities
+
+
+       • Identify and prevent common errors and vulnerabilities, such as buffer
+         overflows, race conditions, format string errors, failing to check input for
+         validity, and programs being given excessive privileges.
+       • Implement profile or role privileges which will reduce risk by limiting the
+         number of people with access to critical system security controls
+       • Implementing role-based access controls for various aspects
+       • Controlling who is allowed to enable or disable system security features or
+         change the privileges of users or programs
+       • Application vulnerabilities like crosstie scripting, SQL injection and etc. can
+          be reduced by following the coding standards like prepared statements in
+          Java and during testing also can be identified by the browser plug-ins like
+          tamper IE
+       • SSL implementation for secure transactions, by installing SSL certificates
+
+
+
+
+TRIANZ INTERNAL                                                                       7
+10.   Reference(s)
+
+
+       • From implementation guidelines of ISO 27002:2022 and CSA star guidelines.
+
+
+
+
+11. ISO Control Mapping
+
+
+          Category of   ISO 27001:2022 Control          Document Name as
+          Control                                       per ISO 27001:2022
+
+          8.27           Principles for engineering
+          Preventive    secure systems should be        #Application_security
+                        established, documented,        #System Architecture
+                        maintained and applied to any
+                        information system
+                        development activities.
+
+
+
+
+TRIANZ INTERNAL                                                                 8
+                                                Document Control
+
+
+        Owner:             CISO                                 Release ID:        SEP-GUID-0066
+
+
+
+
+                           For Trianz Process Improvement Group (TPIG) Purpose Only
+
+        Version History
+
+
+
+
+ Ver.                                                                 Reason for
+              Date          Author     Reviewer     Approver                        Change Description
+ No.                                                                   Change
+
+0.1                        Sudhars     Balu Nair                 Initial draft      None
+           4-May-15
+                           ana
+
+1.0                                    Balu Nair    Zulfikar     Baseline           Approved
+                                                   Deen
+                                                                 is                 Baseline.
+                           Srilaksh
+          15-May-15                                              approve
+                           mi
+                                                                 d       by
+
+                                                                 Zulfikar Deen.
+
+1.1                        Paramita    Vijaya      Zulfikar       Adding            Adding security
+                           Ghosh                   Deen          security           foundations
+          25-Jan-16
+                           and                                   foundations
+                           Balu Nair                             points
+
+2.0                                    Vijaya       Updated      Approval           Baselined references
+                                                   references                       section
+          08-Feb-16        Balu Nair                             for
+                                                   section
+                                                                 Baseline
+
+                                                                                    Added CSA star in
+2.1                                    Balu        Srikanth
+                                                                                    the reference
+                                                   Mantena
+                                                                                    section
+          09-Feb-24        Sraveen                               For review
+                                                                                    Added security
+                                                                                    architecture
+                                                                                    principles.
+
+         TRIANZ INTERNAL                                                                        9
+                                                                     Modified in
+                                                                     alignment to ISO
+                                                                     27001:2022
+
+3.0    23-Feb-24        Sraveen   Vijaya   Srikanth                  Approved and
+                                           Mantena    For Approval
+                                                                     Baselined
+
+3.1    28-May-          Kruti     Vijaya                             Migrated to New
+                                                      For Review
+       25                                                            Template
+
+4.0    29-May-          Kruti     Vijaya   Srikanth                  Approved and
+                                                      For Approval
+       25                                  Mantena                   Baselined
+
+
+
+
+      TRIANZ INTERNAL                                                            10
+                                Contact Information
+                                               Name
+
+                                               Email
+
+                                              Phone
+
+
+
+
+                                  Thank You
+                                     infosec@trianz.com
+
+
+
+
+ The content in this document is copyrighted; any unauthorized use – in part or full – may violate the
+ copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly
+   displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz
+ name and its products are subject to trademark and copyright protections, regardless of how and
+                                          where referenced.
+
+
+TRIANZ INTERNAL                                                                                      11
+

@@ -1,0 +1,257 @@
+Asset Risk Management User
+Manual
+
+
+
+
+TRIANZ INTERNAL          trianz.com
+                      Statement of Confidentiality
+
+  The information contained in this document is internal to Trianz. It shall not be
+  disclosed, duplicated, or used for any purpose other than that stated herein, in
+  whole or in part, without the express written consent of Trianz.
+
+
+
+
+                         Information Classification
+
+
+     ☐ Public
+
+     ☒ Internal
+
+     ☐ Confidential
+
+     ☐ Restricted
+
+
+
+
+TRIANZ INTERNAL                                                                  2
+                  Table of Contents
+1 INTRODUCTION                        4
+
+   2 Tool Usage                       4
+
+
+
+
+TRIANZ INTERNAL                       3
+  1 Introduction
+      Risk Management Process describes about identification, analysis,
+      evaluation Treatment and monitoring of the risks throughout the project
+      or system life cycle. The risk is a result of a threat actor exploiting the
+      vulnerability present in the System/Project /Asset. This document details
+      the steps involved in the usage of Asset Risk Management tool in the
+      PMO portal.
+
+
+
+2 Tool Usage
+
+Please click on the below link to navigate to the following Asset Risk
+
+      Management tool Portfolio & Project Management - Risk Management
+
+
+
+      Step 1: From left navigation click on Risk Management
+
+
+
+
+TRIANZ INTERNAL                                                                     4
+      Step 2 Click on link new to add new Asset Risk
+
+
+
+
+TRIANZ INTERNAL                                        5
+      Step 3 Form will open as shown in below image
+
+
+
+
+      Step 4: Select Project ID from drop down -> Project name will
+      automatically populate The fields highlighted in Grey are read-only
+      fields. Which will automatically populate on saving data.
+      Step 5: Next select Risk type from drop down as Asset Risk
+
+
+
+
+TRIANZ INTERNAL                                                             6
+      Step 6: On selecting Asset Risk Other fields will appear for user to add
+      information like Asset
+      Risk Type, Asset risk Name/ Description, Threats and Vulnerabilities
+
+
+
+
+      Step 7: Asset Risk type if options not available you can type your own
+      value in blank space provided.
+
+
+
+
+      Step 8: Fill out mandatory fields like Risk owner which is marked in * red
+      sign.
+          Fill out sections
+      -   Risk Identification
+
+
+
+
+TRIANZ INTERNAL                                                                    7
+      -   Risk Assessment
+
+
+
+
+      -   Risk Analysis
+
+
+
+
+          ✓ CIAP field calculated automatically based on your
+             selection of each value in drop down of confidentiality,
+             Integrity, Availability and Privacy.
+          ✓ CIAP= Product of (confidentiality, Integrity, Availability and
+             Privacy)     Select Risk control from drop down.
+
+
+
+
+TRIANZ INTERNAL                                                              8
+     Step 9: For threats select from drop down and next click on check box of
+vulnerabilities
+
+      Any threats not available in drop down you can type in the empty field
+      itself
+
+
+
+
+      For Vunerabilities if option not available you can type in in empty text by
+      scrolling down.
+
+
+
+
+      Step10:If you do not wish to specify your own values then uncheck
+      check box empty option and check other check box options provided.
+
+
+
+
+      -   Step 10: Probability
+               ✓ Fill out this section by selecting Probability of occurrence and
+                  impact occurrence.
+               ✓ Magnitude is automatically calculated based on drop down
+                  selection
+               ✓ Magnitude = Product of (Probability and impact)
+               ✓ Next fill out Risk impact by clicking on check box provided.
+
+TRIANZ INTERNAL                                                                     9
+      -   Step 11: Risk Monitoring and Control
+          Fill out Risk monitoring section
+
+
+
+
+          Step 12: If mitgation plan ETA is greater than today than Residual
+          Risk section will appear as show in below image. It will be hidden
+          if Mitigation Plan ETA is less than or equal to today’s date you
+          select.
+
+
+
+
+TRIANZ INTERNAL                                                                10
+          Step 13: Next add details on status and click on submit.
+
+
+
+
+          Step 14: To edit / update Asset risk submitted Expand the section
+          and select item and click on edit
+          Step 15:This default view will show Asset Risk added only by you. To
+          see other assets click on Global view RM
+
+
+
+
+TRIANZ INTERNAL                                                                  11
+TRIANZ INTERNAL   12
+Owner: Management Representative         Release ID: ASTRISK_MAN_001
+
+
+
+
+For Trianz Process Improvement Group (TPIG) Purpose Only
+
+
+Version History
+       Ver.       Author   Reviewer   Approv     Date       Reason        Change
+       No.                              er                     for       Description
+                                                           Change
+ 0.1          Purnima      Danabel              6-Aug-    Initial
+              Ramdas                            2020      draft        FOR REVIEW
+
+
+ 1.0          Purnima      Danabel    Phani     8-Aug-    Initial
+              Ramdas                  Krishna   2020      Draft        APPROVED AND
+                                                                       BASELINED
+
+
+ 1.1          Kruti        Vijaya               03-June- Annual        Information
+                                                2024      Review       Classification
+                                                                       has been
+                                                                       updated.
+
+
+ 2.0          Kruti        Vijaya     Srikanth 03-June- For
+                                      M        2024     Approval       APPROVED AND
+                                                                       BASELINED
+
+
+ 2.1          Vijaya       Balu                 26-May-   For Yearly
+                                                2025      Review       Migrated to a
+                                                                       new template
+
+
+ 3.0          Vijaya       Balu       Srikanth 29-May-    For
+                                               2025       Approval     Approved and
+                                                                       Baselined
+
+
+
+
+TRIANZ INTERNAL                                                                 13
+TRIANZ INTERNAL   14
+                                Contact Information
+                                               Name
+
+                                               Email
+
+                                              Phone
+
+
+
+
+                                  Thank You
+                                     infosec@trianz.com
+
+
+
+
+ The content in this document is copyrighted; any unauthorized use – in part or full – may violate the
+ copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly
+   displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz
+ name and its products are subject to trademark and copyright protections, regardless of how and
+                                          where referenced.
+
+
+TRIANZ INTERNAL                                                                                      15
+

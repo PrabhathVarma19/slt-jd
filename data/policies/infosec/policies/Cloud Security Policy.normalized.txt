@@ -1,0 +1,263 @@
+# Cloud Security Policy
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- **Public**: Not classified
+- **Internal**: Classified
+- **Confidential**: Not classified
+- **Restricted**: Not classified
+
+## Table of Contents
+1. **PURPOSE**
+2. **POLICY**
+   - 2.1 Asset Management
+   - 2.2 Multi-Tenant Environment and Client Data Isolation
+   - 2.3 Encryption
+   - 2.4 Identity, Access and Privilege Login Management
+   - 2.5 Incident Management
+   - 2.6 Geographic Location for Setting Up Cloud
+   - 2.7 Supervisory Authorities
+   - 2.8 Compliance Requirements
+   - 2.9 Vulnerability Management
+   - 2.10 Secure Disposal
+   - 2.11 Logging and Monitoring Security Incidents
+   - 2.12 Licensing Requirements
+   - 2.13 Hardening
+   - 2.14 Password Management for Privileged and Non-Privileged Passwords
+   - 2.15 Virtualization
+   - 2.16 Information Backup
+   - 2.17 Change Management
+   - 2.18 Cloud Service Provider Management
+   - 2.19 Roles and Responsibilities
+3. **EXCEPTIONS(S)**
+
+## 1. Purpose
+The purpose of this document is to provide directions on Trianz Policies for ensuring security and privacy of information in the Cloud environment in the following scenarios:
+- When Trianz acts as a Cloud Service Provider for a client.
+- When Trianz consumes cloud-based services as a Cloud Service Customer.
+- All policies must be implemented by default as a Cloud Service Provider unless specific client requirements dictate otherwise.
+- As a Cloud Service Customer, implementation of all policies must be ensured.
+
+The services offered or consumed can vary from:
+- Infrastructure As a Service (IAAS)
+- Platform As a Service (PAAS)
+- Software As a Service (SAAS)
+- Device Managed Services
+
+This policy must be read in conjunction with Trianz Information Security Policy and Data Protection and Privacy Policy as applicable.
+
+## 2. Policy
+All policies outlined below apply to all scenarios involving cloud-based environments unless specific client contractual requirements must be met.
+
+### 2.1 Asset Management
+- All cloud-related assets must be identified as part of the Asset Inventory, including virtual assets, active and inactive images, and hypervisors (applicable if Cloud Service Provider or Cloud Service Customer/User).
+- Records of the inventory must indicate where the assets are maintained, their location, and details of the cloud. These records shall be reviewed periodically (applicable if Cloud Service Provider or Cloud Service Customer/User).
+- For all cloud services offered, identify cloud service data and cloud service derived data (shared responsibility of Provider and Customer).
+- Project Managers are responsible for cloud asset management (safeguarding the assets) during project execution. Responsibility for client-provided assets shall be as per contractual agreement.
+- All cloud assets shall be labeled to ensure identification of resource utilization.
+- Asset inventory shall be maintained, and risk management shall be conducted using the EMPMO tool/PM Workbook by respective Project Managers (including subscriptions).
+
+### 2.2 Multi-Tenant Environment and Client Data Isolation
+- In multi-tenant environments, segmentation between resources of different clients and between own instances must be assessed in line with Trianz Information Security and Cloud Security Policies.
+- A zone approach should be leveraged to isolate instances, containers, applications, and full systems from each other when feasible.
+- Implement filtering on incoming and outgoing traffic wherever feasible.
+  - Technical controls must limit access for downloading data from the cloud environment to end-user systems, allowing access only for authenticated resources. This can be achieved by deploying terminal servers and allowing authorized users to log in to these servers and connect to cloud systems. This requirement must be analyzed based on client and/or regulatory requirements.
+  - For all internal applications and cloud services, Single Sign-On (SSO) shall be enabled.
+
+### 2.3 Encryption
+- All confidential data, including personal and sensitive data at rest, must be encrypted.
+
+### 2.4 Identity, Access and Privilege Login Management
+- Access to cloud resources must be restricted to necessary exposure to the Internet, and unneeded capabilities/features must be deactivated.
+- All cloud computing facets must utilize access control lists (ACL).
+- Privileges must be role-based, and privileged access must be audited and recorded.
+- If applicable, clients should be enabled with administrative rights to manage or terminate user access.
+- Controlled access to log information must be ensured, as it may contain Personally Identifiable Information (PII).
+- Just-in-time access must be provided based on business justification or contractual agreement. Logs must be maintained for at least 3 years for all user access.
+- Multi-Factor Authentication (MFA) must be enforced for access to the cloud.
+
+### 2.5 Incident Management
+- All cloud security-related incidents must be reported to appropriate stakeholders and to CERT-IN within six hours of any qualified cybersecurity incident, as per the IT Act and contractual agreements.
+- An information security incident must trigger a review to determine if a data breach involving PII, personal data, or sensitive personal data has occurred.
+
+### 2.6 Geographic Location for Setting Up Cloud
+- AWS Cloud infrastructure services will be located in Singapore.
+- Azure Cloud infrastructure services will be located in Mumbai.
+- Any hosting of cloud infrastructure in other locations for internal purposes must be communicated to the Infosec and Data Privacy Assurance team.
+
+### 2.7 Supervisory Authorities
+- Identify the geographies and countries where cloud infrastructure is present and the corresponding supervisory authorities.
+
+### 2.8 Compliance Requirements
+- All functions and projects using the cloud computing environment must comply with applicable data protection legislation to ensure the security and privacy of all informational assets, including those containing personal or sensitive data.
+- An annual audit, preferably independent, must be conducted, and an annual audit report must be available to evaluate and demonstrate compliance with processing operations on the cloud.
+
+### 2.9 Vulnerability Management
+- Vulnerabilities in applications must be assessed.
+- The cloud service team must conduct periodic internal vulnerability assessments and third-party penetration tests, with mitigation performed according to Trianz policy.
+- Vulnerability Assessment and Penetration Testing (VAPT) tests must be conducted as per contractual agreements.
+
+### 2.10 Secure Disposal
+- All cloud-related assets must be disposed of according to the Disposal Policy unless specific client requirements dictate otherwise.
+- All cloud-related assets containing personal or sensitive data must be disposed of securely.
+- Temporary files and documents must be erased or destroyed every six months.
+- All cloud assets must have a specific retention period after which they will be archived or disposed of based on requirements.
+
+### 2.11 Logging and Monitoring Security Incidents
+- Requirements for logging and monitoring must be documented.
+- Critical events such as deletion, table drop, or granting privilege login must be independently monitored, potentially through email alerts to the cloud service manager and security team.
+- Log details must provide a complete trail, identifying login name, date, time, IP address, location, and activities performed.
+- Health checks must be performed by the cloud service provider.
+- Event logs must record whether any personal data or PII has been changed (added, modified, or deleted) as a result of an event and by whom.
+- Criteria must be defined regarding if, when, and how log information can be made available to or used by clients.
+
+### 2.11 Access to Log Records
+- Access to log records must be limited to those that relate specifically to a Client's activities, excluding others.
+- Controlled (Restricted) access to log information containing Personally Identifiable Information, Personal Data, or Personally Sensitive Data is permitted only for defined purposes.
+- All system time must be synchronized with a central NTP server to facilitate event reconciliation and investigations.
+- Monitoring must be conducted to detect misuse of the cloud service, such as attacks on others or unauthorized data leaks to Trianz systems.
+- All cloud-related log files must be retained for a minimum of three years or as per Client contractual requirements, with automated procedures in place to ensure compliance.
+- Refer to the Information Security Logging and Monitoring Policy for further details.
+
+### 2.12 Licensing Requirements
+- The cloud service team must identify cloud-specific licensing requirements before allowing any licensed software installation in a cloud service.
+- Special attention is required for elastic and scalable cloud services where software may run on more systems or processor cores than permitted by the license terms.
+
+### 2.13 Hardening
+- If Trianz acts as a Cloud Service Provider, hardening measures must be implemented to protect the underlying network and infrastructure.
+- If Trianz acts as a Cloud Service Customer, it is responsible for protecting actual data, applications, and services, which requires cloud- or service-based security appliances such as firewalls and web gateways, as per contractual agreements.
+
+### 2.14 Password Management
+- Shared passwords are strictly prohibited. Passwords must be combined with other authentication systems, such as multifactor authentication, for sensitive areas.
+- All cloud instances and services must be discovered and included in the Asset Inventory, and must be managed under password management protocols.
+- Shadow IT (unaccounted) cloud resources and passwords must not be allowed to proliferate.
+- All access keys must be regenerated periodically in accordance with industry standards.
+
+### 2.15 Virtualization
+- Proper lifecycle management of virtual instances must be ensured.
+- Storage and access controls for virtualized instances and snapshots must be implemented.
+- Complete protection of hypervisors is required.
+- Adequate security controls must govern the use of self-service portals.
+- Access to any data previously residing in allocated storage space must not be visible to the Client.
+- Controls must ensure that only authorized snapshots are taken, with classification, storage location, and encryption compatible with the production virtualization environment.
+- Access to hypervisor administrative access logs must be maintained, and hypervisor logging must be enabled.
+
+#### Logging Examples
+- Centralized logging of guest operating systems should be implemented, either on a separate logging system or in a repository, to assist administrators, security personnel, and auditors.
+- Logs must be correlated across virtual and physical infrastructures to identify security vulnerabilities and risks.
+- Regular audits of virtualized environments must be conducted, covering all components, management capabilities, virtual switches, and security devices to ensure compliance with configuration management practices.
+- Monthly logging of root and administrative access and actions on all systems in a virtualized infrastructure is required.
+- Weekly logging of all invalid logical access attempts on all systems in a virtualized infrastructure must be performed.
+- Monthly logging of all access to audit trails on all systems supporting a virtualized environment is necessary.
+
+### 2.15 Audit Logs
+- **Initialization of Audit Logs**: Log the monthly initialization of all audit logs on all systems in and supporting a virtualized infrastructure, such as a centralized log repository.
+- **Creation and Deployment of Virtual Machines (VMs)**: Log the monthly creation and deployment of all VMs in a virtualized environment.
+- **Migration of VMs**: Log the monthly migration of all VMs in a virtualized environment, including source and target systems, time, and authorization.
+- **Creation and Deletion of System-Level Objects**: Log the quarterly creation and deletion of all system-level objects in a virtualized infrastructure.
+
+### 2.16 Information Backup
+- Ensure additional or alternative mechanisms for off-site backups to protect against data loss, including Personal Data, Sensitive Data, and Personally Identifiable Information (PII), ensuring continuity of data processing operations and the ability to restore operations after a disruptive event.
+- Maintain multiple copies of data in physically and/or logically diverse locations for backup and recovery purposes, as per the Backup and Restoration Policy.
+- Comply with specific requirements from individual jurisdictions regarding the frequency of backups.
+- If backing up data that contains Personal Data, Sensitive Data, or PII, anonymize or erase it as much as feasible unless specific contractual client requirements dictate otherwise. Refer to the Backup and Restoration Policy for more details.
+
+### 2.17 Change Management
+- Implement and maintain a change management process to track identified problems, fixes, and releases throughout the complete service life cycle for SaaS, PaaS, and IaaS-based services.
+- Govern the impact on compliance, security, and performance of the infrastructure when VM images are created, updated, or patched.
+- Maintain consistent change management policies within scalable and automated cloud instance provisioning systems.
+- Govern changes to OS credentials when new server images are launched or terminated.
+- Monitor and manage changes in OS firewall configurations to identify anomalous or unauthorized changes, ideally integrating internal configuration management solutions with cloud instance-related changes without substantial modifications.
+- Recognize that infrastructure change management is an ongoing process due to the rapid and frequent nature of infrastructure changes. All changes should be tracked back to specific user stories to ensure unused instance resources are terminated to avoid unnecessary costs.
+- Refer to the System and Software Change Management Policy for more details.
+
+### 2.18 Cloud Service Provider Management
+- As a Cloud Service Customer, ensure the following, as applicable:
+  - Ensure the approach to patch known vulnerabilities by the Cloud Service Provider.
+  - Be aware of the data backup, retention, and recovery policies of the Cloud Service Provider.
+  - Train IT staff on accessing and using the Cloud Service Provider log services.
+  - Ensure logging is enabled for all security events, covering sessions and transaction information, in accordance with industry standards.
+  - Ensure that the Cloud Service Provider supports multiple multi-factor authentication mechanisms, such as tokens, one-time passwords, and biometrics.
+  - Do not grant the Cloud Service Provider permissions to directly use or access the organization’s authentication environment, such as the main directory.
+  - Ensure that comprehensive disaster recovery testing reports are provided at least annually, covering the exercise scope, final outcomes, and recommendations.
+  - Ensure responsibility for some or all aspects of access management for users under organizational control.
+
+### 2.19 Roles and Responsibilities
+- The IS team must ensure the following for all internal Cloud subscriptions and applications hosted on the Cloud for internal purposes:
+  - Manage Cloud Service Providers for all internal subscriptions.
+  - Track IT assets on the Cloud for internal infrastructure.
+  - Oversee Security Operations Management, including but not limited to patch and antivirus management, vulnerability testing, backups, and secure disposal.
+  - Enable encryption if required.
+  - Identify the geographical location of hosting Cloud services based on compliance requirements.
+  - Obtain approval from the CISO/CI.
+
+### 5. Resource Management and Responsibilities
+
+#### 5.1 Resource Management
+- Provision and manage cloud resources efficiently, including:
+  - Virtual machines
+  - Storage
+  - Networking
+  - Other cloud services
+- Monitor and optimize the performance and availability of cloud services, including:
+  - Uptime
+  - Service Level Agreements (SLAs)
+  - Scalability for all subscriptions on Cloud Infrastructure.
+- Ensure effective management of pay-as-you-go services for all subscriptions on Cloud Infrastructure.
+
+#### 5.2 Responsibilities of Functional Teams
+Functional teams are responsible for:
+- Managing data or information on the cloud for their respective data.
+- User access control.
+- Maintaining a personal data inventory.
+- Retention and secure disposal of data.
+- Identifying encryption requirements.
+
+#### 5.3 Responsibilities of the Cloud Delivery Team
+The Cloud Delivery team must ensure:
+- Management of cloud service providers for all client-related subscriptions.
+- Maintenance of a cloud asset inventory list for respective projects.
+- Definition and documentation of agreed roles and responsibilities between the client and Trianz for all cloud security and privacy aspects.
+
+#### 5.4 Responsibilities of the Infosec and Compliance Team
+The Infosec and Compliance team must ensure:
+- Maintenance of policies and procedures for cloud security and privacy.
+- Monitoring and communicating any specific regulatory requirements for cloud-based environments.
+- Refer to the ISAC Roles and Responsibilities document for more details.
+
+### 6. Exceptions
+- Any exceptions must follow the Exception Policy.
+
+### 7. ISO Control Mapping
+- **Category of ISO Control**: Organizational
+  - **Document Name as per ISO 27001:2022**: Cloud Security Policy
+  - **Control**: 5.23
+
+### 8. Version History
+- **Owner**: CISO
+- **Release ID**: CSPP-POL-058
+- **Version History**:
+  - 0.1: Initial Version (11-Nov)
+  - 0.2: Updated comments (12-Nov)
+  - 0.3: Added sections for Management requirements (3-Nov)
+  - 1.0: Approved for Release to Blue Book (25-Nov)
+  - 2.0: Modified Management into new template (11-May)
+  - 3.0: Approved and Baselined (4-Feb)
+  - 4.0: Updated sections aligning to ISO 27001:2022 (15-Feb)
+  - 5.0: Updated roles and responsibilities (6-Jun)
+
+### Contact Information
+- **Name**: [Contact Name]
+- **Email**: [Contact Email]
+- **Phone**: [Contact Phone]
+
+Thank You.
+
+**Copyright Notice**
+
+- The content in this document is copyrighted. 
+- Unauthorized use, in part or full, may violate copyright, trademark, and other laws.
+- This document may not be modified, reproduced, publicly displayed, performed, distributed, or used for any public or commercial purposes.
+- The Trianz name and its products are protected by trademark and copyright laws, regardless of how and where they are referenced.

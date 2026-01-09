@@ -1,0 +1,76 @@
+# Asset Risk Management User Manual
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. INTRODUCTION
+2. TOOL USAGE
+
+## 1. Introduction
+The Risk Management Process involves the identification, analysis, evaluation, treatment, and monitoring of risks throughout the project or system life cycle. Risks arise from threat actors exploiting vulnerabilities present in the System/Project/Asset. This document details the steps involved in using the Asset Risk Management tool in the PMO portal.
+
+## 2. Tool Usage
+To navigate to the Asset Risk Management tool, follow these steps:
+
+1. **Step 1:** Click on "Risk Management" from the left navigation.
+2. **Step 2:** Click on the link labeled "new" to add a new Asset Risk.
+3. **Step 3:** A form will open for data entry.
+4. **Step 4:** Select the Project ID from the dropdown; the Project name will automatically populate. Fields highlighted in grey are read-only and will populate upon saving data.
+5. **Step 5:** Select "Asset Risk" from the dropdown as the Risk type.
+6. **Step 6:** Upon selecting Asset Risk, additional fields will appear for entering information such as:
+   - Asset Risk Type
+   - Asset Risk Name/Description
+   - Threats
+   - Vulnerabilities
+7. **Step 7:** If options for Asset Risk type are not available, you can type your own value in the provided blank space.
+8. **Step 8:** Fill out mandatory fields, such as Risk Owner, which are marked with a red asterisk (*).
+   - Sections to fill out include:
+     - Risk Identification
+     - Risk Assessment
+     - Risk Analysis
+       - The CIAP field is calculated automatically based on your selections for confidentiality, integrity, availability, and privacy.
+       - CIAP = Product of (Confidentiality, Integrity, Availability, Privacy).
+9. **Step 9:** For threats, select from the dropdown. If a threat is not available, you can type it in the empty field. For vulnerabilities, if options are not available, you can type in the empty text field.
+10. **Step 10:** If you do not wish to specify your own values, uncheck the empty option checkbox and check other provided checkbox options.
+    - **Probability Section:**
+      - Select the Probability of occurrence and Impact occurrence.
+      - Magnitude is automatically calculated based on dropdown selections.
+      - Magnitude = Product of (Probability and Impact).
+      - Fill out Risk Impact by clicking on the provided checkbox.
+11. **Step 11:** Fill out the Risk Monitoring section.
+12. **Step 12:** If the mitigation plan ETA is greater than today, the Residual Risk section will appear. It will be hidden if the Mitigation Plan ETA is less than or equal to today’s date.
+13. **Step 13:** Add details on status and click "submit."
+14. **Step 14:** To edit/update an Asset Risk submitted, expand the section, select the item, and click "edit."
+15. **Step 15:** The default view will show only the Asset Risks added by you. To see other assets, click on "Global view RM."
+
+## Owner
+Management Representative
+
+## Release ID
+ASTRISK_MAN_001
+
+## Version History
+- **0.1:** Initial draft
+- **1.0:** Initial Draft for Review
+- **1.1:** Approved and Baseline
+- **2.0:** Annual Information Classification updated
+- **2.1:** For Yearly Review
+- **3.0:** Migrated to a new template; Approved and Baselined
+
+## Contact Information
+- **Name:** [Not Provided]
+- **Email:** infosec@trianz.com
+- **Phone:** [Not Provided]
+
+Thank you. The content in this document is copyrighted; any unauthorized use may violate copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly displayed, performed, or distributed, or used for any public or commercial purposes.
+
+It appears that the provided text does not contain any specific policy rules or structured information that can be rewritten into a clearer format. The text mentions that products are subject to trademark and copyright protections, but it lacks headings, numbering, or any tabular data to convert. 
+
+If you have additional text or specific sections from the policy document that you would like me to rewrite, please provide that information.

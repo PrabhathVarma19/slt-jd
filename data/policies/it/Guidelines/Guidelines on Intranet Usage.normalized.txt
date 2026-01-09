@@ -1,0 +1,117 @@
+# Guidelines on Intranet Usage
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. OBJECTIVE
+2. SCOPE
+3. REFERENCE(S)
+4. RULES ON INTRANET USAGE
+5. ROLES AND RESPONSIBILITIES
+
+## 1. Objective
+The company utilizes the Intranet as a critical resource for business processes. Trianz has developed systems and procedures to ensure that security is maintained for the Intranet at all times, with a uniform code of conduct.
+
+## 2. Scope
+These guidelines apply to all users of Trianz and cover:
+- Local Area Network (LAN) and Wide Area Network (WAN) connected with Trianz’s workstations and servers, including applications and system software.
+- All systems under the jurisdiction and/or ownership of Trianz, including hired systems.
+- All workstations and servers supplied by Trianz customers, as long as they are operated from within Trianz premises.
+
+## 3. Reference(s)
+- Information Security Code of Conduct
+
+## 4. Rules on Intranet Usage
+- All services on the Intranet of Trianz LAN and WAN network are for the purpose of information update and dissemination among employees and selected third-party vendors. 
+- All information posted to the Intranet must have a designated owner, and all postings or modifications must be approved.
+
+### Default Access
+- Default Intranet access is granted to all employees based on their department, with corresponding default username and password communicated to the user.
+- Employees will have private protected VLAN/Isolated Wi-Fi connection based on their project requirements. All Intranet access will be secured with Zscaler webproxy.
+
+### Access to Other Resources of Intranet
+- For access beyond the default, users must raise a Service Request to the IS Department with approval from their respective Head of Department. Access will be granted as per the approval for the specified duration.
+
+### Authentication & Authorization
+- All Intranet access is governed by proper authorization, and access to all Intranet servers will be protected and managed through PAM.
+
+### Information Dissemination
+- Intranet information is for dissemination only to authorized individuals. Users must not forward this information to others without seeking approval through the appropriate channel.
+
+## 5. Roles and Responsibilities
+- Any user, as defined in the “Scope” section, is responsible for using Trianz’s Intranet resources in compliance with this policy.
+- The IS Manager is responsible for reviewing these guidelines annually.
+- The designated Information Security Officer/Designated member of the Security Forum, along with the Human Resources group, is responsible for distributing these guidelines.
+
+## Document Control
+- **Owner:** Management Representative
+- **Release ID:** INTR-GUID-0059
+
+### Version History
+- **Version:** 0.0
+- **Author:** Jyotessh
+- **Reviewer:** [Not specified]
+- **Approver:** [Not specified]
+- **Date:** [Not specified]
+- **Reason for Change Description:** [Not specified]
+
+### 1.0 Document Changes
+- **Approved Baseline**: The baseline is approved by Zulfikar Deen.
+- **Title Change**: The title has been changed to "Rules Intranet Usage Framework."
+- **Section Removal**: The sections "Documentation Framework" and "Enforcement" have been removed.
+- **New Addition**: A document classification scheme has been added.
+
+### 2.0 Approval and Review
+- **Baseline Approval**: The baseline has been baselined for approval.
+- **QMG Review**: The entire document has been formatted for QMG review.
+
+### 3.0 Document Modifications
+- **Release ID Modification**: The release ID in the header and cover page has been modified.
+
+### 4.0 Management Changes
+- **Owner Replacement**: The term "Owner" has been replaced with "Management Representative" in place of CIO.
+- **Retention Period Removal**: The row stating "Retention period is 3 Years" has been removed from the Document Classification Scheme.
+
+### 5.0 Baseline Approval
+- **Approved and Baselined**: The document has been approved and baselined.
+
+### 6.0 Formatting Updates
+- **Template Formatting**: The document has been formatted as per the latest template format.
+
+### 6.1 IT Name Update
+- **Name Replacement**: The term "IT" has been replaced with "IS."
+- **VLAN Information Update**: Rules on Intranet Usage have been updated to include VLAN information.
+
+### 7.0 Annual Review
+- **No Changes**: There are no changes for the annual review.
+
+### 7.0 Review and Approval Process
+
+7.1 **Annual Review**  
+- Responsible: Vijaya Balu  
+- Date: 26-May-2025  
+- Status: Migrated to a new template  
+
+7.2 **Rules Update**  
+- Responsible: Vijaya Siva  
+- Date: 28-May-2025  
+- Status: Reviewed  
+
+8.0 **Approval**  
+- Responsible: Vijaya Siva, Srikanth M  
+- Date: 29-May-2025  
+- Status: Approved and Baselined  
+
+### Contact Information
+- **Email:** infosec@trianz.com  
+- **Phone:** [Not provided]  
+
+### Copyright Notice
+The content in this document is copyrighted. Unauthorized use, in part or full, may violate copyright, trademark, and other laws. This document may not be modified, reproduced, publicly displayed, performed, distributed, or used for any public or commercial purposes. The Trianz name and its products are subject to trademark and copyright protections.

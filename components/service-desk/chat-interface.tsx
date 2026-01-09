@@ -42,12 +42,26 @@ const QUICK_ACTIONS = [
   'Install software',
 ];
 
+type ProfileData = {
+  email?: string;
+  profile?: {
+    employeeId?: number;
+    empName?: string;
+    gradeCode?: string;
+    location?: string;
+    projectCode?: string;
+    projectName?: string;
+    supervisorEmail?: string;
+  } | null;
+};
+
 export function ChatInterface() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [recentQuestions, setRecentQuestions] = useState<string[]>([]);
+  const [profile, setProfile] = useState<ProfileData | null>(null);
   const messagesRef = useRef<HTMLDivElement | null>(null);
   const viewportRef = useRef<HTMLElement | null>(null);
   const [isAtBottom, setIsAtBottom] = useState(true);
@@ -76,6 +90,19 @@ export function ChatInterface() {
   useEffect(() => {
     scrollToBottom('auto');
   }, [messages]);
+
+  useEffect(() => {
+    fetch('/api/profile')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.user) {
+          setProfile({ email: data.user.email, profile: data.user.profile || null });
+        }
+      })
+      .catch(() => {
+        setProfile(null);
+      });
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -180,38 +207,148 @@ export function ChatInterface() {
     setIsLoading(false);
   };
 
-  const handleSelfService = async (action: 'password_reset' | 'account_unlock', ticketNumber?: string) => {
+  const handleSelfService = async (
+    action: 'password_reset' | 'account_unlock' | 'ticket_status' | 'kb_search' | 'create_request',
+    actionData?: any
+  ) => {
     setIsLoading(true);
     setError(null);
 
     try {
-      const endpoint = action === 'password_reset' 
-        ? '/api/service-desk/self-service/password-reset'
-        : action === 'account_unlock'
-        ? '/api/service-desk/self-service/unlock'
-        : `/api/service-desk/self-service/ticket-status?ticketNumber=${ticketNumber}`;
+      if (action === 'password_reset' || action === 'account_unlock') {
+        const endpoint =
+          action === 'password_reset'
+            ? '/api/service-desk/self-service/password-reset'
+            : '/api/service-desk/self-service/unlock';
 
-      const res = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(ticketNumber ? { ticketNumber } : {}),
-      });
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({}),
+        });
 
-      const data = await res.json();
+        const data = await res.json();
+        if (!res.ok || data.error) {
+          throw new Error(data.error || 'Failed to perform action');
+        }
 
-      if (!res.ok || data.error) {
-        throw new Error(data.error || 'Failed to perform action');
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: 'assistant',
+            content: data.message || 'Action completed successfully.',
+            createdAt: new Date().toISOString(),
+            actionType: action,
+            actionData: data,
+          },
+        ]);
+      } else if (action === 'ticket_status') {
+        const ticketNumber = actionData?.ticketNumber;
+        if (!ticketNumber) {
+          throw new Error('Ticket number is required.');
+        }
+        const res = await fetch(
+          `/api/service-desk/self-service/ticket-status?ticketNumber=${encodeURIComponent(ticketNumber)}`
+        );
+        const data = await res.json();
+        if (!res.ok || data.error) {
+          throw new Error(data.error || 'Failed to check ticket status');
+        }
+
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: 'assistant',
+            content: data.message || 'Ticket status retrieved.',
+            createdAt: new Date().toISOString(),
+            actionType: action,
+            actionData: data,
+          },
+        ]);
+      } else if (action === 'kb_search') {
+        const query = actionData?.query;
+        if (!query) {
+          throw new Error('Query is required.');
+        }
+        const res = await fetch('/api/service-desk/kb/search', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query }),
+        });
+        const data = await res.json();
+        if (!res.ok || data.error) {
+          throw new Error(data.error || 'Failed to search knowledge base');
+        }
+
+        const resultLines = (data.results || []).map((result: any) => {
+          const section = result.section ? ` - ${result.section}` : '';
+          return `- ${result.title}${section}\n${result.snippet}`;
+        });
+        const content = [data.message, ...resultLines].filter(Boolean).join('\n\n');
+
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: 'assistant',
+            content: content || 'No results found.',
+            createdAt: new Date().toISOString(),
+            actionType: action,
+            actionData: data,
+          },
+        ]);
+      } else if (action === 'create_request') {
+        if (!profile?.profile || !profile.email) {
+          throw new Error('Profile data is missing. Please refresh and try again.');
+        }
+        const {
+          requestType,
+          system,
+          impact,
+          reason,
+          details,
+        } = actionData || {};
+
+        const payload = {
+          name: profile.profile.empName || profile.email,
+          employeeId: profile.profile.employeeId,
+          email: profile.email,
+          grade: profile.profile.gradeCode,
+          location: profile.profile.location,
+          requestType: requestType || 'other',
+          system: system || 'General',
+          impact: impact || 'medium',
+          reason: reason || 'Not specified',
+          details: details || 'No additional details provided.',
+          projectCode: profile.profile.projectCode,
+          projectName: profile.profile.projectName,
+          managerEmail: profile.profile.supervisorEmail,
+        };
+
+        if (!payload.employeeId) {
+          throw new Error('Employee ID is missing from your profile.');
+        }
+
+        const res = await fetch('/api/service-desk/it', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+        if (!res.ok || data.error) {
+          throw new Error(data.error || 'Failed to submit request');
+        }
+
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: 'assistant',
+            content: data.message || 'Request submitted successfully.',
+            createdAt: new Date().toISOString(),
+            actionType: action,
+            actionData: data,
+          },
+        ]);
       }
-
-      const successMessage: ChatMessage = {
-        role: 'assistant',
-        content: data.message || 'Action completed successfully.',
-        createdAt: new Date().toISOString(),
-        actionType: action,
-        actionData: data,
-      };
-
-      setMessages((prev) => [...prev, successMessage]);
     } catch (err: any) {
       setError(err.message || 'Failed to perform action');
     } finally {
@@ -286,6 +423,38 @@ export function ChatInterface() {
                       >
                         <Unlock className="h-3 w-3 mr-1" />
                         Unlock Account
+                      </Button>
+                    )}
+                    {msg.actionType === 'ticket_status' && msg.actionData?.ticketNumber && (
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        className="mt-2"
+                        onClick={() => handleSelfService('ticket_status', msg.actionData)}
+                      >
+                        <Ticket className="h-3 w-3 mr-1" />
+                        Check Status
+                      </Button>
+                    )}
+                    {msg.actionType === 'kb_search' && msg.actionData?.query && (
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        className="mt-2"
+                        onClick={() => handleSelfService('kb_search', msg.actionData)}
+                      >
+                        <Search className="h-3 w-3 mr-1" />
+                        Search KB
+                      </Button>
+                    )}
+                    {msg.actionType === 'create_request' && msg.actionData && (
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        className="mt-2"
+                        onClick={() => handleSelfService('create_request', msg.actionData)}
+                      >
+                        Submit Request
                       </Button>
                     )}
                   </div>
@@ -417,10 +586,11 @@ export function ChatInterface() {
             size="sm"
             variant="outline"
             className="w-full text-xs"
-            disabled
+            onClick={() => handleSend('Search the knowledge base')}
+            disabled={isLoading}
           >
             <Search className="h-3 w-3 mr-1" />
-            Search Knowledge Base (Coming Soon)
+            Search Knowledge Base
           </Button>
         </div>
       </div>

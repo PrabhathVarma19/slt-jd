@@ -1,0 +1,230 @@
+# ASSET MANAGEMENT POLICY
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. INTRODUCTION
+2. PURPOSE
+3. SCOPE
+4. OBJECTIVES
+5. POLICY
+   - 5.1 Asset Identification
+     - 5.1.1 Asset classification
+     - 5.1.2 Asset Register/Asset inventory
+   - 5.2 Asset Tracking
+   - 5.3 Asset Tagging
+   - 5.4 Asset Review
+   - 5.5 Secure Disposal
+6. ACCEPTABLE USE OF ASSETS
+7. INFORMATION LABELLING, HANDLING AND DISPOSAL
+8. COMPLIANCE AND MONITORING
+9. ROLES AND RESPONSIBILITIES
+10. EXCEPTION(S)
+11. ISO CONTROL MAPPINGS
+
+## 1. Introduction
+Asset Management is the process of identifying, classifying, managing, recording, and coordinating the Trianz assets to ensure their security and the continued protection of confidentiality, integrity, and availability of data. An 'Asset' is defined as any item, system, application, or entity that has potential or actual value to Trianz.
+
+## 2. Purpose
+The purpose of this policy is to manage organizational assets (tangible and intangible) and document those assets to ensure knowledge and understanding of their value, purpose, risk, and location. 
+
+- All assets are assigned an Information Asset Owner (IAO) responsible for managing, updating, recording, and destroying the asset.
+- The nature and value of every asset are documented to restrict access, develop recovery programs, optimize spending, support lifecycle management, and protect customer interests.
+- An Information Asset Register (IAR) is utilized to identify, document, and map all information assets, assigning them an owner. Cloud assets are managed by Cloud Administrators.
+
+## 3. Scope
+- This policy applies to all assets at Trianz located on premises, offshore, client premises, and cloud infrastructure.
+- Client-specific information classification policies shall supersede this policy for specific engagements as per client contractual requirements.
+
+## 4. Objectives
+- Ensure individuals with legitimate rights can access information while protecting assets from unauthorized access.
+- Help Trianz employees apply correct classification and handling methods in their activities.
+- Ensure all assets are handled according to their classification.
+- Make Trianz assets available to those with legitimate needs.
+- Maintain the integrity of information, ensuring it is accurate, complete, timely, and consistent.
+- All employees with access to assets must handle them according to asset classification.
+- Asset owners must ensure appropriate use of the Trianz classification scheme.
+- Restrict unauthorized addition, removal, update, and management of organizational assets.
+
+## 5. Policy
+### 5.1 Asset Identification
+- All information assets and assets associated with information and information processing facilities shall be identified.
+
+#### 5.1.1 Asset Classification
+Information assets at Trianz are classified into four categories:
+- **Public**
+- **Internal**
+- **Confidential**
+- **Restricted**
+
+Main categories of assets include:
+- **Information**: Databases, system documentation, procedures, archive media, and data.
+- **Software**: Application programs, cloud service applications, systems, development tools, and utilities.
+- **Physical**: Infrastructure, equipment, furniture, and accommodation used for data processing.
+- **Services**: Computing and communications used for data processing.
+
+### 5.1.2 Asset Register/Asset Inventory
+- An inventory of identified assets must be established and maintained.
+- The asset inventory should include information stored in the cloud computing environment as a cloud service customer.
+- The inventory must identify both cloud service customer data and cloud service derived data as a cloud service provider.
+- The asset inventory shall be regularly updated and periodically audited.
+
+### 5.2 Asset Tracking
+- All assets must be tracked to ensure they are intact and available for use.
+
+### 5.3 Asset Tagging
+- All assets must be tagged for easy identification and proper traceability.
+
+### 5.4 Asset Review
+- All assets will be reviewed on a quarterly basis, and email communication shall be sent to each individual asset owner.
+- Scheduled regular maintenance must be carried out based on the asset’s usage and manufacturer’s guidelines as preventive maintenance measures.
+
+### 5.5 Secure Disposal
+- Organization assets must be securely disposed of when no longer needed. This includes:
+  - Removal of physical devices
+  - Disposal of hard copies
+  - Deletion of digital assets
+  - Secure handling of cloud service customer assets containing information
+
+### 6. Acceptable Use of Assets
+- This policy outlines the acceptable use of computer equipment at Trianz to protect employees and information assets.
+- Inappropriate use of these assets may expose the organization to risks such as virus attacks, network system compromises, and legal issues.
+- Refer to the Acceptable Usage Policy for detailed guidelines.
+
+### 7. Information Labelling, Handling and Disposal
+- Trianz employs a labelling system to categorize the content of systems, files, applications, and documents without disclosing actual contents. This helps employees understand the type of information present without accessing personal content.
+- Labelling facilitates documentation and control of information while respecting access restrictions.
+- Refer to the Media Handling, Labelling, and Disposal Policy for more information.
+
+### 8. Compliance and Monitoring
+- All assets must be classified and managed according to this policy.
+- IT and digital assets must utilize encryption, firewalls, and access controls to safeguard data.
+- This policy is subject to review at least annually or whenever there is a change in the Information Asset Management Policy requirements.
+
+### 9. Roles and Responsibilities
+1. **Information Owner**: Responsible for classifying documents as per the policy.
+2. **Function Owner**: Ensures that information is classified according to this policy.
+3. **CISO/CIO**: Approves the policy and ensures its implementation.
+4. **IS Manager**: Approves the acquisition or disposal of Information Technology assets.
+5. **IS Asset Coordinator**: Responsible for tracking Information Technology assets through their acquisition, distribution, use, and disposal, ensuring compliance with Trianz standards.
+6. **Service Desk Coordinator**: Responsible for logging, testing, accepting, installing, maintaining, and preparing Information Technology assets for disposal. Also updates the Information Technology Asset Inventory when changes occur.
+7. **Purchase Coordinator**: Responsible for ordering physical Information Technology assets.
+8. **Asset Owner**: Accountable for ensuring assets are classified appropriately.
+9. **Project Manager**: Responsible for maintaining the Asset Risk Register/Asset Inventory.
+
+### 10. Exception(s)
+- There are no exceptions to this policy.
+
+### 11. ISO Control Mappings
+- **ISO 27001:2022 Control**: 
+  - **5.9 Inventory of Information and Other Associated Assets**: An inventory of information and associated assets, including owners, shall be developed and maintained.
+  - **5.10 Acceptable Use of Information and Other Associated Assets**: Rules for acceptable use and procedures for handling information and associated assets shall be identified, documented, and implemented.
+  - **5.11 Return of Assets**: Personnel and other interested parties must return all organization assets in their possession.
+
+# Document Control
+
+## 1. Version History
+- **Version 0.1**  
+  - **Date:** 23rd Oct 2019  
+  - **Author:** Karthik N  
+  - **Reviewer:** Phani  
+  - **Approver:** Krishna  
+  - **Reason for Change:** Initial draft  
+
+- **Version 0.2**  
+  - **Date:** 30th Oct 2019  
+  - **Author:** Karthik N  
+  - **Reviewer:** Phani  
+  - **Approver:** Krishna  
+  - **Reason for Change:** Changes made as per feedback  
+
+- **Version 0.3**  
+  - **Date:** 4th Nov 2019  
+  - **Author:** Karthik N  
+  - **Reviewer:** Phani  
+  - **Approver:** Krishna  
+  - **Reason for Change:** Changed the template  
+
+- **Version 1.0**  
+  - **Date:** 11th May 2020  
+  - **Author:** Balu Nair  
+  - **Reviewer:** Karthik N  
+  - **Approver:** Vivek Sambasi  
+  - **Reason for Change:** Approved for release to blue book  
+
+- **Version 2.0**  
+  - **Date:** 18th Jan 2021  
+  - **Author:** Ankur Rastogi  
+  - **Reviewer:** Rakesh Vijendra  
+  - **Approver:** Balu Nair  
+  - **Reason for Change:** Policy updated in alignment with ISO 20k - 2018 standard  
+
+- **Version 3.0**  
+  - **Date:** 13th Mar 2022  
+  - **Author:** Sanjana  
+  - **Reviewer:** Balu Nair  
+  - **Approver:** Siva N  
+  - **Reason for Change:** Baselined version for review; scope extended to products and services  
+
+- **Version 4.0**  
+  - **Date:** 20th Mar 2022  
+  - **Author:** Sanjana  
+  - **Reviewer:** Siva N  
+  - **Approver:** Karthik  
+  - **Reason for Change:** Approved and baselined  
+
+- **Version 5.0**  
+  - **Date:** 07th Apr 2023  
+  - **Author:** Shivateja  
+  - **Reviewer:** Karthik N  
+  - **Approver:** Srikanth M  
+  - **Reason for Change:** Added Asset Review and Secure Disposal  
+
+- **Version 6.0**  
+  - **Date:** 03rd May 2023  
+  - **Author:** Shivateja  
+  - **Reviewer:** Karthik N  
+  - **Approver:** Srikanth M  
+  - **Reason for Change:** Approved and baselined  
+
+- **Version 6.1**  
+  - **Date:** 15th Feb 2024  
+  - **Author:** Beniyel S  
+  - **Reviewer:** Vijaya R  
+  - **Reason for Change:** ISO Control Mappings updated  
+
+- **Version 7.0**  
+  - **Date:** 23rd Feb 2024  
+  - **Author:** Beniyel S  
+  - **Reviewer:** Vijaya R  
+  - **Approver:** Srikanth M  
+  - **Reason for Change:** Approved and baselined  
+
+- **Version 7.1**  
+  - **Date:** 04th March 2025  
+  - **Author:** Krutideepta Barik  
+  - **Reviewer:** Vijaya R  
+  - **Approver:** Balu Nair & Beniyel S  
+  - **Reason for Change:** Yearly Review; Purpose & Objective section updated and modified; Compliance on IT and digital assets included; Migrated to a new template  
+
+- **Version 8.0**  
+  - **Date:** 14th May 2025  
+  - **Author:** Kruti  
+  - **Reviewer:** Vijaya R  
+  - **Approver:** Srikanth M  
+  - **Reason for Change:** Approved and baselined  
+
+# Contact Information
+- **Name:** [Contact Name]  
+- **Email:** infosec@trianz.com  
+- **Phone:** [Contact Phone]  
+
+# Copyright Notice
+The content in this document is copyrighted; any unauthorized use – in part or full – may violate copyright, trademark, and other laws. This document may not be modified, reproduced, publicly displayed, performed, distributed, or used for any public or commercial purposes. The Trianz name and its products are subject to trademark and copyright protections, regardless of how and where referenced.

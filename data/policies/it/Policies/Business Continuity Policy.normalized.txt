@@ -1,0 +1,197 @@
+# Business Continuity Policy
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public: ☐
+- Internal: ☒
+- Confidential: ☐
+- Restricted: ☐
+
+## Table of Contents
+1. PURPOSE
+2. OBJECTIVE
+3. SCOPE
+4. POLICY STATEMENTS
+5. ROLES & RESPONSIBILITIES
+6. APPLICABLE STANDARDS
+7. REFERENCE POLICIES & PROCEDURES
+8. ISO CONTROL MAPPING(S)
+9. EXCEPTIONS(S)
+
+## 1. Purpose
+This policy aims to establish an organization-wide Business Continuity Management Systems (BCMS) Program aligned with ISO 22301:2012, ISO 20000-1:2018, and ISO 27001:2022 standards to minimize risks to Trianz operations, resources, reputation, and shareholder value.
+
+## 2. Objective
+1. Proactively define processes and procedures to ensure essential ICT functions continue during and after significant events and effectively respond to emergencies that may affect the company.
+2. Prepare for and respond to unforeseen events, minimizing the impact on mission-critical services and protecting the health and safety of Trianz employees and subcontractors at Trianz facilities.
+3. Establish an Emergency Response and Crisis Management structure across all locations to facilitate local resumption of activities and deployment of supporting or recovery resources.
+
+## 3. Scope
+This policy applies to all people (Trianz employees, contractors, and vendors), Trianz processes, and Information Technology (IT) resources owned, managed, or operated by Trianz across all geographies.
+
+## 4. Policy Statements
+- Trianz shall establish a BCMS framework for the company, including its subsidiary operations and operating units, to guide its business continuity efforts.
+- Trianz shall prioritize the safety of all employees and subcontractors working at Trianz facilities.
+- Each Trianz location shall implement and document a Business Continuity Plan under the guidance of top management, driven by the location's crisis management team.
+- The BC plan will establish a crisis management structure across all Trianz locations to facilitate local resumption of activities and deployment of supporting or recovery resources.
+- Trianz shall identify legal, regulatory, and contractual commitments related to Business Continuity requirements and ensure compliance with each requirement.
+- All Trianz facilities shall undergo a risk assessment to evaluate the impact of potential risks/disruption scenarios on business functions, resources, and infrastructure, ensuring appropriate procedures are in place to withstand the impact of risks/disruptions.
+- Trianz shall perform a detailed Business Impact Analysis (BIA) for all critical business functions, resources, products, infrastructure, and ICT functions that, if disrupted, would materially impact business operations and the company's reputation.
+- Trianz shall establish granular ICT continuity objectives and requirements derived from the comprehensive BIA. These objectives will ensure the recovery of critical IT systems within defined Recovery Time Objectives (RTOs) through effective redundancy solutions, robust backup procedures, and a designated Disaster Recovery (DR) site.
+
+### 4. Business Continuity Management
+
+1. Trianz shall test the Business Continuity Plan(s) annually, including suppliers of critical goods or services, and make modifications based on test results.
+2. Trianz shall establish Disaster Recovery (DR) Planning as a key component of the Business Continuity Management System (BCMS), focusing on restoring critical information systems.
+3. All associates and stakeholders must be informed of the Business Continuity Plans applicable to their sites, departments, and roles following the invocation of the BC Plan.
+4. The Business Continuity Policy, along with the associated Framework and BCMS Program elements, shall be reviewed semi-annually or in response to significant changes in the company’s operating environment.
+5. Trianz account-level Business Continuity Plan (BCP) coverage is limited to key strategic accounts, while location-specific BCPs shall cover all Trianz locations.
+6. Trianz shall conduct BCP tests, including:
+   - Call tree tests bi-annually.
+   - Tabletop simulations at least once a year, depending on client requirements, for critical strategic projects.
+   - Products and network-level ISP tests for location-specific BCPs.
+
+### 5. Roles & Responsibilities
+
+1. Trianz Business Continuity assurance is responsible for organization-wide guidance, policy, and oversight of the BCM program.
+2. Trianz Operating Units and locations are responsible for developing, implementing, maintaining, and testing their BCM Program.
+3. Each Trianz location must document the Business Continuity Plan using the approved standardized template provided by Business Continuity assurance.
+4. Each Trianz location shall have a Business Continuity Plan addressing life and safety issues, including evacuation and shelter-in-place procedures, and must document business activities conducted at each location. The Business Continuity assurance team is responsible for completing these plans.
+5. Client-related BCP/DR requirements shall be governed by respective client contracts.
+6. For account-level, product-level, and project-specific BCPs, the respective delivery manager/project manager is responsible for creating, managing, and maintaining the BCP program, with assistance from delivery assurance. The InfoSec BCP Single Point of Contact (SPOC) shall provide support in creating the BCP.
+7. The Business Continuity assurance team is responsible for ensuring this policy document is reviewed at least annually.
+
+### 6. Applicable Standards
+
+- ISO 27001 and ISO 22301
+  - Clause 17 (ISMS): Information security aspects of business continuity management.
+
+### 7. Reference Policies & Procedures
+
+- Document Name: Business Continuity Procedure
+
+### 8. ISO Control Mapping(s)
+
+- **Category of Control: Organizational Controls**
+  - ISO 27001:2022 Control 5.30: ICT readiness for business continuity must be planned, implemented, maintained, and tested based on business continuity objectives and ICT continuity requirements.
+  
+- **Category of Control: Technological Controls**
+  - ISO 27001:2022 Control 8.14: Redundancy of information processing facilities.
+
+### 9. Exceptions(s)
+
+- There are no exceptions to this policy.
+
+### Document Control
+
+- **Owner:** CISO
+- **Release ID:** BCP-POL-051
+
+### Version History
+
+- **Ver. No. 0.1** - 25-Feb-19 - Author: Karthik Narasimha - Initial Draft
+- **Ver. No. 0.2** - 15-Mar-19 - Author: Karthik Narasimha - Reviewed by Phani
+
+# Policy Updates
+
+## 1.0 Policy Statement
+- **Date:** 14-May-19
+- **Approved by:** Karthik Narasim, Ganesh Arunachal
+- **Status:** Baselined
+
+## 1.1 Review Format Change
+- **Date:** 11-May-20
+- **Approved by:** Karthik Narasim, Balu Nair
+- **Status:** Review
+
+## 2.0 Approval and Baselining
+- **Date:** 14-May-20
+- **Approved by:** Karthik Narasim, Phani Krishna
+- **Status:** Approved and Baselined
+
+## 2.1 Updated Requirements
+- **Date:** 13-Jan-21
+- **Approved by:** Karthik Narasim, Phani Krishna
+- **Status:** Updated the requirements as per ISO 20000-1:2018 and updated the information classification.
+
+## 3.0 Approval and Baselining
+- **Date:** 13-Jan-21
+- **Approved by:** Karthik Narasim, Phani Krishna
+- **Status:** Approved and Baselined
+
+## 3.1 Scope Update
+- **Date:** 02-June-21
+- **Approved by:** Karthik Narasim, Phani Krishna
+- **Status:** For Review
+- **Details:** Updated the scope and incorporated a few format changes. Sections 5 and 6 have been moved to the procedure document.
+
+## 4.0 Approval and Baselining
+- **Date:** 02-June-21
+- **Approved by:** Karthik Narasim, Phani Krishna
+- **Status:** Approved and Baselined
+
+## 4.1 Changes Incorporation
+- **Date:** 30-July-21
+- **Approved by:** Karthik Narasim, Balu N
+- **Status:** For Review
+- **Details:** Changes incorporated as per feedback from Phani.
+
+## 5.0 Annual Review
+- **Date:** 30-July-21
+- **Approved by:** Karthik Narasim, Balu N
+- **Status:** Approved and Baselined
+
+## 5.0 Annual Review
+- **Date:** 23-Dec-21
+- **Approved by:** Karthik Narasim, Karthik N
+- **Status:** Annual Review
+- **Details:** No changes.
+
+## 5.1 Scope Extension
+- **Date:** 13-Mar-22
+- **Approved by:** Sanjana, Karthik N
+- **Status:** For Review
+- **Details:** The scope has been extended to include products.
+
+### 6.0 Approval Status
+- On March 17, 2022, Sanjana Karthik N and Siva N submitted a document for approval, which was approved and baselined.
+
+### 6.1 Review Status
+- On January 31, 2023, Sanjana Beniyel S submitted a document for review. The scope was extended to all Trianz locations, and the review period was changed from semiannual to annually.
+
+### 7.0 Approval Status
+- On January 31, 2023, Sanjana submitted a document for approval, which was approved and baselined.
+
+### 7.1 Review Status
+- On February 22, 2023, Kruti and Shalini Kumari submitted a document for review. The call tree test frequency was added to biannually, and a new template change and editorial change were made.
+
+### 8.0 Approval Status
+- On May 12, 2023, Kruti, Karthik N, and Srikanth M submitted a document for approval, which was approved and baselined.
+
+### 8.1 Review Status
+- On February 15, 2024, Kruti, Beniyel S, and Vijaya R submitted a document for review. 
+  1. The objective was updated according to ISO 27001:2022 Standard.
+  2. ISO mappings have been added.
+
+### 9.0 Approval Status
+- On February 23, 2024, Kruti, Beniyel S, Srikanth M, and Vijaya R submitted a document for approval, which was approved and baselined.
+
+### 9.1 Review Status
+- On May 5, 2025, Vijaya and Balu submitted a document for review. The document was migrated to a new template, and the review frequency was set to yearly.
+
+### 10.0 Approval Status
+- On May 14, 2025, Vijaya, Balu, and Srikanth M submitted a document for approval, which was approved.
+
+# Contact Information
+
+- **Name**: [Insert Name]
+- **Email**: infosec@trianz.com
+- **Phone**: [Insert Phone Number]
+
+# Copyright Notice
+
+- The content in this document is copyrighted. Unauthorized use, in part or full, may violate copyright, trademark, and other laws.
+- This document may not be modified, reproduced, publicly displayed, performed, distributed, or used for any public or commercial purposes.
+- The Trianz name and its products are protected by trademark and copyright laws, regardless of how and where referenced.

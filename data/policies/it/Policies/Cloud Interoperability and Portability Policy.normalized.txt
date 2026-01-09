@@ -1,0 +1,292 @@
+# Cloud Interoperability and Portability Policy
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. PURPOSE
+2. OBJECTIVES
+3. SCOPE
+4. POLICY STATEMENT
+   - 4.1 Basic Definitions
+   - 4.2 Interoperability
+     - 4.2.1 Cloud Interoperability Facets
+     - 4.2.2 Facets of Cloud Interoperability
+     - 4.2.3 Syntactic Interoperability
+     - 4.2.4 Semantic Data Interoperability
+     - 4.2.5 Behavioral Interoperability
+     - 4.2.6 Policy Interoperability
+     - 4.2.7 Summary of Cloud Interoperability Facts
+   - 4.3 Cloud Data Portability
+     - 4.3.1 Cloud Data Portability Facet Model
+     - 4.3.2 Data Syntactic Portability
+     - 4.3.3 Data Semantic Portability
+     - 4.3.4 Data Policy Portability
+     - 4.3.5 Summary of Cloud Data Portability Facts
+   - 4.4 Cloud Application Portability
+     - 4.4.1 Cloud Application Portability Facet Model
+     - 4.4.2 Application Syntactic Portability
+     - 4.4.3 Application Instruction Portability
+     - 4.4.4 Application Metadata Portability
+     - 4.4.5 Application Behavior Portability
+     - 4.4.6 Application Policy Portability
+     - 4.4.7 Summary of Cloud Application Portability Facts
+5. ROLES & RESPONSIBILITIES
+6. APPLICABLE STANDARDS
+7. EXCEPTION(S)
+8. ISO CONTROL MAPPING(S)
+
+## 1. Purpose
+The purpose of this policy is to provide interoperability and portability requirements and guidelines for rendering Cloud Service Provider (CSP) Services or consuming the CSP’s services as Cloud Service Customer (CSC).
+
+## 2. Objectives
+- Facilitate effective implementation and validation of the interoperability and portability of Cloud-hosted data.
+- Ensure transparency for CSC to assess the effort required to achieve interoperability with other environments and portability.
+- Support GDPR free flow of personal data and regulations on the free flow of non-personal data within the EU.
+
+## 3. Scope
+This policy document covers the Cloud Interoperability and portability requirements where Trianz acts as a CSC or CSP.
+
+## 4. Policy Statement
+
+### 4.1 Basic Definitions
+- **Interoperability**: The ability of two or more systems or applications to exchange information and mutually use the exchanged information.
+- **Syntactic Interoperability**: Interoperability where the formats of the exchanged information can be understood by the participating systems.
+- **Semantic Data Interoperability**: Interoperability where the meaning of the data model within the context of a subject area is understood by the participating systems.
+- **Data Portability**: The ability to port data from one cloud service to another service or between a CSC system and the Cloud.
+- **Data Syntactic Portability**: Data portability using data formats that can be decoded in the target systems.
+- **Data Semantic Portability**: Data portability such that the meaning of the data is preserved when transferred between systems.
+
+### 4.2 Interoperability
+
+#### 4.2.1 Cloud Interoperability Facets
+- Interoperability is not a binary concept; it is implemented based on multiple elements.
+- The interoperability facet model defined by ISO/IEC 19941:2017 includes five facets: 
+  1. Transport
+  2. Syntactic
+  3. Semantic Data
+  4. Behavioral
+  5. Policy
+- Trianz Associates must consider these facets when implementing or evaluating a Cloud solution.
+
+#### 4.2.2 Facets of Cloud Interoperability
+
+**Transport Interoperability:**
+- Transport interoperability involves a common communication infrastructure for data exchange between systems.
+- It includes transfer mechanisms between CSC components and CSP components, or between CSP components of different cloud services.
+- Examples of standard transport interoperability protocols include:
+  - REST-based HTTP/S
+  - SOAP
+  - Advanced Message Queuing Protocol (AMQP)
+  - Message Queuing Telemetry Transport (MQTT)
+- Identified network/transport protocols must meet industry-accepted cryptographic security standards.
+
+**Syntactic Interoperability:**
+- Syntactic interoperability is the ability of multiple cloud systems or services to understand the structure of exchanged information.
+- Examples of encoding syntaxes include:
+  - JSON
+  - XML
+  - ASN.1 (Abstract Syntax Notation 1)
+
+**Semantic Data Interoperability:**
+- Semantic data interoperability allows systems exchanging information to understand the meaning of the data model within a subject area.
+- At the infrastructure level, this includes virtual machines (VMs), containers, storage, and networking concepts.
+- At the application level, domain concepts are defined by the application (e.g., Customer Service Management (CSM), Human Capital Management (HCM), Customer Relationship Management (CRM)).
+- At the business domain level, it involves sharing and understanding discrete domain concepts between applications, using approaches like:
+  - Construction of ontologies (e.g., OWL)
+  - Use of semantic query languages (e.g., SPARQL)
+
+**Behavioral Interoperability:**
+- Behavioral interoperability is defined in the service description, which includes the API interface declaration.
+- The API describes the service in terms of operations, inputs, and outputs.
+- Additional information required includes expected results, pre-conditions, post-conditions, and necessary sequences of operations for successful API use.
+- This facet abstracts from implementation details and describes the behavior of software components in a representation-independent manner.
+
+### 4.2.6 Policy Interoperability
+
+- Policy interoperability is the ability of two or more systems to work together while adhering to applicable legal, organizational, and policy frameworks.
+- This includes compliance with governmental laws, regulations from regulatory bodies, and the policy terms of Cloud Service Providers (CSP) and Cloud Service Customers (CSC).
+- Specific security requirements may be necessary based on the nature of the data being processed. For example:
+  - When handling credit card information, the cloud service must comply with the PCI-DSS standard.
+  - General security requirements may include certification against standards such as ISO/IEC 27001 or ISO/IEC 27017.
+
+### 4.2.7 Summary of Cloud Interoperability Facts
+
+- **Transport**
+  - **Purpose:** Data transfer between systems
+  - **Requirements:** Data transfer protocols
+  - **Examples:** REST-based protocols like HTTPs, SOAP, MQTT
+
+- **Syntactic**
+  - **Purpose:** Data in a common understood format
+  - **Requirements:** Standardized data exchange formats
+  - **Examples:** JSON, XML, ASN.1
+
+- **Semantic**
+  - **Purpose:** Data in a common data model
+  - **Requirements:** Data model interpretation
+  - **Examples:** OData, OWL
+
+- **Behavioral**
+  - **Purpose:** Expected outputs on service requests
+  - **Requirements:** Behavioral models for the cloud service
+  - **Examples:** API pre & post conditions, constraint specifications, UML models
+
+- **Policy**
+  - **Purpose:** Assurance that interoperating systems follow applicable government/regulatory policies
+  - **Requirements:** Control for use & access
+  - **Examples:** Customer security policies, standards, cross-border data transfer restrictions, PII regulations
+
+### 4.3 Cloud Data Portability
+
+#### 4.3.1 Cloud Data Portability Facet Model
+
+- Cloud data portability refers to the ability to transfer data from one cloud service to another or from a CSC’s system to a cloud service using a machine-readable format.
+- Data portability can be analyzed through different facets, each focusing on a specific dimension. To achieve data portability, all facets must be understood and mutually agreed upon to identify which facet may require attention during data transfer. 
+- The facets include:
+  - Data policy
+  - Data syntactic
+  - Data semantic
+
+### 4.3 Data Portability
+
+#### 4.3.2 Data Syntactic Portability:
+- Data syntactic portability involves transferring data from a source system to a target system using formats that can be decoded on the target system.
+- Acceptable encoding syntaxes include XML and packaging formats such as Open Virtualization Format (OVF) or Zip.
+
+#### 4.3.3 Data Semantic Portability:
+- Data semantic portability is the transfer of data to a target system where the meaning of the data model is understood within the relevant subject area.
+- A data model (Metadata) includes data items, attributes, logical structures, and relationships between data items.
+- Data models are influenced by the type of cloud service offering:
+  - At the infrastructure level, they pertain to VMs, containers, storage, and networking metadata.
+  - At the application level, they are dictated by the specific application, such as CSM, CRM, or ERP.
+
+#### 4.3.4 Data Policy Portability:
+- Data policy portability refers to the ability to transfer data between a source and a target while adhering to applicable legal, organizational, and policy frameworks.
+- This includes compliance with regulations on data locality, rights to access, use, and share data, as well as mutual responsibilities regarding security and privacy between a Cloud Service Provider (CSP) and a Cloud Service Consumer (CSC).
+
+#### 4.3.5 Summary of Cloud Data Portability Facts:
+- **Data Syntactic Portability:**
+  - **Purpose:** Receive data in a structured, commonly used, and machine-readable format.
+  - **Requirements:** Common machine-readable data format.
+  - **Examples:** XML, CSV, JSON.
+
+- **Data Semantic Portability:**
+  - **Purpose:** Assure the meaning of data.
+  - **Requirements:** Mutually understood ontologies and metadata.
+  - **Examples:** OWL, Dublin Core Schema.
+
+- **Data Policy Portability:**
+  - **Purpose:** Adhere to all applicable regulations and organizational policies.
+  - **Requirements:** Agreed set of applicable regulations and organizational policies.
+  - **Examples:** Confidentiality levels, privacy rights, and cross-border data transfer.
+
+### 4.4 Cloud Application Portability
+
+#### 4.4.1 Cloud Application Portability Facet Model:
+- Cloud application portability is the ability to migrate an application from one cloud service to another or from a CSC’s system to a cloud service.
+- The goal is for the application to provide equivalent functionality in the target environment as it did in the source environment.
+- The five facets of cloud application portability are:
+  - Application syntactic
+  - Application instruction
+  - Application metadata
+  - Application behaviour
+  - Application policy
+
+#### 4.4.2 Application Syntactic Portability:
+- Application syntactic portability involves migrating an application from a source system to a target system in a format that can be decoded on the target system.
+- Application artifacts and metadata must be structured according to a domain model for applications and encoded using a specific syntax and packaging format.
+
+### 4.4.3 Application Instruction Portability
+- Application instruction portability involves migrating an application from a source system to a target system, ensuring that its instruction set executes correctly on the target system.
+- After porting, all software artifacts, orchestration instructions, and scripts must be executed on infrastructure that mimics the original system, requiring all necessary interpreters and execution engines to be available.
+
+### 4.4.4 Application Metadata Portability
+- Application metadata portability refers to migrating an application from a source system to a target system, ensuring that the application metadata is comprehensible on the target system.
+- The domain model of the application must be mutually understood between the source and target systems, including metadata about required resources, configuration, and initialization data.
+
+### 4.4.5 Application Behavior Portability
+- Application behavior portability is the process of migrating an application from a source to a target system, ensuring that execution on the target produces results equivalent to those from the source.
+- Differences in execution environments may lead to variations in application behavior, particularly when porting from a legacy system to a cloud-native environment.
+
+### 4.2.1 Application Policy Portability
+- Application policy portability is defined as the migration of an application from a source system to a target system while adhering to the relevant legal, organizational, and policy frameworks of both systems.
+- Challenges in policy portability may include:
+  - Lack of payment for cloud services.
+  - Absence of a license to operate the application on the target system.
+  - Regulations that restrict application operation in certain geographical areas.
+
+### 4.2.2 Summary of Cloud Application Portability Facts
+- **Application Syntactic Packaging**: 
+  - Purpose: Common application packaging format.
+  - Requirements: Zip, tar, jar formats.
+  
+- **Application Instruction Execution**: 
+  - Purpose: Ability to execute applications equivalently.
+  - Requirements: Supported runtime environments such as Java Runtime, C++, C#.
+  
+- **Application Metadata Understanding**: 
+  - Purpose: Shared understanding of environment dependencies for execution.
+  - Requirements: Metadata models like XML, JSON, YAML.
+  
+- **Application Behavior Execution**: 
+  - Purpose: Ability to produce expected results.
+  - Requirements: Shared assumptions on the execution environment, validated through test suites.
+  
+- **Application Policy Compliance**: 
+  - Purpose: Agreed conditions and controls for application use.
+  - Requirements: Compliance with applicable regulations and enterprise policies.
+
+### 5. Roles & Responsibilities
+- **Project/Platform/Product Engineering, Cloud, Infra Management Team**: 
+  - Responsibility: Adhere to the Interoperability & Portability policy based on the Customer/Provider role for the engagement.
+  - Classification: Internal.
+
+**6. Applicable Standards**
+- The following standards are applicable:
+  - CCM v4.0
+  - SWIPO Code of Conduct
+  - ISO/IEC 19941:2017
+  - IEEE P2302
+
+**7. Exception(s)**
+- There are no exceptions to this policy.
+
+**8. ISO Control Mapping(s)**
+- The following mapping is established:
+  - For the category of Organizational Control, the ISO 27001:2022 Control 5.23 pertains to Information security for use of cloud services. The corresponding document name is the Cloud Interoperability & Portability Policy.
+
+**Document Control**
+- Owner: CISO
+- Release ID: IPY-POL-0175
+
+**Version History**
+- Version 0.1 (June 22, 2022): Initial Version - No changes.
+- Version 1.0 (July 22, 2022): Amendments - Changes post peer review.
+- Version 1.0 (August 22, 2022): Approval - Approved and Baselined.
+- Version 1.0 (April 25, 2023): For Review - Reviewed with no changes.
+- Version 1.1 (May 12, 2023): For Review - Migrated to new template.
+- Version 2.0 (May 12, 2023): Approved and Baselined.
+- Version 2.1 (February 15, 2024): For Review - Mapped to ISO 27001, 2022 control 5.23.
+- Version 3.0 (February 23, 2024): Approved and Baselined.
+- Version 3.1 (May 5, 2025): For Review - Migrated to new template.
+- Version 4.0 (May 14, 2025): Approved and Baselined.
+
+**Contact Information**
+- For inquiries, please contact: 
+  - Email: infosec@trianz.com
+
+**Thank You**
+- The content in this document is copyrighted; any unauthorized use – in part or full – may violate copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly displayed, performed, or distributed.
+
+**7.1 Trademark and Copyright Protections**
+
+- The Trianz name and its products are protected by trademark and copyright laws.
+- These protections apply regardless of how and where the Trianz name and products are referenced.
+- The Trianz name and products cannot be used for any public or commercial purposes without proper authorization.

@@ -1,0 +1,120 @@
+# WEB FILTERING POLICY
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. INTRODUCTION
+2. OBJECTIVES
+3. PURPOSE
+4. POLICY
+5. IMPLEMENTATION GUIDELINES
+6. ISO CONTROL MAPPING
+
+## 1. Introduction
+Web filtering enables Trianz to monitor, manage, and regulate users' web activity. By allowing access to approved websites (green sites) and blocking malicious or non-compliant content, web filtering helps protect against cybersecurity threats, enforce corporate policies, and enhance overall network security. This ensures a secure and productive browsing environment while mitigating risks such as malware, phishing, and unauthorized data access.
+
+## 2. Objectives
+- Establish controls to ensure authorized network traffic and prevent unauthorized access to the Internet.
+- Enhance Cybersecurity by preventing access to malicious websites that may contain malware, phishing attempts, or other cybersecurity threats.
+- Ensure Compliance by enforcing regulatory, legal, and organizational policies through the restriction of unauthorized or non-compliant web content.
+- Mitigate Insider Threats by monitoring and controlling employee web activity to identify and prevent potential security risks from within the organization.
+
+## 3. Purpose
+- Protect systems from malware compromise and prevent access to unauthorized web resources.
+- Eliminate security risks such as malware infection that may arise from access to external websites with malicious content.
+
+## 4. Policy
+Trianz shall establish and implement necessary controls to prevent employees from accessing external websites that may contain viruses, phishing materials, or other types of illegal information. The Infosec and IS Team shall determine which websites shall not be accessed by employees, and the IS team shall implement these restrictions in the security controls.
+
+### Blocked Website Categories
+The following types of websites shall be blocked:
+- Websites with information upload functionality: Access shall be restricted and only permitted upon approval for legitimate business needs.
+- Websites containing malicious content: Sites known or suspected to host malware, phishing, or other cyber threats shall be blocked.
+- Command and Control (C2) servers: Access to known C2 infrastructure shall be denied to prevent cyberattacks.
+- Threat intelligence-based malicious websites: Malicious domains identified through threat intelligence sources shall be restricted, in alignment with the Threat Management Policy.
+- Websites distributing illegal content and materials: Any website hosting illegal or unethical content shall be blocked.
+
+## 5. Implementation Guidelines
+Trianz shall ensure effective techniques to prevent access to dangerous external websites by blocking the IP addresses or domains of websites identified as dangerous. Some browsers and anti-malware tools enable Trianz to do this automatically with effective implementation.
+
+### a) Web Filtering Practices
+- **URL Categorization:**
+  - Blacklists and Whitelists are compared against predefined lists of known malicious or safe websites.
+  - Human reviewers assess URLs and assign them to appropriate categories based on their content.
+  - Contextual Analysis of URLs categorizes them based on the context in which they are shared or accessed, such as within a specific application or communication channel.
+
+- **Web Content Filtering:**
+  - Maintain log details of each access attempt, including the user, time, URL, and action taken (allowed or blocked).
+  - These logs can be used for auditing, compliance, and troubleshooting purposes.
+
+### 6. SSL Inspection
+- Trianz will decrypt and inspect encrypted HTTPS traffic to enforce content filtering policies on secure connections.
+
+### 6.b Blocked Categories
+Trianz shall consider blocking access to the following categories:
+- **Adult Content**: Websites containing explicit sexual material, nudity, or pornography.
+- **Gambling**: Websites related to online betting, casinos, or gambling.
+- **Malware and Phishing**: Websites known for distributing malicious software or phishing attacks.
+- **Illegal Activities**: Websites promoting illegal drugs, hacking, or other unlawful activities.
+- **Violence and Hate Speech**: Content advocating violence, hate speech, or discrimination.
+- **Social Networking (if restricted)**: Websites like Facebook, Twitter, or Instagram, which can be distracting during work hours.
+- **Streaming Media (if restricted)**: Video and audio streaming platforms like YouTube, Netflix, or Spotify.
+- **Gaming (if restricted)**: Online gaming sites that may impact productivity.
+- **Peer to Peer File Sharing**: Includes file sharing sites such as Google Docs and Dropbox.
+- **Personals and Dating**: Online dating sites.
+- **Dead/Obsolete**: Websites that are no longer maintained.
+- **Anonymous Pop-ups and Advertisements**: Sites that serve ads to other websites.
+
+### 6.c Allowed Categories
+Trianz shall consider allowing access to the following categories:
+- **Education and Learning**: Educational resources, e-learning platforms, and research articles.
+- **Health and Wellness**: Health-related websites, medical information, and wellness blogs.
+- **Technology and Science**: Technology blogs, scientific research, and software development resources.
+- **Travel and Tourism**: Travel guides, booking platforms, and destination information.
+- **Business and Economy**: Websites related to business news, stock markets, and financial information.
+- **News and Media**: Reliable news sources, journalism, and current events.
+
+### 6.d False Positives
+Trianz shall take necessary action on false positive cases:
+- Establish rules for safe and appropriate use of online resources, including restrictions on undesirable or inappropriate websites and web-based applications. These rules shall be kept up to date.
+- Provide training to personnel on the secure and appropriate use of online resources, including Trianz rules, contact points for raising security concerns, and processes for accessing restricted web resources for legitimate business reasons.
+- Ensure personnel are trained not to overrule browser advisories that indicate a website is not secure.
+- Implement web filtering techniques, including signatures, heuristics, lists of acceptable and prohibited websites or domains, and bespoke configurations to prevent malicious software and other malicious activities from attacking the Trianz network and systems.
+
+### 7. ISO Control Mapping
+- **Category of Control**: Technological Control
+- **ISO 27001:2022 Control**: 8.23 Web filtering
+- **Document Name as per ISO 27001:2022**: Access to Web Filtering Policy shall be managed to reduce exposure to malicious content.
+
+### Document Control
+- **Owner**: CISO
+- **Release ID**: WEB-POL-0075
+
+### Version History
+- **Ver. No.**: 0.1
+- **Date**: 09-FEB-2024
+- **Author**: Aishee Ghosh
+- **Reviewer**: Vijaya
+- **Approver**: Initial release to Blu
+
+# Document Review and Approval Log
+
+## 1.0 Review and Approval History
+- **23-FEB-2024**: Shalini, Vijaya, Srikanth - For Review, Approved and baselined.
+- **20-MAY-2024**: Nagarathinam, Vijaya, Balu - For Review, Updated the contents on section 6 Guidance (Web filtering practices, categorization, and False positive).
+- **06-JUNE-2024**: Nagarathinam, Vijaya, Srikanth, Balu - For Approval, Approved and baselined.
+- **07-MAR-2025**: Krutideepta Barik, Vijaya R, Balu Nair, Beniyel S - For Yearly Review, Introduction, Objectives, Policy Statement. Section has been modified. Ownership of the Control Section has been removed. Migrated to a new Template.
+- **14-MAY-2025**: Krutideepta Barik, Vijaya R, Srikanth, Balu Nair, Beniyel S - For Approval, Approved and baselined.
+
+## 2.0 Contact Information
+- **Email**: infosec@trianz.com
+
+## 3.0 Copyright Notice
+- The content in this document is copyrighted; any unauthorized use – in part or full – may violate copyright, trademark, and other laws. This document may not be modified, reproduced, publicly displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz name and its products are subject to trademark and copyright protections, regardless of how and where referenced.

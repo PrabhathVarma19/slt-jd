@@ -1,0 +1,639 @@
+Pandemic Response Plan
+
+
+
+
+TRIANZ INTERNAL          trianz.com
+                      Statement of Confidentiality
+
+  The information contained in this document is internal to Trianz. It shall not be
+  disclosed, duplicated, or used for any purpose other than that stated herein, in
+  whole or in part, without the express written consent of Trianz.
+
+
+
+
+                         Information Classification
+
+
+     ☐ Public
+
+     ☒ Internal
+
+     ☐ Confidential
+
+     ☐ Restricted
+
+
+
+
+TRIANZ INTERNAL                                                                  2
+                            Table of Contents
+   1.   Purpose                                      4
+
+   2. Scope                                          4
+
+   3. Objectives of Trianz Pandemic plan             4
+
+   4. Definition of a Pandemic                       4
+
+   5. Trianz Pandemic Response Objectives            4
+
+   6. Plan Triggers and Actions                      5
+
+   7.0 Pandemic Preparedness and Response measures   9
+
+   8.0 Pandemic Working Group                        11
+
+   8.1 Business Resilience Group                     11
+
+   9. Business continuity strategies:                12
+
+   9.1 Work from home model ( Remote Working)        12
+
+   9.1.1 Information technology Assets               12
+
+   9.1.2 Power and network connectivity              13
+
+   9.1.3 Security requirements                       13
+
+   10. HYBRID MODEL                                  13
+
+   11.PANDEMIC RESPONSE PLAN TEST                    14
+
+
+
+
+TRIANZ INTERNAL                                      3
+  1. Purpose
+      The purpose of Pandemic Response Plan is to guide Trianz through the
+      development of the steps and procedures necessary to successfully respond
+      to and recover from a pandemics.
+
+
+  2. Scope
+      The guidelines and procedures listed in this plan cover a variety of business
+      activities, including sensitive or critical daily operational activities, and applies
+      to all company personnel.
+
+
+
+  3. Objectives of Trianz Pandemic plan
+
+      The objective of this pandemic plan is to
+
+      •   Limit the impact of pandemic on Trianz by limiting the burden of disease
+          (i.e., morbidity and mortality);
+      •   Minimize social disruption impact on Trianz caused by the pandemic; and
+      •   Reduce Trianz economic losses, attributable to the pandemic.
+      •   Mitigate risks of delivery impact to Client.
+
+
+  4. Definition of a Pandemic
+      A pandemic is a virulent Global outbreak, to which humans have little or no
+      immunity, which mutates and develops the ability to transmit easily between
+      people and spreading world-wide
+
+
+
+      Viruses range in severity from mild to severe, and the same virus can vary
+      greatly in how it affects different age groups or at-risk groups, depending on
+      its unique characteristics.
+
+
+  5. Trianz Pandemic Response Objectives
+
+
+      Trianz Pandemic Response objectives are:
+
+
+
+TRIANZ INTERNAL                                                                          4
+             o   Detect and identify the early symptoms by employee Wellness Surveys to
+                 identify those who are sick and possess symptoms
+
+             o   Diagnose by enabling medical care from Trianz empanelled doctors and
+                 clinics and Contain
+
+             o   Contain by enabling remote working & provide Business Continuity to Client
+                 Delivery
+
+             o   Monitor the health of the associates and aid if required along with the
+                 project delivery status.
+
+             o   Communicate the overall status to Key stake holders i.e., internal, Clients,
+                 suppliers, vendors etc.
+
+
+
+
+          6. Plan Triggers and Actions
+
+
+              Trianz has developed triggers to assist in the activation of pandemic related
+              strategies. Trianz recognizes that it may need to take immediate action if there
+              is an impact to employees’ health and client delivery.
+
+
+
+Phase              Trigger                                 Key Actions
+
+Alert Phase          • New strain identified                •   Establish Situational Awareness
+
+                     • Media coverage of potential          •   Crisis Management team to publish
+
+                          pandemic strain                       the situation assessment report to
+
+                     • Human-Human transmission                 Business resilience group.
+
+                          in disease’s country of Origin    •   Validate the Organization’s
+
+                     • Potential the disease will               Geographic and Employee Footprint.
+
+                          affect the Organization           •   Assess Potential Impacts on Business
+
+                          and/or its clients.                   Operations
+                                                            •   Assess Potential Impacts on the Supply
+                                                                Chain
+
+
+
+        TRIANZ INTERNAL                                                                         5
+Phase              Trigger                               Key Actions
+
+                                                          •   Determine Potential Finance and
+                                                              Treasury Implications
+                                                          •   Evaluate Transportation and Travel
+                                                              Risks
+                                                          •   Review/Update Human Resource
+                                                              Related Policies and Procedures
+                                                          •   Review Business Continuity Planning
+                                                              Efforts for Personnel and Third Parties
+                                                          •   Evaluate the Ability of IT to Support A
+                                                              Spike Remote Work
+                                                          •   Determine Communication
+                                                              Requirements (internal and external)
+
+
+
+
+Pre-Pandemic         • Presence of Strain in localized    •   Accelerate the BCP checkpoints for
+Phase                                                         continuous Crisis Management
+                          Hot Spots
+                     • Minimal Spread Beyond                  Response
+
+                          Disease’s Source (Country of    •   Initiate the health Surveys and assess
+
+                          Origin)                             the health status of associates.
+
+                     • Beginning of Government            •   Coordinate with Business Areas,
+
+                          Reactions (Travel Warnings          projects and functions Likely to Be
+
+                          Issued, Some Transportation         Affected by the Event
+
+                          Network Closures)               •   Establish Communication with
+
+                     • Anticipated Impact to the              Potentially Affected Third Parties and
+
+                          Trianz and/or Impact to its         Re-evaluate Continuity Strategies
+
+                          Suppliers                       •   Develop Approach to Manage
+                                                              Financial Impacts
+                                                          •   Assess Sanitation Procedures
+
+
+        TRIANZ INTERNAL                                                                       6
+Phase              Trigger                                Key Actions
+
+                                                           •   Develop Transportation and Travel
+                                                               Restrictions
+                                                           •   Identify Means to Track Absenteeism
+                                                           •   Determine Level of Support Provided
+                                                               via Insurance and Health Care
+                                                               Providers
+                                                           •   Identify More Aggressive Strategies
+                                                               that May Be Used if Conditions
+                                                               Deteriorate
+                                                           •   Assess Suitability of Technology
+                                                               Infrastructure for Extensive Remote
+                                                               Operations
+                                                           •   Establish continuous health and
+                                                               delivery Status Reporting for all
+                                                               Business Units.
+                                                           •   Plan and conduct proactive
+                                                               vaccination drives if suitable vaccines
+                                                               are available as per Government
+                                                               directives
+
+
+
+
+Pandemic             • Global/Dispersed                    •   Activate Crisis Management and
+Phase                                                          Appropriate Business Continuity
+                          Proliferation of Pandemic
+                     • Pandemic Directly Affects the           Response.
+
+                          Organization and its             •   Continuous BCP checkpoints
+
+                          Employees (i.e., significant,    •   Continuous health trend monitoring
+
+                          prolonged absenteeism,               via surveys.
+
+                          quarantines issued in/near
+
+
+        TRIANZ INTERNAL                                                                         7
+Phase              Trigger                             Key Actions
+
+                          major operating locations,    •   Continuous Delivery status monitoring
+                          and travel restrictions)          via daily delivery status reviews
+                     • Higher than Seasonal             •   Regular Client communication and
+                          Average of Absenteeism            updates
+                                                        •   Continue to Impose Travel Restrictions
+                                                        •   Activate Additional Sanitation
+                                                            Measures if required.
+                                                        •   Activate More Aggressive Strategies
+                                                        •   Activate Alternate Supply-Chain and
+                                                            Sourcing Strategies.
+                                                        •   Establish Direct Lines of
+                                                            Communication with Local Public
+                                                            Health Agencies
+                                                        •   Execute Mass Communications.
+                                                        •   Vaccination initiatives and tie up with
+                                                            hospitals.
+                                                        •   Evaluate need for medicinal supplies
+                                                            and life support accessories such as
+                                                            oxygen cylinders, concentrators etc
+
+
+
+
+Transition           • Employee availability returns    •   Conduct a Post-Incident Review
+PHASE                                                   •   Update Plans and Procedures
+                          to Normal Levels
+                     • Health of                        •   Transition to Normal Operations
+
+                          associates/employees are      •   Communicate to Key Stakeholders
+
+                          normal.                       Continuous Vaccination programmes.
+
+                     • Post-Pandemic
+
+
+        TRIANZ INTERNAL                                                                      8
+  7.0 Pandemic Preparedness and Response measures
+       People
+
+       • HR awareness mailers highlighting pandemic Outbreak along with Dos and
+         Don’ts
+
+       • Tie-up with empanelled clinics across all Trianz locations for doctors’
+         advice
+
+       • 24/7 help desk facility, where our associates who calls up will be directed to
+         the medical facility
+
+       • Employee Wellness Survey to understand any medical assistance that may
+         be required for the employee and family in lieu of any symptoms
+
+       • Location-wise HR, Admin, IT points of Contact with reach out numbers
+
+
+       Environment readiness
+
+       • Location-wise Delivery centers fumigation and disinfecting
+
+       • Hand sanitizers made available at security desks, washrooms and
+         prominent places inside the delivery centers.
+
+       • Face are masks kept handy.
+
+       • Security desk officers screening for symptoms
+
+       • Thermal Sensors
+
+       • Housekeeping services screening for symptoms
+
+       • Cab drivers screening for symptoms.
+
+       • Building environment cleansing by working with building owners
+
+
+       Travel and Local Commute
+
+       • Freeze on domestic and international travel
+
+       • Travel advisory and diagnostics to assess risk of travel if it is to a Pandemic
+         outbreak country or city.
+
+
+
+
+TRIANZ INTERNAL                                                                        9
+       • Self-Quarantine for travel from or Transit through Pandemic outbreak
+         countries
+
+       • Visitors and vendor diagnostic questions to assess risks due to visitor or
+         vendors arriving into the campus.
+
+
+       Remote working & IT enablement
+
+
+
+       • WFH Enablement: Proactive Assessment & allocation of Laptop, Internet
+         connectivity and power backups for critical associates.
+
+       • Daily connect (DSR’s) with the delivery managers to check status of
+         Wellbeing and Delivery status.
+
+       • Primary & Secondary data connectivity and power wherever feasible
+
+
+
+       Cyber Security, Technology & Delivery Aspects:
+
+
+
+       • Remote working guidelines and best practices
+
+       • Cybersecurity guidelines roll out and implementation.
+
+       • Secure remote workspace including hardened Laptops, Protected Web &
+         Email access, Conditional access etc. enablement
+
+       • Daily delivery risk reviews across all projects.
+
+       • Information security and privacy refresher trainings / awareness
+         campaigns.
+
+
+       Daily BCP check point calls to assess
+
+
+
+       • Employee Health and wellbeing
+
+       • End point device, connectivity issues and challenges to be addressed, if any
+
+       • Delivery status and risk monitoring
+
+       • Client status updates and briefing
+
+
+
+TRIANZ INTERNAL                                                                       10
+        8.0 Pandemic Working Group
+              The following participants form the Pandemic Working Group. The Business
+              Resilience group/committee are key functional heads across the
+              organisation and all the location wise crisis management teams will report to
+              Business resilience group (BRG).
+
+              Primary Members:
+              •     Crisis Management Representatives (Across locations)
+              •     Senior leadership team representatives.
+              •     Project Delivery Representatives
+              •     Business Continuity Representative
+              •     Human Resources Representative
+              •     Facilities/Administration Representative
+              •     Finance Representative
+              •     Communications Representative
+              •     Information Technology Representative
+              •     Information Security Representative.
+              •     Travel Representative.
+
+
+              Key Stake holders who would be engaged on a need basis :
+              •     Legal/Compliance
+              •     Marketing Representative.
+              •     Government Liaison
+              •     Media (If needed)
+
+
+              8.1       Business Resilience Group
+
+
+                                                               Escalation
+Project/Function        Primary Contact         Phone                              Phone
+                                                               Contact
+Information                 Pranesh,      91 9704906608 91
+                                                               Srikanth M   91 9000599259
+Systems-                  Sivakrishna     9949984411
+
+
+
+      TRIANZ INTERNAL                                                                    11
+Group Manager -
+Admin/Physical           Rajani Nagaraj   91 9448457666
+                                                              Yogesh Patel
+security                                                                         91 80 46640000
+Chief information
+                                                              Sri Manchala       91 80 46640000
+Security Officer           Srikanth M     91 9000599259
+Business
+Continuity/Inform
+                           Beniyel S      91 9843315098                          91 9000599259
+ation Security -                                              Srikanth M
+Manager
+HR Group
+                         Sanuj Krishnan   8971022337           Raja Perumal      91 80 46640000
+Manager
+                         Neelakandan
+Travel - Assistant
+                         Thekkedathu                          Rajani Nagaraj     91 9448457666
+Manager                                   91 8123029150
+                            Mana
+Finance –
+                          Sandeep T       91 9900505759                          91 80 46640000
+Controller                                                    Yogesh Patel
+
+
+
+
+         9. Business continuity strategies:
+
+
+              9.1 Work from home model ( Remote Working)
+      Working from Home model is deployed by assessing and testing the capability
+      provided to our associates to work from a location apart from the designated Trianz
+      offices or Trianz client offices (referred to as a ‘remote’ location subsequently), using
+      Trianz assets and equipment, for a prolonged duration.
+
+      Work from home strategy will be activated when the primary/Secondary facilities are
+      inoperable due to
+
+         •   Pandemic/epidemic.
+
+
+              9.1.1 Information technology Assets
+      Trianz will provide official laptops, headphones and other peripherals. Connectivity to
+      Trianz network or email can happen only after IS configuration for Trianz environment
+
+
+
+       TRIANZ INTERNAL                                                                       12
+is done. Any request for such equipment will need to be authorized by Project
+/Delivery manager.
+
+
+
+
+        9.1.2 Power and network connectivity
+All associates working from home must have continuous power and sufficient power
+backups. Trianz has provided power backups like UPS to identified critical employees
+in the projects/functions.
+
+All associates are equipped with sufficient broadband internet connectivity and
+backup internet dongles provided by the company.
+
+
+        9.1.3 Security requirements
+   •   All identified associates who qualify to work from home must clear – All
+       mandatory security trainings (Information Security, Data privacy etc.) before
+       availing work from home.
+   •   All associates must follow and adhere to the remote cybersecurity guidelines
+       published by the information security team.
+   •   All work from home users are to comply with policies specified under
+       information security management system in the Bluebook.
+
+
+
+10. Hybrid Model
+The hybrid working model is -flexible arrangement, allowing employees to work
+remotely while others work on-premises with suitable preventive controls.
+
+
+
+A 'hybrid' model of working achieves both of these:
+
+   •   It provides the businesses with the structure and sociability in an office
+       environment
+   •   Flexibility and independence of remote working.
+
+
+
+
+ TRIANZ INTERNAL                                                                    13
+11. Pandemic Response Plan Test
+
+
+Pandemic response plan test shall be conducted as per management guidelines at
+an organisation level/engagement level.
+
+
+
+Testing can be conducted in the form of a simulation, table top or the plan
+walkthrough test aligned with the Trianz Business continuity plan.
+
+
+
+
+  Owner:            Management        Release ID:             PAN_GUID_0078
+                   Representative
+
+
+
+
+ TRIANZ INTERNAL                                                              14
+       For Trianz Process Improvement Group (TPIG) Purpose Only
+
+
+
+                                   Version History
+
+
+
+                                                 Introducti
+ Ver.                                            on/Reaso                 Change
+         Author       Date           Reviewer                 Approver
+ No.                                             n for                    Description
+                                                 Change
+
+ 0.1     Karthik      18/05/2021     Phani       Initial        Phani     Initial draft of
+         Narasimha                   Krishna     Version        Krishna   the plan.
+
+ 0.2     Karthik      25/05/2021     Phani       Review by      Phani     Incorporated
+         Narasimha                   Krishna     Phani K        Krishna   all changes
+                                                                          suggested.
+
+ 0.3     Karthik      30/07/2021     Ganesh      BCP            Phani     Reviewed the
+         Narasimha                   Arunachal   committe       Krishna   overall plan
+                                     a           e Review                 and
+                                                                          suggested
+                                                                          changes.
+
+ 1.0     Karthik      30/07/2021     Ganesh      Incorporat     Phani     Updated
+         Narasimha                   Arunachal   ed the         Krishna   Sections
+                                     a           changes                  4,6,7,8, and 10
+                                                 suggested
+                                                 by Ganesh
+
+ 1.1     Krutideept   23/12/2022     Karthik     Annual                    1. Statement
+         a                           Narasimha   review                        of
+                                                                          Confidentialit
+                                                                                y
+                                                                          Updated to
+                                                                          internal from
+                                                                          confidential.
+
+
+
+
+TRIANZ INTERNAL                                                                   15
+                                                                      2.Contact
+                                                                      details
+                                                                      updated
+
+ 2.0    Krutideept   12/01/2023              Approval     Karthik N     Approved
+        a                                                                 and
+                                                                        baselined
+ 2.1    Beniyel S    10/06/2024   Vijaya R   Review                   Test
+                                                                      Frequency
+                                                                      changed,
+                                                                      Updated with
+                                                                      contact
+                                                                      details
+
+ 3.0    Beniyel S    10/06/2024   Vijaya R   Approval     Vijaya R      Approved
+                                                                          and
+                                                                        Baselined
+ 3.1    Beniyel S    05/03/202               Annual                     Updated
+                     5                       Review                      contact
+                                                                         details
+ 3.2    Kruti        28-May-25 Vijaya R      For Review                Migrated to
+                                                                          New
+                                                                        Template
+ 4.0    Kruti        29-May-25 Vijaya R      Approval     Srikanth      Approved
+                                                          M               and
+                                                                        Baselined
+
+
+
+
+TRIANZ INTERNAL                                                                 16
+                                Contact Information
+                                               Name
+
+                                               Email
+
+                                              Phone
+
+
+
+
+                                  Thank You
+                                     infosec@trianz.com
+
+
+
+
+ The content in this document is copyrighted; any unauthorized use – in part or full – may violate the
+ copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly
+   displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz
+ name and its products are subject to trademark and copyright protections, regardless of how and
+                                          where referenced.
+
+
+TRIANZ INTERNAL                                                                                      17
+

@@ -1,0 +1,367 @@
+# ISAC Roles and Responsibilities
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- **Public**: Not classified
+- **Internal**: Classified
+- **Confidential**: Not classified
+- **Restricted**: Not classified
+
+## Table of Contents
+1. INTRODUCTION
+2. OBJECTIVES
+3. ORGANIZATION CHART
+   - 3.1 Information Security and Data Privacy Assurance
+4. INFORMATION SECURITY ASSURANCE COUNCIL ROLES, RESPONSIBILITIES AND AUTHORITIES
+   - 4.1 ISAC Group
+   - 4.2 Chief Information Security Officer (CISO) / Chief Data Privacy Officer (CDPO)
+   - 4.3 Information Systems & Business Resilience Team
+   - 4.4 HR & Recruitment Team
+   - 4.5 Professional Development (End User Training)
+   - 4.6 Admin Team
+   - 4.7 Information Security and Data Privacy Assurance Group
+   - 4.8 Travel Team
+   - 4.9 Delivery and DA Team
+   - 4.10 Legal Team
+   - 4.11 Finance and Purchase Team
+   - 4.12 Marketing Team
+   - 4.13 Platforms Team and Platforms Assurance Team
+5. OUTPUTS
+6. EXIT CRITERIA
+7. PROCESS ASSETS
+8. MEASUREMENT
+9. ISO CONTROL MAPPING(S)
+
+## 1. Introduction
+The ISAC is a representation of the people from relevant functions and business units and will meet quarterly to review the status and effectiveness of the Information Security Management System (ISMS) implementation.
+
+## 2. Objectives
+- Ensure the establishment, implementation, maintenance, and improvement of the organization’s Information Security Management System.
+- Demonstrate the organization’s commitment to securing both organizational and client information assets against vulnerabilities and threats.
+- Ensure all personnel apply information security in accordance with the Information Security Management System framework.
+- Ensure management responsibilities include:
+  - Briefing all personnel on their information security roles and responsibilities before granting access to the organization's information and associated assets.
+  - Providing guidelines that state the information security expectations of their role within the organization.
+  - Mandating compliance with the information security policy and topic-specific policies of the organization.
+  - Achieving a level of awareness of information security relevant to their roles and responsibilities.
+  - Ensuring compliance with the terms and conditions of employment, contracts, or agreements, including the organization's information security policy and appropriate working methods.
+  - Continuing to develop appropriate information security skills and qualifications through ongoing professional education.
+  - Providing, where practicable, a confidential channel for reporting violations of information security policy or procedures ("whistleblowing"), allowing for anonymous reporting.
+
+### 3. Organization Chart
+
+#### 3.1 Information Security and Data Privacy Assurance
+- The Information Security Assurance Council (ISAC) is led by the Chief Information Security Officer (CISO) and includes the Information Security Data Privacy Assurance (ISDPA) Team.
+
+### 4. Information Security Assurance Council Roles, Responsibilities, and Authorities
+
+#### 4.1 ISAC Group
+The ISAC Group will convene bi-annually to discuss the following:
+- The status of the implementation of information security policies and procedures.
+- Security incidents reported and their resolutions.
+- Observed non-compliances with the Information Security Policy.
+- Compliance with Trianz policies and procedures.
+- Current and emerging threats relevant to the organization.
+- Review and update the Risk Assessment and controls as needed.
+- Include risk owners in discussions to ensure aligned understanding and acceptance.
+- Additional security requirements that necessitate changes in the Information Security Policy.
+- Ensure personnel awareness of the Information Security Policy.
+
+#### 4.2 Chief Information Security Officer (CISO) / Chief Data Privacy Officer (CDPO)
+- The CISO/CDPO has overall responsibility for Information/Cyber Security, Privacy, and Sustainability for Trianz, setting a clear vision, mission, and direction for the Information Security, Data Privacy, and Sustainability Assurance Team.
+
+#### 4.3 Information Systems & Business Resilience Team
+- Responsible for the security posture of the organization.
+- Implement improvements and initiatives related to security posture from IS operations.
+- Align, deliver, and comply with Information Security, Privacy Management, and Sustainability Management Systems.
+- The Business Resiliency Team focuses on processes, tools, and best practices for public sector business continuity and recovery, encompassing technology assets, personnel, locations, and communications.
+
+#### 4.4 HR & Recruitment Team
+- Conduct and manage the schedule for Information Security and Data Privacy Awareness Training for new hires during their induction training/orientation program.
+- Ensure employee and candidate data is protected concerning Data at Rest and Data in Transit, Non-Disclosure Agreements (NDA), and Background Verification (BGV).
+- Enforce disciplinary action against any Information Security and Privacy violations.
+- Align, deliver, and comply with Information Security, Privacy Management, and Sustainability Management Systems.
+
+#### 4.5 Professional Development (End User Training)
+- Prepare an overall training plan in line with the Information Security Management System (ISMS) and submit it to the Head of Human Resources for approval.
+- Plan, organize, and monitor training programs.
+- Prepare an annual budget for training activities.
+- Locate and evaluate suitable faculty (internal or external) for training.
+- Publish training calendars.
+- Provide periodic reports on training activities to IT Service Management (ITSM) and the Head of Human Resources.
+
+### 4.6 Admin Team
+- Ensure that physical security controls are implemented and comply with the Information Security, Data Protection policy, and Sustainability requirements.
+- Align, deliver, and comply with the Information Security, Privacy Management System, and Sustainability Management System.
+
+### 4.7 Information Security and Data Privacy Assurance Group
+- Ensure that Delivery and Business functions align, deliver, and comply with the Information Security, Privacy Management System, and Sustainability Management System, including Trianz Information Security Policy and procedures, Data Privacy policies and procedures, and Sustainability Management System Policies and Procedures.
+- Responsible for New/Existing Certifications, Internal and External Audits, Organizations GRC, and BCP.
+
+### 4.8 Travel Team
+- Ensure that data shared with vendors complies with necessary technical and organizational measures, and that respective vendors meet adequate security and privacy standards by ensuring data minimization and purpose limitation.
+- Align, deliver, and comply with the Information Security, Privacy Management System, and Sustainability Management System.
+
+### 4.9 Delivery and DA Team
+- Ensure compliance with client Information Security and Privacy requirements.
+- Align, deliver, and comply with the Information Security, Privacy Management System, and Sustainability Management System.
+
+### 4.10 Legal Team
+- Responsible for the review and design of all Service Agreements, Non-Disclosure Agreements, and all other applicable agreements.
+- Align, deliver, and comply with the Information Security, Privacy Management System, and Sustainability Management System.
+
+### 4.11 Finance and Purchase Team
+- Responsible for onboarding only Information Security approved business-critical vendors and Supplier Security Agreements.
+- Align, deliver, and comply with the Information Security, Privacy Management System, and Sustainability Management Systems.
+
+### 4.12 Marketing Team
+- Responsible for all technical and organizational measures of data subjects' security, including data at rest and data in transit (Prospective Clients) and DSAR Requests.
+- Align, deliver, and comply with the Information Security, Privacy Management System, and Sustainability Management Systems.
+
+### 4.13 Platforms Team and Platforms Assurance Team
+- Ensure that platforms are created, delivered, and comply with the organization's Information Security and Privacy Policies and Procedures.
+- Align, deliver, and comply with the Information Security, Privacy Management System, and Sustainability Management Systems.
+
+### 5. Outputs
+- Defined Roles and Responsibilities of the Information Security Assurance Council.
+
+### 6. Exit Criteria
+- Identify and map the roles and responsibilities of the Information Security Assurance Council.
+
+### 7. Process Assets
+- Document Name: None.
+
+### 8. Measurement
+- None.
+
+### 9. ISO Control Mapping(s)
+- **Category of Control: Organizational Controls**
+  - **ISO 27001:2022 Control 5.2**: Information security roles and responsibilities shall be defined and allocated according to the organization's needs. (Document Name: ISAC Roles and Responsibilities)
+  - **ISO 27001:2022 Control 5.3**: Conflicting duties and conflicting areas of responsibility shall be segregated. (Document Name: ISAC Roles and Responsibilities)
+  - **ISO 27001:2022 Control 5.4**: Management shall require all personnel to apply information security in accordance with the established information security policy, topic-specific policies, and procedures of the organization. (Document Name: ISAC Roles and Responsibilities)
+
+### 11 Document Control
+
+- **Owner:** CISO  
+- **Release ID:** ISWG-PROC-0059  
+
+#### Version History
+
+1. **Version 0.00**  
+   - **Date:** 05-May-08  
+   - **Author:** Bharatees ha B R  
+   - **Reviewer:** N/A  
+   - **Approver:** N/A  
+   - **Reason for Change:** Draft  
+   - **Description:** NA  
+
+2. **Version 1.00**  
+   - **Date:** 05-May-08  
+   - **Author:** Bharatees ha B R  
+   - **Reviewer:** N/A  
+   - **Approver:** N/A  
+   - **Reason for Change:** Approval  
+   - **Description:** Baselined for Baseline  
+
+3. **Version 1.01**  
+   - **Date:** 18-Mar-10  
+   - **Author:** Bharatees ha B R  
+   - **Reviewer:** N/A  
+   - **Approver:** N/A  
+   - **Reason for Change:** Regular Review  
+   - **Description:** Formatting Changes  
+
+4. **Version 2.00**  
+   - **Date:** 18-Mar-10  
+   - **Author:** Bharatees ha B R  
+   - **Reviewer:** N/A  
+   - **Approver:** N/A  
+   - **Reason for Change:** Approval  
+   - **Description:** Baselined for Baseline  
+
+5. **Version 2.01**  
+   - **Date:** 03-Jan-11  
+   - **Author:** Balu Nair  
+   - **Reviewer:** N/A  
+   - **Approver:** N/A  
+   - **Reason for Change:** QMG review  
+   - **Description:** Document formatted and changed RID to Release ID  
+
+6. **Version 3.00**  
+   - **Date:** 03-Jan-11  
+   - **Author:** Balu Nair  
+   - **Reviewer:** N/A  
+   - **Approver:** N/A  
+   - **Reason for Change:** Approved  
+   - **Description:** Baselined for baseline  
+
+7. **Version 3.01**  
+   - **Date:** 24-May-11  
+   - **Author:** Srilakshmi  
+   - **Reviewer:** N/A  
+   - **Approver:** N/A  
+   - **Reason for Change:** QMG Review  
+   - **Description:** Modified release id in header and cover page for consistency  
+
+8. **Version 4.00**  
+   - **Date:** 24-May-11  
+   - **Author:** Srilakshmi  
+   - **Reviewer:** N/A  
+   - **Approver:** N/A  
+   - **Reason for Change:** Approval  
+   - **Description:** Baselined for Baseline  
+
+9. **Version 4.01**  
+   - **Date:** 29-Jun-11  
+   - **Author:** Srilakshmi  
+   - **Reviewer:** N/A  
+   - **Approver:** N/A  
+   - **Reason for Change:** QMG Review  
+   - **Description:** 
+     - Included CIO Roles and Responsibilities  
+     - Modified Organization Chart  
+
+10. **Version 5.00**  
+    - **Date:** 29-Jun-11  
+    - **Author:** Srilakshmi  
+    - **Reviewer:** N/A  
+    - **Approver:** N/A  
+    - **Reason for Change:** Approval  
+    - **Description:** Baselined for Baseline  
+
+11. **Version 5.01**  
+    - **Date:** 03-Aug-11  
+    - **Author:** Sudharsa na  
+    - **Reviewer:** N/A  
+    - **Approver:** N/A  
+    - **Reason for Change:** QMG review  
+    - **Description:** 
+      - Replace Owner with Management Representative in place of CIO  
+      - In Document Classification Scheme, "Retention period is 3 Years" row is removed  
+
+12. **Version 6.00**  
+    - **Date:** 03-Aug-11  
+    - **Author:** Sudharsa na  
+    - **Reviewer:** N/A  
+    - **Approver:** N/A  
+    - **Reason for Change:** Request for baseline  
+    - **Description:** Approved and Baselined  
+
+13. **Version 7.00**  
+    - **Date:** 07-May-12  
+    - **Author:** Srilakshmi  
+    - **Reviewer:** N/A  
+    - **Approver:** N/A  
+    - **Reason for Change:** QMG Review  
+    - **Description:** 
+      - Modified Template format of this procedure  
+      - Reviewed all roles & responsibilities and corrected inconsistencies  
+
+14. **Version 8.00**  
+    - **Date:** 08-Nov-12  
+    - **Author:** Balu Nair  
+    - **Reviewer:** N/A  
+    - **Approver:** N/A  
+    - **Reason for Change:** Standardization of Blue Book Process Assets  
+    - **Description:** Modified the template format and changed the Logo  
+
+15. **Version 9.00**  
+    - **Date:** 18-Mar-15  
+    - **Author:** Sudharsa na  
+    - **Reviewer:** N/A  
+    - **Approver:** N/A  
+    - **Reason for Change:** Upgrading to 27001:2013  
+    - **Description:** Modified review frequency to quarterly review the status and effectiveness of ISMS implementation  
+
+16. **Version 9.01**  
+    - **Date:** 25-Jan-XX  
+    - **Author:** Sumanta Bhattacharya  
+    - **Reviewer:** N/A  
+    - **Approver:** N/A  
+    - **Reason for Change:** Client Audit
+
+### 5. Vulnerability and Information Security Policy
+
+5.1 **Vulnerability Assessment**
+- A vulnerability assessment alignment with the shared assessment checklist shall be conducted quarterly.
+
+5.2 **Information Security Policy Review**
+- The information security policy is reviewed at a minimum on an annual basis.
+
+5.3 **Information Security Awareness**
+- Information security awareness must be provided to all personnel in the organization, as applicable.
+
+5.4 **Organization Chart Updates**
+- The organization chart is to be updated regularly.
+
+### 10. Document Approvals
+10.00 **Approval Date: 08-Feb-16**
+- Approved by: Balu Nair
+- Baseline: Mahesh (CISO)
+
+10.01 **Approval Date: 14-Oct-16**
+- Approved by: Shishir
+- Change: The ISWG name has been changed to ISAC.
+- Note: Roles and responsibilities align with Cloud services.
+
+11.00 **Approval Date: 07-Oct-16**
+- Approved by: Balu Nair
+- Baseline: CISO
+
+11.1 **Approval Date: 29-Apr-19**
+- Approved by: Balu Nair
+- Change: Information classification modified; Trianz logo modified.
+
+12.0 **Approval Date: 14-May-19**
+- Approved by: Balu Nair
+- Baseline: Ganesh Arunachala Release.
+
+12.1 **Approval Date: 13-May-20**
+- Approved by: Karthik N
+- Changes:
+  - Updated roles and responsibilities.
+  - Updated the organization chart for InfoSec.
+  - Integrated into the new template.
+
+13 **Approval Date: 14-May-20**
+- Approved by: Karthik N
+- Approved by: Phani Krishna.
+
+### 14.0 Document Review and Approval
+- **14.0**: Reviewed by Phani, Rajeswari, and Krishna. Status: For Approval. Outcome: Approved and Baselined.
+- **14.1**: Reviewed by Divya, Balu N, and Karthik. Status: For Review. Outcome: No changes made.
+- **15.0**: Reviewed by Vijaya, Balu N, and Siva N. Status: For Approval. Outcome: Approved and Baselined.
+- **15.1**: Reviewed by Shivateja, Balu N, and Srikanth M. Status: For Review. Outcome: Added Section 5 Business Resiliency Group and new template change.
+- **16.0**: Reviewed by Shivateja, Balu N, and Srikanth M. Status: For Approval. Outcome: Approved and Baselined.
+- **16.1**: Reviewed by Krutideepta and Vijaya R. Status: For Review. Updates include:
+  1. Objective has been updated.
+  2. Chief Data Privacy Officer (CDPO) has been added to the Organization Chart.
+  3. Responsibilities of CDPO have been added in section 4.2.
+  4. ISO Mappings have been updated.
+- **17.0**: Reviewed by Shalini and Vijaya R. Status: For Approval. Outcome: Approved and Baselined.
+- **17.1**: Reviewed by Vijaya and Balu. Status: For Yearly Review. Outcome: Migrated to new template.
+
+### Contact Information
+- For inquiries, contact: infosec@trianz.com
+
+### Copyright Notice
+- The content in this document is copyrighted; any unauthorized use – in part or full – may violate copyright, trademark, and other laws. This document may not be modified.
+
+### 7.1 Copyright and Trademark Protection
+
+- The content of this document is copyrighted. Unauthorized use, whether in part or in full, may violate copyright, trademark, and other laws.
+- This document may not be modified, reproduced, publicly displayed, performed, distributed, or used for any public or commercial purposes.
+- The Trianz name and its products are protected by trademark and copyright laws, regardless of how and where they are referenced.
+
+### 7.2 Contact Information
+
+- For inquiries, please contact:
+  - **Name:** [Insert Name]
+  - **Email:** [Insert Email]
+  - **Phone:** [Insert Phone Number]
+
+### 7.3 Thank You
+
+- For further assistance, please reach out to: reach@trianz.com

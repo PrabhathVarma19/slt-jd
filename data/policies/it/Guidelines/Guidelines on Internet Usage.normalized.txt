@@ -1,0 +1,116 @@
+# Guidelines on Internet Usage
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. OVERVIEW
+2. SCOPE
+3. REFERENCE(S)
+4. RULES
+
+## 1. Overview
+Trianz utilizes the Internet as a critical resource for business processes. The company has developed systems and procedures to ensure that Internet usage is strictly for business purposes and conducted securely.
+
+## 2. Scope
+This policy establishes a framework to ensure all legitimate Internet use for the business needs of Trianz is met and that the utilization of organizational Internet resources is optimal.
+
+## 3. Reference(s)
+- IT Operations Process
+- Anti-virus Policy
+
+## 4. Rules
+
+### Internet Communication
+- All Internet communication must be logged, monitored, and audited periodically to prevent unauthorized access and ensure availability.
+
+### Access
+- All users are granted default access to the Internet.
+- The IT Department is authorized to provide Internet access to Trianz users upon joining, via a Service Request from HR.
+- Access to specific sites is determined based on official work requirements.
+- Users must enter their username and password to access any site on the Internet.
+
+### Use of Non-Standard Internet Sources
+- Only authenticated users may access the Internet.
+- Users are prohibited from accessing the Internet via dial-up, PSTN, CDMA, GPRS, EDGE, GSM, or any other means while on Trianz premises.
+- Users authorized by the CIO or IT Manager to access the Internet on handheld devices must not use these devices to access the Internet on any device connected to the Trianz network.
+
+### Use of Firewall, Proxy & URL-Filtering
+- All Internet activities must pass through the firewall, proxy, and URL-filtering gateway.
+
+### User Authentication & Authorization
+- All Internet access is governed by Trianz Domain access and authorization.
+
+### Gateway Level Virus Scan
+- Anti-Virus policies apply to all Internet activities.
+
+### Internet Usage Code of Conduct
+- Personal use of Trianz information systems to access the Internet is discouraged.
+- Employees have no ownership or privacy rights to any information gathered via online resources.
+- Trianz reserves the right to monitor all online communications, including email and Internet access.
+- All information stored on company computers belongs to Trianz, which may inspect computers and information as necessary for business conduct.
+- The use of the Internet or electronic communications to access, download, or transmit pornographic or obscene materials, or materials related to non-discrimination and harassment, including sexual harassment, is strictly prohibited.
+- Trianz is not responsible for material viewed or downloaded by users from the Internet. Users access information at their own risk.
+- Trianz reserves the right to record the locations of all Internet sites accessed by users and may share this information at its discretion.
+
+### 5. Internet Usage Rules
+
+1. **Site Access**: Trianz will maintain a complete listing of all sites visited by users, which will be available to any requesting party.
+
+2. **Blocking Access**: Trianz reserves the right to block users from accessing any internet resources that the company determines, at its sole discretion, have no legitimate company purpose or could negatively impact company computing resources. This includes, but is not limited to, web mail and chat services.
+
+3. **System Availability**: Users must ensure that their use of the system does not noticeably affect its availability for other users. Therefore, users are prohibited from participating in online games or having active web channels that broadcast frequent updates to their PCs, such as news tickers or sports updates.
+
+4. **Download Policy**: Users are not allowed to download screensavers, wallpapers, songs, music, videos, or similar content. Violating this rule will be considered an offense.
+
+5. **Upload Restrictions**: Users are prohibited from uploading any information over the Internet, except for information intended for official purposes, which must be approved by the Head of Department or Director.
+
+6. **Disciplinary Action**: Trianz reserves the right to take disciplinary action, up to and including termination, against users who violate the Rules on Internet Usage.
+
+### 4.0 Approval
+- **24-May-11**: Srilakshmi approved the baseline.
+  - Replace "Owner" with "Management Representative" in place of "CIO".
+
+- **3-Aug-11**: Sudharsana reviewed the document.
+  - Classification scheme updated.
+  - The "Retention period is 3 Years" row has been removed.
+
+- **3-Aug-11**: Sudharsana requested for baseline approval.
+  - Approved and baselined.
+
+- **28-Sep-12**: Sudharsana reviewed the document.
+  - Formatted as per the latest template format.
+
+- **30-July-21**: Pranesh Kulkarni reviewed the document.
+  - Updated with the new template.
+
+- **30-July-21**: Pranesh Kulkarni baselined the document.
+
+- **12-Aug-22**: Krutideepta reviewed the document.
+  - Reviewed with no changes.
+
+- **03-June-24**: Krutideepta reviewed the document.
+  - Reviewed with no changes during the annual review.
+
+- **26-May-25**: Vijaya Balu prepared for the annual review.
+  - Migrated to a new template.
+
+- **29-May-25**: Vijaya Balu and Srikanth M submitted the document for approval.
+  - Approved and baselined. 
+
+### Contact Information
+- **Name**: [Contact Name]
+- **Email**: [Contact Email]
+- **Phone**: [Contact Phone]
+
+### Thank You
+- For inquiries, contact: infosec@trianz.com
+
+### Copyright Notice
+- The content in this document is copyrighted; any unauthorized use may violate copyright, trademark, and other laws. This document may not be modified, reproduced, publicly displayed, performed, distributed, or used for any public or commercial purposes. The Trianz name and its products are subject to trademark and copyright protections.

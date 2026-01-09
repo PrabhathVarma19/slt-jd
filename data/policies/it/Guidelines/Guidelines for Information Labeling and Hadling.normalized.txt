@@ -1,0 +1,202 @@
+# Guidelines for Information Labeling and Handling
+
+## 1. Information Classification
+
+- **Public**: Accessible to the public at large.
+- **Internal**: 
+  - Read access will be granted to all Trianz employees for internal use only.
+  - Employees must not share information with any third party or outsourced employees unless authorized by their departmental head.
+- **Confidential**: 
+  - Access must be limited to named authorized individuals only.
+  - Access by external parties must be subject to a non-disclosure agreement and a business need to know.
+  - Any authorized person taking a photocopy of confidential information must do so personally or have the document photocopied in their presence.
+  - When printing documents, the individual must collect the printout immediately after executing the print command.
+
+## 2. Access Restrictions
+
+- Employees shall not share information with anyone outside their own department.
+- Handling of information must be based on the classification of the Information Asset, including circulation, maintenance, and discarding of data.
+- Data owners must be identified.
+- Access should be granted based on the confidentiality of the data type.
+
+## 3. Storage of Information
+
+- **Public**: 
+  - No specific security control requirements.
+- **Confidential**: 
+  - Documents must be stored on desktops with password protection.
+  - E-mails containing confidential information must be downloaded to the local personal folder immediately upon receipt to prevent storage on mail servers.
+  - Hard copies of confidential documents should preferably be kept under lock and key.
+  - For backup purposes, all confidential documents should be stored in the respective user’s folder on the file server.
+
+### 1. Password Protection
+- Hard disks should preferably be password protected.
+
+### 2. Confidential Document Storage
+- Confidential documents should not be stored in public directories of the file server.
+- The complete hard drive of a desktop shall not be shared on the network. 
+- On a need basis, selected folders on the hard drive can be shared, and access should be given to named individuals.
+- Data shall be encrypted; additional controls may be required depending on the sensitivity of the data, although other access controls might suffice.
+
+### 3. Storage of Information
+- **Public Control Area**: No specific security control requirements.
+- **Internal Use Only**: Information should preferably be stored in a personal storage shelf, which should be locked.
+- **Confidential**: 
+  - Information should be kept in a separate cabinet, preferably a fireproof cabinet. 
+  - The authority to manage the cabinet will be assigned to a person nominated by the department head.
+  - Access to the information/cabinet shall be granted by the department head via email.
+  - Any confidential information that is to be kept or retrieved from the cabinet must be done in front of the designated person.
+  - Any hard copy documents that cannot be reproduced (e.g., legal contracts, third-party contracts) should also be kept preferably in fireproof cabinets.
+
+### 4. Labeling of Information (Documents and Records – Soft Copy)
+- **Public**: No labeling required.
+- **Internal Use Only**: The document/record (in electronic form) must contain the information classification logo with the classification identified as ‘Internal Use Only’ at the start of the document/record.
+- **Confidential**: 
+  - The document/record (in electronic form) must contain the information classification logo with the classification identified as ‘Confidential’ at the start of the document/record.
+  - The document/record (hard copy) should have the information classification logo as a cover page or as part of the title page with the classification identified as ‘Confidential’.
+  - The information owner is responsible for labeling the document. If there is any doubt while classifying the information, the owner should seek concurrence.
+
+### 1. Email Communication of Confidential Information
+- All email communications containing confidential information must have 'Confidential' as the first word in the subject line.
+- The attached document must be classified as “Internal Use Only” and this classification should be marked on the first page.
+
+### 2. Labeling of Information Medium
+- No labeling is required for information mediums such as diskettes, CDs, or hard copies.
+- The information medium must be marked 'Confidential' if applicable.
+
+### 3. Addressing/Packaging
+- No security control requirements are necessary for addressing/packaging.
+- The storage medium must have two envelopes/layers of packaging:
+  - The outer envelope/layer must:
+    - Show the recipient's name and address.
+    - Be marked 'To be opened by addressee only'.
+    - Show the name and phone number of the sender.
+  - The inner envelope/layer should be marked as “Confidential”.
+
+### 4. Dispatch and Distribution of Information (except Email)
+- No security control requirements are necessary for dispatch and distribution.
+- Packaging must ensure physical protection of the item.
+- Information can be dispatched or distributed to anyone outside the department, third party, or outsourced party by:
+  - Normal mail service or by any courier.
+  - Hand delivery or approved courier.
+- Printed information sent through internal mail, external mail, or by courier must be sent by trusted courier or registered mail, with a method that provides tracking.
+- Circulation of Internal Use Only documents to any third party or anyone outside Trianz requires approval from the head of the concerned department.
+- The document must detail the data retention period based on regulatory, sensitivity, and information classification.
+- Distribution is to named individual(s) only.
+- Confidential information cannot be taken out of Trianz premises in the form of media like hard copies, CDs, floppies, USBs, etc., without prior permission from the department head.
+
+### 4.1 Data Classification
+- The validity of data classification must be checked periodically. If there are any changes, data should be reclassified accordingly.
+
+### 4.2 Dispatch and Distribution of Information (Electronic Mail)
+- **Internal Emails**: Sending emails containing information to internal employees does not require explicit approval from Trianz authority.
+- **External Emails**: Circulation of internal documents to any third party or anyone outside Trianz requires approval from the head of the concerned department via email, with a copy marked to them.
+- **BCC Restrictions**: BCC while emailing is not permitted for "Confidential" documents.
+- **Confidential Marking**: When sending documents to authorized persons, they must be marked as "Confidential" in the subject or body of the email, ensuring visibility.
+- **Data Encryption**: Data must be encrypted during transfer using appropriate encryption methodologies.
+
+### 4.3 Voice Communication
+- **Security Controls**: No security control is required for voice communication.
+- **Discussion Restrictions**: Conversations must not be held on speakerphones or during teleconferences unless all participants confirm that no unauthorized persons are nearby who might overhear.
+
+### 4.4 Disposal of Information
+- **Draft Documents**: These documents may not be used for draft (reverse side) printing.
+- **Destruction of Documents**: Documents may be destroyed manually, ensuring they cannot be easily reconstructed.
+- **Retention Period**: Information should only be destroyed or deleted after the minimum retention period, when it is obsolete or no longer needed.
+- **Hard Copy Confidential Documents**: Any hard copy confidential document to be destroyed must be torn into small pieces, preferably using a shredder at the time of destruction.
+
+### 1. Data Disposal Policy
+
+- Any confidential information present on a CD that cannot be deleted from electronic media must be physically destroyed.
+- Any hard disk containing confidential information must undergo low-level formatting to ensure that the information cannot be recovered.
+- The secure disposal of data, including disks, must be documented.
+
+### 2. References
+
+- IT Operation Process
+- Information Asset Classification Policy
+- Access Control Policy
+- ISMS TMR Template
+- Acceptable Usage Policy
+- ISMS Apex Manual
+- Media Handling Policy
+- Policy on the Use of Cryptographic Control
+- Data Modelling Using UML Guidelines
+- Asset Tracking Sheet Template
+
+### 3. Version History
+
+- **Version 0.00**: Author: Jyotessh G Nair, Date: 19-Feb-07, Reason for Change: Initial Draft, Change Description: None
+- **Version 1.00**: Author: Jyotessh G Nair, Date: 26-Feb-07, Reason for Change: Baseline approved, Change Description: Approved Baseline.
+- **Version 1.01**: Author: Bharateesha B R, Date: 24-Feb-09, Reason for Change: New Asset Management Framework, Change Description: Formatted the document to incorporate the new asset management framework.
+- **Version 1.02**: Author: Bharateesha B R, Date: 11-Mar-09, Reason for Change: New Asset Management Framework, Change Description: Included Records in the scope of section Labeling of Information – Soft Copy. Made changes to the Guidelines for each classification.
+- **Version 2.00**: Author: Balu Nair, Date: 28-Apr-09, Reason for Change: Approved for Baseline, Change Description: Baselined.
+- **Version 2.01**: Author: Bharateesha B R, Date: 23-June-09, Reason for Change: 2nd Surveillance audit, Change Description: Removed “Hard Copy” for the control area “Labeling of Information (documents and Records – soft copy). Changed point 3 of the guidelines for control area “Dispatch and Distribution of Information (Electronic Mail) for the classification “Confidential”.
+- **Version 3.00**: Author: Bharateesha B R, Date: 23-June-09, Reason for Change: Approval for Baseline, Change Description: Baselined.
+
+### 4.00 Document Review and Approval
+- **30-Dec-10**: Document formatted by Arthi.
+- **31-Dec-10**: Request for approval by Chakravarthi.
+- **24-May-11**: QMG review by Srilakshmi; modified release ID in header and cover page.
+
+### 5.00 Baseline Approval
+- **24-May-11**: Approval for baseline by Srilakshmi.
+
+### 5.01 Document Classification Changes
+- **3-Aug-11**: QMG review by Sudharsana; changes include:
+  - Replaced "Owner" with "Management Representative" in place of CIO.
+  - Removed retention period in Document Classification scheme section.
+
+### 6.00 Approval Request
+- **3-Aug-11**: Request for approval by Sudharsana; approved and baselined.
+
+### 7.00 Standardization of Blue Book Process Assets
+- **08-Nov-12**: Modified template format and changed the logo by Balu Nair.
+
+### 7.01 Client Audit and Information Handling
+- **25-Jan-16**: Audit handling by Paramita Ghosh and Balu Nair; updates include:
+  - Handling of information based on the type of information asset classification.
+  - Updated control areas to include:
+    - Identification of data owners.
+    - Criteria for accessing data based on confidentiality.
+    - Labelling mechanism for sensitive documents.
+    - Validation of data classification to be verified periodically.
+    - Data retention period based on regulatory, sensitivity, and information.
+    - Appropriate encryption methodologies for data in transit.
+    - Documentation of secure disposal of data.
+  - All confidential/sensitive data must be encrypted.
+  - Added a separate "REFERENCES" section.
+
+### 8.00 Approval by CISO
+- **08-Feb-16**: Approved by Mahesh (CISO); baselined.
+
+### 8.1 Template Migration
+- **3-Jan-22**: For review by Karthik N; migrated to new template.
+
+### 9.0 Approval Process
+- **3-Jan-22**: For approval by Karthik N, Siva N; approved and baselined.
+
+### 9.0 Annual Review
+- **3-June-24**: No changes noted by Kruti and Vijaya.
+
+### 9.1 Annual Review Migration
+- **26-May-25**: For annual review by Vijaya and Balu; migrated to a new template.
+
+### 10.0 Final Approval
+- **29-May-25**: For approval by Vijaya, Balu, and Srikanth M; approved and baselined.
+
+**Email Contact**  
+For inquiries, please contact: infosec@trianz.com
+
+**Phone Contact**  
+For inquiries, please use the provided phone number.
+
+---
+
+**Copyright Notice**  
+- The content in this document is copyrighted.  
+- Unauthorized use, in part or full, may violate copyright, trademark, and other laws.  
+- This document may not be modified, reproduced, publicly displayed, performed, distributed, or used for any public or commercial purposes.  
+- The Trianz name and its products are protected by trademark and copyright laws, regardless of how and where referenced.  
+
+**Note:** This document is for TRIANZ INTERNAL use only.

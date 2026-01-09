@@ -1,0 +1,304 @@
+# DEVELOPMENT SECURITY OPERATIONS (DEVSECOPS) PROCEDURE
+
+## Statement of Confidentiality
+- The information in this document is internal to Trianz and must not be disclosed, duplicated, or used for any purpose other than stated herein, without express written consent from Trianz.
+
+## Information Classification
+- **Public**: ☐
+- **Internal**: ☒
+- **Confidential**: ☐
+- **Restricted**: ☐
+
+## Table of Contents
+1. INTRODUCTION
+2. OBJECTIVES
+3. SCOPE
+4. PROCESS DESCRIPTION (PROCEDURE)
+   - 4.1 Plan
+   - 4.2 Develop
+   - 4.3 Build
+   - 4.4 Test
+   - 4.5 Release
+   - 4.6 Deploy and Monitor
+5. EXIT CRITERIA AND OUTPUT
+6. ROLES AND RESPONSIBILITIES
+7. CONCLUSION
+8. REFERENCES
+9. ISO CONTROL MAPPING
+
+## 1. Introduction
+- DevSecOps is a culture and practice that unifies software development, security, and operations.
+- It aims to automate, monitor, and apply security throughout all phases of the CI/CD pipeline: plan, develop, build, test, release, deliver, deploy, operate, and monitor.
+- Security and functional capabilities are tested and built simultaneously, shifting testing and security to earlier phases.
+- DevSecOps integrates security into Agile and DevOps processes, addressing security issues as they arise.
+- It promotes shared responsibility for security among development, security, and IT operations teams, enabling faster and safer software delivery.
+
+## 2. Objectives
+The objectives of this procedure are to:
+- Increase secure application deployment by utilizing security tool automation and integration during CI/CD.
+- Control risk characterization, monitoring, and mitigation throughout the application development lifecycle.
+- Reduce the mean time to production securely, from the requirement of new software features to their operation in production.
+
+## 3. Scope
+- The scope includes all internal and applicable vendor applications owned, operated, maintained, and controlled by Trianz, both on-premises and in the cloud.
+- DevSecOps aims to bridge the gap between developers, security teams, and operations teams.
+- The organization should monitor real-world threats and stay updated on software vulnerabilities to guide secure coding principles through continual improvement and learning.
+
+## 4. Process Description (Procedure)
+- The goal of DevSecOps is to create an environment for rapid, frequent, and secure software building, testing, and deployment.
+- The DevSecOps software lifecycle phases include: 
+  - Plan
+  - Develop
+  - Build
+  - Test
+  - Release
+  - Deliver
+  - Deploy
+  - Operate
+  - Monitor
+- Security is embedded within each phase.
+
+### 4.1 Plan
+- Secure coding principles must be applied to both new developments and reuse scenarios.
+- These principles should be utilized in development activities within the organization and for products and services supplied to others.
+
+### 4.1 Planning and Prerequisites Before Coding
+- Organizations must establish specific expectations and approved principles for secure coding applicable to both in-house and outsourced code developments.
+- Identify common and historical coding practices and defects that lead to information security vulnerabilities.
+- Configure development tools, such as integrated development environments (IDE), to enforce the creation of secure code.
+- Execute security analysis and create a test plan to determine scenarios for testing the application.
+- Capture all security requirements related to CIAP (confidentiality, integrity, availability, and privacy) and AAA (authentication, authorization, and accountability).
+- Detect potential threats and mitigations using a Threat modeling tool during the planning phase.
+- The development team must undergo application code security and compliance training.
+- Establish acceptance test criteria, user designs, and threat models.
+- Follow guidance for development tools and execution environments, including:
+  - Maintenance and use of updated development tools (e.g., compilers).
+  - Qualification of developers in writing secure code.
+  - Secure design and architecture, including threat modeling.
+  - Adherence to secure coding standards and mandating their use where relevant.
+  - Use of controlled environments for development.
+
+### 4.2 Develop
+- All code generated during development must be committed to the source code repository and version controlled.
+- Deploy linting tools and Git controls to secure passwords and API keys.
+- Any custom code written must be scanned for possible security vulnerabilities during development.
+- Ensure developers adhere to secure coding practices to maintain confidentiality, integrity, and availability.
+- Consider the following during coding:
+  - Secure coding practices specific to the programming languages and techniques used.
+  - Use secure programming techniques, such as pair programming, refactoring, peer review, security iterations, and test-driven development.
+  - Employ structured programming techniques.
+  - Document code and remove programming defects that could lead to information security vulnerabilities.
+  - Prohibit the use of insecure design techniques, such as hard-coded passwords, unapproved code samples, and unauthenticated web services.
+
+### 4.3 Build
+- Access to source code and other critical system resources during development, testing, or production must be limited to authorized personnel as per the Access Control Policy.
+- Incorporate static application security testing (SAST) tools (e.g., SonarQube) and dynamic application security testing (DAST) tools (e.g., Burpsuite) while designing and developing the application before deploying to production.
+- Ensure code validation is conducted for changes pushed from a developer's workstation to a Git repository, using tools like Talisman or Git Secret to prevent inadvertent uploads of keys.
+- Conduct scanning using tools like Twistlock for all images in the registry, which scans images during the build and deploy process and continuously monitors for vulnerability changes in running containers, adding image signatures.
+- Conduct infrastructure code scans that add a Build Step for scanning Docker images for security vulnerabilities using the API provided by Aqua Security.
+- The build script must include targets for running automated unit tests.
+
+### 4.4 Test
+- Ensure controls and remediation against the OWASP top 10 vulnerabilities applicable to the technologies in use are in place.
+- Use dynamic application security testing (DAST) tools like Burpsuite and Aqua Enforcer to test the application during runtime, detecting errors related to user authentication, authorization, SQL injection, and API-related endpoints.
+- Conduct vulnerability assessment (VA) scans on the application hosted systems, images, virtual machines, and containers in development.
+
+### 4.4 Using Nessus Tool
+- In addition to system testing, include the following tools for testing vulnerabilities, code smells, dependencies, and open source libraries:
+  - DAST (Dynamic Analysis Security Testing)
+  - IAST (Interactive Application Security Testing)
+  - SCA (System Composition Analysis) tools (e.g., Snyk, Whitesource).
+- Testing should occur during and after development.
+- Implement Static Application Security Testing (SAST) to identify security vulnerabilities in software.
+- Before software becomes operational, evaluate the following:
+  - Attack surface and the principle of least privilege.
+  - Analyze common programming errors and document their mitigation.
+
+### 4.5 Release
+- Before releasing the application, use security analysis tools to conduct thorough penetration testing and vulnerability scanning.
+- Remediate all identified gaps and vulnerabilities, ensuring code compliance with security requirements and design.
+- Ensure access restrictions comply with the following controls:
+  - Restrict application access to user identity-specific IPs and block access from public IPs.
+  - Authenticate the application via Azure SSO or AD integration with MFA enabled.
+  - Deploy a Web Application Firewall and harden the rules to protection mode.
+
+### 4.6 Deploy and Monitor
+- After completing all necessary runtime tests, send a secure build to production for final deployment.
+- Monitor the application for security incidents and set up alerts.
+- Log security incidents and follow the incident management procedure.
+- Conduct application security audits and VAPT scans.
+- After code is operational:
+  - Securely package and deploy updates.
+  - Handle reported information security vulnerabilities (see section 8B).
+  - Log errors and suspected attacks; regularly review logs to adjust code as necessary.
+  - Protect source code against unauthorized access and tampering using configuration management tools that provide access control and version control.
+- When using external tools and libraries, consider the following:
+  - Manage external libraries by maintaining an inventory of used libraries and their versions; regularly update them with release cycles.
+  - Select, authorize, and reuse well-vetted components, especially for authentication and cryptographic functions.
+  - Assess the license, security, and history of external components.
+  - Ensure software is maintainable, tracked, and sourced from reputable origins.
+  - Ensure long-term availability of development resources and artifacts.
+- If modifying a software package, consider the following:
+  - Risk of compromising built-in controls and integrity processes.
+  - Whether to obtain vendor consent.
+  - Possibility of obtaining required changes from the vendor as standard program updates.
+  - Impact of the organization taking responsibility for future software maintenance due to changes.
+  - Compatibility with other software in use.
+
+### 5. Exit Criteria and Output
+- **Exit Criteria:** All reviews must be passed.
+- **Output:** A secure application is deployed to production.
+
+### 6. Roles and Responsibilities
+- **Developer:**
+  - Responsible for following secure coding guidelines and ensuring all quality tests are completed. (Internal)
+  
+- **DevOps Engineer/Security Architect:**
+  - Responsible for performing risk assessments, threat modeling, and hardening security after evaluating identified risks and the build process. (Internal)
+  
+- **Internal Apps Team:**
+  - Responsible for conducting necessary scans and providing reports. (Internal)
+
+### 6. Responsibilities
+
+**6.1 Internal and External Application Details**
+- The responsible teams must provide all application details related to the design, implementation, and operation of Trianz Applications and Client Applications (where applicable).
+
+**6.2 Vulnerability Management**
+- The IS Operations/DevOps team is responsible for:
+  - Remediating identified vulnerabilities as per the Assurance Report.
+  - Performing vulnerability scans on applications and providing reports.
+
+- The InfoSec Team is responsible for:
+  - Conducting end-to-end application security assessments.
+  - Reviewing the Vulnerability Assessment (VA) scan and Code Review reports.
+  - Tracking the closure report.
+
+- The CIO/CISO is responsible for:
+  - Reviewing and approving the final assurance report.
+
+### 7. Conclusion
+
+- DevSecOps aims to apply security checks and controls transparently and automatically within a rapid-development automated DevOps pipeline.
+- Shifting security left to start at development ensures the effectiveness of DevSecOps throughout the service lifecycle.
+- Security-relevant code must be invoked when necessary and be tamper-resistant.
+- Programs installed from compiled binary code maintain these properties for data held within the application.
+- For interpreted languages, code execution should occur on a server that is inaccessible to users, with data held in a protected database.
+- Access to the code should require administrator privileges, protected by security mechanisms such as just-in-time administration and strong authentication.
+- Webservers must be configured to prevent directory browsing to mitigate risks.
+
+- Application code should be designed with the assumption that it is always subject to attack, whether through error or malicious action.
+- Critical applications should be tolerant of internal faults, with boundary checks to ensure outputs are within safe limits before use in critical applications.
+
+- Web applications are vulnerable to issues like database injection and cross-site scripting due to poor design and coding practices.
+
+### 8. References
+
+- DevSecOps: A Complete Guide to What, Why, and How - Plutora
+- What is DevSecOps? | IBM
+- DevSecOps Implementation Process and Road Map – Security at Every Step - DevOps.com
+
+### 9. ISO Control Mapping
+
+- **Technological Control:**
+  - **ISO 27001:2022 Control 8.26**: Application security requirements must be identified, specified, and approved when developing or acquiring applications.
+  
+- **Technological Control:**
+  - **ISO 27001:2022 Control 8.31**: Separation of development, test, and production environments must be maintained.
+
+- **Technological Control:**
+  - **ISO 27001:2022 Control 8.33**: Test information must be managed appropriately.
+
+# Document Version History
+
+1.0 - Initial Draft  
+- Date: 30-Oct-20  
+- Reviewed by: Rajesh B, Vijaya, Phani, Rajeswari, Krishna  
+- Status: Approved and Baselined  
+
+1.1 - Update  
+- Date: 3-May-21  
+- Reviewed by: Divya, Vijaya, Phani, Rajeswari, Krishna  
+- Status: For Review  
+- Note: Updated with new information classification  
+
+2.0 - Approval  
+- Date: 3-May-21  
+- Reviewed by: Divya, Vijaya, Phani, Rajeswari, Krishna  
+- Status: Approved and Baselined  
+
+2.1 - Information Classification Update  
+- Date: 3-Jan-22  
+- Reviewed by: Karthik N  
+- Status: For Review  
+- Note: Information classification updated from “Trianz Confidential” to “Trianz Internal”  
+
+3.0 - Approval  
+- Date: 3-Jan-22  
+- Reviewed by: Karthik N, Siva N  
+- Status: For Approval  
+- Note: Reviewed, Approved and Baselined  
+
+3.1 - Roles and Responsibilities Update  
+- Date: 13-Mar-22  
+- Reviewed by: Sanjana, Karthik  
+- Status: For Review  
+- Note: Updated the roles and responsibilities  
+
+4.0 - Approval  
+- Date: 18-Mar-2022  
+- Reviewed by: Sanjana, Siva N  
+- Status: For Approval  
+- Note: Reviewed, Approved and Baselined  
+
+4.1 - Introduction Section Update  
+- Date: 21-Mar-2023  
+- Reviewed by: Vijaya, Srikanth, Asha Veeramallu  
+- Status: For Review  
+- Note: Updated Introduction section and Section 2.1; New template change  
+
+5.0 - Approval  
+- Date: 8-May-2023  
+- Reviewed by: Vijaya, Srikanth  
+- Status: For Approval  
+- Note: Approved and Baselined  
+
+5.1 - ISO27001:2022 Requirement Addressed  
+- Date: 23-Jan-2024  
+- Reviewed by: Rakesh, Vijaya, Vijendra  
+- Status: For Review  
+- Note: Requirement from ISO27001:2022 of Secure coding has been addressed  
+
+6.0 - Approval  
+- Date: 23-Feb-24  
+- Reviewed by: Rakesh, Vijaya, Srikanth  
+- Status: For Approval  
+- Note: Approved and Baselined  
+
+6.1 - Template Migration and Yearly Review  
+- Date: 30-Apr-25  
+- Reviewed by: Kruti, Vijaya  
+- Status: For Annual Review  
+- Note: Migrated to a new Template and Yearly Review  
+
+7.0 - Approval  
+- Date: 29-May-25  
+- Reviewed by: Kruti, Vijaya, Srikanth  
+- Status: For Approval  
+- Note: Approved and Baselined  
+
+# Contact Information
+- Name: [To be filled]  
+- Email: [To be filled]  
+- Phone: [To be filled]  
+
+# Thank You
+- Email: infosec@trianz.com  
+
+# Copyright Notice
+The content in this document is copyrighted; any unauthorized use – in part or full – may violate copyright, trademark, and other laws. This document may not be modified, reproduced, publicly displayed, performed, distributed, or used for any public or commercial purposes. The Trianz name and its properties are protected.
+
+**6.1 Intellectual Property Protections**
+
+- All products are subject to trademark and copyright protections.
+- These protections apply regardless of how and where the products are referenced.

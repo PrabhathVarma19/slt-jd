@@ -1,0 +1,152 @@
+# WIRELESS SECURITY POLICY
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. GLOSSARY
+2. PURPOSE
+3. OBJECTIVES
+4. SCOPE
+5. POLICY
+   - 5.1 Access Control
+   - 5.2 Risk Assessment
+   - 5.3 Securing Wireless Networks and Devices
+6. PATCHING SCHEDULE
+7. MONITORING AND REPORTING
+8. ROLES & RESPONSIBILITIES
+9. APPLICABLE STANDARDS
+10. REFERENCE POLICIES & PROCEDURES
+11. EXCEPTIONS(S)
+12. ISO CONTROL MAPPING
+
+## 1. Glossary
+- **WLANs**: Wireless Local Area Networks
+- **SSID**: Service Set Identifier
+- **WPA**: Wi-Fi Protected Access
+- **Wi-Fi**: Wireless Fidelity
+
+## 2. Purpose
+Wireless devices or networks used to access, store, process, or transmit Trianz’s information must be implemented securely. This document outlines the Information Security requirements for maintaining up-to-date security patches.
+
+## 3. Objectives
+This policy applies to all wireless devices, networks, services, and technologies used to access, store, process, or transmit Trianz’s information. "Wireless" refers to any technology that does not use cables, including:
+- Radio frequency technologies (e.g., satellite, microwave, radio)
+- Optical technologies (e.g., infrared)
+
+Wireless networks include both wireless local area networks (WLANs) and wireless wide area networks. Wireless devices are any end-user devices that use wireless technology to communicate.
+
+## 4. Scope
+The scope of this Policy is to secure and protect Trianz’s Wi-Fi assets from wireless security threats.
+
+## 5. Policy
+
+### 5.1 Access Control
+All wireless infrastructure devices at Trianz’s network or providing access must:
+- Use industry standards for wireless security.
+- Use industry-standard authentication protocols and infrastructure.
+- Use industry-standard encryption protocols.
+- Maintain a hardware address (MAC address) that can be registered and tracked.
+
+### 5.2 Risk Assessment
+- Trianz’s Security Team shall employ security measures commensurate with the risk associated with the wireless network.
+- Risk assessments shall be conducted periodically, at least annually, to provide an accurate picture of the total risk to the organization.
+- A risk assessment shall include identifying data sensitivity, network vulnerabilities, and critical services, focusing on potential threats and vulnerabilities.
+
+### 5.3 Securing Wireless Networks and Devices
+- **Change Default Passwords**: Change default passwords to enhance security. Use and periodically change complex passwords as the first line of defense.
+- **Restrict Access**: Only authorized users may access the Wi-Fi network. Restrict access by filtering MAC addresses of connected hardware.
+- **Encrypt Data**: Encrypt Trianz’s wireless data to prevent unauthorized viewing. Use Wi-Fi Protected Access (WPA), WPA2, or WPA3 for encryption. WPA3 is the strongest encryption method.
+- **Protect SSID**: Avoid publicizing the SSID to make it harder for attackers to find the network. Change the SSID to something unique instead of the default.
+- **Install a Firewall**: Consider installing a host-based firewall on wireless devices and a router/modem-based firewall on the home network for added protection.
+- **Maintain Antivirus Software**: Install antivirus software on devices to protect against malware and other threats.
+
+### 6. Patching Schedule
+
+- **Monthly**: 
+  - Apply critical security patches, security updates, and general system updates.
+  - Implement OEM-released patches and upgrades based on security recommendations.
+
+- **Quarterly / On-demand**: 
+  - Release updates and upgrades.
+  - Deploy high severity critical patches immediately based on security recommendations.
+
+### 7. Monitoring and Reporting
+
+- **Wireless Strength**: 
+  - Monitor and manage factors such as the total number of access points, number of users, and rogue access point signal strength.
+
+- **Wireless Network Traffic**: 
+  - Monitor total bytes received by wireless client systems and total bytes received by access points.
+
+- **Wireless Network Utilization**: 
+  - Monitor parameters including CPU utilization, memory utilization, total bytes sent to the station, disk utilization, and client total bytes transmitted.
+
+- **MIS Reports**: 
+  - Generate reports based on monitoring factors and create alerts for any modifications in the wireless networks.
+
+### 8. Roles & Responsibilities
+
+- **IS Team (Internal)**: 
+  - Responsible for managing and maintaining the wireless network connection through regular best practices and software updates.
+
+- **CISO (Internal)**: 
+  - Accountable for ensuring compliance with wireless security and patching policies.
+
+- **IS Operation (Internal)**: 
+  - Responsible for the implementation and enforcement of this policy.
+
+- **InfoSec Team (Internal)**: 
+  - Conduct periodic and spot audits to ensure compliance.
+
+### 9. Applicable Standards
+
+- **IEEE/ISO Standards**
+
+### 10. Reference Policies & Procedures
+
+- Information Security Policy
+- IS Operations Process
+- System and Software Change Management Policy
+- System and Software Change Management Procedure
+
+### 11. Exceptions
+
+- Not Applicable (NA)
+
+### 12. ISO Control Mapping
+
+- **Category of Control**: Technological Controls
+  - **ISO 27001:2022 Control**: 8.20 Networks Security
+  - **Document Name as per ISO 27001:2022**: Wireless Security Policy
+
+### Document Control
+
+- **Owner**: CISO
+- **Release ID**: WS_POL_0072
+
+### Version History
+
+- **0.1**: Initial Draft by Pranesh K on 22-Nov-2021
+- **1.0**: Approved and Baselined on 22-Nov-2021
+- **1.1**: Reviewed with No Change on 12-Aug-2022
+- **2.0**: Migrated to new template on 12-May-2023
+- **3.0**: For Yearly Review on 15-Feb-2024
+- **3.1**: Approved and Baselined on 29-Apr-2025
+- **4.0**: Approved and Baselined on 14-May-2025
+
+### Contact Information
+
+- **Name**: [Not Provided]
+- **Email**: infosec@trianz.com
+- **Phone**: [Not Provided]
+
+**Note**: The content in this document is copyrighted; any unauthorized use may violate copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz name and its products are subject to copyright.
+
+It appears that the provided text does not contain any specific policy rules or structured information that can be rewritten into a clearer format. The text only mentions "trademark and copyright protections" without further details or context. If you have additional sections or more content from the policy document, please provide that for rewriting.

@@ -1,0 +1,400 @@
+Laptop Allocation Policy
+
+
+
+
+TRIANZ INTERNAL            trianz.com
+                         Statement of Confidentiality
+
+  The information contained in this document is internal to Trianz. It shall not be
+  disclosed, duplicated, or used for any purpose other than that stated herein, in
+  whole or in part, without the express written consent of Trianz.
+
+
+
+
+                            Information Classification
+
+     ☐ Public
+
+     ☒ Internal
+
+     ☐ Confidential
+
+     ☐ Restricted
+
+
+
+
+TRIANZ INTERNAL                                                                  2
+                            Table of Contents
+1.   PURPOSE                                                           4
+
+2.   OBJECTIVE                                                         4
+
+3.   SCOPE                                                             4
+
+4. ENTITLEMENT                                                         4
+
+5.   GENERAL TERMS OF USE                                              4
+
+6.   RETURNING OF LAPTOP/COMPANY ASSETS DURING EMPLOYEES EXIT          6
+
+7.   LAPTOP/OTHER ASSETS ALLOCATION ON TRANSFERS FROM ONE COUNTRY TO
+     OTHER COUNTRIES GLOBAL                                            7
+
+8.   EXCEPTION (S)                                                     7
+
+9.   ISO CONTROL MAPPING.                                              8
+
+
+
+
+ TRIANZ INTERNAL                                                       3
+1. Purpose
+
+  In order for employees to be as productive and functional as possible while away
+  from the office, laptop computers offer crucial functionality that enables them to
+  have their computing resources close at hand in meetings, the workplace, or
+  even working from home in some time-constrained scenarios.
+
+
+2. Objective
+
+  For all Trianz Employees, this policy establishes a systematic framework for laptop
+  distribution. Regardless of whether the laptop is used in the workplace, at home,
+  or any other setting like a hotel, conference room, or while travelling, an employee
+  utilizing company-provided laptop is accountable for the security of those
+  devices, distribution.
+
+
+3. Scope
+
+  This policy applies to all Trianz employees including Contractors and Interns
+
+
+4. Entitlement
+  •   All Trianz associates will be allocated a laptop.
+
+  •   All Trianz associates who are Grade 10 and above will be provisioned with a
+      sleeker version of the laptop suiting their business needs.
+
+
+5. General Terms of Use
+
+  •   Laptop devices shall be provided for Trianz business use only and will remain
+      an official asset.
+
+  •   The IS Operations team will check the working condition and issue the laptop in
+      good condition, The same will be mentioned in the laptop allocation mail and
+      the user must acknowledge it.
+
+  •   The laptop and any input/output devices that are enabled on it are for business
+      use only and /or not be used for transferring non-approved and/or installation
+      of any unauthorized software.
+
+
+
+TRIANZ INTERNAL                                                                     4
+  •   The Trianz IS team reserves the right to install any monitoring/tracking
+      mechanisms on laptops and does not guarantee the privacy of any data stored
+      on same.
+
+  •   While using the laptop within as well as outside the office premises, an
+      employee shall adhere to the security guidelines as mentioned below:
+
+  •   Not allowing unauthorized persons e.g., friends/relatives to access the laptop.
+
+  •   Not using removable media such as flash drives, or external storage without
+      permission of the Trianz IS team and scanning them with Antivirus. However, all
+      USB ports are blocked by the IS team as a security measure, and if anyone has
+      any exceptions.
+
+  •   Lost laptop or physical damage to the allocated laptop will be charged to the
+      employee.
+
+  •   Employees must submit an FIR copy along with an Incident report in case lost
+      of laptop.
+
+  •   HR, IS Operations, and Infosec must be intimated about the loss and physical
+      damage of the laptop.
+
+  •   Recovery amount should be communicated to associates and to
+      benefits@trianz.com by IS Operations.HR will take it up with the Finance team
+      for the recovery amount.
+
+  •   Keep the allocated laptop in your possession and within sight whenever
+      possible. Be extra careful in public places such as airports, railway stations or
+      restaurants, etc.
+
+  •   IS team has the right to conduct inspections of any allocated laptop without
+      prior notice to the Employee. employee will submit the laptop for random audit
+      by the IS team to check the asset's physical presence and functional usability if
+      needed.
+
+  •   Employees shall not take the laptop for repair to any external agency or vendor
+      at any point in time.
+
+  •   Associates shall be personally responsible for storing their personal data in the
+      organization-provided one drive as it may not Keep a note of the make, model,
+      serial number, and the Trianz asset label of your laptop but, do not keep this
+      information with the laptop.
+
+
+
+
+TRIANZ INTERNAL                                                                     5
+6. Returning of Laptop/Company Assets during Employees Exit
+
+  HR team shall send the mail at least a week before the employee exit and the exit
+  process   in    the    e-separation      tool   shall   be       initiated    for
+  employees/contractor/Interns.
+
+  •   Returning of laptop shall be initiated during their exit.
+
+  •   Means of Returning of the laptop can be done through the following:
+
+      a. Direct returning of the laptop by employee at office : Employee returns the
+         laptop directly to IS team with prior information to HR, in case of direct walkin
+          (i.e.after the exit date)
+
+      b. Enabled by Admin department to collect via the courier service : Admin
+         department will inform IS department about the status Returning of the
+         laptop Return to IS Department , once returned.
+
+      c. Employee working remotely taking care of the shipment to office :Asset
+         delivered directly to front office through shipment enabled by employees
+         and returned to IS Department.
+
+  •   IS team shall provide the exit clearance only after the Laptop is returned.
+
+
+
+
+  Note:
+
+  1. Employees are responsible for returning the laptops/Accessories in
+      good working condition.
+  2. Trianz does not entertain buy back of existing laptops/accessories for
+      any reasons.
+  3. Any laptop returned after 1 week of exit, employees to bear the Monthly
+      lease charges and the same to be communicated to Payroll team for
+      deduction from the payroll.
+  4. For a laptop retention by exited employees more than 2 months, FIR
+      shall be filed, and necessary action shall be taken.
+  5. For any resources leaving and likely to come back after certain
+      duration(2 to 6 months) laptops to be returned to the IS team and they
+      may be allocated a fresh laptop.
+
+
+TRIANZ INTERNAL                                                                        6
+7. Laptop/Other Assets Allocation on transfers from One Country
+   to Other Countries global
+
+  •   Upon intimation from HR function about the resource’s Transfer from one
+      country to the other (for e.g. India to USA or vice versa), laptop Allocation shall
+      be done.
+
+  •   Employee has to return the laptop to the IS team from the base location (for
+      e.g.India) before leaving to the other country.
+
+  •   Employees have to raise the ticket with due approvals from the reporting
+      manager for enabling the returing of the laptop at base location and issue of
+      laptop in the transferred country.
+
+  •   Employee has to fill the “Laptop/Other assets handover checklist” available in
+      Blue Book and furnish it to IS team for further processing.
+
+  •   Prior to returning of laptop, employee shall store the scoped data in Company’s
+      Onedrive.
+
+  •   Once Employee reaches new base location i,e destination country, local IS team
+      shall issue a new laptop to employee with reporting manager’s approval.
+
+  •   Laptop Handover Process shall follow the scenarios as specified in Section 6.
+
+
+8. Exception (s)
+
+  •   In addition to this allocation policy, if any associate does not meet the laptop
+      allocation as stated in Section 4, they may be eligible for the company laptop,
+      provided if they have business requirement for a laptop and approved business
+      justification by their function head.
+
+  •   Desktops, Monitors and other accessories will be provisioned based on
+      business requirements.
+
+  •   For any exceptions or deviations, the employee should get CIO approval
+      through their project/department head. Post approval request can be
+      submitted to the Trianz IS Team.
+
+  •   Exception will be handled on a case-to-case basis.
+
+
+
+
+TRIANZ INTERNAL                                                                       7
+9. ISO Control Mapping.
+
+            Category of                                              Document Name as per ISO
+                                   ISO 27001:2022 Control
+              Control                                                         27001:2022
+
+     Organizational        5.9 Inventory of Information and     Laptop allocation Policy
+     Controls              Other Associated Assets
+
+
+
+
+                                      Document Control:
+
+      Owner:                   CISO                    Release ID:            LAP_POL_060
+
+
+
+
+   For Trianz Process Improvement Group (TPIG) Purpose Only
+   Version History
+
+
+
+     Ver.                                                        Reason for          Change
+               Date       Author        Reviewer Approver
+     No.                                                             Change           Description
+
+
+
+TRIANZ INTERNAL                                                                             8
+                                     Pranesh
+             11-Aug-    Pranesh                  Gangadhar
+      1.0                            Kulkarni                Initial Draft         None
+                  20    Kulkarni                    Aka
+                                     (Trianz)
+                        (Trianz)
+
+
+                                                                               Updated with
+      1.1   3-Jan-22    Karthik N                             For Review     new Information
+                                                                               classification
+
+
+                                                                                 Reviewed,
+             13-Jan-
+      2.0               Karthik N     Siva N       Siva N    For Approval     Approved and
+                  22
+                                                                                 Baselined
+
+
+                                                                              The scope has
+             24-Feb-                                                         been extended to
+      2.1                            Karthik N     Siva N     For review
+                  22                                                           products and
+                        Sanjana
+                                                                                  services
+
+
+
+             24-Feb-                                                          Approved and
+      3.0                            Karthik N     Siva N    For Approval
+                  22    Sanjana                                                  Baselined
+
+
+
+                        Shalini,                                             Field 1 is updated.
+            03-May-
+      3.1                Asha        Karthik N    Srikanth    For Review      New template
+                  23
+                       Veerammal                                                  change
+
+
+
+            08-May-                                                           Approved and
+      4.0                Shalini     Karthik N    Srikanth   For Approval
+                  23                                                             baselined
+
+
+                                                                               Updated the
+                                                                                section ISO.
+             15-Feb-   Vijaya,Beni     Balu       Srikanth
+      4.1                                                     For Review Control      Mapping
+                  24       yel
+                                                                                aligning to
+                           S
+                                                                              ISO 27001:2022
+
+
+
+
+TRIANZ INTERNAL                                                                          9
+             23-Feb-                                                           Approved and
+      5.0                  Vijaya,       Balu       Srikanth    For Approval
+                  24                                                            baselined
+                          Beniyel S
+
+                                                                 Added the
+                                                                  section :
+                                                                Returning of
+                          Beniyel,Vij    Balu,
+      5.1   17-Apr-24                                           the Laptops
+                          aya, Naga     Pranesh
+                                                                 and inputs
+                                                                from IS team
+                                                                in Section 4
+
+
+             10-May-      Beniyel,Vij    Balu,                                 Approved and
+      6.0                                           Srikanth    For Approval
+                  24      aya, Naga     Pranesh                                 baselined
+
+
+
+                                                                               Updated the
+            24-July-                                                            section 5 –
+      6.1               Nagarathinam Pranesh K       Vijaya      For Review
+                  24                                                            Charges on
+                                                                               unused asset
+
+
+            25-July-                                                           Approved and
+      7.0               Nagarathinam Pranesh K       Vijaya     For Approval
+                  24                                                            baselined
+
+                            Kruti       Vijaya R                 For Annual    Migrated to a
+             30-Apr-                                              Review       new Template
+      7.1
+                  25                                                            and Yearly
+                                                                                  Review
+
+            14- May-        Kruti       Vijaya R                               Approved and
+      8.0                                          Srikanth M   For Approval
+                  25                                                            baselined
+
+
+
+
+TRIANZ INTERNAL                                                                        10
+                                Contact Information
+                                               Name
+
+                                               Email
+
+                                              Phone
+
+
+
+
+                                  Thank You
+                                     infosec@trianz.com
+
+
+
+
+ The content in this document is copyrighted; any unauthorized use – in part or full – may violate the
+ copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly
+   displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz
+ name and its products are subject to trademark and copyright protections, regardless of how and
+                                          where referenced.
+
+
+TRIANZ INTERNAL                                                                                      11
+

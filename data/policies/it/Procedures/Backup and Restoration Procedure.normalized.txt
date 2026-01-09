@@ -1,0 +1,309 @@
+# Backup And Restoration Procedure
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. INTRODUCTION
+2. ACRONYMS/ABBREVIATIONS
+3. OBJECTIVE(S)
+4. SCOPE
+5. ROLES AND RESPONSIBILITIES
+6. PREREQUISITES
+   6.1 Resource
+   6.2 Training
+7. ENTRY CRITERIA
+8. INPUTS
+9. PROCESS DESCRIPTION
+   9.1 Back Up Tasks
+   9.2 Backup Scope
+   9.3 User Requested Back Up
+   9.4 Backup of User Data
+   9.5 Project End Backup and Archival
+   9.6 Backup Verification
+   9.7 Back-up Restoration
+10. OUTPUT
+11. EXIT CRITERIA
+12. MEASUREMENT
+13. STANDARDS ADDRESSED
+14. ISO CONTROL MAPPING
+   - Document Control
+
+## 1. Introduction
+The purpose of the Backup and Restoration process is to ensure backup of all required information and verification of backup at periodic intervals.
+
+## 2. Acronyms/Abbreviations
+- **CM tool**: Configuration Management tool
+
+## 3. Objective(s)
+- Ensure timely availability of information assets to minimize business interruptions.
+- Control and optimize the information backup process.
+
+## 4. Scope
+This procedure applies to all information backup and restoration activities performed at Trianz.
+
+## 5. Roles and Responsibilities
+- **IS Manager**: Provides approval on any user request for internal backup data and data restoration.
+- **Systems Administrator**:
+  - Implements backup and restoration activities as per process.
+  - Updates relevant backup logs and restoration logs.
+  - Maintains and stores backed-up files as specified by the process.
+- **Project Manager/Delivery Manager**:
+  - Provides approval on any user request for backup data and data restoration.
+  - Initiates the Project Archival process.
+- **Users**: Request their manager for approval to back up important data on the File Server.
+
+## 6. Prerequisites
+### 6.1 Resource
+- Knowledge in Windows and other tools to back up applications.
+- Knowledge of backup policies.
+- Knowledge of backup devices.
+
+### 6.2 Training
+- Awareness of the Backup process.
+- Familiarity with Blue Book processes.
+
+## 7. Entry Criteria
+- Scheduled backup.
+- Backup/Restore is requested by a user.
+
+## 8. Inputs
+- Scheduled Backup.
+- Requested Backup/Restoration: Email from user requesting the backup, with approval from the manager.
+
+## 9. Process Description
+Backup copies of information, software, and systems shall be maintained and regularly tested in accordance with the agreed topic-specific policy on backup.
+
+### 9.1 Back Up Tasks
+- Server backups will be taken regularly as per business requirements.
+- Daily incremental backups will be taken from Monday to Saturday.
+
+**9.1 Backup Process**
+- Snapshots with full backups will be taken on cloud infrastructure.
+- Once the backup is taken and the log is updated, an alert email will be generated.
+- Refer to Appendix A for the Backup log format.
+
+**9.2 Backup Scope**
+- The following items are included in the backup scope:
+  - Fileservers: users and project data
+  - All Production servers
+  - All Production Networking and Security Devices
+  - For Cloud Services, data backup is taken over cloud storage, such as AWS Glacier/S3 or Azure Backup.
+
+**9.3 User Requested Backup**
+- Users must request backup data with the approval of the concerned Project Manager (PM).
+- Based on the request, the IS Team will take the backup, and the IS Manager must approve any user request for the issuance of backup data and data restoration.
+- All such cases will be maintained in the Backup log.
+
+**9.4 Backup of User Data**
+- Employees are responsible for uploading files they wish to back up to the server by placing them in their respective project directories on the file server.
+- The IS Team will back up these project directories as defined above.
+- Unwanted or personal files should not be placed on the server for backup; they will be deleted without notification.
+
+**9.5 Project End Backup and Archival**
+- Upon project completion or if a project is aborted, the Project Leader/PM initiates the Project Archival process. The following must be completed before archival:
+  - All project-related documents and code must be checked into the Configuration Management (CM) Tool of that project.
+  - All other project-related information that cannot be added to the CM Tool should be stored in a shared folder, which will also be archived along with the CM Tool database.
+  - Project archivals will be included in monthly and yearly backups and will be stored/archived in Cloud/Server.
+  - Configuration management audits will be performed by the CM of another project or a person familiar with the configuration management process.
+  - Users can request the restoration of part or all of a backup unit.
+  - Restoration must ensure data resilience and provide access to the user.
+  - All restorations require email approval from the concerned manager with proper restoration details.
+  - The IS Team will log the request in the backup/restore log. After restoration, the IS Team will notify the requestor.
+
+**9.6 Backup Verification**
+- The IS Team will verify daily backup logs.
+- An entry indicating the success of this operation will be made in the backup log.
+
+**9.7 Backup Restoration**
+- Restoration will also be performed based on project team requests.
+- For all network and security devices in the production environment, restoration tests will be performed once every six months.
+
+**10. Output**
+- The output will be stored in a repository at the cloud.
+
+**11. Exit Criteria**
+- Backup/Restoration is complete as per the plan.
+
+**12. Measurement**
+- The following metrics will be measured:
+  - Number of Successful Backups vs. Number of Backups taken.
+  - Number of Successful Restorations done vs. Number of Successful Backups.
+
+**13. Standards Addressed**
+- The following standards are addressed:
+  - ISO 9001:2015
+  - ISO 27001:2022
+  - ISO 27017:2015
+  - ISO 27018:2019
+  - ISO 27701:2019
+  - ISO 20000-1:2018
+
+**14. ISO Control Mapping**
+- The following ISO 27001:2022 Control is addressed:
+  - Category of Control: Technological controls
+  - Control: 8.13 Information backup Control
+  - Document Name as per ISO 27001:2022: Backup and Restoration Procedure
+  - Backup copies of information, software, and systems shall be maintained and regularly tested in accordance with the agreed topic-specific policy on backup.
+
+**Document Control**
+- Owner: CISO
+- Release ID: BUR-PROC-0040
+
+**Version History**
+- Version history details are to be filled in as per the document control process.
+
+### Change Log
+
+**0.00**  
+- **Date:** 26-Feb-07  
+- **Approved by:** Jyotessh G Nair, Zulfikar Deen  
+- **Description:** Baseline is approved.
+
+**0.01**  
+- **Date:** 14-May-09  
+- **Approved by:** Bharateesha BR  
+- **Description:** Risk Assessment and Treatment Plan consolidated for clarity on frequency and type of backup.
+
+**1.00**  
+- **Date:** 03-Jun-09  
+- **Approved by:** Balu Nair  
+- **Description:** Baselined.
+
+**1.01**  
+- **Date:** 13-May-10  
+- **Approved by:** Balu Nair  
+- **Description:** QMG review formatted the document and updated properties.
+
+**2.00**  
+- **Date:** 19-May-10  
+- **Approved by:** Balu Nair  
+- **Description:** Request for baseline, which is baselined.
+
+**2.01**  
+- **Date:** 24-May-11  
+- **Approved by:** Srilakshmi  
+- **Description:** QMG Review modified release ID in header and cover page for consistency.
+
+**3.00**  
+- **Date:** 24-May-11  
+- **Approved by:** Srilakshmi  
+- **Description:** Baselined.
+
+**3.01**  
+- **Date:** 03-Aug-11  
+- **Approved by:** Sudharsan  
+- **Description:** QMG review replaced "Owner" with "Management Representative" in Document Classification Scheme. Removed "Retention period is 3 Years" row.
+
+**4.00**  
+- **Date:** 03-Aug-11  
+- **Approved by:** Sudharsan  
+- **Description:** Request for baseline approved and baselined.
+
+**4.01**  
+- **Date:** 16-Nov-11  
+- **Approved by:** Gangadhar  
+- **Description:** Review simplified the process by modifying Section 5.0 to Section 5.5.
+
+**5.00**  
+- **Date:** 21-Nov-11  
+- **Approved by:** Gangadhar  
+- **Description:** Request for approval baselined.
+
+**6.00**  
+- **Date:** 29-Nov-11  
+- **Approved by:** Sudharsan  
+- **Description:** QMG Review confirmed standard document template is used. Modified Section 5.1 for clarity.
+
+**7.00**  
+- **Date:** 08-Nov-12  
+- **Approved by:** Balu Nair  
+- **Description:** [Further details not provided in the text.]
+
+### 8.00 Document Modifications
+- On 22-Jan-13, Srilakshmi modified the Blue Book Process template format, changed the logo, and updated the title of the document on the cover page.
+
+### 9.00 Internal Audit Cycle Modifications
+- On 07-May-14, Jyosthna made the following modifications:
+  - Updated section 5.4 regarding naming conventions for Backup Media.
+  - Referred to the Restore log in section 5.9.
+  - Modified the Trianz logo.
+
+### 9.01 Addition of Cloud Services
+- On 14-Oct-16, Sriharsha modified the Backup scope to include Cloud services under section 5.2.
+
+### 10.0 Approval
+- On 07-Dec-16, Balu Nair received approval from the CISO.
+
+### 10.1 Information Classification Modification
+- On 29-Apr-19, Balu Nair and Joshy VM modified the information classification.
+
+### 11.0 Release Approval
+- On 14-May-19, Balu Nair and Ganesh Arunachala approved the document for release.
+
+### 11.1 Integration with New Template
+- On 11-May-20, Karthik N and Balu Nair reviewed and integrated the document with the new template.
+
+### 12.0 Approval and Baselining
+- On 14-May-20, Karthik N and Phani Krishna received approval and baselined the document.
+
+### 12.1 External Audit Inputs
+- On 28-May-20, Vijaya Rajeswari, Pranesh Kulkarni, and Balu Nair made the following updates:
+  - Removed sections titled “Storage and Location and Naming Conventions for Backup Media.”
+  - Tapes are... (incomplete information).
+
+### 13.0 Policy Updates
+- On June 3, 2020, the restoration frequency for Network/Security devices, including Firewalls, was changed from monthly to every six months.
+
+### 13.1 Policy Review
+- On February 1, 2021, the policy was updated to consider cloud aspects of backup and to update the information classification.
+
+### 14.0 Policy Approval
+- On February 1, 2021, the policy was approved and baselined.
+
+### 14.1 Section Edit
+- On November 2, 2021, Section 9.2 was edited to address backup for Networking and Security Devices.
+
+### 15.0 Policy Approval
+- On November 2, 2021, the policy was approved and baselined.
+
+### 15.0 Review Status
+- On December 21, 2021, the policy was reviewed with no changes.
+
+### 15.1 Scope Extension
+- On March 14, 2022, the scope of the policy has been extended to include additional products.
+
+### 16.0 Approval and Baseline
+- On 18-March-2022, the document was approved and baselined by Kruti, Siva N.
+
+### 16.1 Review of Measurements
+- On 06-April-2023, new measurements were added for review by Kruti and Karthik N.
+
+### 17.0 Approval and Baseline
+- On 09-May-2023, the document was approved and baselined by Kruti, Karthik N, and Srikanth M.
+
+### 17.1 Migration to New Standard
+- On 15-February-2024, the document was migrated from standard ISO 27001:2013 to ISO 27001:2022 by Beniyel S, Balu Nair, and Aishee G.
+- Added ISO Control mapping in Section 13.1.
+
+### 18.0 Approval and Baseline
+- On 23-February-2024, the document was approved and baselined by Beniyel S, Balu Nair, and Srikanth M.
+
+### 18.1 Yearly Review
+- On 30-April-2025, the document was migrated to a new template for yearly review by Kruti, Balu Nair, and Vijaya R.
+
+### 19.0 Approval and Baseline
+- On 14-May-2025, the document was approved and baselined by Kruti, Balu Nair, and Srikanth M.
+
+### Contact Information
+- For inquiries, contact:  
+  - **Email:** infosec@trianz.com
+
+### Copyright Notice
+- The content in this document is copyrighted. Unauthorized use may violate copyright, trademark, and other laws. The document may not be modified, reproduced, publicly displayed, performed, or distributed for any public or commercial purposes. The Trianz name and its products are protected by trademark and copyright laws.

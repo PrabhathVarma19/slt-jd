@@ -1,0 +1,342 @@
+Prevention and Detection of
+Malicious Attack Procedure
+
+
+
+
+TRIANZ INTERNAL               trianz.com
+                         Statement of Confidentiality
+
+  The information contained in this document is internal to Trianz. It shall not be
+  disclosed, duplicated, or used for any purpose other than that stated herein, in
+  whole or in part, without the express written consent of Trianz.
+
+
+
+
+                            Information Classification
+
+     ☐ Public
+
+     ☒ Internal
+
+     ☐ Confidential
+
+     ☐ Restricted
+
+
+
+
+TRIANZ INTERNAL                                                                  2
+                              Table of Contents
+1.   OBJECTIVE                                    4
+
+2.   SCOPE                                        4
+
+3.   REFERENCE(S)                                 4
+
+4.   PROCEDURE                                    4
+
+     4.1 Desktop / Workstation                    4
+
+     4.2 Servers                                  4
+
+     4.3 Gateway Anti-virus                       5
+
+     4.4 Users                                    5
+
+     4.5 Virus Detection and Prevention Tips      6
+
+     4.6 Contact with Special Interested groups   6
+
+5.   ISO CONTROL MAPPING(S)                       6
+
+
+
+
+ TRIANZ INTERNAL                                  3
+1. Objective
+      The purpose of this control is to device a high performance policy-based anti-virus and
+      content for Trianz to protect the enterprise’s network and system from virus attacks,
+      worms, Internet borne email viruses and prevent transmission of spam or non-business
+      related contents
+
+
+2. Scope
+      This control is applicable to all Trianz associates. It covers workstations/servers/devices
+      located on TRIANZ’s networks or which are connected to Trianz Infrastructure. It is
+      applicable to all systems under the jurisdiction and/or ownership of TRIANZ, inclusive of
+      hired systems. This control also covers all workstations and servers supplied by the
+      customers of TRIANZ, as long as they are operated from within TRIANZ premises and
+      all Trianz products and services.
+
+
+3. Reference(s)
+      None
+
+
+4. Procedure
+
+  4.1 Desktop / Workstation
+      Every system (i.e. PC, Laptop, etc.) must have Organization Standard corporate anti-
+      virus software installed, which has to be regularly updated with latest patches. This will
+      be done automatically if you are connected to the Trianz network. It is the responsibility
+      of every employee at Trianz to ensure that his/her desktop/laptop has the latest pattern
+      for the Anti-Virus signature files and ensures that the same is virus free.
+      In cases of zero-day signature update, same will be done manually by the IT team.
+
+
+
+
+  4.2 Servers
+      Latest anti-virus pattern file will be downloaded automatically, and updated on the
+      Servers. In cases of zero-day signature update, same will be done manually by the IT
+      team
+
+
+
+
+TRIANZ INTERNAL                                                                                4
+  4.3 Gateway Anti-virus
+    •     For Internet Connection
+
+          The gateway Anti-Virus should monitor all inbound connections and accordingly filter
+          out all malicious content which is being downloaded from the Internet.
+
+    •     For E-mail
+
+        The gateway anti-virus should monitor all inbound and outgoing mail to Trianz mail
+        server and accordingly filter out mails containing viruses.
+
+
+  4.4 Users
+    •     Have the organization-standardized anti-virus software installed (if not installed by
+          default) on your computer by IT Helpdesk Executive.
+    •     Regularly scan your computer using the anti-virus software installed on your computer.
+
+    •     Make sure that your anti-virus software is regularly updated to take into account new
+          viruses and variants recently written.
+    •     Always scan the removable storage media before accessing the files.
+
+    •     In addition to saving your data files (documents, spreadsheets, etc.) to the hard drive,
+          consider saving the critical files in centralized file server. The file server drives are
+          scanned & backed up regularly. Having a backup of your data files may prevent data
+          loss if a virus infects your hard drive.
+    •     While downloading files/information from the Internet, always scan the files prior to
+          running them.
+    •     Do not run any Pirated programs on computer as pirated programs are a major source
+          of viruses.
+    •     Do not stop, remove or uninstall the Anti-Virus software from your computer.
+    •     Do not download programs from any un-trusted or suspicious Internet site or networks.
+          Categorized Web Filtering has been enabled to ensure this, however, the users are
+          expected to exercise discretion while surfing the net.
+    •     If any user feels that his/her desktop/laptop is infected with virus then it is his/her
+          responsibility to inform the IT helpdesk about the same, through e-mail or in person
+
+
+
+
+TRIANZ INTERNAL                                                                                 5
+  4.5 Virus Detection and Prevention Tips
+    •     Do not open any files attached to an email from an unknown, suspicious or
+          untrustworthy source
+    •     Do not open any files attached to an email unless you know what it is, even if it appears
+          to come from someone you know. Some viruses can replicate themselves and spread
+          through email
+    •     Do not open any files attached to an email if the subject line is questionable or
+          unexpected. If the need to do so, always save the file to your hard drive before doing so
+    •     Update the anti-virus software regularly as lots of new viruses are discovered each
+          month.
+    •     Back up the files on a regular basis to local file server. If a virus destroys the data files,
+          they can be replaced with the back-up copy.
+           • When in doubt, do not open, download, or execute any files or email attachments
+
+               Symptoms of virus
+
+           •   The program takes longer to load suddenly
+           •   The program size keeps changing
+           •   The disk keeps running out of free space
+           •   The drive light keeps flashing when the user is not doing anything
+           •   The files have strange names which are not recognizable
+           •   The computer is not able to remember CMOS settings
+           •   System memory reduces Icons change in appearance
+
+
+
+  4.6 Contact with Special Interested groups
+        Trianz can take the help of external consultant on information security in case of any
+        support or critical decision making processes.
+
+
+
+5. ISO Control Mapping(s)
+
+
+           Category of         ISO 27001:2022 Control                   Document Name as per
+           Control                                                      ISO 27001:2022
+                               NA                                       Prevention and Detection of
+                                                                        Malicious attack Procedure
+
+
+
+
+TRIANZ INTERNAL                                                                                      6
+                                 Document Control
+
+  Owner:     CISO                    Release ID:                      PDMA-PROC-0050
+
+
+
+            For Trianz Process Improvement Group (TPIG) Purpose Only
+Version History
+Ver.                             Reviewe   Approver   Reason
+No.      Date         Author        r                 for              Change Description
+                                                      Change
+
+0.00   19-Feb-07    Jyotessh G                        Initial draft       •
+                    Nair
+
+1.00   26-Feb-07    Jyotessh G                        Baseline is         •    Approved
+                    Nair                              approved                Baseline.
+                                                      by Zulfikar
+                                                      Deen.
+
+1.01   14- May      Bharateesh                        Risk                • Consolidated the
+       09           aBR                               Assessmen              controls for
+                                                      t and                  preventing
+                                                      Treatment              malicious
+                                                      Plan                   attack.
+2.00   03-Jun-09    Balu Nair                         Approval            •   Baselined
+                                                      for
+                                                      Baseline
+
+2.01   30-Dec-10    Chakravart                        QMG                 • Formatted
+                    hi                                review                  entire
+                                                                              document
+                                                                              and modified
+                                                                              properties
+                                                                              also
+3.00   30-Dec-10    Chakravart                        Approval            • Base lined
+                    hi                                for
+                                                      Baseline
+
+
+
+
+TRIANZ INTERNAL                                                                           7
+3.01   24-May-11   Srilakshmi                          QMG                          • Modified
+                                                       Review                        release id in
+                                                                                      header and
+                                                                                   cover page to
+                                                                                   make
+                                                                                   consistency
+4.00   24-May-11   Srilakshmi                          Approval              •     Baselined
+                                                       for
+                                                       Baseline
+
+4.01   3-Aug-11    Sudharsan                           QMG                   •
+                                                                           Replace Owner
+                   a                                   review               with
+                                                                            Management
+                                                                            Representative
+                                                                            in place of CIO
+                                                                        • In Document
+                                                                   Classification Scheme,
+                                                                            "Retention
+                                                                            period is 3
+                                                                            Years" row is
+                                                                            removed
+5.00   3-Aug-11    Sudharsan                           Request for Approved and
+                   a                                   baseline    Baselined
+
+6.00   8-Nov-12    Balu Nair                           Standardiz        •       Modified the
+                                                       ation of                  template format
+                                                       Blue Book         •       Changed the
+                                                       Process                   Logo
+                                                       Assets
+
+7.00   14-May-15   Sudharsan                           Upgrading             •Added section
+                   a                                   to ISO             4.6 Contact with
+                                                       27001:201             Special
+                                                       3 version             Interested
+                                                                             groups
+7.01   29-Apr-19   Balu Nair    Joshy                                Information
+                                VM                                   classification
+                                                                     modified
+                                                                     Trianz logo modified
+8.0    14-May-19   Balu Nair               Ganesh      Approved      •       Baselined
+                                           Arunachal   for Release
+                                           a
+
+8.1    12-May-20   Balu Nair    Phani                  Annual        •       Migrated to the
+                                Kraishna               Review                new template
+
+
+
+
+TRIANZ INTERNAL                                                                                 8
+9.0    15-May-20   Balu Nair    Phani                    For           •   Approved and
+                                Kraishna                 Approval          Baselined
+9.1    3-May-21    Divya G      Vijaya      Phani        Annual        •   Updated with new
+                                            Kraishna     Review            Information
+                                                                           classification
+10.0   3-May-21    Divya G      Vijaya      Phani        For           •   Approved and
+                                            Kraishna     Approval          Baselined
+10.0   06-Jan-22   Divya G      Balu Nair                For           •   No Changes
+                                                         Review
+
+11.1   24-Feb-     Kruti        Kartik                   For           The scope has
+       2022                                              Review           been
+                                                                          extended to
+                                                                          products
+                                                                          and
+                                                                          services
+12     28-Feb-     Kruti        Siva N      Siva N       For          Approved and
+       2022                                              Approval     baselined
+
+12.1   28-Feb-     Kruti and    Karthik N                For Review        Updated the
+       2023        Asha                                                    Scope and section
+                   Veeramallu                                              4
+                                                                           New template
+                                                                           change
+13.0   08-May-     Kruti        Karthik N   Srikanth M   For               Approved and
+       2023                                              Approval          baselined
+
+14.0   23-Feb-24   Shalini      Vijaya      Srikanth M   For               Reviewed and No
+                                                         Approval          changes.
+
+14.1   28-May-25   Vijaya       Balu                     For yearly        Migrated to a new
+                                                         review            template
+
+15.0   29-May-25   Vijaya       Balu        Srikanth M   For               Approved and
+                                                         approval          Baselined
+
+
+
+
+TRIANZ INTERNAL                                                                           9
+                                Contact Information
+                                               Name
+
+                                               Email
+
+                                              Phone
+
+
+
+
+                                  Thank You
+                                     infosec@trianz.com
+
+
+
+
+ The content in this document is copyrighted; any unauthorized use – in part or full – may violate the
+ copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly
+   displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz
+ name and its products are subject to trademark and copyright protections, regardless of how and
+                                          where referenced.
+
+
+TRIANZ INTERNAL                                                                                      10
+

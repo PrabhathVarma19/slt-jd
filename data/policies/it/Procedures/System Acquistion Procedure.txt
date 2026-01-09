@@ -1,0 +1,438 @@
+System Acquisition
+Procedure
+
+
+
+
+TRIANZ INTERNAL      trianz.com
+                      Statement of Confidentiality
+
+  The information contained in this document is internal to Trianz. It shall not be
+  disclosed, duplicated, or used for any purpose other than that stated herein, in
+  whole or in part, without the express written consent of Trianz.
+
+
+
+
+                         Information Classification
+
+
+     ☐ Public
+
+     ☒ Internal
+
+     ☐ Confidential
+
+     ☐ Restricted
+
+
+
+
+TRIANZ INTERNAL                                                                  2
+                             Table of Contents
+1.   INTRODUCTION                                4
+
+2.   OBJECTIVE(S)                                4
+
+3.   SCOPE                                       4
+
+4.   DEFINITIONS/ACRONYMS/ABBREVIATIONS          4
+
+5.   REFERENCE(S)                                4
+
+6.   PROCESS DESCRIPTION                         4
+
+     6.1 System Acquisition Planning             4
+
+     6.2 Analysis                                5
+
+     6.3 Evaluation of system                    5
+
+     6.4 Purchase                                5
+
+     6.5 System Modification and Customization   5
+
+     6.6 Piloting                                6
+
+     6.7 Deployment                              6
+
+     6.8 Transition to Support                   6
+
+7    ISO CONTROL MAPPING                         7
+
+
+
+
+ TRIANZ INTERNAL                                 3
+  1. Introduction
+      This process addresses the need to have a process approach towards
+      acquiring a new system/product supporting various business processes in an
+      organization. This process details the various steps to be performed while
+      acquiring a COTS software product/application/system.
+
+  2. Objective(s)
+      •    Reduce system failure rate in real time environment through
+           acquisition of systems/products systematically.
+      •    Reduce the probability of unexpected system failures.
+      •    Reduce the cost of ownership.
+
+  3. Scope
+      This process is applicable to all systems/products acquired to support
+      the business processes at Trianz.
+
+  4. Definitions/Acronyms/Abbreviations
+          Word/Acronym/Abbreviatio                Definition/Description
+                      n
+
+          COTS                          Commercial Off the Shelf
+
+          RFP                           Request for proposal
+
+
+  5. Reference(s)
+      None
+
+  6. Process Description
+
+   6.1 System Acquisition Planning
+       The step initiates the system acquisition process with the definition. Project
+       definition defines the main constraints of the system acquisition project such
+       as time, budget, and project type. Managerial definitions define the review
+       boards, the stakeholders, and the pilot group of the project.
+
+
+
+
+TRIANZ INTERNAL                                                                    4
+       Once the project and managerial definitions are defined, functional and non-
+       functional requirements are developed from the original problem description
+       in the form of user requirements, Use cases, Test Plan, quality requirements,
+       technical requirements
+
+   6.2 Analysis
+   The analysis step shall involve the following procedures,
+        • Develop an estimate of the custom development effort (in-house)
+          •   Identify Vendors
+          •   RFP
+          •   Testing
+
+   6.3 Evaluation of system
+       This step shall involve final evaluation of the system in order to choose the
+       product. This includes an overall evaluation based on the analysis of the
+       demonstration products from identified Vendors. Once the evaluation is over,
+       feedback shall be sought from relevant stakeholders and a decision on the
+       selection of product shall be taken.
+       For evaluation of tools, please refer Tool Evaluation Process.
+
+   6.4 Purchase
+      Once the vendor is chosen, the following procedures shall be followed,
+           • Technical and Commercial Negotiation
+              •   Purchase Order/Purchase Contract
+              •   Identify additional customization requirements
+
+   6.5 System Modification and Customization
+      Once the COTS product is purchased, the acquirer and the vendor shall work
+      together to ensure customization and modification activities happen as per
+      plan. The modified product shall be tested against the test plan to check
+      conformity to the product requirements. The following sub-practices shall be
+      followed during the modification and customization,
+              •   Planning
+              •   Monitoring
+              •   Testing
+
+TRIANZ INTERNAL                                                                  5
+   6.6 Piloting
+       During this step, the acquired system is deployed to a subset of the systems
+       and tested by a subset of all the end user group members. This is executed in
+       three phases.
+
+
+       Definition: The acquirer of the system shall define the pilot group size, identify
+       the pilot group members, and identify pilot test resources, steps to be followed
+       by the pilot group, pilot test cases
+
+
+       Evaluation: This involves execution of the pilot process steps, grading of the
+       system against the defined criteria, identification of any further modifications,
+       risks factors.
+
+
+       Analysis: the acquirer of the system shall analyze the results out of evaluation;
+       summarize the results in terms of defects/issues as major, minor, cosmetic. A
+       major defect/issue is the miss which must be fixed but cannot be fixed easily.
+       A minor defect/issue is a miss but can be fixed during or after deployment, A
+       cosmetic defect/issue is a miss which should be fixed but does not result in a
+       change.
+
+   6.7 Deployment
+      This step involves deployment of the acquired system into production
+      environment. It involves the following sub-steps.
+             •    Installation: The system is put into production through installation of
+                  the acquired system.
+             •    Data reporting: The deployment team shall provide data to the
+                  acquirer about work performed, schedule, expenses, and problem
+                  reports.
+
+   6.8 Transition to Support
+          Once the deployed system is stable and it is agreed upon by the
+          management to transition the system into an operation/maintenance
+          mode, the system in production is transitioned into a support group for
+          maintaining the system through its life. The following sub-steps shall be
+          followed during transition of the system to support team.
+              •   Identify the Transition Team,
+
+
+TRIANZ INTERNAL                                                                       6
+              •   Prepare a Transition Plan
+              •   Obtain commitments from various stakeholders.
+              •   Transition the system/product.
+              •   Monitor and control the transition process.
+              •   Generate Data report.
+              •   Perform Transition sign off
+
+
+
+
+  7 ISO Control Mapping
+
+
+          Category of       ISO 27001:2022 Control              Document Name as
+          Control                                               per ISO 27001:2022
+          Organizational    5.20 Addressing Information         System Acquisition
+          Controls          Security within Supplier            Procedure
+                            Agreements
+
+
+
+
+TRIANZ INTERNAL                                                                      7
+                                      Document Control
+
+Owner:              CISO            Release ID:              SAP-PROC-0052
+
+
+
+
+             For Trianz Process Improvement Group (TPIG) Purpose Only
+
+Version History
+
+                                                                               Change
+ Ver.                                             Approve    Reason for
+             Date          Author     Reviewer                             Descriptio
+ No.                                                 r        Change
+                                                                                   n
+
+0.0     05-May-       Bharatees                             NA             Initial Draft
+        09            ha B R
+
+0.1     17-May        Bharatees                             Self Review    Incorporat
+        09            ha B R                                               ed
+                                                                           Transition
+                                                                           to Support
+                                                                           section
+1.0     03-Jun-       Balu Nair                             Approval for   Baselined
+        09                                                  Baseline
+
+1.1     30-Dec-       Chakravar                             QMG review     •           For
+        10            thi                                                  matted
+                                                                           entire
+                                                                           document
+                                                                           and
+                                                                           updated
+                                                                           header
+                                                                           footer
+
+2.0     30-Dec-       Chakravar                             Request for    •           Bas
+        10            thi                                   baseline       elined
+
+2.1     24-May-       Srilakshmi                            QMG Review     •           Mod
+        11                                                                 ified
+
+
+TRIANZ INTERNAL                                                                              8
+                                              release id
+                                              in header
+                                              and cover
+                                              page to
+                                              make
+                                              consistenc
+                                              y
+
+3.0    24-May-    Srilakshmi   Approval for   •        Bas
+       11                      Baseline       elined
+
+3.1    3-Aug-11   Sudharsan    QMG review         •    Repl
+                  a                                    ace
+                                                       Own
+                                                       er
+                                                       with
+                                                       Man
+                                                       age
+                                                       me
+                                                       nt
+                                                       Rep
+                                                       rese
+                                                       ntat
+                                                       ive
+                                                       in
+                                                       plac
+                                                       e of
+                                                       CIO
+                                                  •    In
+                                                       Doc
+                                                       um
+                                                       ent
+                                                       Clas
+                                                       sific
+                                                       atio
+                                                       n
+                                                       Sch
+                                                       em
+
+
+TRIANZ INTERNAL                                                9
+                                                                           e,
+                                                                           "Ret
+                                                                           enti
+                                                                           on
+                                                                           peri
+                                                                           od
+                                                                           is 3
+                                                                           Year
+                                                                           s"
+                                                                           row
+                                                                           is
+                                                                           rem
+                                                                           ove
+                                                                           d
+4.0    3-Aug-11   Sudharsan                        Request for    •        App
+                  a                                baseline       roved and
+                                                                  Baselined
+
+5.0    28-Sep-    Sudharsan                        QMG review     •        For
+       12         a                                               matted as
+                                                                  per latest
+                                                                  template
+                                                                  format
+
+5.1    29-Apr-    Balu Nair   Joshy VM                            •   Inform
+       19                                                             ation
+                                                                      classifi
+                                                                      cation
+                                                                      modifie
+                                                                      d
+                                                                  •     Tria
+                                                                  nz logo
+                                                                  modified
+
+6.0    14-May-    Balu Nair              Ganesh    Approved for   •        Bas
+       19                                Arunach   Release        elined
+                                         ala
+
+
+
+
+TRIANZ INTERNAL                                                                   10
+6.1    12-May-    Balu Nair   Phani                  Yearly         •       Migr
+       20                     Krishna                Review         ated to the
+                                                                    new
+                                                                    template
+
+7.0    15-May-    Balu Nair   Phani       Phani      For Approval   •       App
+       20                     Krishna     Krishna                   roved and
+                                                                    Baselined
+
+7.1    3-May-21   Balu Nair   Vijaya      Phani      For Review     •       Upd
+                                          Krishna                   ated with
+                                                                    new
+                                                                    informatio
+                                                                    n
+                                                                    classificati
+                                                                    on
+
+8.0    3-May-21   Balu Nair   Vijaya      Phani      For Approval   •       App
+                                          Krishna                   roved and
+                                                                    Baselined
+
+8.1    23-Dec-    Balu Nair   Karthik N              For review     •    Update
+       21                                                                d the
+                                                                         footer.
+                                                                    •        For
+                                                                    matting
+                                                                    changes
+
+9.0    13-Jan-    Balu Nair   Sivaram     Sivaram    For Approval   •       App
+       22                     akrishna    akrishna                  roved and
+                              nN          nN                        Baselined
+
+9.1    03-Apr-    Balu Nair   Karthik N              Yearly         •       For
+       23         and Asha                           Review         mat and
+                  Veeramall                                         few small
+                  u                                                 changes
+                                                                    done
+                                                                    •
+
+
+
+TRIANZ INTERNAL                                                                    11
+                                                               •     New
+                                                               template
+                                                               change
+
+10.0   09-May-    Balu Nair          Srikanth   Yearly         •     App
+       23                            Mantena    Review         roved and
+                                                               Baselined
+
+10.1   4-Fe-      Vijaya      Balu   Srikanth   For Review     •     Upd
+       2024                          Mantena                   ated the
+                                                               section ISO
+                                                               Control
+                                                               Mapping
+                                                               aligning to
+                                                               ISO
+                                                               27001:2022
+
+11.0   23-Feb-    Vijaya      Balu   Srikanth   For Approval   Approved
+       2024                          Mantena                   and
+                                                               Baselined
+
+11.1   28-May-    Vijaya      Balu              For Yearly     Migrated
+       25                                       Review         to a new
+                                                               template
+
+12.0   29-May-    Vijaya      Balu   Srikanth   For approval   Approved
+       25                            M                         and
+                                                               Baselined
+
+
+
+
+TRIANZ INTERNAL                                                              12
+                                Contact Information
+                                               Name
+
+                                               Email
+
+                                              Phone
+
+
+
+
+                                  Thank You
+                                     infosec@trianz.com
+
+
+
+
+ The content in this document is copyrighted; any unauthorized use – in part or full – may violate the
+ copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly
+   displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz
+ name and its products are subject to trademark and copyright protections, regardless of how and
+                                          where referenced.
+
+
+
+
+TRIANZ INTERNAL                                                                                      13
+

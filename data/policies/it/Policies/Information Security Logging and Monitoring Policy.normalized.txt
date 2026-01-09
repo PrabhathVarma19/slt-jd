@@ -1,0 +1,231 @@
+# Information Security Logging and Monitoring Policy
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. PURPOSE
+2. SCOPE
+3. POLICY STATEMENT
+4. MEASUREMENT AND REVIEW
+   - 4.1 Log Reporting
+   - 4.2 Logging Security-Related Events
+   - 4.3 Log Review and Retention
+5. COMPLIANCE AND MONITORING
+6. REFERENCES
+7. STANDARDS ADDRESSED
+8. EXCEPTION(S)
+9. ISO CONTROL MAPPING(S)
+
+## 1. Purpose
+This policy establishes requirements for the collection, maintenance, and review of audit logs for Trianz applications and related network resources, supporting identity management and threat monitoring. Audit logs track and associate user and system activity to events.
+
+## 2. Scope
+This policy covers all Trianz assets currently available or that may be created or used in the future. All Trianz employees, contractors, and other stakeholders are responsible for understanding and complying with this policy.
+
+## 3. Policy Statement
+- Trianz shall identify systems, applications, or processes that make data vulnerable to unauthorized or inappropriate tampering, uses, or disclosures.
+- For each identified system, application, or process, Trianz shall identify user activities (e.g., Create, Read, Update, Delete) that need to be tracked and audited.
+- Logging shall include system, application, and database & file activity whenever available or deemed necessary.
+- Logging shall include:
+  - Creation, access, modification, and deletion activities.
+- Log files shall be regularly examined for:
+  - Access control discrepancies
+  - Breaches
+  - Policy violations
+- Data custodians or device managers are responsible for developing appropriate processes for monitoring and analyzing their logs.
+- Individuals shall not be assigned to be the sole reviewers of their own user activity.
+- System activity review cycles shall include:
+  - Review of audit logs minimally every 30 days
+  - Daily exception reporting may be included.
+- The Information Systems team shall be responsible for monitoring and reviewing audit logs to identify and respond to inappropriate or unusual activity.
+
+## 4. Measurement and Review
+Audit logging records system and user activities used for system performance tuning, detecting unauthorized access, and investigating incidents.
+
+### 4.1 Log Reporting
+Logs must be configured to report key events, including:
+- Individual access to private data (e.g., file system, application)
+- Actions taken by individuals with root or administrative privileges
+- Access to audit trails
+- Invalid logical access attempts (e.g., authentication failures, ACL issues, missing web pages, web server errors)
+- Use of identification and authentication mechanisms
+- Initialization of audit logs
+- Use of privileges (e.g., sudo, UAC, elevated privileges)
+- Activation and deactivation of protection systems (e.g., anti-virus, intrusion detection systems)
+
+Log report key entries must include:
+- User identification
+- Type of event
+- Date and time
+- Success and failure indication
+- Origination of the event
+- Identity or name of affected private data or system
+- Network addresses and protocols
+
+Additionally, clocks must be synchronized to the Trianz NTP servers.
+
+### 4.2 Logging Security-Related Events
+- Security-related events/incidents must be logged in the control dock tool.
+- The Information Security Compliance team will review these events and prescribe corrective measures.
+
+### 4.2 Security-Related Events
+Security-related events include, but are not limited to:
+- Brute force attempts
+- Accounts that have been automatically locked due to failed attempts
+- Multiple simultaneous login events from any geo-locations
+- Port scan attacks
+- Evidence of unauthorized access
+- Anomalous occurrences that are not related to specific applications on the host
+- Theft of computing equipment
+
+### 4.3 Log Review and Retention
+- Review logs and security events for all system components to identify anomalies or suspicious activity.
+- Review the following at least daily:
+  - All security events
+  - Logs of all system components that store, process, or transmit Cardholder Data (CHD) and/or Sensitive Authentication Data (SAD)
+  - Logs of all critical system components
+  - Logs of all servers and system components that perform security functions (e.g., firewalls, intrusion-detection systems/intrusion-prevention systems (IDS/IPS), authentication servers, e-commerce redirection servers, etc.)
+- Review logs from all other system components periodically based on the organization’s policies and risk management strategy, as determined by the organization’s annual risk assessment.
+- Automation can improve the review and analysis of logs; however, log reduction, review, and reporting tools should support log analysis without altering original log records.
+- All physical and logical access logs, audit trails, etc., shall be retained for a minimum of five years.
+
+### 5 Compliance and Monitoring
+- Use file-integrity monitoring or change-detection software on logs to ensure that existing log data cannot be changed without generating alerts (new data being added should not cause an alert).
+- Write logs for external-facing technologies onto a secure, centralized, internal log server or media device.
+- Promptly back up audit trail files to a centralized log server or media that is difficult to alter.
+- Set proper permissions on log files and use a separate server (Central Syslogger) to store all log files.
+- Make regular backups of the log files and encrypt log files.
+
+### 6 References
+- NIST Special Publication 800-92 Guide to Computer Security Log Management
+
+### 7 Standards Addressed
+**ISO 27001**
+- **Clause/Annexure A12.4**: Logging and monitoring
+
+### 8 Exception(s)
+- Any requests for exceptions to this policy must be submitted in writing and will be reviewed on a case-by-case basis. Exceptions shall be permitted only after documented approval from the Information Security Advisory Committee (ISAC).
+
+### 9 ISO Control Mapping(s)
+**Category of Control: Technological Control**
+- **8.15 Logging Control**: Logs that record activities, exceptions, faults, and other relevant events shall be produced, stored, protected, and analyzed.
+- **8.16 Monitoring activities Control**: Networks, systems, and applications shall be monitored for anomalous behavior, and appropriate actions taken to evaluate potential information security incidents.
+
+**Category of Control: Organizational Controls**
+- **5.28 Collection of evidence Control**: The organization shall establish and implement procedures for the identification, collection, acquisition, and preservation of evidence related to information security events.
+
+### Appendix A: Source and Contents of Log
+**System/Software**: Anti-malware software
+- **Event/Activity to be Recorded**: Instances of detected malware
+
+### 3.1 Security Monitoring and Management
+
+- **File Quarantines**: Implement anti-virus, anti-spyware, and rootkit detectors to manage file quarantines.
+  
+- **Malware Scans**: Conduct signature or software updates for malware scans.
+
+- **Intrusion Detection and Prevention Systems**: Monitor for suspicious behavior and detected attacks, and perform actions to stop malicious activity.
+
+- **Remote Access and Wireless Access Systems**: Track login attempts and the amount of data sent and received during sessions.
+
+- **Web Proxies**: Log URLs accessed.
+
+- **Vulnerability Management Software**: Maintain records of patch installation history, vulnerability status, known vulnerabilities, and missing software updates.
+
+- **Authentication Servers**: Monitor authentication attempts, including those from directory servers and single sign-on servers.
+
+- **Routers and Switches**: Record blocked activity and maintain detailed logs of network activity.
+
+- **Firewalls**: Keep detailed logs of network activity.
+
+- **Network Quarantine Servers**: Check the status of host security checks and document quarantined hosts along with the reasons for quarantine.
+
+- **Operating Systems**: Track system events such as:
+  - System shut down
+  - Service starting
+  - Account changes
+  - Policy changes
+
+- **Applications**: Monitor events including:
+  - Client requests and server responses
+  - Authentication attempts
+  - Account changes
+  - Use of privileges
+  - Number and size of transactions
+  - Operational events (startup and shutdown)
+  - Configuration changes
+  - Application-specific events (e.g., email sends and receipts, file access, service requests, system-level transactions, and functions performed such as read, write, modify, delete).
+
+### Document Control
+
+- **Owner**: CISO
+- **Release ID**: ISLM-POL-0040
+
+### Version History
+
+- **0.01** (19 Oct 2017): Initial Draft by Kamade Pradhan
+- **1.00** (23 Jun 2018): Baselined by Kamade Pradhan, approved by Ganesh Arunachala
+- **1.01** (29 Apr 2019): Review by Balu Nair, information classification modified
+- **2.0** (14 May 2019): Baselined for Release by Balu Nair, approved by Ganesh Arunachala
+- **2.1** (11 May 2020): Review by Karthik N, modified the incident reporting
+- **3.0** (14 May 2020): Approved and baselined by Karthik N, Phani Krishna
+- **3.1** (14 Jan 2021): Review by Balu Nair, updated the document.
+
+### 4.0 Approval Status
+- Document approved and baselined on February 11, 2021, by Balu Nair, Krishna, and Phani.
+
+### 4.1 Review Status
+- Section 4.2 has been updated and formatted as of October 6, 2021, by Karthik N.
+
+### 5.0 Approval Status
+- Document approved and baselined on October 11, 2021, by Karthik N and Sivaramakrishnan N.
+
+### 6.0 Document Review
+- Document updates are under review as of October 30, 2021, by Pranesh K.
+- No changes were made during the annual review on December 21, 2021, by Karthik N.
+
+### 6.1 Log Retention Update
+- The log retention period has been updated as per client feedback on January 6, 2023, by Sanjana and the ISDP Team.
+
+### 7.0 Approval Status
+- Document approved and baselined on January 6, 2023, by Sanjana and the ISDP Team.
+
+### 7.0 Review Status
+- Document reviewed with no changes on April 30, 2023, by Sanjana and the ISDP Team.
+
+### 7.1 Template Migration
+- Document migrated to a new template for review on May 12, 2023, by Rama Madhavan and Vijaya.
+
+### 8.0 Approval Status
+- Document approved and baselined on May 12, 2023, by Rama Madhavan, Vijaya, and Srikanth M.
+
+### 8.1 ISO Control Mapping
+- Document mapped with new ISO control 27k, 2022, 8.15, and 8.16 for review on February 15, 2024, by Shalini and Vijaya.
+
+### 9.0 Approval Status
+- Document approved and baselined on February 23, 2024, by Shalini, Vijaya, and Srikanth.
+
+### 9.1 Template Migration
+- Document migrated to a new template for yearly review on April 17, 2025, by Vijaya and Balu.
+
+### 10.0 Approval Status
+- Document approved and baselined on May 14, 2025, by Vijaya, Balu, and Srikanth.
+
+### Contact Information
+- For inquiries, please contact:  
+  - **Email:** infosec@trianz.com
+
+### Copyright Notice
+- The content in this document is copyrighted; any unauthorized use – in part or full – may violate copyright, trademark, and other rights.
+
+**5.1 Restrictions on Document Use**
+
+- This document may not be modified, reproduced, publicly displayed, performed, distributed, or used for any public or commercial purposes.
+- The Trianz name and its products are protected by trademark and copyright laws, regardless of how and where they are referenced.

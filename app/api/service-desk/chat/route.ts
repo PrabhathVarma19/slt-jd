@@ -17,11 +17,12 @@ interface ExtractedData {
   reason?: string;
   projectCode?: string;
   ticketNumber?: string;
+  details?: string;
 }
 
 export async function POST(req: NextRequest) {
   try {
-    const auth = await requireAuth();
+    await requireAuth();
     const body = await req.json();
     const { message, history = [] } = body;
 
@@ -44,6 +45,7 @@ export async function POST(req: NextRequest) {
         message: 'I can help you reset your password. I\'ll send a password reset email to your registered email address. Would you like me to proceed?',
         actionType: 'password_reset',
         actionData: { requiresConfirmation: true },
+        requiresConfirmation: true,
       });
     }
 
@@ -52,6 +54,7 @@ export async function POST(req: NextRequest) {
         message: 'I can help unlock your account. Please confirm your email address and I\'ll unlock it for you.',
         actionType: 'account_unlock',
         actionData: { requiresConfirmation: true },
+        requiresConfirmation: true,
       });
     }
 
@@ -63,15 +66,17 @@ export async function POST(req: NextRequest) {
         message: `I'll check the status of ticket ${ticketNumber} for you.`,
         actionType: 'ticket_status',
         actionData: { ticketNumber },
+        requiresConfirmation: true,
       });
     }
 
     // Detect knowledge base search intent
     if (lowerMessage.includes('how') || lowerMessage.includes('what') || lowerMessage.includes('search')) {
       return NextResponse.json({
-        message: 'Knowledge Base search is coming soon. For now, I can help you create an IT request or perform self-service actions.',
+        message: 'I can search the Knowledge Base for that. Do you want me to run a search?',
         actionType: 'kb_search',
-        actionData: { placeholder: true },
+        actionData: { query: message },
+        requiresConfirmation: true,
       });
     }
 
@@ -93,7 +98,8 @@ When a user describes an IT request, extract:
 - impact: one of "blocker", "high", "medium", "low"
 - reason: brief reason for the request
 
-Respond naturally and conversationally. If information is missing, ask one clarifying question at a time.`;
+Respond naturally and conversationally. If information is missing, ask one clarifying question at a time.
+Return a JSON object with keys: response, request_type, system, impact, reason.`;
 
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
@@ -120,12 +126,13 @@ Respond naturally and conversationally. If information is missing, ask one clari
         system: parsed.system,
         impact: parsed.impact,
         reason: parsed.reason,
+        details: message,
       };
 
       // Determine if we have enough info or need more
       const hasEnoughInfo = extractedData.requestType && extractedData.system && extractedData.reason;
       
-      let responseMessage = parsed.message || parsed.response || 'I understand.';
+      let responseMessage = parsed.response || parsed.message || 'I understand.';
       
       if (!hasEnoughInfo) {
         // Ask clarifying questions
@@ -151,6 +158,7 @@ Would you like me to submit this request?`;
         message: responseMessage,
         actionType: hasEnoughInfo ? 'create_request' : null,
         extractedData: hasEnoughInfo ? extractedData : undefined,
+        actionData: hasEnoughInfo ? extractedData : undefined,
         requiresConfirmation: hasEnoughInfo,
       });
     } catch (parseError) {

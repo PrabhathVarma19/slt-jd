@@ -1,0 +1,255 @@
+# Secure SDLC Policy
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. PURPOSE
+2. OBJECTIVE
+3. SCOPE
+4. POLICY STATEMENTS
+   - 4.1 Requirement Phase
+   - 4.2 Design Phase
+   - 4.3 Development Phase
+   - 4.4 Validation Phase
+   - 4.5 Release and Response
+   - 4.6 Maintenance Phase
+   - 4.7 Decommission Phase
+5. ROLES AND RESPONSIBILITIES
+6. PREREQUISITES
+   - 6.1 Training
+   - 6.2 Reference Policy, Process, Procedure, Templates, Checklist
+7. STANDARDS ADDRESSED
+8. ISO CONTROL/CLAUSE MAPPING
+9. EXCEPTIONS(S)
+
+## 1. Purpose
+The purpose of this policy is to establish a process to define security requirements for the Software Development Life Cycle (SDLC) for all projects and products across Trianz.
+
+## 2. Objective
+The objective of the Secure SDLC Policy is to:
+- Facilitate efficient implementation of security controls throughout the Development Life Cycle for Trianz managed applications.
+
+## 3. Scope
+The successful implementation of the Secure SDLC Policy requires a consistent and systematic approach to Secure SDLC across Trianz’s projects and products. The scope of the policy is as follows:
+- Secure SDLC shall be applicable to all Implementation, Support, and Testing projects under the applicable Cloud, Analytics, Digitization, Infrastructure Practices, and Trianz products and services.
+- This policy applies to all existing and new software developed by Trianz Delivery Teams for internal, external, or Client Managed Systems.
+
+## 4. Policy Statements
+- Information Security & Data Privacy will be applicable at all stages of the Software Development Life Cycle (i.e., Requirements, Design, Coding, Validation, Release and Response, Maintenance, and Decommission).
+- This policy aims to be language and platform independent, applicable across all software.
+- During all phases of the SDLC where a system is not in production, the following conditions must be met:
+  - The system must not have live data sets that contain information identifying actual people or corporate entities.
+  - The system must not contain actual financial data such as account numbers, security codes, or routing information.
+  - Sensitive information must never be used outside of production environments.
+- Ensure Security Metrics applicability for performance improvement at each stage.
+
+### 4.1 Requirement Phase:
+- Ensure conformance with all appropriate security, privacy, and compliance requirements using techniques such as Security Risk Analysis, Threat Modeling, and Use Cases/Abuse Cases.
+- Adhere strictly to the CIA triad and authentication, authorization, and accountability policies.
+- All development community members must undergo Secure SDLC training (Online or Classroom).
+- Applications handling, processing, or storing critical, personal, or sensitive data must follow applicable Data Privacy Guidelines.
+- Use organization-specific expectations and approved principles for secure coding for both in-house and outsourced code developments.
+
+### 4.2 Design Phase:
+- Conduct Threat Modeling to identify potential vulnerabilities, high-risk interfaces, and countermeasures.
+- Plan to meet security and privacy requirements and goals.
+- Design Test Scenarios based on Cases/Abuse Cases.
+- Protect sensitive information throughout its life cycle.
+- Include Security Architecture Design Principles by following Guidelines on Secure System Engineering Principles (e.g., web, applications, user interfaces, programmatic interfaces, file import/export, reports, and databases).
+- Limit access to source code and other critical system resources during development, testing, or production to authorized personnel as per Access Control Policy.
+- Conduct periodic Secure Architecture Reviews as per Design Principles by following Guidelines on Secure System Engineering Principles.
+
+### 4.3 Development Phase:
+- Follow Secure Coding guidelines during coding.
+- Conduct Security Code Reviews for every code check-in/build.
+- Code reviews can be either manual or automated using technologies such as Static Application Security Testing (SAST) and Software Composition Analysis (SCA).
+
+### 4.4 Validation Phase:
+- Dynamic Application Security Testing (DAST), Static Application Security Testing (SAST), and Software Composition Analysis (SCA) shall be conducted for monitoring third-party libraries.
+- Penetration Testing and Vulnerability Testing, along with Compliance Checks, shall be performed during the Validation Phase.
+- Backend network security controls, including DMZ, Network Firewall, Web Application Firewall (WAF), and Intrusion Detection/Prevention Systems (IDS/IPS), must be implemented and reviewed.
+- Security findings must be remediated, ensuring no open critical, high, or medium vulnerabilities in SAST, DAST, and Vulnerability Assessment and Penetration Testing (VAPT).
+- Backup and restore mechanisms must be in place as part of Business Continuity Planning (BCP) and Disaster Recovery Planning (DRP).
+- Testing shall occur during and after development, with SAST processes identifying security vulnerabilities in software.
+
+### 4.5 Release and Response:
+- Secure deployment practices and separation of duties must be followed.
+- Application code must be reviewed and approved by the Project/Product/Application Architect prior to deployment.
+
+### 4.6 Maintenance Phase:
+- Change management must be included in the maintenance phase.
+- A Risk Assessment must be performed when the system is modified.
+- All significant changes in application code must be reviewed for vulnerabilities prior to deployment.
+- Regular maintenance and updates of software are required to address changes in technology, integrations, and emerging vulnerabilities.
+- Code reviews must be conducted whenever the code is modified or changed.
+- Periodic vulnerability assessments must be performed on production/Application Support systems, with appropriate measures taken to address identified vulnerabilities.
+- Source code must be protected against unauthorized access and tampering, utilizing configuration management tools for access control and version control.
+
+### 4.7 Decommission Phase:
+- Data must be securely removed when the system is retired, in accordance with the Data Retention Policy.
+
+### 5. Roles and Responsibilities:
+- **Internal Apps Team**: Conduct necessary scans and provide reports.
+- **Project Manager**: Define the strategy for appropriate security standards for all internal software applications handling sensitive information, monitor, establish, and enforce remediation timelines and sanctions for non-compliant systems.
+- **IS Operations**: Perform vulnerability scans on applications and provide reports.
+- **InfoSec Team**: Manage the end-to-end application security assessment, review and follow-up to remediate the Vulnerability Assessment scan and Code Review report, and track the closure report.
+- **CIO/CISO**: Review and approve the final assurance report.
+
+### 6. Prerequisites:
+#### 6.1 Training:
+- CSSLP Training is required.
+
+#### 6.2 Reference Policy, Process, Procedure, Templates, Checklist:
+- Secure SDLC Procedure
+- Access Control Policy
+- DevSecOps Procedure
+- Vulnerability Assessment and Penetration Testing Procedure
+- Information Security Assessment Checklist
+- Cloud Security Privacy Policy
+- Patch Management Policy
+- Incident Management Procedure
+- Risk and Opportunity Management Procedure
+
+### 7. Standards Addressed:
+- **ISO 27001:2022** - Information Security Management System (ISMS)
+- **ISO 27701:2019** - Privacy Information Management System (PIMS)
+
+### 8. ISO Control/Clause Mapping:
+- **Clause 8.27**: Secure System Architecture and Engineering Principles - Refer to Secure SDLC Policy.
+- **Clause 8.25**: Secure Development Life Cycle Control Rules - Refer to Secure SDLC Policy for secure development of software and systems.
+- **Clause 8.28**: Secure Coding.
+- **Clause 8.29**: Security Testing in Development and Acceptance.
+
+### 9. Exceptions:
+- Exceptions require a documented business justification and are subject to the approval of the CIO/CISO.
+- Requests for exceptions regarding medium and low-risk issues may only be made by an agency’s Information Security Officer (ISO) or the application’s business owner.
+
+### Document Control:
+- **Owner**: CISO
+- **Release ID**: SSDLC-POL-046
+- **For Trianz Process Improvement Group (TPIG) Purpose Only**
+
+### History
+
+#### Version History
+
+- **0.00** (16-Sept-11)  
+  Author: Srilakshmi  
+  Description: Initial Version  
+
+- **1.00** (23-Sept-11)  
+  Author: Srilakshmi  
+  Description: Request for Baseline; Baselined  
+
+- **2.00** (23-Jul-12)  
+  Author: Srilakshmi  
+  Description: Logo change and replaced revision with version; Modified logo and replaced revision with version  
+
+- **3.00** (12-Nov-14)  
+  Author: Srilakshmi  
+  Description: PCR raised by Deb; Added classification of the document as ‘Internal Use Only’ in the footer; Removed Information classification and Table of contents; Removed Release ID in the header; Modified logo  
+
+- **3.01** (28-Nov-17)  
+  Author: Sudharsana  
+  Reviewer: Vijaya  
+  Description: For QMS Upgrade against PCR 24; Updates in Revision History (adding Reviewer and Approver columns); Adding Pilot Release Date and Effective Date in Document control Information  
+
+- **4.00** (28-Nov-17)  
+  Author: Sudharsana  
+  Reviewer: Vijaya  
+  Approver: Ganesh  
+  Description: For QMS Upgrade against PCR 24 and approval; Approved  
+
+- **5.00** (10-Dec-18)  
+  Author: Vijaya  
+  Reviewer: Balu  
+  Approver: Ganesh  
+  Description: Information classification updated; Approved and Baselined  
+
+- **6.00** (2-Nov-19)  
+  Author: Vijaya  
+  Reviewer: Information Security Team  
+  Approver: Vivek  
+  Description: Periodic Review & Update; Reviewed and Approved  
+
+- **6.01** (30-Dec-20)  
+  Author: Divya  
+  Reviewer: Vijaya  
+  Approver: Phani  
+  Description: Updated logo and information classification; Modified as per new document and updated new information classification  
+
+- **7.00** (30-Dec-20)  
+  Author: Divya  
+  Reviewer: Vijaya  
+  Approver: Phani  
+  Description: Periodic Review & Update; Approved and Baselined  
+
+- **7.1** (3-Jan-2022)  
+  Author: Divya  
+  Reviewer: Vijaya  
+  Description: For Review; Modified as per the new template  
+
+- **8.00** (13-Jan-2022)  
+  Author: Divya  
+  Reviewer: Siva N  
+  Approver: Siva N  
+  Description: For Approval; Approved and Baselined  
+
+- **8.1** (14-Mar-22)  
+  Author: Sanjana  
+  Reviewer: Divya  
+  Approver: Siva N  
+  Description: For Review; The scope has been extended to products and services  
+
+- **9.0** (18-Mar-2022)  
+  Author: Sanjana  
+  Reviewer: Divya  
+  Approver: Siva N  
+  Description: For Approval; Approved and baselined  
+
+- **9.1** (10-Mar-2023)  
+  Author: Beniyel S, Pallavi Chakrabarty  
+  Reviewer: Balu N  
+
+- **10.0** (12-May-2023)  
+  Author: Beniyel S  
+  Reviewer: Balu N  
+
+- **10.1** (23-Jan-2024)  
+  Author: Rakesh Vijendra  
+  Reviewer: Srikanth M  
+  Description: New template change; For Approval; Approved and Baselined  
+
+- **11.0** (23-Feb-24)  
+  Author: Vijaya  
+  Reviewer: Vijaya and Bala  
+  Approver: Srikanth  
+  Description: For Approval; Approved and Baselined  
+
+- **11.1** (6-May-25)  
+  Author: Balu Nair  
+  Reviewer: Vijaya  
+  Description: Yearly Review; Migrated to a new Template  
+
+- **12.0** (14-May-25)  
+  Author: Balu Nair  
+  Reviewer: Vijaya  
+  Approver: Srikanth M  
+  Description: For Approval; Approved and Baselined  
+
+### Contact Information
+
+- **Name:** [Not specified]  
+- **Email:** infosec@trianz.com  
+- **Phone:** [Not specified]  
+
+### Copyright Notice
+
+The content in this document is copyrighted; any unauthorized use – in part or full – may violate copyright, trademark, and other laws. This document may not be modified, reproduced, publicly displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz name and its products are subject to trademark and copyright protections, regardless of how and where referenced.

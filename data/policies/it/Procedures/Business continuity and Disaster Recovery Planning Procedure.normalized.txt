@@ -1,0 +1,260 @@
+# Business Continuity and Disaster Recovery Planning Procedure
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. PURPOSE
+2. OBJECTIVE(S)
+3. SCOPE
+4. ENTRY CRITERIA AND INPUTS
+5. ROLES & RESPONSIBILITIES
+6. BUSINESS CONTINUITY AND PLAN PROCEDURE
+   - 6.1 Identifying and Prioritizing Critical Functions, Systems and Processes
+   - 6.2 Identifying Critical Resources
+   - 6.3 Business Continuity Planning
+7. PLANNING INFORMATION SECURITY CONTINUITY
+8. EXIT CRITERIA AND OUTPUT
+9. PREREQUISITES
+   - 9.1 Resource
+   - 9.2 Training
+   - 9.3 Reference Policy, Process, Procedure, Templates, Checklist
+   - 9.4 Related Guidelines, Templates, and Checklists
+10. MEASUREMENT
+11. ISO CONTROL MAPPING(S)
+
+## 1. Purpose
+The purpose of this document is to describe the Business Continuity and Disaster Recovery Procedure and define the activities for each phase.
+
+## 2. Objective(s)
+- Business continuity planning aims to minimize interruptions to the business’s ability to provide its products and/or services, minimize financial loss, and ensure the resumption of critical operations within a specified time after a disaster.
+- Disaster recovery planning aims to protect the organization in the event that all or part of its ICT operations and/or computer services are rendered unusable.
+
+## 3. Scope
+This policy applies to all critical Client engagements, Trianz managed products and services, and functions executed from all Trianz locations, covering all support functions related to people, process, and technology.
+
+## 4. Entry Criteria and Inputs
+- Top Management Support
+- Business Impact Analysis and Risk Assessment
+- Organization Goals and Objectives
+- Critical Business Applications / Trianz Products
+- New Disasters, including Pandemic
+
+## 5. Roles & Responsibilities
+- **Trianz Business Resilience Group (BRG)**: 
+  - Responsible for making decisions and providing directional input and guidance to the Crisis Management Team (CMT) during emergencies or crises. The BRG collectively decides to invoke a Business Continuity Plan (BCP).
+  
+- **Trianz Crisis Management Team (CMT)**: 
+  - Responsible for managing crises, issues, additional risks, exposures, and stakeholder interests in response to an event or disaster.
+  
+- **Trianz Engagement/Account Recovery Team (ART)**: 
+  - Responsible for supporting business continuity efforts.
+
+### 6. Business Continuity and Plan Procedure
+
+#### 6.1 Identifying and Prioritizing Critical Functions, Systems and Processes
+- The business continuity representative from the InfoSec team is responsible for identifying and prioritizing Trianz's critical processes and applications, with assistance from delivery and corporate functions.
+- The InfoSec BCM Representative assesses the impacts of losing information and services from both internal and external sources.
+
+#### 6.2 Identifying Critical Resources
+- The InfoSec BCM representative identifies resources critical to the information systems that support the functions, systems, and processes identified in the previous section.
+- Critical resources must include everything necessary to support the critical function, system, or process. Examples of critical resources include:
+  - Servers, workstations, and peripherals
+  - Applications and data
+  - Media and output
+  - Telecommunications connections
+  - Physical infrastructure (e.g., electrical power, environmental controls)
+  - Personnel
+
+#### 6.3 Business Continuity Planning
+- Business continuity planning involves maintaining business functions or quickly resuming them in the event of a major disruption.
+- A business continuity plan outlines the procedures and instructions the organization must follow during disasters.
+- For each critical process/system/ICT function, the following values are assigned:
+  - Recovery Point Objective (RPO) for applications and products
+  - Recovery Time Objective (RTO) for business processes, products, and applications
+- The InfoSec BCM Representative prepares the Business Continuity Plan, which includes:
+  - Business Continuity Strategies to reduce the impact of business disruptions
+  - Business Requirements based on Disaster Classification
+  - Key resources and contact details
+  - An escalation plan listing contacts to be notified during a potential emergency or disaster
+  - An organization chart for test planning, which includes:
+    - **Level 1**: Invocation of the Business Continuity Process for the Primary Facility from within its premises
+    - **Level 2**: Invocation of the Business Continuity Process for the Primary Facility from a different city in the same country
+
+- The Business Recovery Group (BRG) along with the Crisis Management Team (CMT) activates the Disaster Recovery Procedure.
+- The InfoSec BCM Representative identifies an alternate site to continue operations in case of failure to resume work.
+- The InfoSec BCM Representative ensures that business activities return to normal operations.
+- The InfoSec BCM Representative conducts call tree, tabletop, and simulation tests for key critical projects as per contractual agreements.
+- Call tree tests are conducted bi-annually, while tabletop simulation tests are conducted annually, depending on client requirements.
+
+**7. Planning Information Security Continuity**
+
+- Trianz maintains a single framework of business continuity plans to ensure consistency in addressing information security requirements and identifying testing maintenance priorities.
+- Each plan must have a specific owner responsible for emergency procedures, manual fallback plans, and resumption plans related to the appropriate business resources and processes.
+
+The business continuity planning framework must address the following information security requirements:
+
+a) **Activation Conditions**: Describe the process for activating the plans, including how to assess the situation and who is involved.
+
+b) **Emergency Procedures**: Outline the actions to be taken following an incident.
+
+c) **Temporary Operational Procedures**: Specify procedures to follow until recovery and restoration are complete.
+
+d) **Resumption Procedures**: Detail the actions required to return to normal business operations.
+
+e) **Critical Assets and Resources**: Identify the essential assets and resources needed to perform emergency, fallback, and resumption procedures.
+
+- Responsibilities for executing components of the plan must be clearly assigned to nominated individuals.
+
+**8. Exit Criteria and Output**
+- BCP Testing includes both planned and live BCP tests.
+
+**9. Prerequisites**
+
+9.1 **Resource**: Ensure availability of people, processes, and technology.
+
+9.2 **Training**: Conduct BCM awareness training.
+
+9.3 **Reference Policy, Process, Procedure, Templates, Checklist**: 
+   - Document Name: Business Continuity Policy
+
+9.4 **Related Guidelines, Templates, and Checklists**: 
+   - Document Name: Business continuity plan template
+
+**10. Measurement**
+- Measure the following:
+  - Number of successful business continuity tests versus total planned business continuity tests.
+  - Number of successful call tree tests versus total planned call tree tests.
+  - Number of successful tabletop simulation tests versus total planned tabletop simulation tests.
+
+**11. ISO Control Mapping(s)**
+
+- **Category of Control**: Organizational Controls
+  - **ISO 27001:2022 Control**: 5.30 ICT readiness for business continuity
+  - **Document Name**: Business Continuity Policy
+  - ICT readiness must be planned, implemented, maintained, and tested based on business continuity objectives and ICT continuity requirements.
+
+**Document Control**
+- **Owner**: CISO
+- **Release ID**: BCDR-PROC-0041
+
+**Version History**
+- Version 0.1: Initial draft by Chakravarthi on 09-Apr-10.
+- Version 1.0: Approved for baseline by Chakravarthi on 18-Apr-10.
+- Version 1.1: Document formatted during QMG Review by Balu Nair on 14-May-10.
+- Version 2.0: Approved for baseline by Balu Nair on 20-May-10.
+- Version 2.1: Modified release ID for consistency during QMG Review by Srilakshmi on 24-May-11.
+- Version 3.0: Approved for baseline by Srilakshmi on 24-May-11.
+- Version 3.1: QMG review by Sudharsana on 3-Aug-11.
+
+### 4.0 Document Changes
+
+- **4.1 Owner with Management Representative in place of CIO**  
+  - The "Retention period is 3 Years" row has been removed from the Document Classification Scheme.
+
+### 5.0 Audit Findings
+
+- **5.1 Request for Baseline**  
+  - Approved and Baselined on 3-Aug-11 by Sudharsana.
+
+- **5.2 Registrant Audit**  
+  - Added Frequency & Criteria of Review of Business Continuity Plans based on audit findings dated 24-26 October 2011.
+
+### 6.0 Self-Review
+
+- **6.1 Disaster Classification**  
+  - Moved disaster classification table to test planning in section 4.3.
+  
+- **6.2 ISO 27001 Controls**  
+  - Identified ISO 27001 Controls on 08-May-12 by Yuvaraj D.
+
+### 7.0 Standardization of Blue Book Process Assets
+
+- **7.1 Template Modification**  
+  - Modified the template format and changed the logo on 08-Nov-12 by Balu Nair.
+
+### 8.0 Customer Audit Findings
+
+- **8.1 Audit Findings Update**  
+  - Modified section 5.5.2 – Media Storage, referred to Backup and Restoration Procedure based on customer audit findings on 22-Jan-13 by Srilakshmi.
+
+### 9.0 Upgrading to ISO 27001:2013
+
+- **9.1 Information Security Planning**  
+  - Added sections 5.5, 5.6, 5.7, and 5.8, which include:
+    - Planning information security continuity.
+    - Implementing information security continuity.
+    - Verifying, reviewing, and evaluating information security continuity.
+    - Ensuring the availability of information processing facilities.
+  - Changes approved on 16-May-15 by Sudharsa.
+
+### 9.1 Document Adequacy Check
+
+- **9.2 Event Response and Analysis**  
+  - Added the event response and analysis to check document adequacy on the latest BCP structure on 25-Feb-19 by Karthik Joshy/Balunara.
+
+### 10.0 Baseline Approval
+
+- **10.1 Baseline Approval**  
+  - Approved for Baseline on 14-May-19 by Karthik Narasimh.
+
+### 11.0 Review Updates
+- **11.1**: On 22-Oct-19, Karthik Phani reviewed and updated the frequency of BCP testing based on Narasimh's input.
+- **11.2**: Changes were updated post-review from Phani.
+
+### 12.0 Baselined Release
+- **12.1**: On 20-Dec-19, Balu Nair approved the release to the Blue Book.
+- **12.2**: On 11-May-20, Karthik N reviewed SLT communication, modifying section 11.0.
+
+### 13.0 Approval Process
+- **13.1**: On 14-May-20, Karthik N submitted for approval; it was approved and baselined.
+- **13.2**: On 13-Jan-21, Karthik N updated the BCP section and the information classification for review.
+
+### 14.0 Further Approvals
+- **14.1**: On 13-Jan-21, Karthik N submitted for approval; it was approved and baselined.
+- **14.2**: On 2-June-21, Karthik N submitted for review; modifications were made as per the review process.
+- **14.3**: On 11-June-21, Karthik N submitted for review; changes were incorporated based on Phani’s feedback.
+
+### 15.0 Approval and Review
+- **15.1**: On 11-June-21, Karthik N submitted for approval; it was approved and baselined.
+- **15.2**: On 30-July-21, Karthik N submitted for review; changes were incorporated based on Phani’s feedback.
+
+### 16.0 Final Approvals
+- **16.1**: On 30-July-21, Karthik N submitted for approval; it was approved and baselined.
+- **16.2**: On 23-Dec-21, Divya G submitted for review; section 5 – Roles and Responsibilities was modified.
+
+### 17.0 Scope Extension
+- **17.1**: On 13-Jan-22, Divya G submitted for approval; it was approved and baselined.
+- **17.2**: On 14-Mar-22, Kruti submitted for review; the scope has been extended to products and services.
+
+### 18.0 Final Approval
+- **18.1**: On 17-Mar-22, Kruti submitted for approval; it was approved and baselined.
+- **18.2**: On 01-Mar-23, Krutideepta and Asha submitted for review; frequency of call tree and tabletop simulation tests was discussed.
+
+### 19.0 Document Updates
+- On May 8, 2023, Krutideept Karthik N and Srikanth M submitted a document for approval, which was approved and baselined.
+
+### 19.1 Document Review
+- On February 15, 2024, Kruti, Beniyel S, and Vijaya R submitted a document for review. The objective was updated to align with the ISO 27001:2022 Standard, and ISO mappings have been added.
+
+### 20.0 Document Approval
+- On February 23, 2024, Kruti, Beniyel S, and Vijaya R submitted a document for approval, which was approved and baselined.
+
+### 20.1 Annual Review
+- On April 30, 2025, Kruti and Vijaya R submitted a document for annual review. The document was migrated to a new template and is subject to yearly review.
+
+### 21.0 Document Approval
+- On May 29, 2025, Kruti and Vijaya R submitted a document for approval, which was approved and baselined.
+
+### Contact Information
+- For inquiries, please contact:
+  - **Email:** infosec@trianz.com
+
+### Copyright Notice
+- The content in this document is copyrighted. Unauthorized use, modification, reproduction, or distribution may violate copyright, trademark, and other laws. The Trianz name and its products are protected by trademark and copyright laws.

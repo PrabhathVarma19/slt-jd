@@ -1,0 +1,384 @@
+# Tools Evaluation Procedure
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. INTRODUCTION
+   - 1.1 Objective(s)
+   - 1.2 Definitions/Acronyms/Abbreviations
+   - 1.3 Roles and Responsibilities
+   - 1.4 Prerequisites
+     - 1.4.1 Resource
+     - 1.4.2 Training
+   - 1.5 References
+2. PROCESS FLOW
+3. ENTRY CRITERIA
+4. INPUTS
+5. PROCESS DESCRIPTION
+   - 5.1 Overview
+   - 5.2 Evaluation Requirement of a Tool in a Project
+   - 5.3 Evaluation Requirement of a Tool in the Organization
+   - 5.4 Tool Evaluation
+   - 5.5 Publication of ATL
+   - 5.6 Feedback and Effectiveness of Tool Usage
+6. OUTPUTS
+7. EXIT CRITERIA
+8. RELATED GUIDELINES, TEMPLATES AND CHECKLISTS
+9. MEASUREMENT
+10. STANDARDS ADDRESSED
+11. ISO CONTROL MAPPING
+APPENDIX A – GENERAL EVALUATION CRITERIA
+
+## 1. Introduction
+All tools proposed for use in projects or the organization are evaluated for applicability. The Tools Review Committee (TRC) coordinates the evaluation of tools upon request and recommends specific tools for use.
+
+### 1.1 Objective(s)
+- Maintain an 'Approved Tools List' (ATL) of all tools used in the organization.
+- Evaluate tools before use in projects or the organization to ensure suitability and applicability.
+- Verify for any malicious code in the tool scope.
+- The process applies to project-specific tools, product-specific tools used for engineering, engineering support, project management activities, and tools used at the organization level.
+- The procedure applies to all stakeholders working for Trianz products and services.
+
+### 1.2 Definitions/Acronyms/Abbreviations
+- **TRC**: Tools Review Committee (Consists of IT Managers and CIO/CISO)
+- **ATL**: Approved Tools List
+- **PM**: Project Manager
+- **Tools**: Commercial or open-source products, including DLLs, system libraries, APIs, etc.
+- **ISDPA**: InfoSec and Data Privacy Assurance
+- **PMP**: Project Management Plan
+- **COTS**: Commercial – Off The Shelf
+- **CIO**: Chief Information Officer
+- **Tool Evaluation Team**: A group of people involved in the evaluation of a tool (the evaluation team may vary from one tool evaluation to another)
+- **CISO**: Chief Information Security Officer
+
+### 1.3 Roles and Responsibilities
+- **CIO**: Provide necessary approvals by consensus (Internal)
+- **TRC**: Coordinate evaluation of tools based on requests raised (Internal)
+
+### 1. Updating & Maintenance of Approved Tools List (ATL)
+
+**5. Responsibilities:**
+
+- **Manager:**
+  - Continuously monitor upgrades to the approved tools list.
+  - Propose upgraded tools for use in the organization.
+
+- **Requestor:**
+  - Raise a request for tools evaluation.
+  - Provide inputs required for evaluation.
+  - Provide feedback based on tools usage.
+
+- **Tool Evaluation Team:**
+  - Evaluate tools based on identified criteria.
+  - Provide recommendations for use based on evaluation.
+
+- **InfoSec and Compliance:**
+  - Publish the Approved Tools List in Pulse/Blue Book.
+
+- **IS Operations:**
+  - Maintain the Approved Tools List and keep it updated.
+  - Provide at least one resource from IT for tool evaluation.
+  - Participate in the periodical review of the ATL.
+  - Maintain the tools repository.
+
+### 1.4 Prerequisites
+
+**1.4.1 Resource:**
+- Members must have the ability to use and evaluate a tool.
+- An evaluation copy of the tool is required.
+- Documentation or a write-up on the tool is necessary.
+
+**1.4.2 Training:**
+- Training is required for team members to evaluate tools.
+
+### 1.5 References
+
+- Project Initiation Process
+- Project Planning Process
+- Project Tracking Process
+
+### 2. Process Flow: Tools Evaluation Process
+
+1. **Requestor identifies tools required for project/organization requirement.**
+2. **Check if the tool is available in the Approved Tools List (ATL):**
+   - If **Yes**, check if the version number of the tool in ATL is the same as required for the project.
+     - If **Yes**, use the tool in the project/organization.
+     - If **No**, send an email request to tools.evaluation@trianz.com.
+   - If **No**, identify team members for evaluation.
+3. **Provide inputs and criteria to the evaluation team.**
+4. **Arrive at a method for evaluation.**
+5. **Conduct evaluation.**
+6. **If multiple tools with similar capabilities are identified:**
+   - Provide a comparative analysis of the tools.
+
+# Tools Evaluation Process
+
+## 1. Reporting
+- The requestor must report to the Tools Review Committee (TRC) Coordinator.
+
+## 2. Tools Review Committee
+- The committee consists of the Requestor, IT, and QMG (Quality Management Group).
+
+## 3. Actions
+- **Include the tool in the approved tool repository.**
+- **Publish the Approved Tools List (ATL) in Trinet.**
+- **Update the tool evaluation report in the ATL and send it to QMG for publishing.**
+- **Collect feedback on tool usage in the project and update the ‘Feedback from Users’ column in the ATL.**
+- **Review the ATL periodically.**
+- **Update and maintain the ATL.**
+- **Share the updated ATL with QMG.**
+
+## 4. Entry Criteria
+- A tool must be identified for use in a project, either at initiation or during project execution.
+- A tool must be identified for use in the organization.
+
+## 5. Inputs
+- Request for evaluation.
+- Project Initiation Form.
+- Project Plan.
+- Approved Tools List.
+
+## 6. Process Description
+
+### 6.1 Overview
+- An Approved Tools List (ATL) is published in Pulse/Blue Book, listing all tools identified, evaluated, and approved for various activities under different circumstances.
+- Upon identifying the need for a tool, the requestor must send an email request to tools.evaluation@trianz.com with the required details for evaluation.
+
+### 6.2 Evaluation Requirement of a Tool in a Project
+- The Project Manager (PM) identifies tools during the planning stage.
+- The PM checks the ATL to see if the tool is already included.
+- If the PM identifies a different tool with similar capabilities, they must request a comparative evaluation.
+- If the tool is not in the ATL, the PM must request an evaluation for its use in the project.
+- If there is an upgrade (change in version number) to a tool in the ATL, the PM must request an evaluation for its suitability.
+- Tools available in the ATL will be adopted as is.
+- The PM raises an email request to the Tools Review Committee for evaluation, providing necessary project details.
+
+### 6.3 Evaluation Requirement of a Tool in the Organization
+- The requestor must check the ATL to see if the tool is already included.
+- If the requestor identifies a different tool with similar capabilities, they must request a comparative evaluation.
+
+### 5.4 Tool Evaluation
+
+- Upon receiving an email request for tool evaluation, the Tools Review Committee (TRC) Coordinator will identify members within the organization who have the necessary capabilities to evaluate the tool. At least one representative from IS Operations must be included in the evaluation team.
+- The Requestor and TRC Coordinator (IT Manager) will provide the necessary inputs for the evaluation to the identified team members.
+- The tool evaluation team will determine the evaluation method. The Requestor may assist in identifying the evaluation method if needed.
+- The methods of evaluation may include:
+  - Modeling and simulation
+  - Engineering studies
+  - Cost studies
+  - Business opportunity studies
+  - Surveys
+  - Extrapolations based on prototypes
+  - User review and comment
+  - Testing
+  - Expert judgment (e.g., Delphi Method)
+  - Pugh Matrix and weighted average
+  - **Note:** Refer to DAR guidelines for Pugh Matrix and Weighted Average Methods.
+- The IT Representative will conduct a security check for malicious code in the tools, which includes viruses, worms, Trojan Horses, and attack scripts.
+- The Requestor will prepare the tool evaluation report. The IT team will perform the security check using security tools and share the system-generated results along with the tool evaluation report with the TRC.
+- Upon completion of the evaluation, the tool evaluation team will submit the evaluation report to the TRC Coordinator (IT Manager).
+- If major upgrades to the tool are released, the TRC will conduct a re-evaluation upon request to assess the suitability of the upgraded tool for the project/organization. The report will be shared with the Requestor and the InfoSec and Data Privacy Assurance Team (ISDPA).
+- The approval authority for any tool is the Chief Information Security Officer (CISO).
+- **Note:** Refer to Appendix A for General Criteria for Evaluation of a Tool.
+
+### 5.5 Publication of ATL
+
+- The TRC Coordinator (IT Manager) will provide the updated Approved Tool List (ATL) to the Assurance Team.
+- **Note:** Refer to the Approved Tools List Template.
+- The InfoSec and Data Privacy Assurance Team (ISDPA) will publish the ATL to all employees through Pulse/Blue Book.
+
+### 5.6 Feedback and Effectiveness of Tool Usage
+
+- After the completion of a project, the TRC Coordinator (IT Manager) will collect feedback on tool usage and update the ‘Feedback from Users’ column in the ATL.
+- The TRC will plan a review of the ATL, and the TRC Coordinator (IT Manager) will update the ATL based on this review and send the updated ATL to the InfoSec and Data Privacy Assurance Team (ISDPA) for publication in Pulse/Blue Book.
+
+### 6 Outputs
+
+- Tools Evaluation Report
+- Updated Approved Tool List
+
+### 7 Exit Criteria
+
+- Publication of the updated ATL
+
+### 8 Related Guidelines, Templates and Checklists
+
+- Tools Evaluation Report Template
+- Approved Tools List Template
+
+### 9 Measurement
+
+- None
+
+### 10 Standards Addressed
+
+- **ISO 9001**
+  - Clause 7.6: Control of monitoring and measuring devices
+
+- **CMMI**
+  - Process Area: Decision Analysis and Resolution
+    - Practice SG 1: Evaluate Alternatives
+
+### 11 ISO Control Mapping
+
+- Category of Control: ISO 27001:2022 Control
+- Document Name as per Control Mapping: [Details not provided]
+
+### 8.18 Use of Privileged Utility Programs - Tool Evaluation Procedure
+
+#### Appendix A – General Evaluation Criteria
+The following criteria will be used to evaluate tools:
+
+- **Cost**: Assess the financial implications of the tool.
+- **Functionality or Feature Coverage**: Evaluate how well the tool meets the specified requirements.
+- **Vendor Support/Training/Maintenance/Upgrade**: Consider the level of support and training provided by the vendor, as well as maintenance and upgrade options.
+- **Deployment History/References**: Review the tool's history of deployment and references from other users.
+- **Multi-Language Support**: Check if the tool supports multiple languages.
+- **Deployment Constraints**: Identify any constraints related to the deployment of the tool.
+- **Inclusion Constraints**: Assess any royalty or licensing requirements for included products.
+- **Usability**: Evaluate the ease of use of the tool.
+- **Vulnerability Assessment**: Conduct a vulnerability assessment, which will be performed by the IT team.
+
+### Document Control
+- **Owner**: CISO
+- **Release ID**: TEP-PROC-0018
+
+#### Version History
+- **0.00** (10-Jan-06): Draft by Anandi, no changes.
+- **0.01** (11-Jan-06): Self-review by Anandi, addition of RID.
+- **0.02** (11-Jan-06): Review comments incorporated by Anil.
+- **0.03** (12-Jan-06): Changes based on review comments by Vandana and Somenath.
+- **0.04** (02-Feb-06): Scope change to remove business strategy tools evaluation; changes in Appendix – Evaluation criteria; addition of tailoring guidelines.
+- **1.00** (03-Feb-06): Approved for release by Anandi, baseline established.
+- **1.01** (03-Jun-09): Reconstitution of Tools Review Committee by Manohar.
+- **1.02** (09-Jun-09): Incorporation of review comments; inclusion of a point on “Urgent Evaluation” in section 5.3 by Manohar.
+- **2.00** (16-Jun-09): Approval for baseline by Balu Nair.
+- **2.01** (10-May-10): Changes as per Tools evaluation committee meeting feedback; process owner changed to CIO; modifications in section 1.4 Roles and Responsibilities; section 5.3 Tools Evaluation updated.
+
+### 4.0 Approved for Baselined
+- Approval Date: May 10, 2015
+
+### 4.1 Approval Status
+- Approval Date: February 15, 2024
+- Approved by: Shalini, Vijaya, Srikanth
+
+### 3.01 QMG Review
+- Approval Date: March 15, 2011
+- Clarity is provided related to:
+  - Tools review committee
+  - Tools review committee coordinator
+  - Tools evaluation team
+- Roles and responsibilities are clearly defined for all stakeholders.
+
+### Document Modifications
+- Modified process flowchart as per the process.
+- Addressed inconsistencies in sections 5.2, 5.3, and 5.4.
+- Included evaluation methods.
+- Formatted the document and included a new format of the document classification scheme.
+
+### 4.00 Request for Approval
+- Approval Date: March 17, 2011
+- Status: Baselined
+
+### 4.01 QMG Review
+- Approval Date: August 3, 2011
+- Change: Replace "Owner" with "Management Representative" in place of CIO.
+- Change: In Document Classification Scheme, the "Retention period is 3 Years" row is removed.
+
+### 5.00 Request for Baseline
+- Approval Date: August 3, 2011
+- Status: Approved and Baselined
+
+### 6.00 PCR Raised
+- Approval Date: July 5, 2012
+- Change: In section 5.4, tool approval authority is modified from CIO to CISO.
+- Change: Modified template format of this procedure.
+
+### 7.00 Documentation Standard
+- On November 8, 2012, Balu Nair modified the Blue Book Process Assets template format.
+- The logo was changed.
+
+### 8.00 IA Cycle 03 Findings
+- On November 27, 2012, Yuvaraj modified section 5.4 to provide clarity on the preparation of tools.
+- The evaluation report will be done by the requestor and will not be shared with QMG.
+- A flow chart was modified.
+
+### 8.01 Information Classification
+- On April 29, 2019, Balu Nair modified the information classification.
+- The Trianz logo was modified.
+
+### 9.0 Release Approval
+- On May 14, 2019, Balu Nair and Ganesh Arunachal approved the release.
+
+### 9.1 CISO Role Addition
+- On May 12, 2020, Balu Nair and Phani Krishna added the CISO role for review.
+- The document was migrated to the new template.
+
+### 10.0 Approval and Baselining
+- On May 15, 2020, Balu Nair and Phani Krishna approved and baselined the document.
+
+### 10.1 Information Classification Update
+- On May 3, 2021, Divya Vijaya and Phani Krishna updated the document with new information classification for review.
+
+### 11.0 Approval and Baselining
+- On May 3, 2021, Divya Vijaya and Phani Krishna approved and baselined the document.
+
+### 10.1 Document Renaming
+- On January 4, 2022, Divya Vijaya submitted the document for review, which was renamed.
+
+### 11.0 Review and Approval
+- On January 13, 2022, Divya Siva N and Siva N reviewed, approved, and baselined the document.
+
+### 12.1 Scope Extension
+- On March 16, 2022, Kruti Karthik N submitted the document for review, extending the scope to products and services.
+
+### 13.0 Approval and Baselining
+- On March 20, 2022, Kruti Siva N and Siva N approved and baselined the document.
+
+### 13.1 Yearly Review Changes
+- On February 16, 2023, Balu Nair and Asha Veeramall changed “Trinet” to “Pulse/Blue Book” as part of the yearly review.
+
+### 14.0 Yearly Review
+- **Date:** 09-Mar-23
+- **Reviewed by:** Balu Nair, Srikanth Mantena
+- **Status:** Approved and Baselined
+- **Notes:** QMG is replaced with ISDPA; formatted in a few places; new template change.
+
+### 14.1 Review of ISO Controls
+- **Date:** 11-Feb-24
+- **Reviewed by:** Shalini, Vijaya
+- **Status:** For Review
+- **Notes:** Mapped with new ISO 27k 2022 controls.
+
+### 15.0 Yearly Review
+- **Date:** 23-Feb-24
+- **Reviewed by:** Shalini, Vijaya, Srikanth Mantena
+- **Status:** Approved and Baselined
+
+### 15.1 Template Migration
+- **Date:** 28-May-25
+- **Reviewed by:** Vijaya, Balu
+- **Status:** For Yearly Review
+- **Notes:** Migrated to a new template.
+
+### 16.0 Approval
+- **Date:** 29-May-25
+- **Reviewed by:** Vijaya, Balu, Srikanth M
+- **Status:** Approved and Baselined
+
+### Contact Information
+- **Name:** [To be filled]
+- **Email:** [To be filled]
+- **Phone:** [To be filled]
+
+### Thank You
+- **Contact Email:** infosec@trianz.com
+
+**Copyright Notice:** The content in this document is copyrighted; any unauthorized use – in part or full – may violate copyright, trademark, and other laws. This document may not be modified, reproduced, publicly displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz name and its products are subject to trademark and copyright protections, regardless of how and where referenced.

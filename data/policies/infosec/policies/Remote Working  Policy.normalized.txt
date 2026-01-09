@@ -1,0 +1,133 @@
+# REMOTE WORKING POLICY
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. PURPOSE
+2. SCOPE
+3. POLICY STATEMENTS
+   3.1 Applicability
+   3.2 Management Requirements
+   3.3 IT Administrator Requirements
+      3.3.1 General Requirements
+      3.3.2 Technical Requirements
+      3.3.3 User Requirements
+4. EXCEPTIONS(S)
+5. ISO CONTROL MAPPING
+
+## 1. Purpose
+The purpose of this policy is to ensure that remote working is undertaken safely from an information security perspective. Information security risks related to each specific remote working scheme must be identified, assessed, and managed.
+
+## 2. Scope
+- This policy applies to Trianz employees authorized for remote working who have remote access to Trianz IT infrastructure and information systems where applicable.
+- It also applies to Trianz IT infrastructure and information systems that permit remote access for business purposes.
+
+## 3. Policy Statements
+
+### 3.1 Applicability
+This standard applies to remote access users who access Trianz IT infrastructure and information assets through public networks. It is also applicable to security, system, and network engineers and administrators, as well as computer security program managers responsible for the technical aspects of preparing, operating, and securing remote access solutions and client networks.
+
+### 3.2 Management Requirements
+Before reporting managers and/or supervisors authorize remote working arrangements, they must:
+- Identify the type of work to be performed through the remote working arrangement.
+- Only authorize remote working user access to resources necessary for safe and secure remote working. Managers should consider if less access and connectivity can meet the needs of the remote working arrangement.
+- Understand that work performed during an on-demand/emergency situation may not require the same access or connectivity as at the Trianz office. In many cases, VOIP, MS-Lync, telephone, and email access through a secure connection may suffice.
+
+### 3.3 IT Administrator Requirements
+Before connections are made, Trianz IT Administrators must ensure the following requirements are met:
+
+#### 3.3.1 General Requirements
+- All remote working arrangements must be approved by the IT Manager.
+- Remote working users must be provided with a Trianz-owned laptop with a system image and an internet data card to establish secure connectivity to Trianz IT infrastructure as needed for business purposes.
+
+#### 3.3.2 Technical Requirements
+- **Standard Build Requirements**: Laptops issued under telecommuting arrangements must be supported by IT personnel and comply with standards such as:
+  - Security patches
+  - Anti-virus
+  - Removal of administrative rights
+  - Authentication
+  - Auditing
+  - Disabling unnecessary services
+  - Password complexity
+  - User privileges
+  - Local security policies
+- **Security Update Requirements**: All systems used for remote connectivity must be kept up to date with the latest security patches for the operating system and applications (e.g., Anti-virus software, Microsoft Office, Google Chrome, Microsoft Edge).
+- **Anti-Virus Requirements**:
+  - All systems used for remote connection must have Windows Defender anti-virus software installed and properly configured with the latest updates.
+  - The anti-virus software must be configured to scan files in real-time.
+  - The anti-virus software must be configured to scan the entire system.
+  - The anti-virus software must alert upon the discovery of a virus.
+- **Network Security Requirements**:
+  - All systems used for remote connection must be protected with a Trianz FortiGate UTM firewall or web gateway proxy server.
+  - The firewall/proxy server must block all unsolicited inbound connections.
+- **Authentication/Authorization Requirements**:
+  - All systems used for remote connection must require users to log in before use.
+  - Administrative rights must be restricted.
+
+#### 3.3.3 User Requirements
+- General security requirements for remote working users must be established and followed.
+
+### 3.3 Remote Working Security Requirements
+
+- **Internet Connection**: Remote users must connect to the internet and utilize the Trianz SSL VPN to connect with Trianz IT as needed.
+
+- **Authentication Requirements**: 
+  - Passwords for all user accounts must meet the minimum complexity requirements as defined in the Trianz Password Security Policy.
+
+- **Attack Prevention**: 
+  - Remote working users must ensure the following software and features are installed and operational on their information assets to prevent attacks:
+    - Antivirus software
+    - Antispyware software
+    - Personal firewalls that deny all types of communications not specifically approved by the user.
+
+### 3.4 Security Maintenance and Monitoring
+
+Remote working users are required to maintain the security of their information assets on an ongoing basis by:
+- Periodically confirming that the operating system and primary applications are up-to-date.
+- Checking the status of security software to ensure it is enabled, configured properly, and up-to-date.
+- Periodically checking for potential security issues on the information asset by running utilities that check for potential problems.
+- Investigating any unusual behavior of the information asset using the Security Event Viewer.
+
+### 4. Exceptions
+
+- There are no exceptions to this policy.
+
+### 5. ISO Control Mapping
+
+- **Category of Control**: People
+- **ISO 27001:2022 Control**: 6.7 Remote working Control
+- **Document Name as per ISO 27001:2022**: Remote Working Policy
+- **Control**: Security measures must be implemented when personnel are working remotely to protect information accessed, processed, or stored outside the organization's premises.
+
+### Document Control
+
+- **Owner**: CISO
+- **Release ID**: TELE-POL-0028
+
+### Version History
+
+- **Version 0.01**: Initial Draft (16-May-15)
+- **Version 1.00**: Reviewed and Baselined (19-May-15)
+- **Version 1.01**: Modified the scope to include Cloud services (14-Oct-16)
+- **Version 2.00**: Approved and Baselined (07-Dec-16)
+- **Version 3.0**: Updated Information classification (14-May-20)
+- **Version 4.0**: Annual Review, no changes (22-Jan-21)
+- **Version 5.0**: Policy updated to align with ISO 27001:2022 (12-May-23)
+- **Version 6.0**: Migrated to a new template (23-Feb-24)
+- **Version 7.0**: Approved and Baselined (14-May-2025)
+
+### Contact Information
+
+- **Email**: infosec@trianz.com
+- **Phone**: [Not provided]
+
+### Copyright Notice
+
+The content in this document is copyrighted; any unauthorized use may violate copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz name and its products are subject to trademark and copyright protections.

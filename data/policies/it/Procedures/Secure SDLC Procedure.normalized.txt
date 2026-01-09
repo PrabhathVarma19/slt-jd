@@ -1,0 +1,284 @@
+# SECURE SDLC PROCEDURE
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public: Not classified
+- Internal: Classified
+- Confidential: Not classified
+- Restricted: Not classified
+
+## Table of Contents
+1. INTRODUCTION
+   - 1.1 Objective(s)
+   - 1.2 Scope
+2. SECURE SDLC LIFECYCLE
+   - 2.1 Security Training
+   - 2.2 Requirements
+   - 2.3 Planning and Design
+   - 2.4 Secure Code
+   - 2.5 Validation
+   - 2.6 Review and Release
+3. ROLES & RESPONSIBILITIES
+4. PREREQUISITES
+   - 4.1 Training
+   - 4.2 Reference Policy, Process, Procedure, Templates, Checklist
+5. STANDARDS ADDRESSED
+6. ISO CONTROL MAPPING(S)
+
+## Glossary
+- **FEDRAMP**: Federal Risk and Authorization Management Program
+- **HIPAA**: Health Insurance Portability and Accountability Act
+- **PCIDSS**: Payment Card Industry Data Security Standards
+- **CSSLP**: Certified Secure Software Lifecycle Professional
+- **ISO**: International Organization for Standardization
+- **SOC**: Security Operations Center
+- **MFA**: Multi-Factor Authentication
+- **IP**: Internet Protocol
+- **AD**: Active Directory
+- **OWASP**: Open Web Application Security Project
+
+## 1. Introduction
+The Secure SDLC is a systematic approach that integrates security at every phase of the Software Development Lifecycle (SDLC). It ensures security assurance through activities such as architecture analysis, code review, and penetration testing.
+
+### 1.1 Objective(s)
+The objectives of the secure software development life cycle include:
+- Raising awareness of security considerations among stakeholders.
+- Facilitating early detection of system flaws.
+- Optimizing the design, deployment, and maintenance of software.
+- Reducing costs through early detection and resolution of issues.
+- Minimizing intrinsic business risks for the organization.
+
+### 1.2 Scope
+The scope includes all internal and applicable vendor applications owned, operated, maintained, and controlled by Trianz, both internally and externally, whether on-premises or in the cloud.
+
+## 2. Secure SDLC Lifecycle
+The Secure SDLC integrates security into various phases of the software development lifecycle, including:
+- Requirements
+- Design
+- Implementation
+- Testing
+- Decommissioning
+
+The Secure SDLC consists of seven phases:
+1. Security Awareness Training
+2. Secure Requirements
+3. Planning and Design
+4. Secure Implementation and Coding
+5. Validation
+6. Security Review
+
+The Secure SDLC applies to all project methodologies, including waterfall, agile, or DevOps.
+
+### 2.1 Security Training
+- All Trianz employees must complete internal security training.
+- Individuals in technical roles (e.g., Architect, Developer) are required to undergo specific training related to their responsibilities.
+
+### 2.1 Security Training
+- All developers, operators, and program managers involved in software development must attend at least one unique security training class annually.
+- Project team members are strongly encouraged to pursue additional security and privacy education relevant to their needs or products.
+
+### 2.2 Requirements
+- Security requirements must encompass both functional security and non-functional requirements, as captured from the contractual obligation tracker.
+- Security requirements must produce:
+  - Misuse cases that depict non-malicious threats (intentional or unintentional).
+  - Abuse cases that depict malicious threats (intentional) based on inaccurate risk assessments or attack models.
+- All security requirements must be documented with respect to:
+  - CIAP (Confidentiality, Integrity, Availability, and Privacy).
+  - AAA (Authentication, Authorization, and Accountability).
+- Track and document attack surfaces and any changes made during the development process.
+- Conduct threat modeling to identify threats to applications for mitigation during the implementation phase.
+- Security and privacy requirements must comply with legal and industry standards, including ISO 27001, ISO 27701, ISO 27017/18, SOC, PCI DSS, HIPAA, etc.
+
+### 2.3 Planning and Design
+- Perform a risk analysis or threat modeling to ensure security requirements and specifications adequately protect against identified threats.
+- Follow appropriate secure design principles based on the technology in use.
+- Develop a security blueprint and select necessary technologies to support it.
+- Create a security testing plan based on threats identified during threat modeling or risk analysis.
+- Examine legal issues related to security.
+- Plan for incident response and business continuity in the event of disasters.
+- Check for vulnerabilities in any application feature.
+- Implement controls and remediation for the OWASP Top 10 vulnerabilities and CWE/SANS Top 25 programming errors relevant to the technologies used.
+
+### 2.4 Secure Code
+- Ensure code is developed securely and that security controls identified during the design phase are implemented.
+- Follow OWASP Top 10 secure coding standards/guidelines and conduct code reviews for all source code, utilizing secure code review software such as SonarQube.
+- Use the latest versions of compilers and supporting tools.
+- Minimize unintentional code-level security vulnerabilities by:
+  - Defining coding standards.
+  - Selecting the most appropriate and safe languages, frameworks, and libraries.
+
+### 2.5 Validation
+- Include security criteria in every test case, using misuse/abuse scenarios to define the test case strategy.
+- Prioritize tests based on risk analysis, focusing on the highest risk and highest consequence items first.
+- Perform fuzz testing on all file formats and parsers, testing each parser separately.
+- Include DAST (Dynamic Analysis Security Testing) tools, such as Burp Suite and Aqua Enforcer, to test applications during runtime for errors related to user authentication, authorization, SQL injection, and API endpoints.
+- Conduct vulnerability assessments, infrastructure assessments, and penetration tests for all public-facing applications to detect errors such as weak credentials, injection attacks, buffer overflows, and cross-site scripting.
+- Reevaluate the attack surface of the software during testing.
+
+### 2.6 Review and Release
+- Conduct security code reviews for all high-priority code identified.
+
+### 3. Roles & Responsibilities
+
+- **Internal Apps Team**: 
+  - Conduct necessary scans and provide internal reports.
+  - Provide all internal and external application details related to the design and implementation of Trianz Applications and Client Applications (where applicable).
+  - Remediate identified vulnerabilities as per the Assurance Report.
+
+- **IS Operations**: 
+  - Perform Static Analysis, Dynamic Code Analysis, and internal vulnerability scans on applications and provide reports.
+
+- **InfoSec Team**: 
+  - Conduct end-to-end application security internal assessments.
+  - Review the Vulnerability Assessment (VA) scan and Code Review report.
+  - Track the closure report.
+
+- **CIO/CISO**: 
+  - Review and approve the final assurance report.
+
+- **Security Engineer**: 
+  - Perform security risk assessments and mitigate those risks.
+
+- **Developer**: 
+  - Ensure adherence to secure coding standards and guidelines while coding.
+
+- **Project Manager/Product Manager**: 
+  - Define the strategy for appropriate security standards for all software applications handling sensitive information accessible from the organization.
+  - Monitor, establish, and enforce remediation timelines and sanctions for non-compliant systems.
+
+### 4. Prerequisites
+
+#### 4.1 Training
+- CSSLP Training
+
+#### 4.2 Reference Policy, Process, Procedure, Templates, Checklist
+- Secure SDLC Policy
+- Access Control Policy
+- Dev Sec Ops Procedure
+- Vulnerability Assessment and Penetration Testing Procedure
+- Information Security Assessment Checklist
+- Cloud Security Privacy Policy
+- Patch Management Policy
+- Incident Management Procedure
+- Risk and Opportunity Management Procedure
+
+### 5. Standards Addressed
+
+- **ISO 27001:2013** - ISMS (Information Security Management System)
+- **ISO 27017:2015** - Cloud Security
+- **ISO 27701:2019** - PIMS (Privacy Information Management System)
+
+### 6. ISO Control Mapping(s)
+
+- **Category of Control**: Technological
+  - **ISO 27001:2022 Control**: 8.25 Secure development life cycle
+  - **Document Name**: Secure SDLC Procedure
+
+- **Category of Control**: Technical
+  - **ISO 27001:2022 Control**: 8.29 Security testing in development and acceptance
+
+### Document Control
+
+- **Owner**: CISO
+- **Release ID**: SEC_SDLC_PROC-0162
+
+### 4.0 Version History
+
+- **Version 0.0**  
+  - **Date:** 30-July-21  
+  - **Author:** Divya G  
+  - **Reviewer:** Karthik  
+  - **Approver:** Phani  
+  - **Change Description:** Initial Version  
+
+- **Version 1.0**  
+  - **Date:** 30-July-21  
+  - **Author:** Divya G  
+  - **Reviewer:** Karthik  
+  - **Approver:** Phani  
+  - **Change Description:** Request for Baseline  
+
+- **Version 1.0**  
+  - **Date:** 03-Jan-22  
+  - **Author:** Divya G  
+  - **Reviewer:** Karthik N  
+  - **Change Description:** Annual Review - Reviewed and no changes  
+
+- **Version 1.1**  
+  - **Date:** 14-Mar-22  
+  - **Author:** Kruti  
+  - **Reviewer:** Kartik  
+  - **Change Description:** For Review - The scope has been extended to products and services  
+
+- **Version 2.0**  
+  - **Date:** 18-Mar-22  
+  - **Author:** Kruti  
+  - **Reviewer:** Siva N  
+  - **Approver:** Siva N  
+  - **Change Description:** For Approval - Approved and baselined  
+
+- **Version 2.0**  
+  - **Date:** 10-Mar-23  
+  - **Author:** Beniyel S and Asha Veeramalla  
+  - **Reviewer:** Balu N  
+  - **Change Description:** For review - No change  
+
+- **Version 2.0**  
+  - **Date:** 10-Mar-23  
+  - **Author:** Beniyel S  
+  - **Reviewer:** Balu N  
+  - **Approver:** Srikanth M  
+  - **Change Description:** For Approval - Approved and Baselined  
+
+- **Version 2.1**  
+  - **Date:** 12-May-23  
+  - **Author:** Asha Veeramalla  
+  - **Reviewer:** Vijaya  
+  - **Change Description:** For Review - Migrated to New Template  
+
+- **Version 3.0**  
+  - **Date:** 12-May-23  
+  - **Author:** Asha Veeramalla  
+  - **Reviewer:** Vijaya  
+  - **Approver:** Srikanth M  
+  - **Change Description:** For Approval - Approved and Baselined  
+
+- **Version 3.1**  
+  - **Date:** 11-Feb-24  
+  - **Author:** Shalini  
+  - **Reviewer:** Vijaya  
+  - **Approver:** Srikanth M  
+  - **Change Description:** For Review - Mapped to new ISO 27k 2022 Controls  
+
+- **Version 4.0**  
+  - **Date:** 23-Feb-24  
+  - **Author:** Shalini  
+  - **Reviewer:** Vijaya  
+  - **Approver:** Srikanth M  
+  - **Change Description:** For Approval - Approved and Baselined  
+
+- **Version 4.1**  
+  - **Date:** 28-May-25  
+  - **Author:** Kruti  
+  - **Reviewer:** Vijaya  
+  - **Change Description:** For Review - Migrated to New Template  
+
+- **Version 5.0**  
+  - **Date:** 29-May-25  
+  - **Author:** Kruti  
+  - **Reviewer:** Vijaya  
+  - **Approver:** Srikanth M  
+  - **Change Description:** For Approval - Approved and Baselined  
+
+### Contact Information
+- **Name:** [To be filled]  
+- **Email:** [To be filled]  
+- **Phone:** [To be filled]  
+
+### Thank You
+- **Email:** infosec@trianz.com  
+
+### Copyright Notice
+The content in this document is copyrighted; any unauthorized use – in part or full – may violate copyright, trademark, and other laws. This document may not be modified, reproduced, publicly displayed, performed, distributed, or used for any public or commercial purposes. The Trianz name and its products are subject to trademark and copyright protections, regardless of how and where referenced.

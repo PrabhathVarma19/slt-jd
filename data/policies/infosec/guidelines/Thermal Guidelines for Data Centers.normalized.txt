@@ -1,0 +1,63 @@
+# Thermal Guidelines for Data Centers
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. Thermal Guidelines for Data Centers
+   1. Glossary
+   2. Introduction
+   3. Temperature and Relative Humidity Measurement
+   4. Appendix A: Format of Temperature and Relative Humidity Measurement
+
+## 1. Glossary
+- **Hygro-Thermometer**: A device used to measure the relative humidity and temperature.
+- **ASHRAE**: American Society of Heating, Refrigerating and Air-Conditioning Engineers.
+
+## 2. Temperature and Relative Humidity Measurement
+- Temperature and relative humidity will be measured using a Hygro-Thermometer placed inside the data center.
+- Security Personnel will note the measured details in the format specified in Appendix A, with a frequency of every 2 hours, 24/7, including weekdays, weekends, and company holidays.
+- The acceptable ranges for temperature and relative humidity in the Trianz data center are:
+  - **Temperature**: 15 °C to 25 °C
+  - **Relative Humidity**: 20% to 80% RH
+- If the temperature or relative humidity is found to be outside the allowable range, security personnel will inform the IT Administrator via phone.
+
+## 3. Appendix A: Format of Temperature and Relative Humidity Measurement
+- The format for recording temperature and relative humidity includes the following fields:
+  - Date
+  - Time
+  - Temperature (°C)
+  - Relative Humidity (%RH)
+  - Name
+  - Signature
+
+## For Trianz Process Improvement Group (TPIG) Purpose Only
+### Version History
+- **Version 1.00**
+  - Author: Srilakshmi
+  - Date: 16-May-14
+  - Description: Initial Version
+- **Version 2.00**
+  - Author: Srilakshmi
+  - Date: 3-Jan-2022
+  - Description: Review, modified Trianz logo, modified acceptable range for Relative Humidity (%RH)
+- **Version 3.0**
+  - Author: Karthik N
+  - Date: 28-May-25
+  - Description: Approved and Baselined, no changes made
+- **Version 3.1**
+  - Author: Kruti
+  - Date: 29-May-25
+  - Description: Migrated to new template
+
+## Contact Information
+- **Email**: infosec@trianz.com
+- **Phone**: [Not provided]
+
+Thank you. The content in this document is copyrighted; any unauthorized use – in part or full – may violate copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz name and its products are subject to trademark and copyright protections, regardless of how and where referenced.

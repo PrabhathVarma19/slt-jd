@@ -1,0 +1,823 @@
+Security Incident
+Management & Response
+Procedure
+
+
+
+
+TRIANZ INTERNAL         trianz.com
+                                    Statement of Confidentiality
+
+
+  The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated,
+  or used for any purpose other than that stated herein, in whole or in part, without the express written
+  consent of Trianz.
+
+
+
+
+                                       Information Classification
+
+
+     ☐   Public
+
+     ☒   Internal
+
+     ☐   Confidential
+
+     ☐   Restricted
+
+
+
+
+TRIANZ INTERNAL                                                                                        2
+                                         Table of Contents
+
+1.   INTRODUCTION                                            4
+
+2.   OBJECTIVES                                              4
+
+3.   SCOPE:                                                  5
+
+4.   PROCEDURE STEPS                                         5
+
+     4.1 Incident Identification and Reporting               5
+
+     4.2 Incident Response                                   5
+
+        4.2.1      Detection and Reporting                   5
+
+        4.2.2      Assessment and Classification             6
+
+        4.2.3      Containment                               6
+
+        4.2.4      Investigation and Analysis                6
+
+        4.2.5      Root Cause Analysis                       6
+
+        4.2.6      Correction                                6
+
+        4.2.7      Eradication/ Corrective Action            7
+
+        4.2.8      Recovery                                  7
+
+        4.2.9      Lessons Learned                           7
+
+        4.2.10 Continuous Improvement                        7
+
+     4.3 Compliance and Governance                           7
+
+     4.4 Incident Management Records Maintenance             7
+
+5.   ROLES AND RESPONSIBILITIES                              8
+
+6.   EXIT CRITERIA                                           8
+
+7.   PREREQUISITES                                           9
+
+     7.1 Resources & Training                                9
+
+     7.2 References                                          9
+
+8.   RELATED GUIDELINES, TEMPLATES AND CHECKLISTS            9
+
+9.   MEASUREMENT                                             9
+
+10. ISO CONTROL MAPPING(S)                                   9
+
+11. APPENDIX INCIDENT SEVERITY                               11
+
+
+ TRIANZ INTERNAL                                             3
+1. Introduction
+
+
+The Security Incident Management and Response Procedure is designed to provide a
+systematic and consistent approach for detecting, assessing, responding to, and restoring
+normal operations following security incidents that could compromise the confidentiality,
+integrity, or availability of the organization's information systems, data, or operations."
+
+
+
+2. Objectives
+   The main objective of an Incident management & Response procedure is to restore normal
+   service operations as quickly as possible and minimize the negative impact on business
+   activities. A standardized process ensures an efficient and coordinated response to
+   unplanned service disruptions, such as a server crash or a network outage etc.
+
+   Key Objectives of Incident Management and Response procedure are as
+   follows.
+
+   •   Incident Identification and Reporting
+   •   Incident Response
+       ✓ Detection and Reporting
+       ✓ Assessment and Classification
+       ✓ Containment
+       ✓ Investigation and Analysis
+       ✓ Root Cause Analysis
+       ✓ Correction
+       ✓ Eradication and Corrective Actions
+       ✓ Recovery
+       ✓ Lessons Leaned
+       ✓ Continuous Improvement
+   •   Compliance and Governance
+   •   Incident Management Records Maintenance
+
+
+
+
+ TRIANZ INTERNAL                                                                              4
+3. Scope:
+  • This document applies to all Trianz associates including contractual employees, third
+      party vendors, cloud service providers and all other individuals and groups who have been
+      granted access to Trianz
+  • All users must understand and adopt this procedure and are responsible for ensuring the
+      safety and security of the Trianz infrastructure working remotely or in the office/client
+      premises for the information that they use or process. This includes both data stored
+      electronically and in any other form.
+  • The procedure applies to all Trianz products and services.
+
+
+
+4. Procedure Steps
+
+4.1    Incident Identification and Reporting
+        Information Security Incidents shall be reported promptly to IT Service Desk
+        and Infosec team by the associates keeping the reporting manager informed.
+
+
+        Associates need to fill the Incident Reporting Template
+
+
+        Details of the incident Reporting format shall comprise the following:
+                1.   Date & Time of Detection, Systems Affected, Reported by, Department,
+                     Contact Information
+                2.   Type of Security Incident:(e.g., Unauthorized Access, Malware Attack,
+                     Phishing, Data Breach, Physical Intrusion, Loss of Assets etc), Detailed
+                     Description:(Include what happened, how it was discovered/identified, and
+                     any immediate impact observed.)(can be elaborated), Initial Severity
+                     Assessment: (Low / Medium / High / Critical), Impact of the Incident(from
+                     the reportee on initial impact ) with the details of the time reported
+
+
+4.2 Incident Response
+
+
+
+        4.2.1 Detection and Reporting
+                Incident shall be reported using the Incident report template as soon as an
+                incident is identified, and the details are to be provided to IT Service Desk and
+                Infosec Team
+
+
+
+ TRIANZ INTERNAL                                                                                5
+             CIO will report cyber incidents within 6 hours to CERT-In. based on the severity
+             and applicability.
+
+
+      4.2.2 Assessment and Classification
+             Incident shall be analyzed for its impact w.r.t Data Loss/exposure, Financial
+             Impact, Operational Disruption, Legal/ Regulatory Implications, Reputational
+             Damage etc.
+
+             Also Assessment is carried out for validating on whether any assets are affected
+             – Systems/Applications Involved, Data Compromised, User/ Accounts affected,
+             Others if any.
+
+
+      4.2.3 Containment
+             IS team shall isolate affected systems, Networks or User accounts, Disable
+             Compromised Services or Access Points and Apply temporary firewall or
+             access Controls as applicable.
+
+
+      4.2.4 Investigation and Analysis
+             Logs and System Data shall be collected for forensic analysis as applicable.
+             Interviews and Investigation shall be carried out by IS Team as applicable
+             Work with Infosec to identify the attack vector and scope
+             Forensics: Collect and preserve evidence for internal and legal use.
+
+
+      4.2.5 Root Cause Analysis
+             Root Cause shall be determined based on Investigations and Contributing
+             factors for the incident as applicable
+             Also identify the Security Controls that were failed or were missing that was
+             causing the incident
+             All evidence shall be preserved for Legal Usage/purpose and for future
+             reference. Can also be useful for the Lessons to be learnt from the incident.
+
+
+      4.2.6 Correction
+             As part of Immediate Correction, Actions shall be initiated to ensure the incident
+             is Contained (as applicable)/ Temporary fixes shall be applied and notification
+             shall be sent to Applicable Internal and External Stakeholders.
+             Remediation and actions required shall be carried out by the respective Project
+             Teams and Function Teams
+
+TRIANZ INTERNAL                                                                              6
+             All findings, timelines and remediations/ Actions by each department shall be
+             documented.
+
+
+      4.2.7 Eradication/ Corrective Action
+             As part of the eradication and Corrective Action, the root cause of the incident
+             shall be eliminated, Apply patches, change credentials, disable compromised
+             accounts.
+             Remediation and actions required shall be carried out by the respective Projects
+             and Functions to ensure the incident is not recurred for e.g. Awareness and
+             Training Sessions shall be conducted.
+
+
+      4.2.8 Recovery
+             Systems and Services shall be restored to normal operation and Monitored for
+             any signs of recurrence.
+
+
+      4.2.9 Lessons Learned
+             Post-incident review shall be conducted and lessons learned shall be
+             documented
+             Policies Shall be updated controls applied, and training conducted based on
+             findings.
+
+
+      4.2.10 Continuous Improvement
+             Conduct post-incident reviews (lessons learned) to identify weaknesses and
+             improve future incident response.
+             Update security controls, policies, and procedures based on findings.
+
+
+4.3 Compliance and Governance
+    Align the incident response procedure with organizational policies, industry standards
+     (e.g., ISO/IEC 27001, NIST), and regulatory frameworks.
+    Demonstrate due diligence and accountability to auditors and regulators.
+
+
+4.4 Incident Management Records Maintenance
+    Incident Records shall be maintained and reviewed periodically – once in three months
+
+
+
+
+TRIANZ INTERNAL                                                                           7
+                     5. Roles and Responsibilities
+
+
+                     Inter                                    Assessment and      Containme     Investigation and
+                     nal/E                                    Classification      nt            Analysis
+Types         of     xtern   Stakeholde     Incident
+Incidents            al      rs involved    Reporting                                                               RCA      HR        Lessons Learnt
+Security                     IT, Infosec,                     IS Team, Infosec,   IS Team       IS Team, Infosec,
+Incidents            Inter   Delivery/or                      CIO, other          and Infosec   CIO and Legal       IT,
+                     nal/E   corporate                        stakeholders as     Team , CIO                        Infos    As
+                     xtern   functions,     Can be from all   applicable                                            ec,      applica
+                     al      Legal          associates                                                              Legal    ble       IT, Infosec
+Service                      IT, Infosec,                     IS Team, Infosec,   NA            IS Team
+Incidents            Inter   Delivery/or                      CIO, other
+                     nal/E   corporate                        stakeholders as                                       IT,      As
+                     xtern   functions,     Can be from all   applicable                                            Infos    applica
+                     al      Legal          associates                                                              ec       ble       IT, Infosec
+Policy                                                        IS Team, Infosec,   NA            ,Infosec,CISO and
+Violations-                                                   CIO, other                        other
+Employees                                                     stakeholders as                   stakeholders as
+violating                                                     applicable                        applicable
+Acceptable
+usage
+Policy,
+Laptop                       IT, Infosec,
+usage,                       Delivery/or                                                                            IT,
+Internet                     corporate                                                                              Infos    As
+Usage                Inter   functions,     Can be from all                                                         ec,      applica
+Policy               nal     Legal          associates                                                              Legal    ble       IT, Infosec
+Natural                      IT, Infosec,                     Admin & ERT         NA            Admin and           IT,
+Calamilities                 Delivery/or                      Team, Infosec,                    Infosec , CIO       Infos
+-Floods,             Inter   corporate                        CIO, other                                            ec,
+Theft, Fire          nal/E   functions,                       stakeholders as                                       Legal,   As
+etc                  xtern   Legal,                           applicable                                            Admi     applica
+                     al      Admin          BCP Team                                                                n        ble       IT, Infosec
+Physical                     IT, Infosec,                     Admin & ERT         NA            Admin, IS Team      IT,
+Incidents -                  Delivery/or                      Team, Infosec, IS                 (As applicable) &   Infos
+related to           Inter   corporate                        Team, CIO, other                  Infosec , CIO       ec,
+Theft,               nal/E   functions,                       stakeholders as                                       Legal,   As
+Damage of            xtern   Legal,                           applicable                                            Admi     applica
+Equipment            al      Admin          Admin Team                                                              n        ble       IT, Infosec
+Privacy                                                       IS Team, Infosec,   IS Team       IS Team, Infosec    IT,
+Breaches                     IT, Infosec,                     CISO and other      and           Team, CIO, and      Infos
+                     Inter   Delivery/or                      stakeholders as     Infosesec     Legal               ec,
+                     nal/E   corporate                        applicable          Team , CISO                       Legal,   As
+                     xtern   functions,     Can be from all                                                         Admi     applica
+                     al      Legal          associates                                                              n        ble       IT, Infosec
+Pandemic                     IT, Infosec,                     Admin & ERT         NA            Admin &ERT          IT,
+Incidents                    Delivery/or                      Team, Infosec,                    Team and other      Infos
+                             corporate                        CIO, HR Team                      Stakeholders as     ec,
+                             functions,                       and other                         applicable          Legal,   As
+                     Exter   Legal,         Can be from all   stakeholders as                                       Admi     applica
+                     nal     Admin          associates        applicable                                            n        ble       IT, Infosec
+
+
+
+
+              6. Exit Criteria
+                             Completed Incident Reporting Analysis along and management of Incident Records
+
+                   TRIANZ INTERNAL                                                                                                        8
+7. Prerequisites
+
+7.1             Resources & Training
+                Incident Management
+
+
+
+7.2            References
+            Document Name
+
+
+            ISO 27001:2022 Standard
+
+
+
+
+8. Related Guidelines, Templates and Checklists
+            Document Name
+
+            Incident Reporting Template
+
+
+            Consolidated Incident Tracker & Analysis
+
+
+
+
+9. Measurement
+      Number of reported incidents reviewed and analyzed vs number of actual incidents
+
+
+
+
+10.       ISO Control Mapping(s)
+            Category                  of ISO 27001:2022 Control                  Document Name as per ISO
+            Control                                                              27001:2022
+            Organizational Controls       5.24 Information security incident     Information Security Incident
+                                          management planning and                Management Procedure
+                                          preparation Control The organization
+                                          shall plan and prepare for managing
+                                          information security incidents by
+                                          defining, establishing and
+                                          communicating information security
+
+
+ TRIANZ INTERNAL                                                                                      9
+        Category                  of ISO 27001:2022 Control                   Document Name as per ISO
+        Control                                                               27001:2022
+                                    incident management processes, roles
+                                    and responsibilities.
+        Organizational Controls     5.25 Assessment and decision on           Information Security Incident
+                                    information security events Control The Management Procedure
+                                    organization shall assess information
+                                    security events and decide if they are
+                                    to be categorized as information
+                                    security incidents.
+        Organizational Controls     5.26 Response to information security     Information Security Incident
+                                    incidents Control Information security    Management Procedure
+                                    incidents shall be responded to in
+                                    accordance with the documented
+                                    procedures.
+        Organizational Controls     Learning from information security        Information Security Incident
+                                    incidents Control Knowledge gained        Management Procedure
+                                    from information security incidents
+                                    shall be used to strengthen and
+                                    improve the information security
+                                    controls.
+        People control              Information security event reporting      Information Security Incident
+                                    Control The organization shall            Management Procedure
+                                    provide a mechanism for personnel
+                                    to report observed or suspected
+                                    information security events through
+                                    appropriate channels in a timely
+                                    manner.
+        Organizational Controls     5.28 Collection of evidence Control The Information Security Incident
+                                    organization shall establish and          Management Procedure
+                                    implement procedures for the
+                                    identification, collection, acquisition
+                                    and preservation of evidence related to
+                                    information security events.
+        Organizational              5.29 Information security during          Information Security Incident
+        Controls                    disruption Control The organization       Management Procedure
+                                    shall plan how to maintain information
+                                    security at an appropriate level during
+                                    disruption
+
+
+
+
+TRIANZ INTERNAL                                                                                   10
+11. Appendix Incident Severity
+     An incident will be categorized as one of four severity levels. These severity levels are
+     based on the impact to the organization and can be expressed in terms of financial
+     impact, impact on the company’s reputation, brand value, customer’s trust etc. Following
+     table provides a listing of the severity levels and a definition/description of each severity
+     level.
+
+
+      Severity Level        Description       Examples
+
+      Critical              Incident where    Examples are a disruption of business operations,
+                            the impact is     companies’ proprietary of confidential and sensitive
+                            severe.           information has been compromised, and a virus or
+                                              worm has become widespread.
+
+
+      High                  Incident where    Examples are a delayed ability to order, delayed delivery
+                            the impact is    of critical electronic mail or EDI transfers, etc.
+                            significant.
+      Medium                Incident where    Examples are harmless email SPAM, isolated Virus
+                            the impact is     infections, etc.
+                            minimal.
+      Low                   Incident where    Examples are False positives - when investigation of
+                            the impact is     suspicious activity finds no evidence of a security
+                            very less         incident.
+
+
+
+
+TRIANZ INTERNAL                                                                                      11
+Document Control
+
+
+
+         Owner:            CISO                                    Release ID:           ISIM-PROC-0043
+
+
+
+
+               For Trianz Process Improvement Group (TPIG) Purpose Only
+
+        Version History
+
+
+
+ Ver. No.      Date              Author      Reviewer   Approver     Reason for Change              Change
+                                                                                                Description
+
+
+ 0.00       26-Feb-07     Jyotessh G                                 Initial draft
+                          Nair
+
+ 1.00       26-Feb-07     Jyotessh G                                 Baseline approved     Approved
+                          Nair                                       by                    Baseline.
+
+                                                                     Zulfikar Deen.
+
+ 1.01       12-Jun 08     Bharatees ha B R                           Revised the process   •   Revised the
+                                                                     incorporating             Process by
+                                                                     reviews of GT             including
+                                                                                               Sections on
+
+                                                                                           •   Preventive
+                                                                                               Controls
+
+                                                                                           •   Detective
+                                                                                               controls
+                                                                                           Reactive Controls
+ 2.00       29-Apr-09     Balu Nair                                  Approval for          Baselined
+                                                                     Baseline
+
+ 2.01       30-Dec-10     Chakravarthi                               QMG review            Formatted entire
+                                                                                           document
+
+ 3.00       31-Dec-10     Chakravarthi                               Request for           Baselined
+                                                                     baseline
+
+ 3.01       24-May-11     Srilakshmi                                 QMG Review            Modified release id
+                                                                                           in header and
+                                                                                           cover page to
+                                                                                           make consistency
+
+
+
+
+ TRIANZ INTERNAL                                                                                   12
+4.00     24-May-11   Srilakshmi    Approval for       Baselined
+                                   Baseline
+
+  4.01   3-Aug-11    Sudharsa     QMG review             Replace Owner
+                     na                                   with
+                                                          Management
+
+                                                         Representative
+                                                         in place of CIO
+                                                     In Document
+                                                     Classification
+                                                     Scheme,
+                                                     "Retention period is
+                                                     3
+                                                     Years" row is
+                                                     removed
+ 5.00    3-Aug-11    Sudharsa     Request for baseline Approved and
+                     na                              Baselined
+
+ 6.00    02-May-12   Srilakshmi   QMG Review         •   Modified
+                                                         Template         as
+                                                         per
+                                                         documentation
+                                                         standards
+
+                                                     •   Removed
+                                                         Causal Analysis
+                                                         Report
+                                                         and Escalation
+                                                         Matrix
+
+                                                     •   Modified
+                                                         diagram
+                                                         to Visio for
+                                                         contacting
+                                                         specialists in
+                                                         the event of
+                                                         an
+                                                         information
+                                                         security
+                                                         incident.
+
+                                                     •   Removed ISMC
+                                                         roles          and
+                                                         responsibilities
+
+
+
+
+TRIANZ INTERNAL                                                13
+                                                         •    Provide      clarity
+                                                              on all sections
+                                                         Removed
+                                                         diagrams for
+                                                         learning from
+                                                         Information
+                                                         Security
+                                                         Incidents
+
+
+
+
+ 7.00    08-Nov-12   Balu Nair    Standardization of
+                                                                   Modified
+                                  Blue Book Process
+                                                                         the
+                                  Assets
+                                                              template
+                                                              format
+                                                         Changed the Logo
+ 8.00    03-Jun-13   Srilakshmi   Re-Certification       Modified section
+                                  Audit of ISO           5.3 and 5.4 –
+                                  27001:2005 on 07th,    clarity is provided
+                                  08th, 09th and 10th,   for incident
+
+                                  May                    resolution, incident
+                                                         follow-up and
+                                  2013
+                                                         analysis to prevent
+                                                         recurrence of
+                                                         incidents
+ 9.00    16-May-15   Sudharsana   Upgrading to ISO           Assessment of
+                                  27001:2013                  and decision
+                                                              on
+
+
+
+
+TRIANZ INTERNAL                                                     14
+                                                                                 information
+                                                                                 security
+                                                                                 events
+
+                                                                                 Response
+                                                                                 to
+                                                                                 information
+                                                                                 security
+                                                                                 incidents
+                                                                             Collection of
+                                                                             Evidence
+9.1         15-Feb-2024   Krutideepta   Vijaya R                For Review   1. Non-IT
+                                                                                 Related
+                                                                                 Incidents
+                                                                                 has been
+                                                                                 added.
+                                                                             2. ISO
+                                                                                 Mappings
+                                                                                 has been
+                                                                                 updated.
+10.0        16-Feb-2024   Krutideepta   Vijaya R   Srikanth M   For Review       Approved
+                                                                                 and
+                                                                                 Baselined
+
+
+
+
+TRIANZ INTERNAL                                                                   15
+    9.01     25-Jan-16   Paramita    Client Audit   •     Progress     of        the
+                         Ghosh and   and                  incidents
+                         Balu        alignment            (with            due
+
+                         Nair        with shared          consideration for
+                                     assessment           confidentiality)
+                                     checklist.           shall be provided
+                                                          to those who
+                                                          reported the
+                                                          incident and all
+                                                          relevant
+                                                          stakeholders.
+
+                                                    •     Data loss incidents
+
+                                                    •     Damage or physical
+                                                          loss of assets
+
+                                                    •     Unauthorized
+                                                          change       to
+                                                          privacy information
+
+                                                    •     A 24X7X365 incident
+                                                               response team
+                                                                  consisting of
+                                                           Delivery head, CISO
+                                                                        and IT
+                                                                       Head of
+                                                          respective locations
+                                                                  should         be
+                                                                       present.
+                                                         The Delivery Manager
+                                                            will be the primary
+                                                        contact with the client.
+
+
+
+
+ 10.00       08-Feb-16   Balu Nair   Approved by    Baselined
+                                     Mahesh
+                                     (CISO)
+
+
+
+
+TRIANZ INTERNAL                                                        16
+ 10.01   14-Oct- Sriharsha                              Addition of      Modified the process by
+         16                                             Cloud services   including the cloud related
+                                                        as scope of      aspects.
+                                                        Certification.
+ 11.00   07-       Balu Nair                            Approved by      Baselined
+         Dec-16                                         CISO
+
+ 11.00   23-       Kamadev                              Reviewed the     No changes done in the
+         Jun-18    Pradhan                              documents        Document
+
+  11.1   29-       Balu Nair   Joshy VM                                  Information classification
+         Apr-19                                                          modified
+
+
+  12.0   14-       Balu Nair               Ganesh       Approved for     Baselined
+         May-19                            Arunachala   Release
+
+  12.1   11-May- Karthik N     Balu Nair                Review           Updated
+         20                                                              Incident reporting tools and
+                                                                         incident categorization.
+                                                                         Integrated with new
+                                                                         template
+
+
+  13.0   14-       Karthik N   Phani       Phani        For Approval     Approved and Baselined
+         May-20                Krishna     Krishna
+
+  13.1   9-Feb-    Balu Nair   Phani                    Review           Updated the information
+         21                    Krishna                                   classification
+                                                                         Formatted and few minor
+                                                                         changes
+                                                                         made
+
+  14.0   12-Feb- Balu Nair     Phani       Phani        Approved for     Approved and Baselined
+         21                    Krishna     Krishna      Release
+
+  14.1   24-       Karthik N   Phani       Phani        Review           Updated the lessons
+         Mar-21                Krishna     Krishna                       learned, section 5.7
+
+
+  15.0   25-       Karthik N   Phani       Phani        For approval     Approved and Baselined
+         Mar-21                Krishna     Krishna
+
+  15.1   30-       Karthik N   Phani       Phani        Review           Updated the entire
+         July-21               Krishna     Krishna                       procedure as per the
+                                                                         standard practice.
+
+
+  16.0   30-       Karthik N   Phani       Phani        For approval     Approved and Baselined
+         July-21               Krishna     Krishna
+
+
+TRIANZ INTERNAL                                                                                 17
+ 16.0    23-      Karthik N      Sivaramak                    Annual Review    No changes
+         Dec-                    rishnan N
+         2021
+  16.1   23-      Karthik N,     Karthik N                    For Review       Updated the roles
+         Feb-     Rama                                                         and responsibilities
+         2023     Madhavan
+                                                                               New template change
+
+  17.0   09-      Karthik N      Karthik N      Srikanth M    For Approval     Approved and Baselined
+         May-
+         2023
+  17.1   15-Feb- Shalini and     Vijaya and                   For Review       Mapped with new ISO 27k
+         24       Kruti          Bala                                          2022 controls
+
+
+ 18.0    23-      Shalini and    Vijaya and Srikanth M        For Approval     Approved and Baselined
+         Feb-24   Kruti          Bala
+
+  18.1   10-Jan- Nagarathinam Vijaya R          Srikanth M    For Review       Updated section7.1: Insider
+         25       V                                                            Threats, MITM, zero-day
+                                                                               attacks and section 7.2,
+                                                                               7.2.5: Forensic analysis
+                                                                               7.26: Monitoring post
+                                                                               recovery
+ 19.0    07-Feb- Nagarathinam Balu Nair        Srikanth M    For Approval     Approved and Baselined
+         25       V             and Vijaya R
+
+  19.1   18-      Krutideepta    Balu N,                      For Review           1.   Purpose section
+         Mar-25 Barik            Vijaya R &                                             changed to
+                                 Beniyel S                                              Introduction.
+                                                                                   2.   Roles &
+                                                                                        Responsibility
+                                                                                        section: Information
+                                                                                        Security and Data
+                                                                                        Privacy Assurance
+                                                                                        team & Crisis
+                                                                                        Management Team
+                                                                                        have been
+                                                                                        updated. AI.saac
+                                                                                        Tool has been
+                                                                                        replaced by MS
+                                                                                        Sentinel (SIEM) Tool.
+                                                                                   3.   Responding
+                                                                                        to         an
+                                                                                        Incident
+
+
+TRIANZ INTERNAL                                                                                         18
+                                                                             section has
+                                                                             been
+                                                                             updated.
+
+
+
+
+  19.2   16-Apr- Vijaya         Pranesh &              For Review            1.   Updated types
+         25                     Chaitanya                                         of Incidents
+                                                                             2.   impersonating
+                                                                                  CEOs, CFOs, and
+                                                                                  senior
+                                                                                  executive’s
+                                                                                  incident
+                                                                                  management
+                                                                                  added
+ 20.0    15-      Vijaya        Pranesh &   Srikanth   For Approval   Approved and Baselined
+         May-                   Chaitanya   Mantena
+         2025
+  20.1   12-Sep- Vijaya, Balu   Pranesh &              For Review     Incident Management
+         2025                   Siva                                  Procedure and Security
+                                                                      Incident Reporting
+                                                                      Procedure combined and
+                                                                      RACI is defined
+                                                                      Incident Management
+                                                                      Reporting Template
+                                                                      Revisited
+  21.0   12-Sep- Vijaya, Balu   Pranesh &   Srikanth   For Approval   Approved and Baselined
+         2025                   Siva
+
+
+
+
+TRIANZ INTERNAL                                                                              19
+                                  Contact Information
+                                                Name
+
+                                                 Email
+
+                                                Phone
+
+
+
+
+                                   Thank You
+                                       infosec@trianz.com
+
+
+
+
+    The content in this document is copyrighted; any unauthorized use – in part or full – may violate the
+copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly displayed,
+performed, or distributed, or used for any public or commercial purposes. The Trianz name and its products
+       are subject to trademark and copyright protections, regardless of how and where referenced.
+
+
+
+
+  TRIANZ INTERNAL                                                                                     20
+

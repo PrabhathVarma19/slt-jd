@@ -1,0 +1,707 @@
+ISAC Roles and
+Responsibilities
+
+
+
+
+TRIANZ INTERNAL    trianz.com
+                      Statement of Confidentiality
+
+  The information contained in this document is internal to Trianz. It shall not be
+  disclosed, duplicated, or used for any purpose other than that stated herein, in
+  whole or in part, without the express written consent of Trianz.
+
+
+
+
+                         Information Classification
+
+
+     ☐ Public
+
+     ☒ Internal
+
+     ☐ Confidential
+
+     ☐ Restricted
+
+
+
+
+TRIANZ INTERNAL                                                                  2
+                             Table of Contents
+1.   INTRODUCTION                                                                     4
+
+2.   OBJECTIVES                                                                       4
+
+3.   ORGANIZATION CHART                                                               6
+
+     3.1 Information Security and Data Privacy Assurance                              6
+
+4.   INFORMATION SECURITY ASSURANCE COUNCIL ROLES, RESPONSIBILITIES AND
+     AUTHORITIES.                                                                     6
+
+     4.1 ISAC Group                                                                   6
+
+     4.2 Chief Information Security Officer (CISO) / Chief Data Privacy Officer (CDPO) 7
+
+     4.3 Information Systems & Business Resilience Team                               7
+
+     4.4 HR & Recruitment Team                                                        8
+
+     4.5 Professional Development (End User Training)                                 8
+
+     4.6 Admin Team                                                                   8
+
+     4.7 Information Security and Data Privacy Assurance Group                        9
+
+     4.8 Travel Team                                                                  9
+
+     4.9 Delivery and DA Team                                                         9
+
+     4.10 Legal Team                                                                  9
+
+     4.11 Finance and Purchase Team                                                   10
+
+     4.12 Marketing Team                                                              10
+
+     4.13 Platforms Team and Platforms Assurance Team                                 10
+
+5.   OUTPUTS                                                                         10
+
+6.   EXIT CRITERIA                                                                   10
+
+7.   PROCESS ASSETS                                                                   11
+
+8.   MEASUREMENT                                                                      11
+
+9.   ISO CONTROL MAPPING(S)                                                           11
+
+
+
+
+ TRIANZ INTERNAL                                                                      3
+1. Introduction
+
+
+     The ISAC is a representation of the people from relevant functions and business
+     units and will meet every quarterly to review the status and effectiveness of ISMS
+     implementation.
+
+
+
+
+2.   Objectives
+     •   Ensure that organization’s Information Security Management System is
+         established, implemented, maintained and improved.
+     •   Demonstrate Organization’s commitment in securing Organizational and
+         Client’s Information Assets against vulnerabilities and threats
+     •   Ensure that all personnel shall apply information security in accordance with
+         Information Security Management system framework.
+     •   Ensure that management’s responsibilities include that all personnel
+     •   Are properly briefed on their information security roles and responsibilities prior
+         to being granted access to the organization's information and other associated
+         assets;
+     •   Are provided with guidelines which state the information security expectations
+         of their role within the organization.
+     •   Are mandated to fulfil the information security policy and topic-specific policies
+         of the organization
+     •   Achieve a level of awareness of information security relevant to their roles and
+         responsibilities within the organization
+     •   Compliance with the terms and conditions of employment, contract or
+         agreement, including the organization's information security policy and
+         appropriate methods of working.
+     •   Continue to have the appropriate information security skills and qualifications
+         through ongoing professional education.
+
+
+ TRIANZ INTERNAL                                                                         4
+   •   Where practicable, are provided with a confidential channel for reporting
+       violations of information security policy, topic-specific policies or procedures
+       for information security ("whistleblowing"). This can allow for anonymous
+       reporting, or have provisions to ensure that knowledge of the identity of the
+       reporter is known only to those who need to deal with such reports
+   •   Are provided with adequate resources and project planning time for
+       implementing the organization's security-related processes and controls.
+
+
+Definitions/Abbreviations/Acronyms
+
+
+
+       Word              Definitions
+
+       ISMS              Information Security Management System
+
+       CIO               Chief Information Officer
+
+       CISO              Chief Information Security Officer
+
+       ISM               Information Systems Manager
+
+       CMT               Crisis Management Team
+
+       IP                Internet Protocol
+
+
+
+
+TRIANZ INTERNAL                                                                     5
+3. Organization Chart
+
+  3.1 Information Security and Data Privacy Assurance
+
+                                                      ISAC
+                                                    Council
+
+                                                     CISO-
+
+                                                   ISDPA Team
+
+
+
+
+             IS   Delive    HR & Admin    Platfo     Trav     Purch   Lega   Financ Profes Marketi
+           Team    ry      Recruit Team    rms        el       ase    Team   e Team sional   ng
+             &    Team      ment          team       Tea      Team                  Develo Tean
+           Busine &DA       Team                      m                             pment
+             ss   Team                                                               Tean
+
+
+
+
+4. Information Security Assurance Council Roles, Responsibilities
+   and Authorities.
+
+4.1       ISAC Group
+
+
+      The members of this group will convene Bi-Annual to
+
+      discuss on the following:
+
+      •   Status of the implementation of the Information
+
+          security policies and procedures
+
+      •   Security incidents reported and the resolution.
+
+      •   Observed non-compliances to the Information Security Policy
+
+      •   Compliance with Policy and Procedures of Trianz
+
+
+ TRIANZ INTERNAL                                                                                     6
+  •    Discuss current and emerging threats relevant to the organization.
+
+  •    Review the Risk Assessment and update the controls as needed.
+
+  •    Include risk owners in the ISAC group discussions to ensure aligned
+       understanding and acceptance.
+
+  •    Additional security requirements that require changes in the Information
+       Security Policy
+
+  •    Ensuring that personnel are aware of the Information Security Policy
+
+
+4.2 Chief Information Security Officer (CISO) / Chief Data Privacy
+      Officer (CDPO)
+
+
+       Ensures the Overall responsibility of Information/Cyber Security , Privacy and
+       Sustainability for Trianz and sets clear vision, mission, and direction to Infosec,
+       Data Privacy and Sustainability Assurance Team
+
+
+4.3 Information Systems & Business Resilience Team
+
+
+          •   Shall be responsible for Security Posture for the organization
+
+          •     Improvements/Initiatives from IS operations w.r.t Security Posture
+
+          •     Align , deliver and comply to Information Security, Privacy Management
+              System and Sustainability Management Systems
+
+      •        The Business Resiliency team focuses on the processes, tools, and best
+      practices related to public sector business continuity and recovery—not only
+      of technology assets, but also recovery of the entire organization, including
+      people, locations, and communications.
+
+
+
+
+TRIANZ INTERNAL                                                                          7
+4.4 HR & Recruitment Team
+
+
+        •   Conduct and manage the schedule of Information Security and Data
+            Privacy Awareness Training for the new hires at the time of their induction
+            training/ orientation program
+
+        •   and employee/ Candidates' data is well protected w.r.t Data at Rest and
+            Data in Transit , NDA and BGV
+
+        •   Disciplinary action against any Infosec and Privacy Violations
+
+        •   Align , deliver and comply to Information Security, Privacy Management
+            System and Sustainability Management System
+
+
+4.5 Professional Development (End User Training)
+
+
+      Prepare an overall plan for internal training as per the requirements of the
+      organization, in line with the ISMS and, and send to Head – Human Resources
+      for approval.
+
+      • Plan, organize and monitor training program.
+        Prepare annual budget for conduction of training.
+      • Locate and evaluate suitable faculty (internal or external), for training.
+      • Publish Training Calendars
+      • Prepare and send to ITSM and Head - Human Resources periodic reports on
+        training activities planned / executed.
+      • Constantly monitor effectiveness of training activities against expectations of
+        Trianz ISMS and send periodic reports on this to Head– Human Resources
+
+
+
+
+4.6 Admin Team
+  •   Ensure that physical security controls are implemented and in compliance with the
+      requirements of the Information security, Data Protection policy and Sustainability
+  •   Align , deliver and comply to Information Security, Privacy Management System and
+      Sustainability Management System
+
+TRIANZ INTERNAL                                                                             8
+4.7 Information Security and Data Privacy Assurance Group
+  •   Ensure that Delivery and Business functions align , deliver and comply to
+      Information Security, Privacy Management System and Sustainability
+      Management System i.e. with Trianz Information Security Policy and
+      procedures, Data Privacy policies and Procedures, Sustainability Management
+      System Policies and Procedures
+  •   Shall be responsible for New/Existing Certifications, Internal and External
+      Audits, Organizations GRC and BCP
+
+
+
+
+  4.8 Travel Team
+
+
+  •   Ensures the data shared with the Vendors comply with necessary Technical
+      and organizational measures and respective vendors comply with adequate
+      security and privacy standards by enduring data minimization and Purpose
+      limitation
+  •   Align , deliver and comply to Information Security, Privacy Management
+      System and Sustainability Management System
+
+
+  4.9 Delivery and DA Team
+
+
+      •   Ensures compliance to client Infosec and Privacy requirements
+      •   Align , deliver and comply to Information Security, Privacy Management System and
+          Sustainability Management System
+
+
+  4.10       Legal Team
+      •   Shall be responsible for review , design of all Service Agreements, Non-Disclosure
+          Agreements and all other applicable agreements
+      •    Align , deliver and comply to Information Security, Privacy Management System
+          and Sustainability Management System
+
+
+TRIANZ INTERNAL                                                                            9
+  4.11 Finance and Purchase Team
+  •    Shall be responsible for enduring onboarding only Infosec approved
+       business critical vendors, Supplier Security, Agreements
+
+  •    Align , deliver and comply to Information Security, Privacy Management
+       System and Sustainability Management Systems
+
+
+  4.12 Marketing Team
+  •    Shall be responsible for all technical and organizational measures of data
+       subjects' security- data at rest and data in transit (Prospective Clients) , DSAR
+       Request
+
+  •    Align , deliver and comply to Information Security, Privacy Management
+       System and Sustainability Management Systems
+
+
+  4.13        Platforms Team and Platforms Assurance Team
+
+
+  •    Shall ensure the platforms are created/delivered/complied in compliance to
+       Organizations Information Security and Privacy Policies and Procedures
+
+  •     Align , deliver and comply to Information Security, Privacy Management
+       System and Sustainability Management Systems
+
+
+
+
+  5. Outputs
+      Defined Roles and Responsibilities of Information Security Assurance Council
+
+
+
+6. Exit Criteria
+      Identifying and Mapping of Information Security Assurance Council roles &
+  responsibilities
+
+
+
+
+TRIANZ INTERNAL                                                                       10
+7. Process Assets
+                                    Document Name
+
+         None
+
+
+
+8. Measurement
+      None
+
+
+
+9. ISO Control Mapping(s)
+
+
+    Category of      ISO 27001:2022 Control               Document Name as per
+    Control                                               ISO 27001:2022
+    Organizational   5.2 Information security roles    ISAC Roles and
+    Controls         and responsibilities Control      Responsibilities
+                     Information security roles and
+                     responsibilities shall be defined
+                     and allocated according to the
+                     organization needs.
+    Organizational   5.3 Segregation of duties            ISAC Roles and
+    Controls         Conflicting duties and               Responsibilities
+                     conflicting areas of
+                     responsibility shall be
+                     segregated.
+    Organizational   5.4 Management responsibilities ISAC Roles and
+    Controls         Control Management shall             Responsibilities
+                     require all personnel to apply
+                     information security in
+                     accordance with the established
+                     information security policy, topic
+                     specific policies, and procedures
+                     of the organization
+
+
+
+
+TRIANZ INTERNAL                                                                  11
+                                     Document Control
+
+
+Owner:             CISO                           Release ID:        ISWG-PROC-0059
+
+
+
+                For Trianz Process Improvement Group (TPIG) Purpose Only
+
+Version History
+
+
+
+  Ver.    Date       Author     Reviewer   Approver   Reason for      Change
+   No.                                                  Change        Description
+
+ 0.00     05-      Bharatees                          Draft          NA
+          May- ha B R
+          08
+ 1.00     05-      Bharatees                          Approval       Baselined
+          May      ha B R                             for Baseline
+          -08
+ 1.01     18-      Bharatees                          Regular        Formatting
+          Mar- ha B R                                 Review         Changes
+          10
+ 2.00     18-      Bharatees                          Approval       Baselined
+          Mar- ha B R                                 for Baseline
+          10
+ 2.01     03-      Balu Nair                          QMG review Document
+          Jan-                                                   formatted and
+          11                                                     changed RID to
+                                                                     Release ID
+ 3.00     03-      Balu nair                          Approved       Baselined
+          Jan-                                        for baseline
+          11
+ 3.01     24-      Srilakshmi                         QMG            Modified release
+          May                                         Review         id in header and
+          -11                                                        cover page to
+                                                                     make
+                                                                     consistency
+
+
+ TRIANZ INTERNAL                                                                     12
+4.00     24-      Srilakshmi   Approval       Baselined
+         May                   for Baseline
+         -11
+4.01     29-      Srilakshmi   QMG            •   Included CIO
+         Jun-                  Review             Roles and
+         11                                   Responsibilities
+                                              •   Modified
+                                                  Organization
+                                                  Chart
+
+
+5.00     29-      Srilakshmi   Approval       Baselined
+         Jun-                  for Baseline
+         11
+5.01     3-       Sudharsa     QMG review         Replace
+         Aug- na                                  Owner with
+         11                                       Management
+                                                  Representati
+                                                  ve in place of
+                                                  CIO
+                                              In Document
+                                              Classification
+                                              Scheme,
+                                              "Retention
+                                              period is 3
+                                              Years" row is
+                                              removed
+6.00     3-       Sudharsa     Request for    Approved and
+         Aug- na               baseline       Baselined
+         11
+7.00     07-      Srilakshmi   QMG Review               Modified
+         May                                  Template
+         -12                                      format of this
+                                              procedure
+                                              Reviewed all
+                                              roles &
+
+
+TRIANZ INTERNAL                                                  13
+                                             responsibilities
+                                             and corrected
+                                             inconsistencies
+
+
+
+8.00     08-      Balu Nair   Standardi         Modified the
+         Nov-                 zation of         template
+         12                   Blue Book         format
+                              Process        Changed the
+                              Assets         Logo
+9.00     18-      Sudharsa    Upgrading to Modified review
+         Mar- na              27001:2013     frequency to
+         15                                  quarterly review
+                                             the status and
+                                             effectiveness of
+                                             ISMS
+                                             implementation
+9.01     25-      Sumanta     Client Audit
+         Jan- Bhattacha       and               •     Vulnerabi
+         16       rya and     alignment                      lity
+                  Balu Nair   with shared              Assessm
+                              assessment                    ent
+                              checklist.                 Test of
+                                                          Trianz
+                                                        network
+                                                        shall be
+                                                     carried out
+                                                              on
+                                                       quarterly
+                                                 basis
+                                                 •    Informati
+                                                             on
+                                                        security
+                                                        policy is
+                                                      reviewed,
+                                                            at a
+
+
+TRIANZ INTERNAL                                                 14
+                                                            minimu
+                                                           m, on an
+                                                                 an
+                                                               nual
+                                                     basis
+                                                       •     Ensure
+                                                                  th
+                                                                 at
+                                                           informati
+                                                                 on
+                                                            security
+                                                 awareness is
+                                                provided to all
+                                                personals   in
+                                               the
+                                                       organizati
+                                                       on, as
+                                                       applicable
+                                                       .
+                                                     Organization
+                                                       Chart is
+                                                       updated
+
+
+10.00    08-      Balu Nair   Approved by Baselined
+         Feb-                 Mahesh
+         16                   (CISO)
+10.01    14-      Shishir     Addition of             ISWG name
+         Oct-                 Cloud                     changed
+         16                   services as              to ISAC
+                              scope of         Roles and
+                              Certification.   responsibilities
+                                               align with Cloud
+                                               services
+11.00    07-      Balu Nair   Approved by Baselined
+         Oct-                 CISO
+         16
+
+
+TRIANZ INTERNAL                                                    15
+11.1      29-     Balu Nair   Joshy VM                                 Information
+          Apr-                                                         classification
+          19                                                           modified
+                                                                   Trianz logo
+                                                                   modified
+12.0      14-     Balu Nair               Ganesh    Approved for Baselined
+          May-                            Arunachal Release
+          19                              a
+12.1      13-     Karthik N   Balu Nair             Review         •   Updated the
+          May-                                                         roles and
+          20                                                           responsibilitie
+                                                                       s.
+                                                                   •   Updated the
+                                                                       Org
+                                                                       chart for
+                                                                   InfoSec.
+                                                                   Integrated to
+                                                                   new template
+13        14-     Karthik N   Phani       Phani     For Approval   Approved and
+          May-                Krishna     Krishna                  Baselined
+          20
+   13.1   4-      Vijaya      Phani                 For Review     Updated
+          Feb- Rajeswari      Krishna                              Information
+          21                                                       Classification
+                                                                   and updated
+                                                                   CISO roles &
+                                                                   responsibilities
+
+
+
+
+  14.0    4-      Vijaya      Phani       Phani     For Approval   Approved and
+          Feb- Rajeswari      Krishna     Krishna                  Baselined
+          21
+
+
+
+
+TRIANZ INTERNAL                                                                       16
+  14.0   3-       Divya        Vijaya               For Review      No changes
+         Jan-
+         2022
+  14.1   28-      Divya        Balu N &             For Review      As per the
+         Apr-                  Karthik                              auditor
+         2022                                                       comments, we
+                                                                    have
+                                                                    revisited section
+                                                                    2.0
+  15.0   28-      Vijaya       Balu N &   Siva N    For Approval    Approved and
+         Apr- Rajeswari        Karthik                              Baselined
+         -22
+  15.1   05-      Shivateja,   Balu N &   Srikanth M For Review     Added Section 5
+         Apr- Rama             Karthik                              Business
+         2023 Madhavan                                              Resiliency
+                                                                    Group
+
+
+                                                                    New template
+                                                                    change
+
+
+  16.0   03-      Shivateja    Balu N &   Srikanth M For Approval   Approved and
+         May-                  Karthik                              Baselined
+         2023
+
+  16.1   15-      Krutideepta Vijaya R              For Review            1.   Objective
+         Feb-                                                                  has been
+         2024                                                                  updated.
+                                                                          2. In
+                                                                               Organizati
+                                                                               on Chart
+                                                                               Chief Data
+                                                                               Privacy
+                                                                               Officer
+                                                                               (CDPO)ha
+                                                                               s been
+                                                                               added.
+
+
+TRIANZ INTERNAL                                                                           17
+                                                                        3. In section
+                                                                           4.2
+                                                                           responsibil
+                                                                           ities of
+                                                                           CDPO has
+                                                                           been
+                                                                           added.
+                                                                        4. ISO
+                                                                           Mappings
+                                                                           has been
+                                                                           updated.
+  17.0   23-      Shalini and   Vijaya R   Srikanth M For Approval   Approved and
+         Feb- Krutideepta                                            Baselined
+         2024
+
+  17.1   6-   Vijaya            Balu                 For Yearly      Migrated to new
+         May-                                        Review          template
+         2025
+
+
+
+
+TRIANZ INTERNAL                                                                       18
+                                    THANK YOU
+
+                                            infosec @trianz.com
+
+
+
+
+  The content in this document is copyrighted; any unauthorized use – in part or full – may violate the copyright,
+ trademark, and other laws. This document may not be modified, reproduced or publicly displayed, performed or
+   distributed, or used for any public or commercial purposes. The Trianz name and its products are subject to
+                   trademark and copyright protections, regardless of how and where referenced.
+
+
+
+
+TRIANZ INTERNAL                                                                                                  19
+                                Contact Information
+                                               Name
+
+                                               Email
+
+                                              Phone
+
+
+
+
+                                  Thank You
+                                      reach@trianz.com
+
+
+
+
+ The content in this document is copyrighted; any unauthorized use – in part or full – may violate the
+ copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly
+   displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz
+ name and its products are subject to trademark and copyright protections, regardless of how and
+                                          where referenced.
+
+
+
+
+TRIANZ INTERNAL                                                                                      20
+

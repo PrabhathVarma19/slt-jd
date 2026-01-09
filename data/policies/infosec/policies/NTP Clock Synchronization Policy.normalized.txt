@@ -1,0 +1,77 @@
+# NTP CLOCK SYNCHRONIZATION POLICY
+
+## 1. Purpose
+The purpose of this policy is to define the requirement that all network, server, and cloud infrastructure in Trianz deploy a time synchronization service to ensure consistent usage of time for logging. The clocks of all relevant information processing systems within an organization or security domain should be synchronized to a single reference time source.
+
+## 2. Scope
+This policy applies to all Trianz network, server, cloud infrastructure, and communication services. The requirements of this policy shall be implemented in all systems under the ownership of Trianz, either on premises or in the cloud, and for all other Trianz managed systems, wherever applicable.
+
+## 3. Policy Statements
+- All systems covered by the scope of this policy must deploy clock synchronization technology to ensure consistent and usable timestamps for activity logging wherever feasible.
+- All systems should use Trianz Network Time Protocol (NTP) to synchronize each server’s clock with the NTP server.
+- All Active Directory connected systems may synchronize time from their domain controllers if those domain controllers are synchronized to the central NTP server.
+- The time server should use access control and authentication facilities in NTP to restrict access to enhance security from threats within the firewall.
+- For communication with the time server for status and control, use a secure protocol such as Secure Shell (latest version) and/or encrypted Simple Network Management Protocol (SNMP).
+- Utilize at least two or more NTP servers, with three or more strongly recommended, with the lowest possible stratum to minimize or eliminate timing errors.
+- Include at least two reference sources for input. NTP can select the best candidates to estimate the current time and can use past measurements to estimate current time and error when a network connection is temporarily unavailable.
+- Since NTP is founded on the User Datagram Protocol (UDP) and is susceptible to IP spoofing, blocking non-authenticated ports at the firewall is essential for network perimeter security.
+- Audit logs with correct clock synchronization shall assist in investigations or serve as evidence in legal or disciplinary cases.
+- Control of 12.4.4 – Control of Clock Synchronization remains the same for Standard 27018.
+- NTP shall be synchronized as per the global standard.
+
+## 4. Roles & Responsibilities
+1. **Clock Synchronization**
+   - **Roles**: IS Operations/Product Teams
+   - **Responsibility**: Authority to implement and maintain this policy. As a Cloud Service Provider, provide information to the Cloud Service Team about the clock used and how clients can synchronize local clocks with the Cloud Service Clock. As a Cloud Service Customer, request the Cloud Provider about the clock synchronization used for the Cloud Provider’s systems.
+
+2. **Audit & Compliance**
+   - **Roles**: InfoSec Assurance
+   - **Responsibility**: Conduct annual policy and compliance reviews.
+
+## 5. Exceptions(s)
+There are currently no exceptions to this policy. Any exceptions to the NTP Clock Synchronization policy shall follow the Exception handling policy.
+
+## 6. ISO Control Mapping(s)
+- **Category of Control**: Technological
+- **ISO 27001:2022 Control**: 8.17 Clock synchronization
+- **Control Document**: The clocks of information processing systems used by the organization shall be synchronized to approved time sources.
+
+### 1. Document Updates and Approvals
+
+1.1 **Roles and Responsibilities**  
+- Updated to align with ISO 27017 and ISO 27018 standards.
+
+1.2 **Baseline Objective**  
+- Updated to align with ISO 27002.
+
+1.3 **Annual Review**  
+- Moved to the new template.
+
+1.4 **Approval Process**  
+- For review and approval, the following individuals are involved:
+  - Phani Krishna: For review and approval.
+  - Karthik N: For review and approval.
+  - Pranesh: For review and baseline review.
+  - Balu Nair: For yearly review and approval.
+
+1.5 **Scope Extension**  
+- The scope has been extended to include products and services.
+
+### 2. Template Changes
+
+2.1 **New Template Implementation**  
+- A new template has been implemented for yearly reviews.
+
+### 3. ISO Mapping
+
+3.1 **ISO 27k Control Mapping**  
+- The document has been mapped to the new ISO 27k 2022 controls.
+
+### 4. Contact Information
+
+- **Email**: infosec@trianz.com  
+- **Phone**: [Not provided]
+
+### 5. Copyright Notice
+
+- The content in this document is copyrighted. Unauthorized use may violate copyright, trademark, and other laws. The document may not be modified, reproduced, publicly displayed, performed, or distributed for any public or commercial purposes. The Trianz name and its products are protected by trademark and copyright laws.

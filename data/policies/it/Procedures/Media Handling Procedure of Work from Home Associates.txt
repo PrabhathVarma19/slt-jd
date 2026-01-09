@@ -1,0 +1,404 @@
+Media Handling Procedure of
+Work From Home Associates
+
+
+
+
+TRIANZ INTERNAL           trianz.com
+                      Statement of Confidentiality
+
+  The information contained in this document is internal to Trianz. It shall not be
+  disclosed, duplicated, or used for any purpose other than that stated herein, in
+  whole or in part, without the express written consent of Trianz.
+
+
+
+
+                         Information Classification
+
+
+     ☐ Public
+
+     ☒ Internal
+
+     ☐ Confidential
+
+     ☐ Restricted
+
+
+
+
+TRIANZ INTERNAL                                                                  2
+                          Table of Contents
+1.   PURPOSE                                        4
+
+2.   OBJECTIVE                                      4
+
+3.   SCOPE                                          4
+
+4.   ROLES AND RESPONSIBILITIES                     4
+
+5.   MEDIA SHIPPING FOR WORK-FROM-HOME ASSOCIATES   5
+
+6.   RESOURCES                                      8
+
+7.   TRAINING                                       8
+
+8.   REFERENCES                                     8
+
+9.   ISO CONTROL MAPPING(S)-                        8
+
+
+
+
+ TRIANZ INTERNAL                                    3
+  1. Purpose
+
+    Purpose of this document is to describe the Media Handling procedure when
+
+    requests are raised to ship devices containing Information across Non office
+
+    locations especially when Associates are working from home.
+
+
+
+  2. Objective
+
+
+    To ensure that any Media or devices like Laptops having information
+    (Personal, Sensitive, Confidential) are shipped securely and all corresponding
+    actions are addressed proactively so as to minimize any information risks.
+
+
+
+  3. Scope
+     •   All Associates (Permanent and contractor employees)
+     •   All corporate functions & Delivery functions in Trianz
+     •   All Trianz products and services
+
+
+
+
+  4. Roles and Responsibilities
+     •   All Employees, contractors or temporary personnel are responsible for
+         following Consent Procedure before collecting any personal data.
+
+
+
+         Role                     Responsibility                            Internal/
+                                                                            External
+
+         All Associates ,         Raise requests with admin team, IS        Internal
+         Including, Contract      team with necessary approvals as
+                                  indicated in the procedure
+                Employees
+
+
+
+
+TRIANZ INTERNAL                                                                        4
+            Admin Team        To ensure shipping the devices          Internal
+                              across Non Office locations by
+                              working with the Vendors following
+                              steps mentioned in procedure
+
+
+                                  Wherever appropriate esp for
+            HR Operations                                             Internal
+                                  Associates serving resignation as
+            team
+                                  indicated in procedure coordinate
+                                  with Associate for a smooth
+                                  implementation of this process
+                                  ensuring the workflow
+
+
+            IS team               Ensure verification and / or        Internal
+                                  required implementation for
+                                  safeguarding data or
+                                  information in the device
+           Purchase Team          Ensure required Insurance and or    Internal
+                                  Vendor agreements are in place
+
+
+            Infosec Team          Any approvals for exception to this Internal
+                                  process or clarifications on this
+                                  procedures
+
+
+
+
+5. Media Shipping for Work-from-home Associates
+
+
+ For Trianz owned Information Assets ( eg: Laptops)
+
+
+ • For new hire – same as onboarding process and no change in this
+
+
+
+
+TRIANZ INTERNAL                                                              5
+ • For resigned Associates, HR to communicate to Associate to raise a request with
+
+   IS @trianz.com with subject “IS Verification and approval for shipping
+
+   device(laptop) due to resignation”
+
+ • For other active Associates where employment is active, in case of any required
+
+   movement from one associate to another, Admin to communicate to Associate
+
+   to raise a request with IS @trianz.com with subject “IS Verification and approval
+
+   for shipping device(laptop) for Project purpose”
+
+ • IS team to Verify the following once request is received from Associate o Live
+
+   video call for checking Health or condition of the Device(Laptop)
+
+      o In case of Devices (laptop) of resigned Associates, remote wipe to be
+
+      performed, if possible o If remote wipe is not possible technically or due to
+
+      project need,
+
+
+              ▪   verify if encryption is enabled
+
+              ▪   enforce Associate to get an approval from PM that there is no
+
+                  critical client or Trianz data
+
+              ▪   relevant data is backed up from the device o IS team to give a go
+
+                  ahead after the above steps are completed to Admin team for
+
+                  going ahead with shipping
+
+      o   Admin team to go ahead with the shipping after receiving go ahead from
+          IS team
+
+
+
+      For Client owned Information
+
+      Assets (Eg. Laptops)
+
+      o      Admin team to ensure below:
+
+
+
+
+TRIANZ INTERNAL                                                                       6
+           ▪ enforce an approval and confirmation from PM that there is no critical
+
+                  Client or Trianz Data in Device (Laptop)
+
+           ▪ adequate backups have been taken for the data on the
+
+      Device (Laptop) o Admin to proceed ahead with Shipping if
+
+      above steps are completed
+
+      o   The other generic points that Admin team needs to look into still holds
+
+          good wherever required with Purchase team-
+
+      o   If we can have agreements with Shipping vendors (loss recovery or
+
+          Damages cost, nondisclosure clause) (agreement for DTDC, Bluedart)
+
+      o   Feasibility of Insurance ( Please check transit damage) o       Update in
+
+          the Asset movement register
+
+
+
+For both assets irrespective of ownership,
+
+Following must be ensured by Admin team: - o             Packaging should be
+
+   adequate to protect the contents from any physical damage likely to arise
+
+   during transit and in accordance with manufacturers’ specifications
+
+
+      o   Special controls should be adopted, where necessary, to protect sensitive
+
+          information from unauthorized disclosure or modification e.g. use of locked
+
+          containers, Tamper-evident packaging (which reveals any attempt to
+
+          gain access)
+
+       Following must be ensured by Admin and Purchase team o             Agreements
+
+   with Shipping vendors to be ensured with adequate clauses giving protection to
+
+   the asset during transit like loss recovery or damages cost, non disclosure
+
+   clause)
+
+TRIANZ INTERNAL                                                                       7
+      o    Insurance to be ensured wherever possible o            Update in the Asset
+
+           movement register
+
+           ▪ type of physical media
+
+           ▪ the authorized sender/recipients
+
+           ▪ the date and time
+
+           ▪ number of physical media
+
+           ▪ If any Personal or critical information is present
+
+
+
+
+6. Resources
+  • Admin Team
+
+  • Information Systems Team
+
+  • Purchase Team
+
+  • HR Operations team
+
+  • Information Security Assurance Team
+
+
+
+
+7. Training
+  • None
+
+
+
+8. References
+
+Media Handling Policy
+Data Disposal Policy , procedure and template
+
+
+
+
+9. ISO Control Mapping(s)-
+
+    Category of         ISO 27001:2022 Control              Document Name as
+    Control                                                 per ISO 27001:2022
+
+
+
+TRIANZ INTERNAL                                                                         8
+    Technological 7.10 Storage media Control      Media      Handling
+    Controls      Storage media shall be          Procedure for Work
+                  managed through their life      from home
+                  cycle of acquisition, use,      associates
+                  transportation and disposal
+                  in accordance with the
+                  organization's classification
+                  scheme and handling
+                  requirements.
+
+
+
+
+TRIANZ INTERNAL                                                         9
+                                    Document Control
+
+          Owner: CISO                              Release    MEDHL_PROC_0133
+
+                                                   ID:
+
+
+
+              For Trianz Process Improvement Group (TPIG) Purpose only
+
+                                    Version History
+
+
+Ver.        Date        Author      Reviewer Approver     Reason for      Change
+No.                                                       Change          Description
+0.01        15-Sep-     Anitha      Phani       Phani     Updated         Added Policy for
+            20          Ravindran   Krishna     Krishna   Policy for      shipping devices
+                                                          Covid-19        from non office
+                                                          related         locations
+                                                          circumstance
+                                                          of need for
+                                                          shipping
+                                                          devices from
+                                                          non office
+                                                          locations
+1.0         21-Sep-     Anitha      Phani       Phani     Baselined and   Baselined and
+            20          Ravindran   Krishna     Krishna   approved        approved Version
+                                                          Version
+1.1         28-Jan-     Vijaya      Phani                 For Review      Information
+            2021        Rajeswari   Krishna                               classification
+                                                                          updated
+2.0         28-Jan-     Vijaya      Phani       Phani     For Approval    Approved and
+            2021        Rajeswari   Krishna     Krishna                   Baselined
+2.0         06-Jan-     Divya       Balu Nair             For Review      No Changes
+            22
+
+
+
+      TRIANZ INTERNAL                                                           10
+2.1     24-Feb-     Kruti      Karthik              For Review     The scope has
+        2022                                                       been extended to
+                                                                   products and
+                                                                   services
+3.0     18-Mar-     Kruti      Siva N    Siva N     For Approval   Approved and
+        2022                                                       baselined
+
+
+3.1     03-May-     Shalini,   Balu Nair Srikanth   For review     Reviewed and No
+        2023        Rama                                           changes
+                    Madhavan
+                                                                   Migrated to new
+                                                                   template
+4.0     12-May-     Rama       Vijaya    Srikanth M For Approval   Approved and
+        2023        Madhavan                                       Baselined
+4.1     15-Feb-     Shalini    Vijaya    Srikanth   For Review     Mapped with new
+        24                                                         ISO control 7.10
+5.0     23-Feb-     Shalini    Vijaya    Srikanth   For Approval   Approved and
+        24                                                         Baselined
+
+
+5.1     28-May-     Kruti      Vijaya               For Review     Migrated to new
+        25                                                         template
+6.0     29-May-     Kruti      Vijaya    Srikanth   For Approval   Approved and
+        25                                                         Baselined
+
+
+
+
+  TRIANZ INTERNAL                                                         11
+                                Contact Information
+                                               Name
+
+                                               Email
+
+                                              Phone
+
+
+
+
+                                  Thank You
+                                     infosec@trianz.com
+
+
+
+
+ The content in this document is copyrighted; any unauthorized use – in part or full – may violate the
+ copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly
+   displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz
+ name and its products are subject to trademark and copyright protections, regardless of how and
+                                          where referenced.
+
+
+TRIANZ INTERNAL                                                                                      12
+

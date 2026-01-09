@@ -1,0 +1,956 @@
+# Information Security and Data Privacy Apex Manual
+
+## Statement of Confidentiality
+- The information contained in this document is internal to Trianz.
+- It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- **Public**: Not classified
+- **Internal**: Classified
+- **Confidential**: Not classified
+- **Restricted**: Not classified
+
+## Table of Contents
+1. **SCOPE** (Page 5)
+2. **NORMATIVE REFERENCE** (Page 7)
+3. **DEFINITIONS/ABBREVIATIONS/ACRONYMS** (Page 7)
+4. **CONTEXT OF ORGANIZATION** (Page 8)
+   - 4.1 Understanding the organization and its context (Page 11)
+   - 4.2 Understanding the needs and expectations of interested parties (Page 12)
+   - 4.3 Determining the scope of the Information Security and Privacy management system (Page 17)
+   - 4.4 Information Security & Privacy Management System (Page 19)
+5. **LEADERSHIP** (Page 22)
+   - 5.1 Leadership and commitment (Page 22)
+   - 5.2 Policy (Page 22)
+   - 5.3 Organizational roles, responsibilities and authorities (Page 23)
+6. **PLANNING** (Page 23)
+   - 6.1 Actions to address risks and opportunities (Page 23)
+     - 6.1.1 General (Page 23)
+     - 6.1.2 Information security and Privacy risk assessment (Page 25)
+     - 6.1.3 Information security risk treatment (Page 25)
+     - 6.1.4 Information security and Privacy objectives and planning to achieve them (Page 26)
+     - 6.1.5 Review of Information Security and Privacy Management System (Page 26)
+   - 6.2 Planning for changes (Page 26)
+     - Refer to System and Software Change Management Procedure (Page 27)
+7. **SUPPORT** (Page 27)
+   - 7.1 Resource (Page 27)
+   - 7.2 Competence (Page 28)
+   - 7.3 Awareness (Page 28)
+   - 7.4 Communication (Page 29)
+   - 7.5 Documented information (Page 30)
+     - 7.5.1 General (Page 30)
+     - 7.5.2 Creating and updating (Page 30)
+     - 7.5.3 Control of Documented information (Page 30)
+8. **OPERATION** (Page 32)
+   - 8.1 Operational planning and control (Page 32)
+   - 8.2 Information security and Privacy risk assessment (Page 32)
+   - 8.3 Information security and Privacy risk treatment (Page 33)
+9. **PERFORMANCE EVALUATIONS** (Page 33)
+   - 9.1 Monitoring, measurement, analysis and evaluation (Page 33)
+   - 9.2 Internal Audit (Page 35)
+     - 9.2.1 General (Page 35)
+     - 9.2.2 Internal Audit Program (Page 35)
+   - 9.3 Joint Controller (Page 37)
+   - 9.4 Management review (Page 37)
+10. **IMPROVEMENT** (Page 38)
+    - 10.1 Nonconformity and Corrective Action (Page 38)
+    - 10.2 Continual Improvement (Page 39)
+11. **ISO CONTROL MAPPING(S)** (Page 40)
+
+## 1. Scope
+- The purpose of this ISMS Manual is to provide an outline of the Information Security Management System implemented at Trianz, which complies with the requirements of ISO 27001:2022 and ISO 27701:2019 Standards.
+- Internally, the manual is used to help all Associates understand the management system and refer to various processes that must be met and maintained to ensure customer satisfaction.
+
+### 1. Continuous Improvement
+
+The manual is utilized to introduce our Management System, referred to as the "Blue Book," to customers and auditors. It familiarizes them with the implemented controls and assures them of the integrity of the Management System.
+
+### 2. Scope of ISO 27001:2022 Certification
+
+The ISMS Apex Manual applies to:
+- All Trianz associates
+- All Trianz establishments at all onshore and offshore locations
+
+#### Locations and Services:
+- **Bangalore**: Software Development, Testing services, Maintenance, and Support services for customized applications along with Support functions.
+- **Hyderabad**: Software Development, Testing services, Maintenance, and Support services for customized applications along with Support functions.
+- **Chennai**: Software Development, Testing services, Maintenance, and Support services for customized applications along with Support functions.
+- **TCI-Virginia**: Software Development, Testing services, Maintenance, and Support services for customized applications along with Support functions.
+
+### 3. Scope of ISO 27701:2019 Certification
+
+The ISMS Apex Manual applies to:
+- All Trianz associates
+- All Trianz establishments at all onshore and offshore locations
+
+#### Locations and Services:
+- **Bangalore**: Software Development, Testing services, Maintenance, and Support services for customized applications along with Support functions.
+- **Hyderabad**: Software Development, Testing services, Maintenance, and Support services for customized applications along with Support functions.
+- **Chennai**: Software Development, Testing services, Maintenance, and Support services for customized applications along with Support functions.
+- **TCI-Virginia**: Software Development, Testing services, Maintenance, and Support services for customized applications along with Support functions.
+
+### 4. Information Security Policy and Objectives
+
+#### Information Security Policy
+Trianz is committed to implementing processes and systems to protect and safeguard the Confidentiality, Integrity, Availability, and Privacy (CIAP) of all critical information and information processing assets from internal and external threats to ensure secure business operations.
+
+#### Data Protection & Privacy Policy
+Refer to the Data Privacy and Protection Policy Document.
+
+#### Information Security & Privacy Objectives
+Information Security and Privacy objectives are defined at each function and level related to risk assessment, which is tracked regularly. The Management Representative (MR) will discuss the objectives. Refer to the Information Security and Privacy Objectives document.
+
+### 5. Normative Reference
+The following documents are referenced, and their content constitutes requirements of this document:
+- ISO/IEC 27000: Information technology — Security techniques — Information security management systems — Overview and vocabulary.
+- ISO/IEC 27701:2019: Security techniques — Extension to ISO/IEC 27001 and ISO/IEC 27002 for privacy information management — Requirements and guidelines.
+
+### 6. Definitions/Abbreviations/Acronyms
+
+- **BCP**: Business Continuity Plan
+- **CIO**: Chief Information Officer
+- **CEO**: Chief Executive Officer
+- **CISO**: Chief Information Security Officer
+- **CMT**: Crisis Management Team
+- **CRO**: Chief Recovery Officer
+- **ISMS**: Information Security Management Systems
+- **ISO**: International Organization for Standardization
+- **ISAC**: Information Security Assurance Council
+- **ITSM**: Information Technology Security Manager
+- **NDA**: Non-Disclosure Agreement
+
+### Non-Disclosure Agreement
+
+- **PIMS**: Privacy Information Management System
+- **SOA**: Statement of Applicability
+- **TMR**: Top Management Review
+- **Top Management**: VPs, President, and CEO
+
+Refer to Appendix A for ISMS Definitions.
+
+### 4. Context of Organization
+
+#### Security Context
+
+**Purpose**: Trianz is a Business Advisory and Technology Services company with offices in three countries. Trianz offers an integrated portfolio of services, including:
+- Custom Application Development
+- Application Maintenance
+- IT Service Management
+- Packaged Application
+- Testing
+- Remote Infrastructure Maintenance
+- Monitoring Services
+- Cloud Consulting Services
+
+Trianz utilizes its extensive global infrastructure and network of offices to deliver holistic, multi-service solutions across key industry verticals, including:
+- High Tech
+- Insurance
+- Financial Services
+- Retail
+- Life Sciences
+- Public Sector
+- Healthcare
+- Logistics
+
+**Strategic Mission**: Trianz aims to provide clients with:
+- A secure environment and best practices conforming to ISO standards: ISO 27001:2022, ISO 27701:2019, ISO 9001:2015, and ISO 20000-1:2018.
+- Execution of strategic initiatives that deliver measurable business impact as envisioned by senior management.
+- Business continuity to ensure data availability and minimal disruption to operations.
+- Appropriate information security measures to protect the confidentiality of retained information.
+- Assurance that outsourced providers operate with integrity and have suitable information security measures.
+
+**External Issues**: Relevant external issues include:
+- Legal and regulatory requirements
+- Power and connectivity challenges
+- High client expectations for state-of-the-art technology
+- Geographic location factors
+- Competitive landscape
+- Economic pressures
+- Increased regulation and compliance demands
+- Supply chain disruptions
+- Technological advancements
+- Product demonstrations for compliance
+
+**Internal Issues**: Relevant internal issues include:
+- Information systems
+- Organizational culture
+- Organizational structure
+- Defined roles and responsibilities
+- Availability of skilled manpower
+- Contractual agreements with customers
+- Service Level Agreements (SLAs) with customers
+- Values of internal stakeholders
+- Human resource capabilities
+- Standard operating procedures and guidelines
+- Policy and procedure updates aligned with Trianz products
+- Managed Threat Detection and Response (SIEM)
+- Information Security and Privacy Risk Assessment for third parties
+- Health issues affecting critical associates
+- Vulnerability Assessment and Penetration Testing (VAPT)
+- Training sessions for Concierto
+- Relationships with investors
+
+### 4.1 Understanding the Organization and Its Context
+
+Trianz, founded in Silicon Valley in 2001, serves several Fortune 1000 companies across various industry verticals and has a presence in:
+- Silicon Valley
+- Washington DC Metro
+- New York
+- Bengaluru
+- Chennai
+- Hyderabad
+
+Trianz provides services in technology and functional industries, including:
+- Big Data
+- Information Management & Data Warehouse
+- Business Intelligence & Analytics
+- Enterprise Mobility
+- Remote Infrastructure Management
+- Enterprise Content & Portals
+- Custom Application Development
+- Information Security
+- Enterprise Software
+- IT Service Management
+- Independent Verification & Validation
+- Sales CRM
+- Customer Service CRM
+- Cloud Consulting Services
+
+**Acceliant**: The healthcare division of Trianz, which offers an integrated eClinical Trial Data Management suite designed for large-scale clinical trials.
+
+Trianz serves clients across high-tech, insurance, financial services, retail, life sciences, public sector, healthcare, and logistics industries.
+
+### 4.2 Understanding the Needs and Expectations of Interested Parties
+
+At Trianz, the following needs and expectations were identified by interested parties relevant to the information security management system:
+
+#### Interested Parties and Their Expectations
+
+1. **Management**
+   - Ensure Confidentiality, Integrity, Availability, and Privacy (C, I, A, P) of information assets.
+   - Ensure transparency in operations.
+   - Ensure customer information security needs are met.
+   - Ensure Business Continuity Planning (BCP) strategies are made and maintained.
+   - **Responsibilities:**
+     - Management addresses information security management through various inputs from interested parties and provides direction for implementing the Information Security Management System (ISMS).
+     - The Information Security Data Protection Authority (ISDPA) addresses the implementation of ISMS with support from management and other interested parties.
+
+2. **HR and Learning Teams**
+   - Ensure C, I, A, and P of human resource assets.
+   - Ensure personal records of employees and Non-Disclosure Agreements (NDAs) are maintained.
+   - Ensure salary information, training records, leave records, and appraisal documents are created and maintained.
+   - Ensure completion of mandatory courses related to information security and privacy, and support in scaling the competence level of resources.
+   - **Responsibilities:**
+     - The Global HR Head and ISDPA ensure compliance with People’s Controls as per ISO 27001:2022.
+     - ISDPA ensures the implementation of HR and Learning compliance to ISO 27001:2022.
+
+3. **IS Operations**
+   - Ensure C, I, A, and P of infrastructure assets.
+   - Ensure technical controls and organizational and physical controls compliance as per ISO 27001:2022.
+   - **Responsibilities:**
+     - The CIO, CISO, and IS Team ensure compliance.
+     - ISDPA ensures the implementation of IS Operations compliance to ISO 27001:2022.
+
+4. **Employees**
+   - Adhere to ISMS policies and procedures.
+   - Ensure compliance with organization-defined information security policies and procedures.
+   - **Responsibilities:**
+     - Employees and the ISDPA Team ensure compliance with ISO 27001:2022.
+
+5. **Contract Employees**
+   - Comply with information security requirements.
+   - **Responsibilities:**
+     - Contract employees must ensure compliance with organizational information security policies.
+
+### 5. Information Security Requirements
+
+#### 5.1 External Interested Parties
+
+The requirements of external interested parties relevant to information security are as follows:
+
+- **Customers/Clients**:
+  - Expect the Information Security Management System (ISMS) and Privacy Information Management System (PIMS) requirements to be specified in the Master Service Agreement (MSA).
+  - Require third-party audits to be conducted as per MSA.
+  - The ISDPA team ensures compliance with ISMS/PIMS requirements and addresses feedback from third-party audits as applicable.
+  - Responsibility: CIO / CISO, Trianz ISDPA and IS team.
+
+- **Vendors**:
+  - Must meet compliance standards such as ISO 27001:2013 and ISO 27701:2019.
+  - Additional compliance with ISO 27017:2015 and ISO 27018:2019 is required as applicable.
+  - Vendors are subject to third-party audits (right to audit) and must adhere to other agreements such as Non-Disclosure Agreements (NDA) and Data Processing Agreements (DPA).
+  - Responsibility: Purchase team and ISDPA team ensure vendor compliance with ISMS requirements.
+
+- **Trainers/External Faculty**:
+  - Must meet compliance standards such as ISO 27001:2013 and ISO 27701:2019.
+  - Additional compliance with ISO 27017:2015 and ISO 27018:2019 is required as applicable.
+  - Responsibility: Professional Development team ensures trainers comply with ISMS requirements.
+
+- **Government Agencies/Regulators**:
+  - Expect the ISDPA team to ensure compliance with necessary and applicable information security and business continuity laws and regulations.
+
+- **Utility Organizations (Auditing Bodies)**:
+  - Require auditing of organizations to ensure compliance with standards such as ISO 27001:2013, ISO 27017:2015, ISO 27018:2019, and ISO 27701:2019.
+  - Responsibility: ISDPA team ensures compliance with necessary and applicable laws and regulations.
+
+- **Authorities (Legal, Constitutional Bodies)**:
+  - Provide inputs to safeguard and comply with necessary and applicable information security and business continuity laws and regulations.
+  - Also provide a legal framework for critical information infrastructure compliance.
+  - Responsibility: ISDPA team ensures compliance with necessary and applicable laws and regulations.
+
+### 4.3 Determining the Scope of the Information Security and Privacy Management System
+
+Trianz provides a range of services in technology and functional industries, including:
+
+- Big Data
+- Information Management & Data Warehouse
+- Business Intelligence & Analytics
+- Enterprise Mobility
+- Remote Infrastructure Management
+- Enterprise Content & Portals
+- Custom Application Development
+- Information Security
+- Enterprise Software
+- IT Service Management
+- Independent Verification & Validation
+- Sales CRM
+- Customer Service CRM
+- Cloud Consulting Services
+
+To achieve information security organizational goals, Trianz has established a security infrastructure that addresses the following areas:
+
+- **Personnel Security**: Maintained to reduce risks of human error, theft, fraud, or misuse of facilities. All employees must be aware of information security threats and concerns.
+  
+- **Employee Conduct**: All employees are expected to conduct themselves in accordance with the ISMS policy of Trianz.
+  
+- **Information Classification**: Data is classified into various types based on sensitivity: 
+  - Public
+  - Internal
+  - Confidential
+  - Restricted
+  
+- **Data Labeling**: All assets of Trianz must be labeled.
+  
+- **Data Transmission**: Data must be securely transferred and protected using the latest technologies.
+  
+- **Data Encryption**: Data is protected with passwords and access permissions.
+  
+- **Access Control**: Strict controls are enforced; entry to premises is limited to authorized personnel only. An access control list must be maintained by the Admin and IT team.
+  
+- **Firewall Rule**: Periodic monitoring and necessary precautions are implemented by Firewall Microsoft Essential.
+  
+- **Network Application**: Required controls are in place.
+  
+- **Logging of Systems**: System logs are generated and monitored regularly.
+  
+- **Information Asset Management**: Managed by the IS Team.
+  
+- **Physical Security**: Maintained and controlled in all secured and unsecured areas.
+  
+- **Security Maintenance**: Information security is periodically monitored and controlled, as outlined in the IS Operation Process.
+  
+- **Cloud Infrastructure Access**: Access to customer cloud infrastructure is controlled through secure Single Sign-On (SSO).
+  
+- **Asset Risk Register**: Reviewed annually.
+
+**Note**: All goals shall be reviewed annually in the form of objectives.
+
+### 4.4 Information Security & Privacy Management System
+
+The organization shall:
+
+- Establish, implement, maintain, and continually improve an Information Security Management System (ISMS) in accordance with the requirements of the relevant document.
+  
+- Ensure that the ISMS is aligned with the requirements of the applicable International Standard.
+
+The ISDPA team at Trianz is responsible for developing, implementing, maintaining, and continually improving Information Security and Privacy within the context of the organization’s overall business activities.
+
+The Information Security and Privacy framework at Trianz follows a continuous cycle of activities: Plan, Do, Check, and Act (PDCA Model), ensuring that information security controls are implemented with the interaction of the processes defined in the ISMS.
+
+### 5. Leadership
+
+#### 5.1 Leadership and Commitment
+- Top Management is committed to:
+  - Establish, implement, operate, monitor, review, maintain, and improve the Information Security and Privacy by:
+    - Establishing an Information Security Management System (ISMS) policy and Data Privacy and Protection Policy.
+    - Ensuring that Information Security and Privacy objectives and plans are established.
+    - Establishing roles and responsibilities for information security.
+    - Communicating the importance of meeting Information Security and Privacy objectives and conforming to the ISMS and Data Privacy and Protection policy, including legal responsibilities and the need for continual improvement.
+    - Providing sufficient resources for the establishment, implementation, operation, monitoring, review, maintenance, and improvement of Information Security and Privacy.
+    - Deciding the criteria for accepting risks and acceptable risk levels.
+    - Ensuring that internal Information Security and Privacy audits are conducted.
+- Conduct management reviews of Information Security and Privacy.
+- The Chief Information Security Officer (CISO) will present the status and effectiveness of Information Security and Privacy to the Chief Information Officer (CIO) at least once a year.
+- The review will include:
+  - Assessing opportunities for improvement.
+  - Identifying the need for changes to the Information Security and Privacy System policies and procedures.
+- Refer to the Management Review Procedure in the Common Support Folder.
+
+#### 5.2 Policy
+- Trianz is committed to implementing processes and systems to protect and safeguard the Confidentiality, Integrity, Availability, and Privacy (CIAP) of all critical information and information processing assets from internal and external threat sources to ensure secure business operations.
+
+### 5.3 Organizational Roles, Responsibilities and Authorities
+
+- Top management is responsible for assigning and communicating roles, responsibilities, and authorities related to information security within the organization.
+- Trianz Management has established roles and responsibilities for the Infosec and Data Privacy Organization to ensure effective information security deployment and management, including communication with all stakeholders.
+- The Information Security Advisory Committee (ISAC) consists of representatives from various corporate functions and business units and is led by the Chief Information Officer (CIO) or Chief Information Security Officer (CISO).
+- The Information Security Data Privacy Assurance (ISDPA) function is responsible for the implementation, maintenance, operation, and improvement of the Information Security Management System (ISMS) at Trianz.
+
+### 6. Planning
+
+#### 6.1 Actions to Address Risks and Opportunities
+
+##### 6.1.1 General
+- When planning for the information security management system, Trianz shall:
+  - Identify issues and determine risks and opportunities to achieve intended outcomes related to confidentiality (C), integrity (I), availability (A), and privacy (P) of information assets.
+  - Ensure transparency in operations and meet customer information security needs.
+  - Develop and maintain Business Continuity Planning (BCP) strategies.
+  - Reduce undesired effects such as breaches of information security requirements, data loss, or integrity issues.
+  - Plan for continual improvement by reviewing feedback from stakeholders, customer feedback, internal audit results, and the accomplishment of objectives.
+  - Implement risk mitigations to counter negative effects, determined through risk assessment methodologies.
+
+- Refer to the Risk & Opportunity Management Procedure and the Business Continuity and Disaster Procedure for further details.
+
+##### 6.1.2 Information Security and Privacy Risk Assessment
+- During risk assessment, the risk value of an asset is calculated as the product of Business Impact and Probability of Occurrence.
+- The values for Confidentiality (C), Integrity (I), Availability (A), and Privacy (P) are rated on a scale of 1, 3, and 9.
+- Asset identification is conducted for all assets containing information value in each department.
+- A unified risk assessment methodology is developed to conduct risk assessments.
+- Risk owners are identified during the risk assessment process.
+- All threats applicable to an asset are documented, and vulnerabilities for each information asset are identified along with associated threats.
+- The risk assessment methodology will be applied to all identified assets.
+
+- Refer to the Risk and Opportunity Management Procedure in the ISMS Procedure folder for more information.
+
+##### 6.1.3 Information Security Risk Treatment
+- Based on the Risk Assessment, actions will be taken by Delivery and Corporate Functions/Support to address identified risks.
+
+### 6.1.4 Information Security and Privacy Objectives and Planning to Achieve Them
+
+- Top Management shall establish and direct the ISDPA team to define information security objectives at relevant functions and levels, in alignment with the information security policy.
+- These objectives must be measurable to ensure that information security requirements are met, taking into account results from risk assessments and risk treatment history.
+- Information Security Objectives shall be documented, detailing:
+  - The plan to achieve the objectives
+  - Responsibilities
+  - Resources required
+  - Evaluation mechanisms
+- The ISDPA team is responsible for communicating with all relevant stakeholders and for reviewing and monitoring the Information Security Objectives.
+
+### 6.1.5 Review of Information Security and Privacy Management System
+
+- The Information Security and Privacy Management System includes Policies, Procedures, Guidelines, Templates, and Checklists.
+- All components must be reviewed at least once a year to ensure their suitability, effectiveness, and alignment with the current business environment.
+- All revised ISMS process assets must be approved by the CIO/CISO before being released to ISMS in the Blue Book.
+- Information Security and Privacy objectives must be defined at each function and level, connected with risk assessments that are tracked regularly.
+- The Management Representative (MR) will discuss the objectives.
+- Refer to the Information Security and Privacy Objectives for more details.
+
+### 6.2 Planning for Changes
+
+- Trianz shall plan for changes in the Information Security Management System in a controlled manner.
+- Changes must be:
+  - Planned
+  - Evaluated
+  - Authorized
+  - Prioritized
+  - Tested
+  - Implemented
+  - Documented
+- Refer to the System and Software Change Management Procedure for more information.
+
+### 7. Support
+
+#### 7.1 Resource
+
+- Management at Trianz will determine and provide the necessary resources to:
+  - Ensure that the right information is available only to the right people at the right time.
+  - Protect Information Assets.
+  - Safeguard critical information from unauthorized access, use, disclosure, modification, and disposal, whether intentional or unintentional.
+  - Maintain the confidentiality, integrity, and availability of critical information at all times.
+  - Initiate corrective and preventive actions on reported, actual, or suspected security incidents, as directed by the Chief Information Security Officer after investigation.
+  - Provide awareness programs on Information Security to all employees and relevant third parties (e.g., Subcontractors, Vendors, Consultants).
+  - Ensure compliance with all legal and contractual requirements, including:
+    - Master Service Agreements between clients and Trianz
+    - Agreements with vendors/suppliers
+    - Non-disclosure agreements with clients, suppliers, and employees
+    - Data Processing Agreements with clients and vendors (where applicable).
+  - Review the policy periodically to assess its effectiveness, changes in technology, legal and contractual requirements, and business efficiency.
+  - Ensure that all employees adhere to information security policies and procedures, with appropriate actions established for violations.
+  - Increase the confidence of business partners in exchanging critical information with Trianz.
+
+### 7.2 Competence
+- The ISAC group at Trianz ensures that all relevant personnel understand the importance of their information security activities and their contribution to ISMS objectives.
+- Competence of personnel assigned responsibilities in the ISMS is ensured by:
+  - Providing competent training.
+  - Evaluating the effectiveness of training based on feedback and taking necessary actions.
+  - Maintaining records of education, training, skills, experience, and qualifications.
+- Refer to the Professional Development Procedure and ISMS Objectives for further details.
+
+### 7.3 Awareness
+- Trianz ensures that all personnel assigned responsibilities in the ISMS are competent through:
+  - Providing competent training and certification to deployed personnel.
+  - Maintaining records of education, training, skills, experience, and qualifications related to Information Security and Privacy Management System.
+  - Conducting user education activities to raise awareness of the relevance and importance of information security activities.
+  - Planning and measuring the effectiveness of information security-related training by the Learning & Development team.
+- Refer to the Professional Development Procedure for additional information.
+
+### 7.4 Communication
+- The organization determines the need for internal and external communications relevant to the information security management system, including:
+  - What to communicate.
+  - When to communicate.
+  - With whom to communicate.
+  - How to communicate.
+- Trianz communicates the need for information security and privacy management through:
+  - Specific training during employee induction, including orientation on Information Security and Privacy policies.
+  - Communication of policies during induction programs.
+  - Internal review meetings among employees.
+  - Information Security and Privacy policies published in the Bluebook.
+  - Communication of specific customer needs to the project team and internal audit team.
+- Refer to the Project Management planning process and Professional Development Procedure for more details.
+
+### 7.5 Documented Information
+
+#### 7.5.1 General
+- There are two types of documents at a high level:
+  - **Blue Book Documents**: Includes Policies, Manuals, Group Manuals, Procedures, Guidelines, Checklists, and Templates.
+  - **Project and Corporate Function Documents**:
+    - Documents prepared during project execution, such as PM Workbooks, SRS, Design, Test Plan, Test Cases, etc.
+    - Documents related to Corporate Functions, including InfoSec and Compliance, HR, Recruitment, Learning & Development, Admin, Purchase, and IS Operations.
+
+#### 7.5.2 Creating and Updating
+- At Trianz, records are identified in each procedure and maintained by process owners for ISMS purposes.
+- These records serve as evidence for implementing the ISMS and for assessing effectiveness over time.
+- The internal audit team verifies these records against procedures to check adequacy.
+- Most records are maintained in either soft copy or hard copy format, with a backup process in place for copies.
+
+### 7.5.3 Control of Documented Information
+
+- All Bluebook documents must be controlled through proper reviews and approvals.
+- Changes to controlled documents require review and approval by the appropriate authority before release for use.
+- All evolving documents are version controlled, ensuring only relevant approved versions are available for use.
+- All documents are accessible online for reference by authorized personnel in a common database.
+- Controlled documents are identified by a unique Release Identification (Release ID).
+- Documents of external origin must be suitably identified and made available only for intended purposes and users.
+- Any Blue Book process document used for proposals, customer offsite usage, or distribution outside the organization is considered uncontrolled once it leaves Trianz premises, and change control does not apply.
+- Blue Book Process Artifacts that are no longer in use must be moved to an obsolete folder.
+- All records identified by projects and corporate functions must be generated and stored as specific records.
+- Records related to projects and corporate functions must be retained for 7 years from the date of creation. Records older than 7 years will be disposed of at the discretion of the Project Manager or Corporate Function Manager.
+- All ISMS documents and records will be protected and controlled according to the Documented Information Procedure, available in the Common Support Process Folder in Blue Book.
+
+### 8. Operation
+
+#### 8.1 Operational Planning and Control
+- The organization must plan, implement, and control processes to meet information security requirements.
+- All information security and privacy risk points must be identified, and a risk treatment plan must be formulated, identifying appropriate management actions, responsibilities, and priorities.
+- Control objectives are achieved through the implementation of selected controls.
+- Awareness programs must be conducted across Trianz to enhance awareness.
+- Operations must be managed concerning ISMS resources.
+- Procedures must be established for the prompt detection of and response to security incidents.
+- Operations of Information Security and Privacy must be managed.
+- Resources for Information Security and Privacy must be managed.
+- Procedures and controls must be implemented to enable prompt detection of security events and response to security incidents.
+- A training and awareness program must be implemented.
+
+#### 8.2 Information Security and Privacy Risk Assessment
+- A risk assessment methodology will be used to perform risk assessments on all identified assets.
+- Based on the risk assessment, ISAC will develop a risk treatment plan.
+- The CIO/CISO has the authority to recognize and accept risks when no feasible or cost-effective risk treatment plan is available.
+
+#### 8.3 Information Security and Privacy Risk Treatment
+- All information risk points must be identified, and a risk treatment plan must be formulated, identifying appropriate management actions, responsibilities, and priorities.
+- The risk treatment plan must be implemented to achieve identified control objectives, considering funding and allocation of roles and responsibilities.
+
+### 9. Performance Evaluations
+
+#### 9.1 Monitoring, Measurement, Analysis and Evaluation
+
+- **Review of Risk Assessment**: 
+  - The Chief Information Security Officer (CISO) will perform a review of the risk assessment once a year.
+  - Additional risk assessments will be conducted based on business and operational environment requirements.
+  - The Information Security Assurance Council (ISAC) will determine if the identified risk is acceptable or requires treatment, using criteria defined in the risk assessment methodology.
+  - Refer to the Risk and Opportunity Management Procedure in the ISMS Procedure folder.
+
+- **Vulnerability Assessment and Penetration Testing (VA/PT)**:
+  - The Information Security (IS) team will conduct Vulnerability Assessment and Penetration Testing at least once a year.
+  - The frequency of testing may increase based on business needs or changes in the operating environment.
+  - These assessments aim to provide a comprehensive evaluation of the overall network security posture.
+
+#### Compliance
+
+Trianz will comply with the following requirements:
+
+- **Legal Requirements**:
+  - A Compliance Team, consisting of representatives from Finance, HR, Admin, Information Security, Data Privacy Assurance, and IT, will identify legal requirements related to their functions.
+  - Legal requirements will be reviewed and updated annually and whenever any Acts are amended or new Acts come into force.
+  - The Compliance Team is responsible for maintaining and complying with identified legal requirements.
+  - Refer to ‘Legal Requirements’ in the Compliance folder of Organization Publications.
+
+- **Contractual Requirements**:
+  - Project Managers and Delivery Center Heads are responsible for complying with contractual requirements specified in their contracts with customers.
+
+- **Compliance with Information Security Policies and Procedures**:
+  - Information Security and Privacy Policies must be implemented to maintain the confidentiality, integrity, and availability of information processing facilities at Trianz.
+  - Compliance with these policies is mandatory for all employees, outside consultants, contractors, temporary employees, clients, or third parties accessing Trianz information assets.
+  - Violations of Information Security Policies may result in disciplinary action, including dismissal, legal prosecution, or claims for compensatory damages.
+  - Exceptions to the policy require approval from the Information Security Assurance Council (ISAC), which may seek higher-level management authorization.
+  - Compliance with policies and procedures will be reviewed by the CISO once a year.
+
+- **Technical Compliance Review**:
+  - Information systems will be regularly audited for compliance with security implementation procedures, including the updating of virus and security patches.
+
+#### 9.2 Internal Audit
+
+##### 9.2.1 General
+- The organization will conduct internal audits at planned intervals to assess whether the Information Security Management System (ISMS):
+  - a) Conforms to:
+    1) The organization's own requirements for its ISMS.
+    2) The requirements of the relevant documentation.
+  - b) Is effectively implemented and maintained.
+
+##### 9.2.2 Internal Audit Program
+- The organization will plan, establish, implement, and maintain an audit program that includes:
+  - Frequency of audits.
+  - Methods of auditing.
+  - Responsibilities for conducting audits.
+  - Planning requirements.
+  - Reporting procedures.
+
+### 9.3 Joint Controller
+- Refer to the Joint Controller and Information Sharing Framework for Trianz group of companies.
+
+### 9.4 Management Review
+- Top management shall review the organization’s Information Security Management System (ISMS) at planned intervals to ensure its continuing suitability, adequacy, and effectiveness.
+
+#### The management review shall include consideration of:
+1. The status of actions from previous management reviews.
+2. Changes in external and internal issues relevant to the ISMS.
+3. Changes in needs and expectations of interested parties relevant to the ISMS.
+4. Feedback on information security performance, including trends in:
+   - Nonconformities and corrective actions.
+   - Monitoring and measurement results.
+   - Audit results.
+   - Fulfillment of information security objectives.
+5. Feedback from interested parties.
+6. Results of risk assessment and status of the risk treatment plan.
+7. Opportunities for continual improvement.
+
+- The outputs of the management review shall include decisions related to continual improvement opportunities and any needs for changes to the ISMS.
+- The organization shall retain documented information as evidence of the results of the management review.
+
+- ISMS effectiveness is reviewed periodically, typically with risk assessment reviews conducted every six months and management reviews conducted annually. These reviews will include inputs from security audits, interested parties, customer feedback, incidents, and trends related to ISMS objectives.
+
+- The effectiveness of controls is measured from various sources, including:
+  - Information security incidents.
+  - Breaches.
+  - Objectives tracking.
+
+#### At Trianz, reviews are conducted to assess:
+- The level of residual risk and acceptable risk, considering changes to:
+  - Organizational changes, such as changes in processes and IT infrastructure.
+  - Technology adopted for service delivery.
+  - Business objectives and processes required for service delivery.
+  - Identified threats during ISMS operation over time to check the effectiveness of implementation.
+  - External events, such as changes in the legal or regulatory environment and changes in social climate, as well as contractual obligations related to information security.
+
+- Any need for conducting a reassessment of risks is evaluated during the management review.
+
+**10. Improvement**
+
+**10.1 Nonconformity and Corrective Action**
+- The Trianz ISAC team will take action to eliminate the causes of nonconformities related to the implementation and operation of the Information Security Management System (ISMS) to prevent recurrence.
+- Documented procedures for corrective action will include the following requirements:
+  - Identify nonconformities in the implementation and/or operation of the ISMS.
+  - Determine the causes of nonconformities and assess potential impacts and damage to the ISMS.
+  - Evaluate the need for actions to ensure nonconformities do not recur.
+  - Determine and implement necessary corrective actions.
+  - Record the results of actions taken.
+  - Review the corrective actions taken.
+  - Identify potential nonconformities and eliminate them to prevent occurrence.
+
+**10.2 Continual Improvement**
+- The organization has defined and documented an Information Security policy and objectives. The ISMS Measurement Framework is designed with these policies and objectives in mind.
+- A Top Management Review will be conducted to assess the implementation and effectiveness of the ISMS, leading to required corrective or preventive actions for identified improvements.
+- Internal audits, customer audits, and certification body audits will be conducted periodically to ensure adherence to the Blue Book and facilitate continual improvement.
+- Corrective and preventive actions will be taken to prevent the recurrence and occurrence of nonconformities.
+- Lessons learned from security experiences of other organizations, including clients, vendors, suppliers, partners, and advisories, will be applied.
+- Employees are encouraged to initiate process improvements by submitting a ‘process change request’ to the Trianz Process Improvement Group (TPIG).
+- The Infosec team will evaluate process change requests and implement them in the Blue Book if deemed feasible.
+
+**Corrective Action**
+- The organization will take action to eliminate the causes of nonconformities to prevent recurrence.
+- After identifying nonconformities, a Root Cause Analysis (RCA) will be conducted to identify root causes and corrective actions. The identified corrective actions will be implemented and their effectiveness verified.
+- If a corrective action requires a process change, the appropriate Blue Book process artifact will be modified.
+
+**Preventive Action**
+- The organization will take action to eliminate the causes of potential non-conformities to prevent their occurrence.
+- The priority for preventive actions will be determined by the ISAC based on inputs from security reviews and relevant departments.
+- The effectiveness of implemented preventive actions will be verified.
+
+**11. ISO Control Mapping(s)**
+- **Category of Control:** All Controls
+  - **ISO 27001:2022 Control:** All Controls
+  - **Document Name as per ISO 27001:2022:** Information Security and Data Privacy Apex Manual
+
+**Document Control**
+- **Owner:** CISO
+- **Release ID:** IAM-POL-0006
+
+**Version History**
+- Details regarding version history, including approval and reasons for changes, are documented but not specified in this excerpt.
+
+### 1.00 Changes Made
+- **Date:** 07-May-07  
+  - **Author:** Jyotessh Nair  
+  - **Change Type:** ISO  
+  - **Description:** Incorporated feedback from the Stage 1 Audit and Baseline of ISO 27001:2013.
+
+### 1.01 Policy Revisions
+- **Date:** 07-May-08  
+  - **Author:** Bharatees ha B R  
+  - **Change Type:** Internal ISMS Review/Audit  
+  - **Description:** Revised policies and procedures for all subdomains, including control objectives and controls, to address ISO-27001 standard requirements.
+
+### 1.02 Surveillance Audit Updates
+- **Date:** 04-Aug-09  
+  - **Author:** Bharatees ha B R  
+  - **Change Type:** 2nd Surveillance Audit  
+  - **Description:** 
+  - Included terms, definitions, acronyms, and abbreviations in Section 2.5.
+  - Added an ISMS strategy and methodology in Section 4 to establish and maintain ISMS.
+  - Expanded reasons for having ISMS under the "Purpose" section in 5.1.
+  - Included a section on ISWG in 5.2.6.
+  - Removed all sections related to policies and procedures as they are now addressed in the SOA.
+
+### 2.00 Baseline Approval
+- **Date:** 06-Aug-09  
+  - **Author:** Balu Nair  
+  - **Change Type:** Approval  
+  - **Description:** Baselined the document.
+
+### 2.01 ISMS Scope Change
+- **Date:** 08-Oct-09  
+  - **Author:** Bharatees ha B R  
+  - **Change Type:** Acquisition of Blue Ally by Trianz  
+  - **Description:** Changed the scope of ISMS and rearranged sections to align with the PDCA framework.
+
+### 3.00 Baseline Approval
+- **Date:** 08-Oct-09  
+  - **Author:** Balu Nair  
+  - **Change Type:** Approval  
+  - **Description:** Approved the baseline.
+
+### 3.01 Annual Review Updates
+- **Date:** 17-May-10  
+  - **Author:** Bharatees ha B R  
+  - **Change Type:** Annual Review  
+  - **Description:** 
+  - Made formatting changes.
+  - Updated release IDs according to the Trianz Blue Book.
+  - Clarified the review frequency for the Information Security policy.
+  - Provided hyperlinks to appendices.
+
+### 4.00 Baseline Approval
+- **Date:** 18-May-10  
+  - **Author:** Bharatees ha B R  
+  - **Change Type:** Approval  
+  - **Description:** Baselined the document.
+
+### 4.01 Formatting Changes
+- **Date:** 31-May-10  
+  - **Author:** Balu Nair  
+  - **Change Type:** QMG  
+  - **Description:** Formatting changes made.
+
+### Document Review and Approval History
+
+5.00  
+- Date: December 2010  
+- Reviewed by: Balu Nair  
+- Status: Reviewed and Baselined  
+
+5.01  
+- Date: 24 May 2011  
+- Reviewed by: Srilakshmi  
+- Status: Modified ReleaseID in cover page and header  
+
+6.00  
+- Date: 24 May 2011  
+- Reviewed by: Srilakshmi  
+- Status: Reviewed and Baselined  
+
+6.01  
+- Date: 27 June 2011  
+- Reviewed by: Balu Nair  
+- Input from: SA1  
+- Changes: 
+  - Added Scope of certification  
+  - Removed ISMC from section 5.2 Management commitment  
+
+7.00  
+- Date: 29 June 2011  
+- Reviewed by: G. D. Venkateswar Reddy  
+- Status: Reviewed the above changes and approved  
+
+7.01  
+- Date: 3 August 2011  
+- Reviewed by: Sudharsan  
+- Status: QMG Review  
+- Changes: 
+  - Replaced "Owner" with "Management Representative" in place of CIO  
+  - Removed "Retention period is 3 Years" row from Document Classification Scheme  
+
+8.00  
+- Date: 3 August 2011  
+- Reviewed by: Sudharsan  
+- Status: Request for baseline approved and Baselined  
+
+9.00  
+- Date: 08 May 2012  
+- Reviewed by: Srilakshmi  
+- Status: QMG Review  
+- Changes: 
+  - Modified the template format as per the standard format  
+  - Included sections: Overview of organization, organization chart, SOA sections  
+  - Modified Introduction, control of documents and records, internal audits, ISMS improvements section  
+  - Modified PDCA  
+  - Removed Scope diagram and ISMC related process  
+  - Aligned all sections for clarity  
+
+10.00  
+- Date: 08 November 2012  
+- Reviewed by: Balu Nair  
+- Status: Standardization of Blue Book Process Assets  
+- Changes: 
+  - Modified the template format  
+  - Changed the Logo  
+
+11.00  
+- Date: 29 April 2013  
+- Reviewed by: Srilakshmi  
+- Status: PCR raised by GD  
+- Changes: Modified section 4.4 Information security policy and objectives from CIO to CEO for review of policy  
+
+12.00  
+- Date: 17 April 2014  
+- Reviewed by: Srilakshmi  
+- Status: Review of Information Security Policy  
+- Changes: 
+  - No change in policy statement  
+  - Modified Logo  
+  - Modified section 1.1 Organization overview and service portfolio as per changes in the organization  
+
+13.00  
+- Date: 16 May 2015  
+- Reviewed by: Sudharsan  
+- Status: Updated based on ISMS Scope
+
+### 14.0 Technical Version ISO 27001:2013 Compliance Review
+- The technical version ISO 27001:2013 was reviewed and approved on May 26, 2015, by Sudharsan.
+
+### 14.01 Addition of Cloud Services
+- On October 16, 2016, Balu Nair approved the addition of Cloud services to the scope of ISO 27001:2013 Certification. The Apex Manual was modified to include Cloud services.
+
+### 15.0 Approval by CISO
+- On December 7, 2016, Balu Nair received approval from the CISO, and this was baselined.
+
+### 15.1 Information Classification Update
+- On April 29, 2019, Balu Nair and Joshy VM updated the information classification and modified the Trianz logo.
+
+### 16.0 Approval for Release
+- On May 14, 2019, Balu Nair and Ganesh Arunachala received approval for release, and this was baselined.
+
+### 16.2 Additional Approval Authority
+- On May 6, 2020, Balu Nair and Phani Krishna added the CISO as an additional approval authority. The applicability of the Apex manual was extended to all locations under the scope of ISO 27001:2013 Certification.
+
+### 17.0 Approval and Baselining
+- On May 14, 2020, Balu Nair, Phani Krishna, and Vivek Samba received approval and baselined the document.
+
+### 17.1 Information Classification Review
+- On February 9, 2021, Balu Nair and Phani Krishna updated the information classification.
+- The scope of ISO 27001:2013 Certification was modified as stated in the current “Certificate” for all three locations.
+- The responsibility of the CISO was changed to Delivery and Corporate Function/Support Functions under section 6.1.
+
+### 18.0 Approval Status
+- **Date:** 12-Feb-21
+- **Approved by:** Balu Nair, Phani Krishna
+- **Status:** Approved for Baseline, Baselined
+
+### 18.1 Review Status
+- **Date:** 25-Mar-2022
+- **Reviewed by:** Vijaya, Balu Nair, Siva N
+- **Status:** For review
+  - Scope of Certifications added to all locations:
+    - 27017:2015
+    - 27018:2019
+    - 27701:2019
+  - ISMS Manual updated to Information Security and Privacy Manual
+
+### 19.0 Approval Status
+- **Date:** 25-Mar-2022
+- **Approved by:** Vijaya, Balu, Siva
+- **Status:** Approved for Baseline, Baselined
+
+### 19.1 Review Status
+- **Date:** 06-May-2022
+- **Reviewed by:** Divya, Balu Nair, Siva N
+- **Status:** For review
+  - Scope of Certifications updated to all locations and risk rating updated.
+
+### 20.0 Approval Status
+- **Date:** 11-May-2022
+- **Approved by:** Divya, Balu Nair, Siva N
+- **Status:** Approved for Baseline, Baselined
+
+### 20.1 Review Status
+- **Date:** 15-July-2022
+- **Reviewed by:** Divya, Balu N
+- **Status:** For review
+  - Updated Footer from Trianz Confidential to Trianz Internal.
+
+### 21.0 Approval Status
+- **Date:** 15-July-2022
+- **Approved by:** Divya, Balu N, Siva N
+- **Status:** For Approval
+  - Approved and Baselined.
+
+### 21.1 Review Status
+- **Date:** 10-Mar-2023
+- **Reviewed by:** Beniyel S, Balu N
+- **Status:** For review
+  - Added Infosec Mandatory training in HR Learning.
+  - Migrated to new template.
+
+### 22.0 Approval Status
+- **Date:** 09-May-2023
+- **Approved by:** Beniyel S, Balu N, Srikant hM
+- **Status:** Approved and Baselined.
+
+### 22.1 Review Status
+- **Date:** 15-Feb-2024
+- **Reviewed by:** Vijaya, Srikanth, Balu
+- **Status:** For review
+  - Sections 4, 6, 7, 8, 9, 10 are updated in alignment with ISO.
+
+### 23.0 Approval and Baseline Updates
+- **Date:** February 23, 2024
+- **Approved by:** Vijaya, Srikanth, Srikant
+- **Status:** Approved and Baseline
+
+### 23.1 Scope Review
+- **Date:** April 30, 2025
+- **Reviewed by:** Vijaya, Balu
+- **Status:** For Review
+- **Details:** The scope section has been modified for the current scope. The following have been removed:
+  - Scope of California location
+  - ISO 27017 Certification
+  - ISO 27018 Certification
+
+### 24.0 Approval and Baseline Confirmation
+- **Date:** May 14, 2025
+- **Approved by:** Vijaya, Balu, Srikant
+- **Status:** Approved and Baseline
+
+### Contact Information
+- **Email:** infosec@trianz.com
+
+### Copyright Notice
+- The content in this document is copyrighted. Unauthorized use, modification, reproduction, or distribution may violate copyright, trademark, and other laws. The Trianz name and its products are protected by trademark and copyright laws.

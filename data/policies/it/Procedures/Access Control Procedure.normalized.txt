@@ -1,0 +1,417 @@
+# ACCESS CONTROL PROCEDURE
+
+## Statement of Confidentiality
+- The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- **Public**: Not classified
+- **Internal**: Classified
+- **Confidential**: Not classified
+- **Restricted**: Not classified
+
+## Table of Contents
+1. INTRODUCTION
+2. OBJECTIVES
+3. SCOPE
+4. ENTRY CRITERIA
+5. INPUTS
+6. PROCESS DESCRIPTION (PROCEDURE)
+   - 6.1 Account Management
+   - 6.2 Access Enforcement
+   - 6.3 Information Flow Enforcement
+   - 6.4 Segregation of Duties
+   - 6.5 Least Privilege
+   - 6.6 System Use Notification
+   - 6.7 Concurrent Session Control
+   - 6.8 Session Lock
+   - 6.9 Remote Access
+   - 6.10 Wireless Access
+   - 6.11 Access Control for Mobile Devices
+   - 6.12 Use of External Information Systems
+   - 6.13 Publicly Accessible Content
+   - 6.14 Privilege Access Management
+   - 6.15 Management of secret authentication information of users
+   - 6.16 Shared responsibility matrix
+   - 6.17 Information Access restriction
+   - 6.18 Use of Privileged utility programs
+   - 6.19 Password Management
+   - 6.20 Access Revocation
+7. EXIT CRITERIA AND OUTPUT
+8. ROLES AND RESPONSIBILITIES
+9. PREREQUISITES
+   - 9.1 Resource
+   - 9.2 Training
+   - 9.3 Reference Policy, Process, Procedure, Templates, Checklist
+10. ACRONYMS/ABBREVIATIONS
+11. MEASUREMENT
+12. STANDARDS ADDRESSED
+13. ISO CONTROL MAPPING(S)
+
+## 1. Introduction
+- Access control is a fundamental component of information security that dictates only authorized users are allowed access to the company’s information and resources.
+- The access control system provides quick, convenient access to authorized persons while restricting access to unauthorized individuals.
+
+## 2. Objectives
+- The objective of this procedure is to establish controls to ensure authorized user access and prevent unauthorized access to information systems.
+
+## 3. Scope
+- This procedure is applicable to all Trianz business systems, Trianz products, and Trianz managed services, including cloud, networks, and networked services established and managed by Trianz.
+
+## 4. Entry Criteria
+- New user registration requests must be received with necessary approvals.
+- Users/Associates must be on-boarded or off-boarded (for resigned users).
+- Systems must be deployed.
+
+## 5. Inputs
+- User access details.
+
+## 6. Process Description (Procedure)
+- All Trianz managed systems must develop, adopt, or adhere to a formal, documented access control procedure that addresses the following:
+  - Purpose
+  - Scope
+  - Roles
+  - Responsibilities
+  - Management commitment
+  - Coordination among organizational entities
+  - Compliance
+
+### 6.1 Account Management
+- Identify account types, which include:
+  - Individual
+  - Group
+  - System
+  - Application
+  - Guest/Anonymous
+  - Temporary
+- Establish conditions for group membership.
+- Identify authorized users of the information asset and specify their access privileges.
+- Require appropriate approvals for requests to establish accounts.
+- Establish, activate, modify, disable, and remove user accounts as necessary.
+- Specifically authorize and monitor the use of guest/anonymous and temporary accounts.
+- Notify account managers when:
+  - Temporary accounts are no longer required.
+  - Information asset users are terminated or transferred.
+  - Information asset usage or need-to-know/need-to-share changes.
+- Deactivate temporary accounts that are no longer required and accounts of terminated or transferred users.
+- Grant access to the system based on:
+  1. Valid access authorization.
+  2. Intended system usage.
+  3. Other attributes as required by the organization or associated missions/business functions.
+- Review accounts on a periodic basis, at least bi-annually.
+
+### 6.2 Access Enforcement
+- Enforce approved authorizations for both logical and physical access to the system in all Trianz business systems, including network protection.
+- Identify secure areas and enforce secure access to them.
+
+### 6.3 Information Flow Enforcement
+- Ensure all Trianz managed systems enforce approved authorizations for controlling the flow of information within the system and between interconnected systems.
+
+### 6.4 Segregation of Duties
+- Segregate duties of individuals as necessary to prevent malicious activity without collusion.
+- Implement segregation of duties through assigned information asset access authorizations.
+- Ensure segregation of development, production, and testing environments based on the user’s roles.
+- Document segregation of duties.
+
+### 6.5 Least Privilege
+- Ensure only authorized individuals are using all Trianz business systems and applications.
+- Review the user access control matrix on a quarterly basis by approved stakeholders.
+
+### 6.6 System Use Notification
+- Ensure an approved system use notification message or banner is displayed before granting access to the system, providing privacy and security notices consistent with regulations, standards, and policies.
+- Retain the notification message or banner on the screen until users take explicit actions to log on or further access the information asset.
+
+### 6.7 Concurrent Session Control
+- Limit the number of concurrent sessions for each system account to the minimum needed for information assets across all Trianz business systems.
+
+### 6.8 Session Lock
+- All Trianz managed systems shall prevent further access to the information asset by initiating a session lock after 300 seconds of inactivity.
+- Retain the session lock until the user reestablishes access using established identification and authentication procedures.
+
+### 6.9 Remote Access
+- Ensure privileged users connect to servers, devices, applications, or similar privileged access management (PAM) consoles.
+- Document allowed methods of remote access to the information assets through implemented SSL VPN.
+- Establish usage restrictions and implementation guidance for each allowed remote access method.
+- Monitor for unauthorized remote access to the information asset through Forti Analyzer/MDR (Managed Detection & Response).
+- Authorize remote access to the information asset prior to connection through the Trianz LDAP Server.
+- Enforce requirements for remote connections to the information asset.
+- Ensure cloud infrastructure is accessed over an encrypted secure channel.
+- All remote users must follow the remote working guidelines as defined in the blue book.
+- Ensure the client’s cloud infrastructure is accessed over an encrypted secure channel, with prior authorization from the respective service delivery manager.
+
+### 6.10 Wireless Access
+- Establish usage restrictions and implementation guidance for wireless access.
+- Monitor for unauthorized wireless access to the information asset.
+- Authorize wireless access to the information asset prior to connection.
+
+### 6.11 Access Control for Mobile Devices
+- Establish usage restrictions and implementation guidance for organization-controlled mobile devices.
+- Authorize the connection of mobile devices that meet organizational usage restrictions and implementation guidance to organizational information assets.
+- Monitor for unauthorized connections of mobile devices to organizational information assets.
+- Enforce requirements for the connection of mobile devices to organizational information assets.
+- Disable functionality on information assets that allows for the automatic execution of code on mobile devices without user direction.
+- Issue specially configured mobile devices to individuals traveling to sensitive international locations deemed to be of significant risk according to organizational policies and procedures.
+
+### 6.12 Use of External Information Systems
+- All Trianz managed systems must establish terms and conditions consistent with trust relationships with other organizations owning, operating, and/or maintaining external information assets, allowing authorized individuals to:
+  - Access the information asset from external information systems.
+  - Process, store, and/or transmit organization-controlled information using external information systems.
+- Maintain Non-Disclosure and Confidentiality agreements with Cloud Service Providers before hosting on public cloud.
+
+### 6.13 Publicly Accessible Content
+- Designate individuals authorized to post information onto an organizational information system that is publicly accessible.
+- Train authorized individuals to ensure that publicly accessible information does not contain nonpublic information.
+- Review proposed content for nonpublic information prior to posting on the organizational information system.
+- Review content on the publicly accessible organizational information system for nonpublic information.
+- Remove nonpublic information from the publicly accessible organizational information system if discovered.
+
+### 6.14 Privilege Access Management
+- Ensure all privileged users log in to their servers, network devices, applications, and web consoles using the implemented PAM utility only.
+- Users may request privileged access from the IS team/PAM Admin, who must provide appropriate access to the PAM portal with proper approvals. The PAM admin will create the privileged account based on the approval.
+- Privileged access should be valid for a specified amount of time only.
+- Establish a system for monitoring privileged activity.
+
+### 6.15 Management of Secret Authentication Information of Users
+- Control the allocation and use of secret authentication information.
+- The cloud service customer will use Multi-Factor Authentication (MFA) for authenticating cloud service administrators to administrative capabilities according to identified risks.
+- The cloud service provider should provide MFA for authenticating cloud service administrators to administrative capabilities according to identified risks.
+- Distribute secret authentication information to remote users through SMS.
+- In the event of a change or termination of the IT administrator, the server and confidential passwords will be maintained by the PAM tool in encrypted format and can be obtained using a break glass tool.
+
+### 6.16 Shared Responsibility Matrix
+- All cloud service provisioning and consumption should have a shared responsibility clearly defined, documented, and agreed upon among all cloud service participants.
+- Ensure the responsibility matrix explicitly mentions access control responsibilities.
+
+### 6.17 Information Access Restriction
+- Access to information and application system functions will be restricted according to the access control policy.
+- Restrictions will be based on individual business application requirements and the defined access control policy.
+- Cloud-related information regarding consumers and providers will be restricted in accordance with the defined access control policy.
+- Users with privileged access must protect the Confidentiality, Integrity, and Availability (CIA) of any information they encounter that may be violated while performing their duties.
+- Users with privileged access are responsible for complying with all applicable policies and procedures.
+- The PAM Admin from the IS team will maintain the master list of privileged user accounts.
+- Additions or deletions of privileged user accounts require prior approval from the PAM Admin.
+- Access to the mail server is restricted to IT System Administrators and above.
+- Access to Domain Controllers is restricted to IT System Administrators and above.
+- Access to Application Servers is restricted to IT System Administrators and above.
+- Default read-only access to removable devices is granted to users who are managers and above; other users below manager level will receive access based on approval from the CIO/CISO.
+- Access to Print Servers is restricted to IS System Administrators and above.
+
+### 6.18 Use of Privileged Utility Programs
+- The use of utility programs that can override system and application controls is restricted and tightly controlled.
+- Where permitted, the cloud service customer must identify the utility programs to be used in its cloud environment and ensure they do not interfere with the controls of the cloud service.
+- As a cloud service provider, the use of utility programs capable of bypassing normal operating or security procedures is strictly limited to authorized personnel.
+
+### 6.19 Password Management
+- Refer to the “Password Security Policy.”
+
+### 6.20 Access Revocation
+- Access rights for all users to information and Trianz systems will be removed upon termination of employment, contract, or in the case of an internal transfer.
+
+### 7. Exit Criteria and Output
+- Access is granted to all authorized users.
+- A filled User Access matrix for projects and functions is available.
+
+### 8. Roles and Responsibilities
+- **All Associates/Users**: Review the Access Control Matrix as per the procedure (Internal).
+- **IS Operations Team/Project/Product Cloud Management Team**: Ensure only authorized personnel access Trianz managed systems and cross-check access based on the Access Control Matrix (Internal).
+- **Project/Product Manager**: Ensure the principles of least privilege and separation of duties are followed (Internal).
+- **InfoSec & Data Privacy Assurance Team**: Review and approve exceptions based on business criticality (Internal).
+
+### 9. Prerequisites
+#### 9.1 Resource
+- Access control matrix tool.
+
+#### 9.2 Training
+- Awareness training on the access control matrix.
+
+#### 9.3 Reference Policy, Process, Procedure, Templates, Checklist
+- Document Name: Access Control Policy
+- Access Control Matrix Template
+
+### 10. Acronyms/Abbreviations
+- **PAM**: Privilege Access Management
+- **ACM**: Access Control Matrix
+- **SSL VPN**: Secure Sockets Layer Virtual Private Network
+- **MDR**: Managed Detection & Response
+- **LDAP**: Lightweight Directory Access Protocol
+- **RDP/MSTSC**: Remote Desktop Protocol/Microsoft Terminal Services Client
+- **SMS**: Short Message Service
+- **CIA**: Confidentiality, Integrity, and Availability
+- **CIO/CISO**: Chief Security Officer/Chief Information Security Officer
+
+### 11. Measurement
+- Refer to ICMM.
+
+### 12. Standards Addressed
+- The following standards are addressed:
+  - ISO 9001:2015
+  - ISO 27001:2013
+  - ISO 27701:2019
+
+### 13. ISO Control Mapping(s)
+- **Organizational Control**: 
+  - ISO 27001:2022 Control 5.15: Access control rules to manage physical and logical access to information and associated assets must be established and implemented based on business and information security requirements.
+  
+- **Technological Control**: 
+  - ISO 27001:2022 Control 8.4: Access to source code must be controlled. 
+
+### Document Control
+- **Owner**: CISO
+- **Release ID**: UAMR-PROC-0056
+
+### Version History
+- **Version 0.00**: 
+  - Date: 26-Feb-07 
+  - Author: Jyotessh G Nair 
+  - Reason for Change: Initial draft 
+  - Description: None
+
+- **Version 0.01**: 
+  - Date: 26-Feb-07 
+  - Author: Jyotessh G Nair 
+  - Reason for Change: Review 
+  - Description: Review feedback incorporated
+
+- **Version 1.00**: 
+  - Date: 26-Feb-07 
+  - Author: Jyotessh G Nair 
+  - Reason for Change: Baseline is approved 
+  - Description: Approved Baseline by Zulfikar Deen.
+
+- **Version 1.01**: 
+  - Date: 12-May-09 
+  - Author: Bharatee sha B R 
+  - Reason for Change: Risk Assessment 
+  - Description: Consolidated the controls related to access control.
+
+- **Version 2.00**: 
+  - Date: 04-Jun-09 
+  - Author: Balu Nair 
+  - Reason for Change: Approval for Baseline 
+  - Description: Baselined.
+
+- **Version 2.01**: 
+  - Date: 13-May-10 
+  - Author: Balu Nair 
+  - Reason for Change: QMG review 
+  - Description: Formatted entire document.
+
+- **Version 3.00**: 
+  - Date: 19-May-10 
+  - Author: Balu Nair 
+  - Reason for Change: Request for baseline 
+  - Description: Baselined.
+
+- **Version 3.01**: 
+  - Date: 24-May-11 
+  - Author: Srilakshmi 
+  - Reason for Change: QMG Review 
+  - Description: Modified release ID in header and cover page for consistency.
+
+- **Version 4.00**: 
+  - Date: 24-May-11 
+  - Author: Srilakshmi 
+  - Reason for Change: Approval Refer Baseline 
+  - Description: Baselined.
+
+- **Version 4.01**: 
+  - Date: 3-Aug-11 
+  - Author: Sudharsana 
+  - Reason for Change: QMG review 
+  - Description: 
+    - Replaced "Owner" with "Management Representative" in place of CIO.
+    - Removed "Retention period is 3 Years" row from Document Classification Scheme.
+
+- **Version 5.00**: 
+  - Date: 3-Aug-11 
+  - Author: Sudharsana 
+  - Reason for Change: Request for baseline 
+  - Description: Approved and Baselined.
+
+- **Version 6.00**: 
+  - Date: 22-Aug-12 
+  - Author: Sriramya 
+  - Reason for Change: Acceliant External Audit.
+
+### 6.0 Document Updates
+
+- **6.1** On 27-July-12, Dr. Grover added a section on Password Complexity.
+- **6.2** On 14-May-15, Sudharsana modified the Management of secret authentication information of users section as per ISO 27001:2013.
+- **6.3** On 27-Apr-17, Kamadev modified the Privilege Access Management section (4.4) based on Internal Audit feedback.
+- **6.4** On 28-Apr-17, Kamadev reviewed and baselined the document, approved by Ganesh Arunachala.
+- **6.5** On 23-Jun-18, Kamade reviewed the documents with no changes made.
+- **6.6** On 29-Apr-19, Balu Nair modified the information classification and the Trianz logo.
+- **6.7** On 14-May-19, Balu Nair approved the document for release, baselined.
+- **6.8** Changes were implemented post-review from Phani on an unspecified date.
+- **6.9** On 20-Nov-19, Balu Nair approved the document for release to Blue Book, baselined.
+- **6.10** On 11-May-20, Karthik N modified roles with CIO/CISO and integrated with a new template.
+- **6.11** On 14-May-20, Karthik N submitted the document for approval, which was approved and baselined.
+- **6.12** On 20-Jan-21, Karthik N modified the procedure as per Integration and updated the information classification for review.
+- **6.13** On 20-Jan-21, Karthik N submitted the document for approval, which was approved and baselined.
+- **6.14** On 21-July-21, Balu Nair conducted a yearly review, and the document was completely migrated.
+
+### Document Revision History
+
+1. **14.0** - Date: 30-Jul-21  
+   - Author: Balu Nair  
+   - Reviewed by: Phani  
+   - Status: Approved for Baseline  
+
+2. **14.0** - Date: 04-Jan-22  
+   - Author: Sanjana  
+   - Reviewed by: Balu Nair, Siva N  
+   - Status: For review  
+   - Note: No changes in the document  
+
+3. **14.1** - Date: 11-Mar-22  
+   - Author: Sanjana  
+   - Reviewed by: Balu Nair, Siva N  
+   - Status: For review  
+   - Note: Updated roles and responsibilities  
+
+4. **15.0** - Date: 21-Mar-22  
+   - Author: Sanjana  
+   - Reviewed by: Balu Nair, Siva N  
+   - Status: For Approval  
+   - Note: Approved for Baseline  
+
+5. **15.1** - Date: 03-May-23  
+   - Author: Shalini, Rama Madhav  
+   - Reviewed by: Balu Nair, Srikanth  
+   - Status: For Review  
+   - Note: Arcon PAM tool name is removed; New template change  
+
+6. **16.0** - Date: 09-May-23  
+   - Author: Shalini  
+   - Reviewed by: Balu Nair, Srikanth  
+   - Status: For Approval  
+   - Note: Approved and baselined  
+
+7. **16.1** - Date: 11-Feb-24  
+   - Author: Aishee  
+   - Reviewed by: Vijaya  
+   - Status: For Review  
+   - Note: Mapped with new ISO 27001, 2022 controls  
+
+8. **17.0** - Date: 23-Feb-24  
+   - Author: Aishee  
+   - Reviewed by: Vijaya, Srikanth  
+   - Status: For Approval  
+   - Note: Approved and baselined  
+
+9. **17.1** - Date: 29-Apr-25  
+   - Author: Kruti  
+   - Reviewed by: Vijaya  
+   - Status: For Yearly Review  
+   - Note: Migrated to a new Template  
+
+10. **18.0** - Date: 14-May-25  
+    - Author: Kruti  
+    - Reviewed by: Vijaya, Srikanth  
+    - Status: For Approval  
+    - Note: Approved and baselined  
+
+### Contact Information
+- **Email**: infosec@trianz.com  
+
+### Copyright Notice
+The content in this document is copyrighted; any unauthorized use – in part or full – may violate copyright, trademark, and other laws. This document may not be modified, reproduced, publicly displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz name and its products are subject to trademark and copyright protections, regardless of how and where referenced.

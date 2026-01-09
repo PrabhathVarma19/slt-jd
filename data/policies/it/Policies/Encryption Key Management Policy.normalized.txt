@@ -1,0 +1,226 @@
+# Encryption Key Management Policy
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal (☒)
+- Confidential
+- Restricted
+
+## Table of Contents
+1. PURPOSE
+2. OBJECTIVES
+3. SCOPE
+4. KEY FUNDAMENTALS
+5. POLICY STATEMENT
+   - Key Basic Security Principles
+   - Key Implementation Guidelines
+   - Key Management Processes
+     - 5.3.1 Key Generation
+     - 5.3.2 Key Rotation
+     - Key Revocation
+     - Key Disposal/Destruction
+     - Key Activation
+     - Key Deactivation
+     - Key Archival
+     - Key Compromise
+     - Key Recovery
+     - Key Inventory
+6. KEY LOGGING & AUDIT TRAIL
+7. ROLES & RESPONSIBILITIES
+8. APPLICABLE STANDARDS
+9. EXCEPTION(S)
+10. ISO CONTROL MAPPING
+
+## 1. Purpose
+The purpose of this policy is to provide guidance for managing secured encryption for the keys using Key Management Systems (KMS) in the Cloud, On-Prem, External, and Internal platforms.
+
+## 2. Objectives
+The objective of the Encryption Key Management Policy is to facilitate effective implementation of the security controls for the keys used/implemented in the Trianz Managed environment.
+
+## 3. Scope
+This policy document covers the Encryption Key Management for the Trianz Managed environment.
+
+## 4. Key Fundamentals
+- **Symmetric (or Secret) Key Cryptography**: 
+  - The sender encrypts the data with a secret key, and the receiver can recover the data through decryption using the same secret key. This method provides confidentiality and integrity of the data shared.
+
+- **Asymmetric (or Public) Key Cryptography**: 
+  - Each user in a network owns a private-public key pair. Public keys are available to all users, while private keys are kept secret. For example, User B can send confidential data to User A using A’s public key, which only A can decrypt with their private key. This method provides integrity and authentication.
+
+- **Key Hierarchy**: 
+  - A method to organize encryption keys where a master key encrypts other keys, which in turn encrypt the actual data to be protected.
+
+- **Key Hierarchy Types**:
+  - **Data Encryption Key (DEK)**: A key used to encrypt data in a symmetric algorithm.
+  - **Key Encryption Key (KEK)**: A key used to encrypt or wrap a data encryption key in a symmetric algorithm. It can be split into two or more components protected by split knowledge.
+  - **Master Key**: The key used to encrypt the key encryption keys (KEK). This key is securely stored on KMS systems and is not accessible in clear text by any individuals.
+
+- **Key Strength**: 
+  - Refer to NIST SP 800-57 (Recommendation for Key Management) for guidelines on key strength for implementation. Establish the application's minimum computational resistance to attack, considering the sophistication of the organization’s adversaries, the duration for which data needs to be protected, where data is stored, and whether it is exposed.
+
+# 5. Policy Statement
+
+## Key Basic Security Principles:
+- The confidentiality, integrity, and authenticity of all secret keys must be ensured.
+- Secret keys shall only exist in one or more of the following forms:
+  - Within an approved Secure Cryptographic Module (SCM).
+  - Encrypted using Key Encryption Keys (KEK) during exchange.
+  - Split into multiple components protected by split knowledge or dual control.
+- Individuals are not permitted to access any plaintext secret key.
+- Keys must be generated using processes that prevent the prediction of any resulting value or the determination of certain values being more probable than others.
+- Procedures must be established for the timely replacement of keys in case of expiration or compromise.
+- A key must not be used if it is known or suspected to be compromised. The usage of a compromised key must be terminated as soon as allowed by technical, operational, and business requirements.
+- Test keys are prohibited from being used in production systems, and production keys are prohibited from being used in test systems.
+- Keys must not be shared between cryptographic modules used in production and test systems.
+- There must be a process for switching cryptographic modules from test mode to production mode and vice versa when using third-party Cloud Key Management systems.
+
+## Key Implementation Guidelines:
+- Individual procedures must be maintained for the applications/products used.
+- Procedures must include:
+  - Algorithm.
+  - Key length and justification for key length.
+  - Key expiry period.
+  - KMS/Cryptographic module used to protect the key.
+  - Number of components split.
+  - Owners of the split components.
+  - Any other special controls implemented.
+- Secure Cryptographic Modules, whether hardware, software, or firmware, must be used for key management.
+- The modules must comply with one or more of the following standards:
+  - FIPS 140 - Security Requirements for Cryptographic Modules.
+  - Common Criteria (ISO/IEC 15408) - using an approved Protection Profile and Target of Evaluation.
+  - Hardware Security Module (HSM) Security requirements, especially if any card data complying with PCI standards is to be secured.
+
+## Key Management Processes:
+
+### 5.3.1 Key Generation
+- Cryptographic keys must be generated within an approved cryptographic module and with an approved key generation process.
+- The process must prevent the prediction of any resulting value or the probable value from the total set of possible values.
+- Key management role holders and security options for the cryptographic key generation ceremony must be handled as defined in the Encryption Key Management Policy.
+- The generation of cryptographic keys must occur in a secure environment that prevents unauthorized access or viewing.
+
+### 5.3.2 Key Rotation
+- Key rotation involves periodically retiring an encryption key and replacing it with a new cryptographic key with minimal or no downtime.
+- Periodically and automatically rotating keys is a recommended security practice, and some industry standards, such as PCI, require regular key rotation.
+- Data encrypted with previous key versions will not be automatically re-encrypted. Ensure there is no data loss or service unavailability during the rotation.
+- Follow the guidelines provided by KMS for re-encrypting data with the new key pair used in the rotation.
+
+### Key Revocation
+- When a key is revoked, ensure the following:
+  - All relevant parties are informed.
+  - All instances of the key are revoked.
+  - Keys encrypted with the revoked key are also revoked.
+  - Revoked keys must not be returned to backup use.
+
+### Key Disposal/Destruction
+- Only keys that have been revoked or compromised may be disposed of.
+
+### 1. Key Destruction
+- Destruction or recovery of a key after disposal is not allowed.
+- Key destruction must be witnessed and logged under dual control.
+- If a key within a cryptographic module cannot be disposed of, the entire module must be disposed of securely to ensure no residual trace of the stored key remains.
+- When a KMS/cryptographic module is permanently removed from service, all resident keys must be securely destroyed or disposed of.
+
+### 2. Key Activation
+- A key must be used to cryptographically protect information or processes that were previously protected.
+- The use of each active key must be duly recorded.
+
+### 3. Key Deactivation
+- An active key may transition to a deactivated state if its integrity is compromised or if it has exceeded the agreed cryptoperiod.
+- A deactivated key must be replaced with a newly generated key in an active state.
+
+### 4. Key Archival
+- Archival of a key is only permitted if specified for use in the application product procedure.
+- An archived cryptographic key may only be used to verify the legitimacy of data resulting from its application prior to archiving.
+- The explicit tagging information of an archived cryptographic key must be modified to permit usage solely for verification purposes.
+- Copies of retired cryptographic keys to be archived must be stored separately from active keys.
+- Archived cryptographic keys must be stored according to the same standards as active or backup keys.
+- All archived keying material must be stamped with a non-modifiable timestamp when moved to archive.
+- The retention period of archived keys must be determined based on business needs.
+
+### 5. Key Compromise
+- Keys are considered compromised if:
+  - They are exposed or identified in a security investigation.
+  - A stored or distributed key fails an integrity check.
+  - The key-managed cryptographic module shows signs of compromise, or is lost or stolen.
+  - A higher-level key in the hierarchy is compromised.
+  - There is a breach in segregation of duties, dual control, or access controls.
+  - The plaintext value of the key has been exposed.
+- If a compromised key is a Key Encryption Key (KEK) or a master key from which other keys are derived, all hierarchically dependent keys must be revoked and replaced.
+- If the compromised key is a working key, data associated with that key must be revoked and re-encrypted with a new working key in accordance with policy.
+- An investigation, including the Infosec team, must be triggered for any key compromise, followed by a root-cause analysis and remediation details.
+
+### 6. Key Recovery
+- Keys stored in the systems may become corrupted, necessitating recovery from backup securely.
+- Keys must be replaced as soon as possible with new keys in accordance with technical and business uptime requirements.
+- Backup copies of cryptographic keys must be secured similarly to operational keys.
+
+### 7. Key Inventory
+- All long-term keys must be inventoried, including details of owners/sponsors, applications used, and data protection details.
+- The key inventory must tag a unique reference for each key in the system.
+- The key inventory must be protected and stored in a centralized repository.
+- The key inventory must include details of the cryptoperiod and a mechanism to inform the owner for replacement prior to expiry.
+
+### 8. Key Logging & Audit Trail
+- Key management logs must contain:
+  - The unique identifier of the key or specific key instances.
+  - The date of the activity.
+  - The action taken (e.g., key generation, key distribution, key disposal).
+- Logs must record a date-time stamp, sequence number, and event record.
+- Logs must include any operator logon/logoff and key management activities using secrets/cards.
+- Audit trails must be maintained for all key activities.
+- Audit trails must be backed up for future reference.
+- The KMS system must have the facility to troubleshoot key management activities.
+
+### 7. Roles & Responsibilities
+
+- **Project/Product Cloud Infra Team**: Responsible for adhering to the Encryption Key management policy.
+- **Product Owner / Project Manager / Operations Manager**: Responsible for validating that the Encryption key management is conducted based on the policy.
+- **InfoSec & Compliance Team**: Responsible for validating that the key management process adheres to the policy.
+
+### 8. Applicable Standards
+
+- ISO 27001:2022
+- ISO 27701:2019
+- NIST.SP.800-57
+- FIPS 140-2
+
+### 9. Exception(s)
+
+- There are no exceptions to this policy.
+
+### 10. ISO Control Mapping
+
+- **Category of Control**: Technological Controls
+  - **ISO 27001:2022 Control**: 8.11 Data masking
+  - **Document Name as per ISO 27001:2022**: Data Encryption Key Management Policy
+  - **Description**: Data masking shall be used in accordance with the organization's topic-specific policy on access control and other related topic-specific policies, taking applicable legislation into consideration. 
+
+### Document Control
+
+- **Owner**: CISO
+- **Release ID**: KEM-POL-01
+
+### Version History
+
+- **0.1** (20th Mar 22): Initial Version - None
+- **1.0** (25th Mar 22): Baselined - Baselined
+- **1.1** (29th Mar 23): For Review - Reviewed with no changes
+- **1.2** (12th May 23): For Review - Migrated to new template
+- **2.0** (12th May 23): For Approval - Approved and Baselined
+- **2.1** (15th Feb 24): For Review - Mapped with new ISO 27001:2022 control 8.11
+- **3.0** (23rd Feb 24): For Approval - Approved and Baselined
+- **3.1** (6th May 25): Yearly Review - Migrated to a new Template
+- **4.0** (14th May 25): For Approval - Approved and Baselined
+
+### Contact Information
+
+- **Email**: infosec@trianz.com
+
+### Copyright Notice
+
+The content in this document is copyrighted; any unauthorized use – in part or full – may violate copyright, trademark, and other laws. This document may not be modified, reproduced, publicly displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz name and its products are subject to trademark and copyright protections.
+
+It appears that the text provided does not contain any specific policy rules or content to rewrite. If you have additional text or specific sections from the policy document that you would like me to convert into clearer policy rules, please provide that information, and I will be happy to assist you.

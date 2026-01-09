@@ -1,0 +1,542 @@
+Media Handling Policy
+
+
+
+
+TRIANZ INTERNAL         trianz.com
+                      Statement of Confidentiality
+
+  The information contained in this document is internal to Trianz. It shall not be
+  disclosed, duplicated, or used for any purpose other than that stated herein, in
+  whole or in part, without the express written consent of Trianz.
+
+
+
+
+                         Information Classification
+
+
+     ☐ Public
+
+     ☒ Internal
+
+     ☐ Confidential
+
+     ☐ Restricted
+
+
+
+
+TRIANZ INTERNAL                                                                  2
+                              Table of Contents
+1.   PURPOSE                                            4
+
+2.   OBJECTIVE                                          4
+
+3.   SCOPE                                              4
+
+4.   PRIVACY                                            4
+
+5.   POLICY STATEMENTS                                  4
+
+     5.1 Media Handling                                 4
+
+     5.2 Media Shipping for Work-from-home Associates   5
+
+     5.3 Disposal of Media and equipment                5
+
+     5.4 Removal of Equipment                           6
+
+     5.5 Reuse of Equipment                             6
+
+6.   ROLES & RESPONSIBILITIES                           6
+
+7.   APPLICABLE STANDARDS                               7
+
+8.   REFERENCE POLICIES & PROCEDURES                    7
+
+9.   IMPLEMENTATION PROCEDURES                          7
+
+10. EXCEPTIONS(S)                                       7
+
+11. ENFORCEMENT                                         8
+
+12. ISO CONTROL MAPPING(S)-                             8
+
+
+
+
+ TRIANZ INTERNAL                                        3
+1. Purpose
+   Improper handling of removable media will cause data loss and data leakage.
+   Removable media can contain sensitive information which can pose serious
+   security threats if it gets corrupted or accessible to an unauthorized person. This
+   policy states the media handling requirements to ensure confidentiality, integrity,
+   availability, and privacy of the information.
+
+
+
+2. Objective
+   To ensure the secure management of media to protect sensitive or personal
+   information from intentional or accidental exposure or misuse.
+
+
+
+3. Scope
+   This policy applies to all Management, Employees, Contractors, and Third-Party
+   Employees, who use the media of Trianz. Also, this policy applies to all products
+   and services, organizational IT assets of Trianz.
+
+
+
+4. Privacy
+   The media handling policy document shall be considered as “confidential” and
+   shall be made available to the concerned person with proper access control.
+   Subsequent changes and versions of the document shall be controlled.
+
+
+
+5. Policy Statements
+
+    5.1 Media Handling
+      •   All Trianz associates are responsible for ensuring physical security of the
+          media.
+      •   Use of USB flash drives shall be blocked for all the associates. Use of the
+          same by associate shall be permitted only after the approval from
+          CIO/CISO.
+      •   Personal CDs/DVDs/data tapes/hard disk drives/flask drives/external
+          memory cards and other devices shall not be allowed.
+
+TRIANZ INTERNAL                                                                         4
+      •   Use of CD/DVD writers shall be restricted to all the associates. The use of
+          the printer facility will be restricted to official use for all employees.
+      •   All media should be handled with care, and it must be ensured that it is not
+          kept near magnetic material and not exposed to extreme heat or pollution.
+      •   Compliance with this policy is the responsibility of the overall delivery and
+          corporate functions.
+
+
+    5.2 Media Shipping for Work-from-home Associates
+      •   All devices containing information must be shipped securely and special
+          procedures to be followed over and above this policy when Associates are
+          working from home.
+      •   This is required as shipping shall be done from Trianz office or to or
+          between Non office locations.
+      •   In case of media in transit Special controls should be adopted, where
+          necessary, to protect sensitive information from unauthorized disclosure or
+          modification.
+      •   A record must be maintained for incoming and outgoing physical media
+          containing Personally Identifiable Information or Personal Data or Personal
+          Sensitive Data.
+      •   In case of media in transit, packaging should be adequate to protect the
+          contents from any physical damage in accordance with manufacturers’
+          specifications.
+
+
+
+
+    5.3 Disposal of Media and equipment
+      •   Media shall be disposed off securely and safely when no longer required.
+          Sensitive information may be leaked to outside persons through careless
+          disposal of media.
+      •   If no longer required, the previous content of any re-usable media that is to
+          be removed from the company should be deleted by low-level formatting
+          by obtaining prior approval from CISO/CIO.
+      •   Disposal of sensitive items must be logged to maintain an audit trail and
+          for other regulatory requirements.
+
+
+
+
+TRIANZ INTERNAL                                                                         5
+      •    All items of equipment containing storage media will be checked for
+           confidential information and the same will be backed up or removed prior
+           to disposal.
+      •    Storage devices containing sensitive information are physically destroyed
+           or securely overwritten. For example, low level formatting is done rather
+           than using the standard “Delete” function.
+      •    All licensed software installed on the equipment will be removed before
+           disposing of the same.
+      •    Damaged storage devices containing sensitive data are checked for data
+           access and then the decision is taken whether to repair, discard or destroy
+           it.
+
+
+
+
+    5.4 Removal of Equipment
+      •    Equipment (like desktops, Laptops, Servers, VOIP phones etc.), information
+           or software will not be taken off-site without prior authorization from IS
+           Operations and CISO/CIO.
+      •    Verification Report shall be prepared by authorized IT representative and
+           sent either physically signed (or) email to admin for preparing gate pass.
+
+
+
+
+    5.5 Reuse of Equipment
+          • Equipment shall be re-used where feasible. Data and software will be
+           removed securely, and the equipment re-provisioned for use.
+          • Dismantling and re-use of parts if there is any potential for recovering
+           valuable components from the item.
+          • Equipment will be recycled on a unit or component level using the external
+           disposal contract and company co-ordinated by IT Services.
+
+
+
+
+6. Roles & Responsibilities
+            Roles                       Responsibilities                Internal/External
+    All Associates,       Any exception to this policy, raise a         Internal
+    Including,            request with proper business justification
+
+
+TRIANZ INTERNAL                                                                         6
+    Contract           and obtain the approval from the
+    Employees          reporting Manager and CISO/CIO
+    Admin Team         Ensure all the logistics in line with this   Internal
+                       policy and related procedures
+    IS Operation       Ensure all the IS operations in line with    Internal
+    Team               this policy and related procedures
+    Infosec Team       Approval of exception based on the           Internal
+    (CISO/CIO)         business justifications & Risk of
+                       information loss
+
+
+
+7. Applicable standards
+   ISO 27001:2013
+
+   ISO 27701:2019
+
+
+
+8. Reference Policies & Procedures
+   Media Handling Procedure of Work from Home Associates
+
+   Data Retention and Secure Disposal Policy
+
+   Information Removal Verification Report Template
+
+
+
+9. Implementation Procedures
+   TDCPL Administration Procedure
+   ISO Operations Process
+   Physical Access Control and Environmental Security Policy and Procedure
+
+
+
+10. Exceptions(s)
+   This policy applies to all Trianz Associates. Any project specific needs & CISO/CIO
+   approved systems will be excluded from this policy, with prior approval from the
+   project managers and IS Operations.
+
+   Refer to Exception Handling Policy
+
+
+
+
+TRIANZ INTERNAL                                                                     7
+11. Enforcement
+    Any employee found to have violated this policy may be subject to disciplinary
+    action in line with the HR policy.
+
+
+
+
+12. ISO Control mapping(s)-
+
+
+    Category of       ISO 27001:2022 Control                 Document Name as per
+    Control                                                  ISO 27001:2022
+    Physical          7.10 Storage media Control Storage     Media handling Policy
+                      media shall be managed through their
+    Controls
+                      life cycle of acquisition, use,
+                      transportation and disposal in
+                      accordance with the organization's
+                      classification scheme and handling
+                      requirements.
+                      7.10 Storage media
+
+
+
+
+TRIANZ INTERNAL                                                                      8
+                                   Document Control
+
+    Owner:                CISO            Release ID:               MH-POL-0007
+
+
+
+
+               For Trianz Process Improvement Group (TPIG) Purpose Only
+
+    Version History
+
+                                                             Reason for           Change
+Ver. No.      Date        Author   Reviewer   Approver
+                                                               Change         Description
+
+0.00 26-     Jyotessh G                            Initial Draft
+     Feb-    Nair
+     07
+1.00 26-     Jyotessh G                            Baseline is        Approved
+     Feb-    Nair                                  approved by
+     07                                            Zulfikar Deen.
+1.01 30-     Bharatees                             Revised the        Changed the Policy
+     Jul-    ha B R                                policies in        statements,
+     08                                            accordance
+                                                   with the revised   Changed the template
+                                                   ISMS               Added Document
+                                                   Framework          Classification Scheme
+2.00 28-     Balu Nair                             Approval for       Baselined
+     Apr-                                          Baseline
+     09
+2.01 30-     Chakravar                             QMG review         Formatted entire
+     Dec-    thi                                                      document
+     10
+3.00 31-     Chakravar                             Request for        Baselined
+     Dec-    thi                                   Baseline
+     10
+3.01 06-     Srilakshmi                            To maintain        Modified Release ID in
+     May-                                          common             cover page and header
+     11                                            release id
+                                                   allocation for
+                                                   bluebook
+                                                   documents
+
+
+     TRIANZ INTERNAL                                                                     9
+4.00 06-    Srilakshmi   Request for     Baselined
+     May-                Baseline
+     11
+4.01 3-     Sudharsa     QMG review         •  Replace
+     Aug-   na                                 Owner       with
+     11                                        Management
+                                               Representative
+                                               in place of CIO
+                                           • In Document
+                                               Classification
+                                               Scheme,
+                                               "Retention period
+                                               is 3
+                                               Years" row is
+                                               removed
+5.00 3-     Sudharsa     Request for     Approved           and
+     Aug-   na           baseline          Baselined
+     11
+5.01 14-    Venkates     QMG Review      Used new template as
+     Oct-   war                          per documentation
+     11     Reddy GD                     guidelines
+
+                                         ‘Shall’ word is replaced
+                                         by ‘Will’ throughout
+                                         policy
+
+                                         Reviewed for continued
+                                         suitability
+
+6.00 14-    Venkates     Approval for    Baselined
+     Oct-   war          Baseline
+     11     Reddy GD
+
+
+
+7.00 08-    Balu Nair    Standardization Modified the template
+     Nov-                of Blue Book    format
+     12                  Process Assets Changed the Logo
+
+
+
+
+    TRIANZ INTERNAL                                       10
+7.1    25-      Balu Nair                          Client Audit   Added
+       Jan-                                        and            Removal of
+       16                                          alignment      Equipment
+                                                   with shared    Added Reference
+                                                   assessment     section
+                                                   checklist.
+8.0    08-      Balu Nair                          Approved by          Baselined
+       Feb-                                        Mahesh
+       16                                          (CISO)
+
+
+8.1    29-      Balu Nair   Joshy                                 Changed the
+       Apr-                 VM                                    Trianz logo
+       19                                                         Information
+                                                                  classification
+                                                                  modified
+9.0    14-  Balu Nair                  Ganesh      Approved for
+       May-                           Arunachala   Release
+                                                                        Baselined
+       19
+
+
+9.1    13-   Anitha         Phani                  Updated for
+       Nov- Ravindran       Krishna                                     Updated
+                                                   meeting
+       19                                                        requirements for
+                                                    requirements
+                                                                 Physical media in
+                                                    of
+                                                                 transit containing PII
+                                                   27018
+10.0 22-        Anitha    Phani       Vivek                       Baselined version
+     Nov-       Ravindran Krishna     Sambasivam
+       19
+
+
+10.1   08-      Balu Nair   Phani                                  • Added CISO as an
+       May-                 Krishna                                  approval
+       20                                                         New Template
+                                                                  format
+
+
+
+       TRIANZ INTERNAL                                                             11
+11.0       14-May-20     Balu Nair    Phani     Phani     For Approval     Approved and
+                                      Krishna   Krishna                    Baselined
+
+
+11.1       28-Jul-20     Balu Nair,   Phani               For Review       Approval of
+                         Vijaya       Krishna                              CISO/CIO for
+                         Rajeswar                                          Removal of
+                         i                                                 Reusable
+                                                                           Media is added
+                                                                           as
+                                                                           responsibility,
+                                                                           Formatted the
+                                                                           document for
+                                                                           more
+                                                                           legibility
+12.0       30-Jul-20     Balu Nair,   Phani     Phani     For Approval     •    Approved
+                                      Krishna   Krishna                         and
+                         Vijaya
+                                                                                Baselined
+                         Rajeswar
+                         i
+
+12.1       15-Sep-20     Anitha       Phani     Phani     Updated Policy   Added Policy for
+                         Ravindra     Krishna   Krishna   for Covid-19     shipping devices
+                                                                           from non-office
+                         n                                related
+                                                                           locations
+                                                          circumstance
+                                                          of need for
+                                                          shipping
+                                                          devices from
+                                                          non-office
+                                                          locations
+
+13.0       15-Sep-20     Anitha       Phani     Phani     Baselined and    Baselined and
+                         Ravindra     Krishna   Krishna   approved         approved
+                                                                           Version
+                         n                                Version
+
+13.1       11-Feb-21     Balu Nair    Phani               Review           Updated the
+                                                                           information
+                                      Krishna                              classification
+
+14.0       11-Feb-21     Balu Nair    Phani     Phani     For Approval     Approved and
+                                                                           Baselined
+
+
+       TRIANZ INTERNAL                                                                  12
+                                     Krishna     Krishna
+
+14.1       30-Jul-21     Balu Nair   Phani                  As part of        Changed the
+                                                            Annual review     template and
+                                     Krishna                                  totally
+                                                            and inputs from
+                                                                              revamped the
+                                                            external audit    policy
+
+15.0       30-Jul-21     Balu Nair   Phani       Phani      Approved for      Baselined
+                                                            Baseline
+                                     Krishna     Krishna
+
+15.0       06-Jan-22     Krutidee    Balu Nair              For Review        No Changes
+                         pta
+
+15.1       17-Mar-22     Sanjana     Balu Nair              For Review        The scope has
+                                                                              been extended
+                                                                              to products
+16.0       21-Mar-22     Sanjana     Siva N      Siva N     Approved for      Baselined
+                                                            Baseline
+
+16.1       03-May-                   Balu Nair   Srikanth   For Review        Field 4, Privacy,
+           23                                                                 Changes in
+                         Shalini                                              policy statement
+                         and                                                  and
+                                                                              enforcement is
+                         Asha
+                                                                              added
+                         Veerama
+                         llu
+                                                                              New template
+                                                                                change
+
+
+17.0       08-May-       Shalini     Balu Nair   Srikanth   For Approval      Approved and
+           23                                                                 Baselined
+
+
+17.1       04-May-       Shalini                 Srikanth   For Review
+                                     Vijaya                                   •   Editorial
+           23
+                                                                                  changes
+
+17.2       15-Feb-24                                        For Review        •   Mapped
+                         Shalini                 Srikanth
+                                     Vijaya                                       with New
+                                                                                  ISO control
+                                                                                  7.10
+
+
+
+       TRIANZ INTERNAL                                                                    13
+18.0       23-Feb-24     Shalini            Srikanth      For Approval   •   Approved
+                                   Vijaya                                    and
+                                                                             Baselined
+
+
+18.1       5-May-25                                                      •   Migrated to
+                         Vijaya    Balu                                      new
+                                                                             template
+19.0       14-May-25                        Srikanth      For Approval   •   Approved
+                         Vijaya    Balu                                      and
+                                                                             Baselined
+
+
+
+
+                                     infosec@trianz.com
+
+       TRIANZ INTERNAL                                                              14
+                                Contact Information
+                                               Name
+
+                                               Email
+
+                                              Phone
+
+
+
+
+                                  Thank You
+                                     infosec@trianz.com
+
+
+
+
+ The content in this document is copyrighted; any unauthorized use – in part or full – may violate the
+ copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly
+   displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz
+ name and its products are subject to trademark and copyright protections, regardless of how and
+                                          where referenced.
+
+
+TRIANZ INTERNAL                                                                                      15
+

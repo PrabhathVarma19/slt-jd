@@ -1,0 +1,406 @@
+INFORMATION SECURITY
+CODE OF CONDUCT
+PROCEDURE
+
+
+
+
+TRIANZ INTERNAL        trianz.com
+                      Statement of Confidentiality
+
+  The information contained in this document is internal to Trianz. It shall not be
+  disclosed, duplicated, or used for any purpose other than that stated herein, in
+  whole or in part, without the express written consent of Trianz.
+
+
+
+
+                         Information Classification
+
+
+     ☐ Public
+
+     ☒ Internal
+
+     ☐ Confidential
+
+     ☐ Restricted
+
+
+
+
+TRIANZ INTERNAL                                                                  2
+                        Table of Contents
+1.   OBJECTIVE                              4
+
+2.   SCOPE                                  4
+
+3.   INFORMATION SECURITY CODE OF CONDUCT   4
+
+4.   ISO CONTROL MAPPING(S)                 8
+
+
+
+
+ TRIANZ INTERNAL                            3
+1. Objective
+     •   The purpose of this document is to ensure effective and secure access to the
+
+         Trianz information assets.
+
+
+
+2. Scope
+     •   This code of conduct shall be applicable to all employees, consultants, third
+
+         partyservice providers and contractors of Trianz and third parties who have
+
+         access to Trianz Information Assets.
+
+     •   All Trianz products and services
+
+
+
+3. Information security code of conduct
+     •   Employees, contractors, and third-party service providers shall sign a non-
+         disclosureagreement prior to be given access to Trianz information assets
+     •   Employees, contractors, and third-party service providers shall sign
+         confidentiality andintellectual property Agreement making them aware of
+         copyright and data protection laws applicable to them.
+     •   Employees and contractors during the course of company work shall classify
+         all the information assets produced in accordance with the Asset
+         Classification policy of Trianz. They shall handle the information assets in
+         accordance with Guidelines for informationlabeling and handling.
+     •   No employee of Trianz shall bring to Trianz office premise, any media,
+         including but not limited to, Floppies, CDs, DVDs, USB Drives, Tapes, portable
+         Hard Disks, laptops,camera, video cameras, etc.
+
+
+TRIANZ INTERNAL                                                                     4
+     •   Users shall be responsible for protecting their computer/user account
+         given/created to execute their work towards the company and are
+         accountable or any action carriedout by the assigned user-ids.
+     •   Users shall keep their password confidential and shall not reveal passwords
+         to others or share their account with others. Temporary password shall be
+         changed at first logon as defined in password management policy or
+         whenever there is any indication of possible system or password
+         compromise.
+     •   Computers (Desktop & Laptops) shall not be kept logged on if not used and
+         unattended for an extended period of time. The computer shall be locked or
+         should have password protected screen saver. At the end of the day, before
+         leaving for the day, users shall shutdown the computer systems and
+         peripheral devices.
+     •   Computers shall be provided by the company for official use and should run
+         only company authorized applications and programs.
+
+     •   Users shall not download and install any program on the computers unless
+         prior approval has been obtained from the respective Director and the same
+         has been registered with the IT helpdesk for further approval. Any screen
+         saver running on the user’s machine shall not contain anything which
+         violates copyrights, is obscene or contains anything objectionable or illegal.
+     •   All users directly connected to the Trianz central network shall ensure that
+         their computers always have the latest versions of Antivirus programs. Though
+         the Antivirusprograms get updated automatically through the central server,
+         users shall ensure that they are updated regularly otherwise he/she shall
+         report the same to IT helpdesk if theantivirus software is not installed or it is
+         not being updated.
+     •   Data stored on individual computer shall not be backed up in regular working
+         conditions. Users shall store all business critical data on specific servers or
+         request IThelpdesk to take a backup of data with Director approval
+     •   Data which is private to a user may be stored on computers, provided users
+         undertakerisk of loss to Trianz and own the responsibility for such data which
+         is not related to the business of Trianz. The storage of such data shall be
+         limited and not hamper thenormal office productivity of the user. However,
+         users shall not install any applications (software, screen-savers etc.) or
+         additional hardware (modems, printers etc.) on theirmachines. Any kind of
+         configuration change on Trianz computers is strictly prohibited, and if
+         required, shall be requested to the IT helpdesk to perform the changes.
+
+TRIANZ INTERNAL                                                                        5
+     •   Users shall collect their printouts from the printing device immediately once it
+         has beenprinted.
+     •   Users shall not share their user id and password with anyone else. In case, it
+         has to be shared due to some emergencies password shall be changed
+         immediately after the emergency is over.
+     •   Employees shall make sure that working on portable computers in public
+         places is avoided. If required to work on portable computers in public places
+         it shall be ensuredthat there is no risk of overlooking.
+     •   In case of an audit, if any unauthorized software (which is not part of an
+         approved Software list) is found on their system then, the employee shall be
+         held responsible for that and subjected to disciplinary process.
+     •   Company e-mail accounts shall be used primarily for business
+         communications purposes. Users are prohibited from leaking confidential
+         and internal information through mails and shall be solely responsible to
+         Trianz for unauthorized disclosures.
+     •   Users shall not use company account to initiate or forward junk mails, chain
+         mails, jokes etc. Company e-mail account must not be used for “Spam” or
+         unsolicited mails.
+     •   Users shall not transmit any unlawful, harassing, libelous, abusive,
+         threatening,harmful, vulgar, obscene, or otherwise objectionable material of
+         any kind or nature.
+     •   Attachments in e-mail are routinely used to spread computer viruses. Users
+         shall never open mails attachments from unknown or un-trusted sender. It is
+         advisable to delete mails with attachment that has been sent unsolicited
+         and appear suspicious due to mail content or attachment name
+     •   All personal emails shall be kept in a separate folder. The emails in this folder
+         must be deleted periodically, preferably weekly, so as not to clog up the
+         system.
+     •   All outgoing mail shall have the Trianz Email disclaimer.
+
+     •   Use of Trianz information systems to access Internet for personal purpose is
+         not allowed and will be considered cause for disciplinary action.
+     •   IP phones and soft phones installed on your system should be used only for
+         official purpose between Trianz India and across USA.
+     •   Users are encouraged to use Internet to assist them in the performance of
+         their jobs.Authorized uses include but are not limited to the following: Client
+         and customer services, education and research, electronic communication
+
+
+TRIANZ INTERNAL                                                                        6
+         for professional purposes and procurement of information from external
+         sources.
+     •   Internet chat groups and newsgroups are public forums where it is not
+         appropriate to discuss or reveal confidential information, customer data,
+         trade secrets, and any othermaterial described or referred in this policy. User
+         must identify them honestly,accurately and completely when participating in
+         chat groups, newsgroups and setting up account on outside computer
+         systems.
+     •   Trianz is not responsible for material viewed or downloaded by users from
+         Internet. The Internet is worldwide network of computers that contains
+         millions of pages of information. Users are cautioned that many of these
+         pages include offensive, sexually explicit, and in appropriate material. In
+         general, it is difficult to avoid at least some contact with the material while
+         using the Internet. Even innocuous search request maylead to sites with highly
+         offensive contents. Users accessing the Internet do so at theirown risk.
+     •   Information is a key asset for the company. Users shall not reveal confidential
+         or internal company information to outsiders (Third parity, family members,
+         press or public) unless authorized to do so.
+     •   Users shall protect their documents which contain company’s confidential
+         information.It is the user’s responsibility to restrict the distribution of classified
+         documents to authorized persons only and prevent unauthorized access by
+         keeping the documentsunder lock.
+     •   Any event of inappropriate use of Trianz Information systems and breaches of
+         securityand any suspected security weakness, malfunction related to Trianz
+         IT infrastructureat all locations that is observed by the user shall immediately
+         be reported to ISWG
+     •   The company has installed a variety of security technologies to assure the
+         safety and security of the company’s infrastructure. Any attempt to
+         circumvent or subvert any such security measures is strictly prohibited.
+     •   It is prohibited to run programs or tools without authority against any system
+         or application of Trianz that can result in compromise of its security.
+     •   Users are to comply with the security policies and processes of Trianz. Non-
+         compliance can result in punitive action ranging from reprimand to
+         suspension/termination, and/or legal action.
+     •   Violation of any point/points published in this document will be subjected to
+         Disciplinary action as per our Disciplinary action policy.
+
+
+
+TRIANZ INTERNAL                                                                             7
+4. ISO Control Mapping(s)
+
+
+
+         Category of      ISO 27001:2022 Control          Document Name as per
+         Control                                          ISO 27001:2022
+         Organizational   . 5.15 Access control Control   Information Security
+         Controls         Rules to control physical and   Code of Conduct
+                          logical access to information
+                          and other associated assets
+                          shall be established and
+                          implemented based on business
+                          and information security
+                          requirements.
+
+
+
+
+TRIANZ INTERNAL                                                                  8
+                                             Document Control
+
+
+       Owner:              CISO        Release ID:                   ISCC-PROC-0042
+
+
+
+
+                           For Trianz Process Improvement Group (TPIG) Purpose Only
+
+       Version History
+
+Ver.                                  Reviewe    Approve         Reason for
+         Date             Author                                                 Change Description
+No.                                      r           r            Change
+
+0.0    26-Feb-       Jyotessh G                                  Initial draft           None
+       07                   Nair
+
+0.1    26-Feb-       Jyotessh G                                    Review         Review feedback
+       07
+                            Nair                                                      incorporated
+
+1.0    26-Feb-       Jyotessh G                                  Baseline is      ApprovedBaseline.
+       07
+                            Nair                                approved by
+                                                                ZulfikarDeen.
+
+ 1.1   15 Mar-09     Bharateesh                            Revised toinclude     • Include clauses
+                            aB R                            the changes due        related to
+                                                                to New Asset       information
+                                                                management         classificationand
+                                                           frameworkand risk       handling
+                                                                                 • Included a clause
+                                                            assessment and
+                                                                                   on NDAand
+                                                            treatment plan
+                                                                                   confidentiality
+                                                                                   and intellectual
+                                                                                   property
+                                                                                   agreement
+2.0    29-Apr-            Balu Nair                             Approvalfor            Baselined
+       09
+                                                                  Baseline
+
+
+
+
+        TRIANZ INTERNAL                                                                      9
+2.1   30-Dec-            Aswari     QMG review               Formatted
+      09
+
+3.0   30-Dec-      Chakravart       Approval for             Baselined
+      09                   hi       baseline
+
+3.1   12-May-           Balu Nair   QMG Review               Document
+      10
+                                                             formatted
+
+4.0   21-May-           Balu Nair   Approval for             Baselined
+      10                            baseline
+
+4.1   24-May-       Srilakshmi      QMG Review           • Modified
+      11
+                                                           release id in
+                                                           header and
+                                                           cover page
+                                                           tomake
+                                                         consistency
+
+5.0   24-May-       Srilakshmi      Approvalfor              Baselined
+      11
+                                    Baseline
+
+5.1   3-Aug-11     Sudharsan        QMG review       •   Replace Owner
+                           a                             with
+                                                         Management
+                                                         Representativ e
+                                                         in place of CIO.
+                                                     •   In Document
+                                                         Classification
+                                                         Scheme,
+                                                         "Retention period
+                                                         is 3 Years" row is
+                                                         removed.
+6.0   3-Aug-11     Sudharsan            Requestfor       Approved and
+                           a             baseline            Baselined
+
+7.0   28-Sep-      Sudharsan        QMG review           •     Formatted
+      12
+                           a                                   asper latest
+                                                               template
+                                                              format
+
+
+
+      TRIANZ INTERNAL                                             10
+7.1    29-Apr-           Balu Nair    Joshy                                Information
+       19                              VM                                  classification
+                                                                           modified
+8.0    14-May-           Balu Nair               Ganesh     Approvedfor          Baselined
+       19
+                                                 Arunach      Release
+                                                   ala
+
+8.1    11-May-           Karthik N   Balu Nair                Review        Integrated to new
+       20                                                                        template
+
+9.0    14-May-           Karthik N    Phani       Phani     For approval      Approved and
+       20
+                                     Krishna     Krishna                         Baselined
+
+9.1    3-May-21          Divya G     Vijaya R     Phani       Review        Updated with new
+                                                 Krishna                       information
+                                                                               classification
+
+10.0   3-May-21          Divya G     Vijaya R     Phani     For approval      Approved and
+                                                 Krishna                         Baselined
+
+10.0   3-Jan-22          Divya G     Vijaya R                 Review           No changes
+
+
+10.1   24-Feb-22           Kruti,     Karthik               For Review     The scope has been
+                                                                           extended to
+                                                                           products and
+                                                                           services.
+
+11.0   28-Feb-22           Kruti      Siva N     Siva N     For approval      Approved and
+                                                                                baselined
+
+11.0   05-Apr-23     Shivateja       Srikanth    Srikanth   For Review         Reviewed No
+                                        M           M                            Changes
+
+11.1   12-May-23          Asha        Vijaya                For Review       Migrated to New
+                    Veeramallu                                                   template
+
+12.0   12-May-23          Asha        Vijaya     Srikanth   For approval      Approved and
+                    Veeramallu                      M                            Baselined
+
+
+
+
+       TRIANZ INTERNAL                                                                 11
+12.1   15-Feb-24         Shalini   Vijaya   Srikanth   For Review     Mapped with new
+                                               M                       ISO 27001, 2022
+                                                                        control 5.15
+
+
+13.0   23-Feb-24         Shalini   Vijaya   Srikanth   For Approval    Approved and
+                                               M                         Baselined
+
+
+
+13.1   28-May-            Kruti    Vijaya              For Review     Migrated to New
+          25                                                             template
+
+14.0   28-May-            Kruti    Vijaya   Srikanth   For Approval    Approved and
+          25                                   M                         Baselined
+
+
+
+
+       TRIANZ INTERNAL                                                         12
+                                Contact Information
+                                               Name
+
+                                               Email
+
+                                              Phone
+
+
+
+
+                                  Thank You
+                                     infosec@trianz.com
+
+
+
+
+ The content in this document is copyrighted; any unauthorized use – in part or full – may violate the
+ copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly
+   displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz
+ name and its products are subject to trademark and copyright protections, regardless of how and
+                                          where referenced.
+
+
+TRIANZ INTERNAL                                                                                      13
+

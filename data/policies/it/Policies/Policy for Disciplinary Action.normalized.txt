@@ -1,0 +1,234 @@
+# POLICY FOR DISCIPLINARY ACTION
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. PURPOSE
+2. SCOPE
+3. OBJECTIVE
+4. POLICY
+   - 4.1 Information Security and Data Privacy
+   - 4.2 Attendance
+   - 4.3 Safety & Health
+   - 4.4 Misuse of Property
+   - 4.5 Misconduct
+5. DISCIPLINARY ACTIONS
+6. EXCEPTION(S)
+7. ISO CONTROL MAPPING
+
+## 1. Purpose
+To provide management with a method to address non-conformances to basic work-related rules and regulations for effective functioning of Trianz, including Attendance, Work performance, Violation of policies, or other work-related issues, and to improve conformance by taking appropriate actions permissible under this policy.
+
+## 2. Scope
+This policy applies to all employees. The disciplinary process shall not be initiated without prior verification that an information security policy violation has occurred.
+
+## 3. Objective
+- Encourage all employees to achieve and maintain the Trianz standards of conduct.
+- Ensure that all alleged failures of discipline are handled fairly, reasonably, and consistently.
+
+## 4. Policy
+Employees who engage in any of the following activities, as well as violations of any Trianz policies, will be subject to disciplinary action, including dismissal. This list is indicative and not exhaustive.
+
+The disciplinary process shall not be initiated without prior verification that an information security policy violation has occurred. The formal disciplinary process will consider:
+- The nature (who, what, when, how) and gravity of the breach and its consequences.
+- Whether the offence was intentional (malicious) or unintentional (accidental).
+- Whether this is a first or repeated offence.
+- Whether the violator was properly trained.
+
+The response should also consider relevant legal, statutory, regulatory, contractual, and business requirements.
+
+The disciplinary process serves as a deterrent to prevent violations of the information security policy and related procedures. Deliberate violations may require immediate actions.
+
+### 4.1 Information Security and Data Privacy
+- Noncompliance with the organization’s Information Security Policy, Data Privacy Policy, and Client-defined Security Policy may result in HR consequences, including warnings and termination.
+
+### 4.2 Attendance
+- Disciplinary action may be taken for:
+  - Habitual late coming or irregular attendance or absconding.
+  - Absence without leave or overstaying sanctioned leave for more than ten consecutive days without sufficient grounds or satisfactory explanation.
+  - Absence from the employee’s appointed place of work without permission or sufficient cause.
+
+### 4.3 Safety & Health
+- Disciplinary action may be taken for:
+  - Violating safety regulations.
+  - Creating or contributing to unsanitary conditions.
+  - Possession, consumption, or being under the influence of intoxicants or narcotics on company premises.
+  - Interference or tampering with safety devices installed on company premises.
+  - Improper use of office equipment.
+  - Possessing firearms, weapons, explosives, etc., on company premises.
+
+### 4.4 Misuse of Property
+- Disciplinary action may be taken for:
+  - Damage to or improper use of company property, either willfully or through gross negligence.
+  - Unauthorized possession of company property.
+
+**4.4 Prohibited Actions:**
+- Disclosure of confidential company information to outsiders without proper authorization is prohibited.
+- Unauthorized use of bulletin boards and/or posting notices in unauthorized places is prohibited.
+- Stealing or committing any criminal offense on company property is prohibited.
+- Introducing or causing to be introduced any computer contaminant or computer virus into any computer, computer system, or computer network is prohibited.
+- Damaging or causing damage to any computer, computer system, computer network, data, computer database, or any other programs residing in such systems is prohibited.
+- Disrupting or causing disruption of any computer, computer system, or computer network is prohibited.
+- Denying or causing the denial of access to any authorized person to any computer, computer system, or computer network by any means is prohibited.
+- Charging services availed of by one person to the account of another by tampering with or manipulating any computer, computer system, or computer network is prohibited.
+
+**4.5 Misconduct:**
+- Fighting, hitting, pushing, or committing any assault or similar physical acts or threats while on company premises or in relation to company business is prohibited.
+- Drunkenness or disorderly or indecent behavior on company premises or related to employment is prohibited.
+- Sleeping while on duty is prohibited.
+- Using abusive or threatening language is prohibited.
+- Any act of harassment (sexual, racial, or otherwise), telling sexist or racial-type jokes, or making racial or ethnic slurs is prohibited.
+- There is zero tolerance for indecent, disorderly, offensive, or immoral conduct.
+- Commission of a felony or crime involving dishonesty while employed by the company is prohibited.
+- Gambling on company premises is prohibited.
+- Careless or willful destruction or damage to company property or the property of other employees or clients is prohibited.
+- Falsification of company records, including financial records, travel expense vouchers, medical bills, and other employee forms and documents, is prohibited.
+- Unauthorized dissemination of personal information or improper use of such information is prohibited.
+- Refusal or failure to carry out a reasonable job assignment or request after being warned that failure could result in termination is prohibited.
+- Excessive use of company telephone, email, or Internet for personal use is prohibited.
+- Any behavior that is seriously disruptive to the normal flow of company business and is unlawful in nature is prohibited.
+
+Employees with concerns about any of the above-mentioned disciplinary incidents should discuss them with their department head to develop an effective solution. If the problem persists and the employee is consistently found at fault, disciplinary procedures will be followed based on the gravity of the situation. The Head of HR, after discussion with the department head, will make the final decision. For information security and data privacy violations, the matter will be reported to the CIO/CISO and HR Head, following the Security Incident Response procedure.
+
+**5. Disciplinary Actions:**
+- **Oral Warning:** This will describe the behavior or circumstances necessitating the warning, designated as an oral warning, and express continued support for the employee with the expectation of improvement.
+  
+- **Written Warning:** This will include reasons for the manager’s dissatisfaction and supporting evidence. The employee will have the opportunity to defend their actions and rebut the manager's opinion at the time the warning is issued.
+
+- **Termination:** Based on the gravity of the situation and consistent breaches of disciplinary processes, the employee may be terminated from the company.
+
+**6. Exception(s):**
+- There are no exceptions to this policy.
+
+**7. ISO Control Mapping:**
+- Category of Control: ISO 27001:2022 Control
+- Document Name: [To be specified]
+
+### 6.4 Disciplinary Process Control Policy for Disciplinary Action
+
+- A formal disciplinary process shall be established and communicated to address actions against personnel and other relevant interested parties who violate the information security policy. 
+
+### Document Control
+
+- **Owner:** CISO  
+- **Release ID:** 0009  
+
+### Version History
+
+- **Version 8.00**  
+  - **Date:** 07-Dec-16  
+  - **Author:** Balu Nair  
+  - **Reviewer:** Ganesh A  
+  - **Approver:** Ganesh A  
+  - **Change Description:** Baselined  
+
+- **Version 8.1**  
+  - **Date:** 06-Feb-19  
+  - **Author:** Balu Nair  
+  - **Reviewer:** Ganesh A  
+  - **Approver:** Ganesh A  
+  - **Change Description:** Added section to describe consequences of noncompliance to InfoSec and Data Privacy policy  
+
+- **Version 9.0**  
+  - **Date:** 14-May-19  
+  - **Author:** Balu Nair  
+  - **Reviewer:** Ganesh A  
+  - **Approver:** Ganesh A  
+  - **Change Description:** Reviewed and Baselined  
+
+- **Version 9.1**  
+  - **Date:** 12-May-20  
+  - **Author:** Balu Nair  
+  - **Reviewer:** Phani Krishna  
+  - **Change Description:** Migrated to new template  
+
+- **Version 10.0**  
+  - **Date:** 14-May-20  
+  - **Author:** Balu Nair  
+  - **Reviewer:** Phani Krishna  
+  - **Approver:** Phani Krishna  
+  - **Change Description:** Approved and Baselined  
+
+- **Version 10.1**  
+  - **Date:** 25-Jan-21  
+  - **Author:** Divya G  
+  - **Reviewer:** Phani Krishna  
+  - **Approver:** Phani Krishna  
+  - **Change Description:** Updated with new information classification  
+
+- **Version 11.0**  
+  - **Date:** 25-Jan-21  
+  - **Author:** Divya G  
+  - **Reviewer:** Phani Krishna  
+  - **Approver:** Phani Krishna  
+  - **Change Description:** Approved and Baselined  
+
+- **Version 11.0**  
+  - **Date:** 03-Jan-22  
+  - **Author:** Divya G  
+  - **Reviewer:** Balu N  
+  - **Change Description:** No changes  
+
+- **Version 11.0**  
+  - **Date:** 26-Apr-23  
+  - **Author:** Krutidee  
+  - **Reviewer:** Balu N  
+  - **Approver:** Srikanth M  
+  - **Change Description:** Reviewed with no changes  
+
+- **Version 11.1**  
+  - **Date:** 12-May-23  
+  - **Author:** Madhav Rama  
+  - **Reviewer:** Vijaya  
+  - **Change Description:** Migrated to new template  
+
+- **Version 12.0**  
+  - **Date:** 12-May-23  
+  - **Author:** Madhav Rama  
+  - **Reviewer:** Vijaya  
+  - **Approver:** Srikanth M  
+  - **Change Description:** Approved and Baselined  
+
+- **Version 12.1**  
+  - **Date:** 23-Jan-24  
+  - **Author:** Swaroop  
+  - **Reviewer:** Vijaya  
+  - **Change Description:** Addressed requirement of ISO 27001:2022 Control 6.4 Disciplinary process and updated.
+
+**13.0 Control Mapping Section as per ISO 27001:2022**  
+- Approved by Srikanth M on 23-Feb-24.  
+- Status: Baselined.  
+
+**13.1 Migration to New Template**  
+- Reviewed by Kruti on 28-May-25.  
+- Status: For Review.  
+
+**14.0 Control Mapping Approval**  
+- Approved by Srikanth M on 29-May-25.  
+- Status: Baselined.  
+
+---
+
+**Contact Information**  
+- Name: [Not specified]  
+- Email: infosec@trianz.com  
+- Phone: [Not specified]  
+
+---
+
+**Copyright Notice**  
+- The content in this document is copyrighted. Unauthorized use, in part or full, may violate copyright, trademark, and other laws.  
+- This document may not be modified, reproduced, publicly displayed, performed, distributed, or used for any public or commercial purposes.  
+- The Trianz name and its products are subject to trademark and copyright protections, regardless of how and where referenced.  
+
+---
+
+**Thank You**  
+- For inquiries, contact: infosec@trianz.com

@@ -1,0 +1,552 @@
+Guidelines for Information
+Labeling and Handling
+
+
+
+
+TRIANZ INTERNAL              trianz.com
+                         Statement of Confidentiality
+
+  The information contained in this document is internal to Trianz. It shall not be
+  disclosed, duplicated, or used for any purpose other than that stated herein, in
+  whole or in part, without the express written consent of Trianz.
+
+
+
+
+                            Information Classification
+
+     ☐ Public
+
+     ☒ Internal
+
+     ☐ Confidential
+
+     ☐ Restricted
+
+
+
+
+TRIANZ INTERNAL                                                                  2
+                         Table of Contents
+1.   GUIDELINES FOR INFORMATION LABELING AND HANDLING   4
+
+2.   REFERENCES:                                        10
+
+
+
+
+ TRIANZ INTERNAL                                        3
+1. Guidelines for Information Labeling and Handling
+
+
+                                Internal Use
+Control Area       Public                                         Confidential
+                                    Only
+Access       ▪ Accessible                             Access must be limited to named
+Restrictions   to public at   ▪ Read access      ▪ authorized individuals only
+               large.           will be granted
+                                to all Trianz         Employees shall not share information
+                                employees         ▪   with any other person outside his/her
+                                and is solely for     own department, third party and/or
+                                internal use          outsourced employees (unless
+                                                      authorized by departmental head)
+                              ▪ Employees
+                                shall not share       Access by external parties must be
+                                information with ▪    subject to a non-disclosure agreement as
+                                any third party       well as a business need to know
+                                and/or                Any authorized person taking a
+                                outsourced       ▪    photocopy of information shall do it
+                                employees             personally or get the document
+                                (unless               photocopied in his own presence.
+                                authorized by
+                                departmental          While taking out the print of the
+                                head) either by ▪     document the person should collect the
+                                E-mail,               print as soon as the print command is
+                                hardcopy or           executed.
+                                verbally
+
+                                                 ▪ Handling of information based on the
+                                                      type of Information Asset classification.
+                                                      This will include circulation, maintenance
+                                                      and discarding of data based on
+                                                      classification.
+
+                                                 ▪ Identify the Data owners
+
+
+                                                 ▪ Access should be given based on data
+                                                      type confidentiality of the data
+Storage of  ▪ No security                        ▪
+Information
+                              ▪ The desktop           E-mails containing confidential
+              control
+                                storing these         information must be downloaded into to
+on desktops   requiremen
+                                documents             the local personal folder immediately on
+              ts
+                                must       be         receiving the mail. This would prevent
+                                protected by a        mails from being stored in the mail
+                                password.             folders on mail servers and looked by
+                                Hard-copies           system administrators.
+
+
+
+ TRIANZ INTERNAL                                                                              4
+                                   Internal Use
+Control Area        Public                                             Confidential
+                                       Only
+                                   should be          ▪
+                                   preferably kept        For backup purpose all confidential
+                                   under lock and         documents should be stored on the
+                                   key.                   respective user’s folder of the file server.
+                                                          They should preferably be password
+                               ▪     Hard disk            protected.
+                                   should not be      ▪
+                                                          Confidential documents should not be
+                                   shared at the
+                                                          stored on the public directories of the file
+                                   drive levels,
+                                                          server.
+                                   and shared         ▪
+                                   folders should         Complete Hard drive of desktop shall not
+                                   be restricted to       be shared on the network. On need
+                                   known                  basis, selected folders on the hard drive
+                                   individuals.           can be shared, and access be given to
+                                                          named individuals.
+                                                      ▪   Data shall be encrypted additional
+                                                          controls may be required to be deployed
+                                                          depending on the sensitivity of data,
+                                                          other access controls might suffice.
+
+
+                   Public          Internal Use Only                      Confidential
+Control Area
+
+
+Storage of     ▪ No            ▪     Medium       should ▪ The information should be kept in a
+Information        security        preferably be stored    separate cabinet preferably a
+Medium             control         in a personal storage   fireproof cabinet. The authority to
+(e.g.              requireme       shelf,    preferably,   manage the cabinet will be done by
+diskettes,         nts             locked.                 a person nominated by the
+CD, hard                                                   department head.
+copy)
+                                                            ▪ Access to the information / cabinet
+                                                              shall be granted by the department
+                                                              head by E-mail.
+                                                            ▪ Any confidential information, which
+                                                              is to be kept or retrieved from the
+                                                              cabinet, will be done in front of the
+                                                              designated person.
+                                                            ▪ Any hard copy documents that
+                                                              cannot be reproduced (like legal
+                                                              contracts, third party contracts)
+                                                              should also be kept preferably in the
+                                                              fireproof cabinets.
+
+
+
+
+ TRIANZ INTERNAL                                                                                   5
+Labeling of    ▪ No           ▪ The document/record ▪ The document/record (electronic
+Information        Labeling       (electronic form) must       form) must contain the information
+
+(documents         Required       contain the                   classification logo with the
+and Records                       information                   classification identified as
+– soft copy)                      classification logo           ‘Confidential’ at the start of the
+                                  with the classification       document/record. The
+                                  identified as ‘Internal       document/record(Hard copy)
+                                  Use Only’ at the start        should have the information
+                                  of the                        classification logo as a cover page
+                                  document/record. The          or as part of the title page with the
+                                  document/record(Har           classification identified as
+                                  d copy) should have           “Confidential”
+                                  the information
+                                  classification logo as ▪      The information owner will do the
+                                  a cover page or as            labeling of the document and if any
+                                  part of the title page        doubt is there while classifying the
+                                  with the classification       information then he / she should
+                                  identified as “Internal       take concurrence from
+                                                                departmental head.
+                                  Use Only”
+                                                           ▪    All email communication of
+                              ▪         For       email
+                                                                confidential information must have
+                                   communication, the
+                                                                ‘Confidential’ as the first word in
+                                   attached document
+                                                                the subject
+                                   should have the
+                                   classification          ▪    Data shall be labelled as per
+                                   “Internal Use Only”          information asset classification at
+                                   marked on the first          the time of storage and transfer.
+                                   page.
+
+
+
+               ▪ No           ▪ No Labeling Required       ▪ The information medium must be
+Labeling of        Labeling                                    marked ‘Confidential’
+Information        Required
+Medium
+(e.g.
+diskettes,
+CD, hard
+copy)
+
+                                                                         Confidential
+  Control          Public         Internal Use Only
+   Area
+
+
+
+
+ TRIANZ INTERNAL                                                                                   6
+Addressing/ ▪ No          ▪ No security control   ▪ The storage medium must have two
+Packaging     security      requirements            envelopes/layers of packaging
+              control
+              requireme                           ▪ The outer envelope/layer must show
+              nts                                   the recipients name and address, be
+                                                    marked 'To be opened by addressee
+                                                    only', and show the name and phone
+                                                    number of the
+                                                    sender of the information
+
+                                                  ▪ The inner envelope / layer should be
+                                                    marked as “Confidential”.
+
+
+
+
+TRIANZ INTERNAL                                                                      7
+Dispatch       ▪ No            ▪                          ▪ Packaging must ensure physical
+and                security                                  protection of the item
+Distribution       control         Packaging shall
+of                 requireme       ensure physical         ▪ Dispatch       or    distribution   of
+Information        nts             protection of the item    information to anyone outside
+                               ▪                             his/her department, third party
+(except                            Normal mail service
+EMail)                                                       and/or outsourced party should be
+                                   or by any courier
+                               ▪                             by hand or approved courier
+                                   This information can
+                                   be freely circulated    ▪ Printed information sent through
+                                   only to the internal      internal mail, external mail, or by
+                                   Trianz employees          courier must be sent by trusted
+                               ▪                             courier or registered mail. The
+                                   Circulation of Internal   method of mailing must provide
+                                   Use Only document         tracking.
+                                   to any third party
+                                   and/or to anyone        ▪ Distribution is to named individual(s)
+                                   outside                   only
+                                   Trianz shall require    ▪ Confidential information cannot be
+                                   approval from the         taken out of Trianz premises in form
+                                   head of concerned         of media like Hard Copy, CD, Floppy,
+                               ▪   department. The           USB etc. without prior permission of
+                                   document shall be         department head.
+                                   detailed about the
+                                   data retention
+                                   period based on
+                                   regulatory,
+                                   sensitivity and
+                                   information
+                                   classification as
+                               ▪   required.
+                                   The validity of data
+                                   classification needs
+                                   to be checked on a
+                                   periodic basis. If
+                                   there is any change,
+                                   data should be
+                                   reclassified
+                                   accordingly.
+
+
+
+
+ TRIANZ INTERNAL                                                                                8
+Control Area         Public             Internal Use Only                     Confidential
+
+Dispatch and ▪ No security          ▪ Possible to send email
+Distribution   control                containing information ▪        Circulation     of     confidential
+of             requiremen             to internal employees           document to any third party and/or
+Information    ts                     without any explicit            to anyone outside Trianz shall
+(Electronic                           approval from Trianz            require approval from the head of
+Mail)                                 authority.                      concerned department through E-
+                                                                      mail and marking a copy to him /
+                                    ▪ Circulation of Internal         her while sending the document.
+                                      document to any third
+                                      party and/or to anyone ▪        BCC while emailing is not
+                                      outside Trianz shall            permitted  for “Confidential”
+                                      require approval from           documents.
+                                      the head of concerned
+                                      department      through ▪       While sending the document to any
+                                      Email and marking a             authorized person it should be
+                                      copy to him / her while         marked as “Confidential” in the
+                                      sending the document.           subject or body of the mail in such
+                                                                      a fashion that the mark is easily
+                                                                      visible.
+                                                                  ▪   Data shall be encrypted while in
+                                                                      transfer     using     appropriate
+                                                                      encryption methodologies.
+Voice          ▪ No security        ▪ No security control
+                                                                  ▪ It must not be discussed on
+                    control           required
+                                                                    speakerphones or during
+                    required
+                                                                    teleconferences unless all
+                                                                    participating parties first
+                                                                    acknowledge that no unauthorized
+                                                                    persons are in close proximity, such
+                                                                    that they might overhear the
+                                                                    conversation
+Disposal of     ▪          These     ▪ These        documents      ▪ Any information should be
+Information          documents         should NOT be used             destroyed / deleted, only after the
+                     may      be       for draft (reverse side)       minimum retention period, when
+                     used     for      printing.                      the information is obsolete or no
+                     draft                                            longer needed.
+                     (reverse        ▪ These      documents
+                                       may be destroyed            ▪ Any hard copy confidential
+                     side)
+                                       manually,    ensuring           document, which is to be
+                     printing
+                                       that the document               destroyed, should be destroyed
+                                       may       not       be          by tearing into small pieces
+                                       reconstructed easily.           preferably using the shredder at
+                                                                       that moment of time.
+
+                                                                   ▪ Any confidential information
+                                                                       present in CD where it cannot be
+                                                                       deleted from the electronic media
+                                                                       should be physically destroyed.
+
+ TRIANZ INTERNAL                                                                                      9
+                                                   ▪ Any hard disk containing
+                                                       confidential information should
+                                                       undergo low level formatting, so
+                                                       that information cannot be
+                                                       recovered from that hard disk.
+                                                   ▪   Secure disposal of data
+                                                       (including the disks etc.) shall be
+                                                       documented.
+
+
+
+
+2. References:
+  •   IT Operation Process
+
+
+  •   Information Asset classification Policy
+
+
+  •   Access Control Policy
+
+
+  •   ISMS TMR Template
+
+
+  •   Acceptable Usage Policy
+
+
+  •   ISMS Apex Manual
+
+
+  •   Media Handling Policy
+
+
+  •   Policy on the Use of Cryptographic Control
+
+  •   Data Modelling Using UML Guidelines
+
+  •   Asset Tracking Sheet Template
+
+
+
+
+TRIANZ INTERNAL                                                                        10
+    For Trianz Process Improvement Group (TPIG) Purpose Only
+Version History
+ Ver.      Author       Reviewer   Approver     Date      Reason for     Change Description
+ No.                                                       Change
+
+ 0.00   Jyotessh G                            19-Feb07 Initial Draft     None
+        Nair
+
+ 1.00   Jyotessh G                            26-Feb-    Baseline is     Approved Baseline.
+        Nair                                  07         approved by
+                                                         Zulfikar Deen
+
+ 1.01   Bharateesha B                         24-Feb-    New Asset       Formatted the
+        R                                     09         Management      document to
+                                                         Framework       incorporate the new
+                                                                         asset management
+                                                                         framework
+
+
+
+ 1.02   Bharateesha B                         11- Mar-   New Asset       Included Records in
+        R                                     09         Management      the scope of section
+                                                         Framework       Labeling
+                                                                         Of Information – Soft
+                                                                         Copy. Made changes
+                                                                         to the
+                                                                         Guidelines for each
+                                                                         classification.
+
+ 2.00   Balu Nair                             28-Apr-    Approved for    Baselined
+                                              09         Baseline
+
+ 2.01   Bharateesha B                         23-June-   2nd             Removed “Hard Copy”
+        R                                     09         Surveillance    for the control area “
+                                                         audit           Labeling of
+                                                                          Information
+                                                                         (documents and
+                                                                         Records – soft copy)
+                                                                         Changed the point 3
+                                                                         of the guidelines for
+                                                                         control area “Dispatch
+                                                                         and
+                                                                         Distribution of
+
+
+TRIANZ INTERNAL                                                                       11
+                                                  Information
+                                                  (Electronic Mail) for
+                                                  the classification “
+                                                  Confidential”
+
+3.00   Bharateesha B   23-June-   Approval for    Baselined
+       R               09         Baseline
+
+3.01   Chakravarthi    30-Dec-    QMG review      Formatted entire
+                       10                         document
+
+4.00   Chakravarthi    31-Dec-    Request for     Baselined
+                       10         approval
+
+4.01   Srilakshmi      24-May-    QMG Review      Modified release id in
+                       11                         header and cover
+                                                  page
+
+5.00   Srilakshmi      24-May-    Approval for    Baselined
+                       11         Baseline
+
+5.01   Sudharsana      3-Aug-11   QMG review      Replace Owner with
+                                                  Management
+                                                  Representative in
+                                                  place of CIO
+                                                  Removed Retention
+                                                  period in Document
+                                                  Classification scheme
+                                                  section
+
+6.00   Sudharsana      3-Aug-11   Request for     Approved and Base
+                                  Approval        lined
+
+7.00   Balu Nair       08-Nov-    Standardizati   Modified the template
+                       12         on of Blue      format
+                                  Book
+                                  Process         Changed the Logo
+                                  Assets
+
+
+
+
+TRIANZ INTERNAL                                               12
+7.01   Paramita    25-Jan-   Client Audit    Handling of
+       Ghosh and   16        and alignment   information based on
+       Balu Nair             with shared     the type of Information
+                             assessment      Asset
+                             checklist.      Classification.
+                                             Updated control areas
+                                             to include below points
+
+
+
+                                             Added identification of
+                                             data owners, criteria of
+                                             accessing the data
+                                             based on
+                                             confidentiality,
+                                             labelling mechanism
+                                             for the sensitive
+                                             documents, validation
+                                             of data classification
+                                             which needs to be
+                                             verified on a periodic
+                                             basis, data retention
+                                             period based on
+                                             regulatory, sensitivity
+                                             and information,
+                                             appropriate encryption
+                                             methodologies for data
+                                             in transit and
+                                             documentation of
+                                             securely disposal of
+                                             data
+                                             All the
+                                             confidential/sensitive
+                                             data shall be
+                                             encrypted. data.
+                                             Added separate
+                                             "REFERENCES"
+                                             sections
+
+
+
+8.00   Balu Nair   08-Feb-   Approved by     Baselined
+                   16        Mahesh
+                             (CISO)
+
+
+
+
+TRIANZ INTERNAL                                          13
+ 8.1   Karthik N                         3-Jan-22   For Review     Migrated to new
+                                                                   template
+
+
+ 9.0   Karthik N   Siva N   Siva N       3-Jan-22   For Approval   Approved and
+                                                                   Baselined
+
+
+ 9.0   Kruti       Vijaya                3-June-    Annual         No Changes
+                                         24         Review
+
+
+ 9.1   Vijaya      Balu                  26-May-    For Annual     Migrated to a new
+                                         25         Review         template
+
+
+10.0   Vijaya      Balu     Srikanth M   29-May-    For Approval   Approved and
+                                         25                        Baselined
+
+
+
+
+TRIANZ INTERNAL                                                               14
+                                Contact Information
+                                               Name
+
+                                               Email
+
+                                              Phone
+
+
+
+
+                                  Thank You
+                                     infosec@trianz.com
+
+
+
+
+ The content in this document is copyrighted; any unauthorized use – in part or full – may violate the
+ copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly
+   displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz
+ name and its products are subject to trademark and copyright protections, regardless of how and
+                                          where referenced.
+
+
+TRIANZ INTERNAL                                                                                      15
+

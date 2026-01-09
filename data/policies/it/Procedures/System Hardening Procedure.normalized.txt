@@ -1,0 +1,316 @@
+# System Hardening Procedure
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public: No
+- Internal: Yes
+- Confidential: No
+- Restricted: No
+
+## Table of Contents
+1. INTRODUCTION
+   - 1.1 Purpose
+   - 1.2 Objective
+   - 1.3 Scope
+2. PROCEDURE FOR LINUX SYSTEM HARDENING
+   - 2.1 Document the host information
+   - 2.2 Harden SSH
+   - 2.3 Antivirus installation and configuration
+   - 2.4 FIM (File Integrity Monitoring) installation
+   - 2.5 File integrity
+   - 2.6 Audit trail to log all user commands
+   - 2.7 Audit trail for administrative commands in db
+   - 2.8 Find and remove unwanted packages
+   - 2.9 Find and stop unneeded services
+   - 2.10 Services and ports & scripts
+   - 2.11 User account procedure
+3. PROCEDURE FOR WINDOW SYSTEM HARDENING
+4. PROCEDURE FOR OTHER SYSTEM HARDENING
+5. REVIEW OF THE PROCEDURE
+6. EXCEPTION(S)
+7. ISO CONTROL MAPPING
+
+## 1. Introduction
+
+### 1.1 Purpose
+This procedure has been developed to provide management support and direction for the information security of all Trianz’s information assets within the Trianz environment. The purpose of this procedure is to ensure management commitment towards Information Security.
+
+### 1.2 Objective
+The objective of this procedure is to ensure system hardening of end user computing devices or Servers connected within Trianz logical environment.
+
+### 1.3 Scope
+- This procedure applies to all users of information systems, vendors, business partners, contractor personnel, and functions/business units. It covers all Information Systems operated by Trianz.
+- The procedure applies to all Trianz products and services.
+
+## 2. Procedure for Linux System Hardening
+
+### 2.1 Document the host information
+For each new Linux hardening job, create a document that includes the following host information:
+- Machine name
+- IP address
+- MAC address
+- Name of the person performing the hardening
+- Date
+- Asset Number
+
+### Linux Hardening Checklist
+1. **NTP**
+2. **Linux user password complexity**
+   - Minimum password length: 15 characters
+   - Password must be alphanumeric
+   - Password expiry: 30 days
+   - Remember last 4 passwords in history
+   - Lock account after 6 unsuccessful login attempts
+   - Lock account for 30 minutes, then unlock automatically
+3. **Harden SSH**
+   - Session idle timeout: 15 minutes
+   - Disable CBC ciphers
+   - Disable MD5 and SHA2 MACs
+4. **Antivirus installation and configuration**
+5. **FIM installation**
+6. **Audit trail to log all user commands**
+7. **Audit trail for administrative commands in database**
+8. **Find and remove unwanted packages**
+9. **Find and stop unneeded services**
+10. **NGINX/Apache beast attack**
+11. **NTP Setup**
+    - Set up a centralized NTP server
+    - Ensure all servers have NTP client installed; install if not present
+
+### 5. System Configuration and Security Policies
+
+#### 5.1 NTP Configuration
+- Configure NTP to synchronize from the central NTP server.
+- Set up a cron job to synchronize NTP 4 times a day.
+
+#### 5.2 Linux User Password Complexity
+- Configure PAM for password complexity.
+- Ensure `pam-cracklib` is installed; if not, install or upgrade it.
+- Set the minimum password length to 7 characters, requiring both numbers and alphabets.
+- Implement a password expiry of 90 days for each user, with warning messages starting 7 days before expiry.
+- PAM should remember the last 4 used passwords and reject them if reused.
+- Lock accounts after 6 consecutive unsuccessful login attempts, unlocking them after 30 minutes.
+
+#### 5.3 Harden SSH
+- Set session idle timeout to 15 minutes.
+- Configure SSH to use only the following ciphers:
+  - aes128-ctr
+  - aes192-ctr
+  - aes256-ctr
+  - arcfour256
+  - arcfour128
+- Configure SSH to use only the following MACs:
+  - umac-64@openssh.com
+  - hmac-sha2-256
+  - hmac-sha2-256-96
+  - hmac-sha2-512
+  - hmac-sha2-512-96
+  - hmac-ripemd160
+  - hmripemd160@openssh.com
+
+#### 5.4 Antivirus Installation and Configuration
+- Install antivirus with a centralized setup to prevent each machine from downloading update files directly from the internet.
+- Configure the centralized update server to download update files every 4 hours and serve installed servers as needed.
+- Ensure antivirus is installed on all servers (Linux and Windows) and configured to receive updates from the centralized update server. Perform a full system scan every day at midnight and send status emails.
+
+#### 5.5 File Integrity Monitoring (FIM) Installation
+- Install the FIM server on one of the servers and configure it to send alerts via email and display them on a web interface.
+- Install FIM agents on all servers, configured to send logs/alerts to the central OSSEC server, which parses them and generates alerts.
+- Monitor file integrity, administrative actions, logs, etc., through FIM.
+
+#### 5.6 File Integrity
+- Monitor the following aspects of file integrity:
+  - File modification (with exact modified content)
+  - File size
+  - File owner and group
+  - File permissions
+  - MD5 checksum
+  - SHA checksum
+
+#### 5.7 Audit Trail to Log All User Commands
+- Enable an audit trail mechanism to log all commands executed by users and send them as warnings to the central syslog server.
+
+#### 5.8 Audit Trail for Administrative Commands in Database
+- Configure PostgreSQL database servers to log all commands executed by administrative users as syslog messages, which are sent to the central syslog server.
+
+#### 5.9 Find and Remove Unwanted Packages
+- Ensure all installed packages have justification. Remove any package lacking justification.
+
+#### 5.10 Find and Stop Unneeded Services
+- Ensure all running processes and services have justification. Stop any service or process running without justification.
+- Reconfigure SSL ciphers in Nginx/Apache to prevent vulnerabilities to the BEAST attack.
+
+#### 5.11 Services and Ports & Scripts
+- Ensure all running services are secure and justified. No unwanted or unrequired ports or services are allowed.
+- If insecure services (e.g., FTP, Telnet) are permitted, implement additional controls to mitigate associated risks. For example:
+  - Use multi-factor authentication for Telnet.
+  - Use an encrypted channel or encrypt data before sending over FTP.
+- Review and justify all start-up and shutdown scripts on the system.
+
+#### 5.12 User Account Procedure
+- Disable all guest accounts.
+- Remove or disable default user IDs.
+- If a default account cannot be removed or disabled, rename it.
+- Justify and define all custom accounts based on the principle of least privilege (need to know).
+
+### 3. Procedure for Window System Hardening
+
+- **Service Pack Installation**:
+  - Install the latest Service Pack from [Windows Update](http://windowsupdate.microsoft.com).
+  - Each Service Pack includes all security fixes from previous Service Packs. Keep up to date and install the correct Service Pack for your servers as soon as operational circumstances allow.
+  - Install appropriate post-Service Pack security hot fixes from [Windows Update](http://windowsupdate.microsoft.com).
+  - Download and test security hot fixes recommended in Microsoft security bulletins, then install them on member servers as soon as operational circumstances allow.
+
+- **Local Account Configuration**:
+  - Disable the local Guest account (this is the default in Windows Servers).
+  - Enable account lockout on the local administrator account using passprop on Windows Servers.
+  - Rename the local Administrator account to something other than "Administrator."
+  - Ensure the local Administrator password meets the following criteria:
+    - At least sixteen alphanumeric characters.
+    - Contains both upper and lower case characters.
+    - Includes digits and punctuation characters as well as letters.
+    - Is not a word in any language, slang, dialect, jargon, etc.
+    - Is not based on personal information.
+  - Ensure that Domain Admins are members of the Local Administrators group.
+  - Disable or delete unnecessary accounts quarterly.
+  - Review the list of active accounts (for both users and applications) in the Computer Management snap-in, disabling non-active accounts and deleting accounts that are no longer required, including duplicate user accounts, test accounts, shared accounts, and general departmental accounts.
+  - Use group policies to assign permissions as needed.
+
+- **Service Management**:
+  - Disable unnecessary services.
+  - After installing Windows Server, disable any network services not required for the server role, such as the Server service for file and print sharing, web services, or FTP services if not needed.
+  - Avoid installing applications on the server unless necessary for its function (e.g., do not install email clients, office productivity tools, or utilities not strictly required).
+
+- **SNMP Configuration**:
+  - If SNMP is enabled, ensure there is no R/W community string, and set the RO community string to something other than "public." Follow the same guidelines as choosing a complex password for the community string.
+
+- **Password Policies**:
+  - Set stronger password policies as per the password policy.
+  - Use the Domain Security Policy (or Local Security Policy) snap-in to strengthen system policies for password acceptance, including:
+    - Minimum password length: at least eight characters.
+    - Minimum password age.
+    - Maximum password age.
+    - Password history maintenance.
+    - Enable password complexity.
+
+- **Recommended Password Settings**:
+  - Enforce password history: 4
+  - Maximum password age: 30 days
+  - Minimum password age: 2 days
+  - Minimum password length: 8 characters
+  - Password must meet complexity requirements: Enabled
+  - Store passwords using reversible encryption: Disabled
+
+- **Additional Security Measures**:
+  - Increase the log size from the default 16384 MB to at least 81920 MB.
+  - Prevent the last logged-in username from being displayed.
+
+### 4.1 Security Settings
+
+- **Disable Last Username Display**: Configure the Local Security Policy to prevent the display of the last username by navigating to: Security Settings > Local Policies > Security Options > Domain Member: Do not display last username.
+
+- **Audit Policy Configuration**: Implement a strong audit policy with the following recommended settings:
+  - Audit account logon events: Success, Failure
+  - Audit account management: Success, Failure
+  - Audit directory service access: No auditing
+  - Audit logon events: Success, Failure
+  - Audit object access: No auditing
+  - Audit policy change: Success, Failure
+  - Audit privilege use: Success, Failure
+  - Audit process tracking: No auditing
+  - Audit system events: No auditing
+
+- **Antivirus Software**: Install antivirus software and ensure that file scanning is enabled and automatic definition updates are configured.
+
+- **Access Control on File Shares**: Configure appropriate access control settings on file shares, ensuring permissions are set through NTFS security.
+
+- **NTFS Security Settings**: Secure all folders and files with standard NTFS settings. Create groups that allow the minimum number of users to have write access.
+
+- **Remove "Everyone" Setting**: Where possible, remove the “Everyone” setting and replace it with specific user groups.
+
+- **Authenticated Users Access**: After applying NTFS settings, grant all Authenticated Users full control access, confirming with application guidelines.
+
+- **Disable Autorun Feature**: Disable the autorun feature on the CD-ROM drive by:
+  - Running the Registry Editor (REGEDIT.EXE).
+  - Navigating to HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Cdrom.
+  - Setting the Autorun value to 0 (create it if it does not exist).
+
+- **Registry Protection**: Protect the registry from anonymous access.
+
+- **Rename Guest Account**: Rename the guest account, even if it is disabled.
+
+- **Server Firewall**: Ensure the server firewall is enabled and blocking unnecessary ports, such as 21 for FTP and 80 for web services. Contact IT security for assistance if needed.
+
+- **RPC Access Settings**: In the registry subkey HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\WindowsNT\RPC, select one of the following values:
+  - Default setting: Permits access to interfaces only using authenticated connections, unless specifically exempted.
+  - Alternative setting: Permits remote access to interfaces only using authenticated connections without exceptions.
+
+- **Debugging Access**: Ensure users have the correct level of debugging access through:
+  - The control panel of each machine.
+  - The platform SDK (SeDebugPrivilege).
+
+- **Event Log Setup**: Configure event logs with the following settings:
+  - Maximum application log size: 16384 MB
+  - Maximum security log size: 16384 MB
+  - Maximum system log size: 16384 MB
+  - Prevent local guests group from accessing application log: Enabled
+  - Prevent local guests group from accessing security log: Enabled
+
+### 4. Procedure for Other System Hardening
+- Utilize the CIS (Centre for Internet Security) Benchmarks for well-known industry systems, including Operating Systems, Network and Server Infrastructure, Cloud Systems, and Applications. Access the benchmarks at: [CIS Benchmarks](https://www.cisecurity.org/cis-benchmarks/).
+- For other systems, refer to the security best practices provided by the respective manufacturers or developers.
+
+### 5. Review of the Procedure
+- The Information Security team is responsible for reviewing this procedure document at least annually or whenever there is a major change in the requirements.
+
+### 6. Exception(s)
+- Exceptions require a documented business justification and must be approved by higher management.
+
+### 7. ISO Control Mapping
+- The following ISO 27001:2022 Controls are mapped to this document:
+  - **Technological Controls**
+    - 8.20 Networks Security - System Hardening Procedure
+    - 8.9 Configuration Management - System Hardening Procedure
+    - 8.4 Access to Source Code - System Hardening Procedure
+
+### Document Control
+- **Owner:** CISO
+- **Release ID:** SERVHARD_PROC_0133
+
+### Version History
+- **Version 0.1** (02-July-20): Initial Draft by Rajesh Benakannavar, Reviewed by Balu Nair, Approved by Phani Krishna.
+- **Version 1.0** (02-July-20): Reviewed and Approved; Added Reference to the CIS benchmark in the System Hardening Procedure section.
+- **Version 1.1** (03-May-21): For Review; Updated with new Information classification.
+- **Version 2.0** (03-May-21): Approved and Baselined.
+- **Version 2.0** (3-Jan-22): For Review; No changes.
+- **Version 2.1** (24-Feb-22): For Review; The scope has been extended to products and services.
+
+### 3.0 Document Approval History
+- **22**: For Approval - Approved and Baselined
+- **02-May-23**: For Approval - Reviewed with no changes.
+
+### 3.1 Document Migration
+- **12-May-23**: For Review - Migrated to New Template
+
+### 4.0 Document Approval
+- **12-May-23**: Approved and Baselined
+
+### 4.1 ISO Control Mapping Update
+- **4-Feb-24**: For Review - Updated the section ISO Control Mapping aligning to ISO 27001:2022
+
+### 5.0 Document Approval
+- **23-Feb-24**: For Approval - Approved and Baselined
+
+### 5.1 Document Migration
+- **25-Apr-25**: Migrated to new Template
+
+### 6.0 Document Approval
+- **14-May-25**: For Approval - Approved and Baselined
+
+### Contact Information
+- **Email**: infosec@trianz.com
+
+### Copyright Notice
+- The content in this document is copyrighted; any unauthorized use may violate copyright, trademark, and other laws. This document may not be modified, reproduced, publicly displayed, performed, or distributed for any public or commercial purposes. The Trianz name and its products are subject to trademark and copyright protections.

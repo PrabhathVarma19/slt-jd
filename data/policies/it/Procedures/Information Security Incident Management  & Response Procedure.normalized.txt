@@ -1,0 +1,378 @@
+# Security Incident Management & Response Procedure
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public: Not applicable
+- Internal: Applicable
+- Confidential: Not applicable
+- Restricted: Not applicable
+
+## Table of Contents
+1. INTRODUCTION
+2. OBJECTIVES
+3. SCOPE
+4. PROCEDURE STEPS
+   - 4.1 Incident Identification and Reporting
+   - 4.2 Incident Response
+     - 4.2.1 Detection and Reporting
+     - 4.2.2 Assessment and Classification
+     - 4.2.3 Containment
+     - 4.2.4 Investigation and Analysis
+     - 4.2.5 Root Cause Analysis
+     - 4.2.6 Correction
+     - 4.2.7 Eradication/Corrective Action
+     - 4.2.8 Recovery
+     - 4.2.9 Lessons Learned
+     - 4.2.10 Continuous Improvement
+   - 4.3 Compliance and Governance
+   - 4.4 Incident Management Records Maintenance
+5. ROLES AND RESPONSIBILITIES
+6. EXIT CRITERIA
+7. PREREQUISITES
+   - 7.1 Resources & Training
+   - 7.2 References
+8. RELATED GUIDELINES, TEMPLATES AND CHECKLISTS
+9. MEASUREMENT
+10. ISO CONTROL MAPPING(S)
+11. APPENDIX INCIDENT SEVERITY
+
+## 1. Introduction
+The Security Incident Management and Response Procedure is designed to provide a systematic and consistent approach for detecting, assessing, responding to, and restoring normal operations following security incidents that could compromise the confidentiality, integrity, or availability of the organization's information systems, data, or operations.
+
+## 2. Objectives
+The main objective of the Incident Management & Response procedure is to restore normal service operations as quickly as possible and minimize the negative impact on business activities. A standardized process ensures an efficient and coordinated response to unplanned service disruptions, such as a server crash or a network outage.
+
+### Key Objectives of Incident Management and Response Procedure:
+- Incident Identification and Reporting
+- Incident Response, which includes:
+  - Detection and Reporting
+  - Assessment and Classification
+  - Containment
+  - Investigation and Analysis
+  - Root Cause Analysis
+  - Correction
+  - Eradication and Corrective Actions
+  - Recovery
+  - Lessons Learned
+  - Continuous Improvement
+- Compliance and Governance
+- Incident Management Records Maintenance
+
+## 3. Scope
+- This document applies to all Trianz associates, including contractual employees, third-party vendors, cloud service providers, and all other individuals and groups who have been granted access to Trianz.
+- All users must understand and adopt this procedure and are responsible for ensuring the safety and security of the Trianz infrastructure, whether working remotely or in the office/client premises, for the information that they use or process. This includes both data stored electronically and in any other form.
+- The procedure applies to all Trianz products and services.
+
+## 4. Procedure Steps
+
+### 4.1 Incident Identification and Reporting
+- Information Security Incidents must be reported promptly to the IT Service Desk and Infosec team by associates, keeping the reporting manager informed.
+- Associates are required to fill out the Incident Reporting Template.
+
+### 4.2 Incident Response
+
+#### 4.2.1 Detection and Reporting
+- Incidents must be reported using the Incident report template immediately upon identification.
+- Details of the incident should be provided to the IT Service Desk and Infosec Team.
+- The CIO is responsible for reporting cyber incidents to CERT-In within 6 hours, depending on severity and applicability.
+
+#### 4.2.2 Assessment and Classification
+- Incidents will be analyzed for impact regarding:
+  - Data loss/exposure
+  - Financial impact
+  - Operational disruption
+  - Legal/regulatory implications
+  - Reputational damage
+- Assessment will also validate affected assets, including:
+  - Systems/applications involved
+  - Data compromised
+  - Users/accounts affected
+  - Other relevant factors
+
+#### 4.2.3 Containment
+- The IS team will:
+  - Isolate affected systems, networks, or user accounts.
+  - Disable compromised services or access points.
+  - Apply temporary firewalls or access controls as necessary.
+
+#### 4.2.4 Investigation and Analysis
+- Logs and system data will be collected for forensic analysis.
+- The IS team will conduct interviews and investigations as needed.
+- Collaboration with Infosec will occur to identify the attack vector and scope.
+- Evidence will be collected and preserved for internal and legal use.
+
+#### 4.2.5 Root Cause Analysis
+- The root cause will be determined based on investigations and contributing factors.
+- Security controls that failed or were missing will be identified.
+- All evidence will be preserved for legal purposes and future reference, aiding in lessons learned.
+
+#### 4.2.6 Correction
+- Immediate corrective actions will be initiated to contain the incident.
+- Temporary fixes will be applied, and notifications sent to relevant internal and external stakeholders.
+- Remediation actions will be carried out by respective project and function teams.
+- All findings, timelines, and actions by each department will be documented.
+
+#### 4.2.7 Eradication/Corrective Action
+- The root cause of the incident will be eliminated.
+- Actions will include applying patches, changing credentials, and disabling compromised accounts.
+- Remediation actions will be conducted by respective projects and functions to prevent recurrence, including awareness and training sessions.
+
+#### 4.2.8 Recovery
+- Systems and services will be restored to normal operation and monitored for signs of recurrence.
+
+#### 4.2.9 Lessons Learned
+- A post-incident review will be conducted, and lessons learned will be documented.
+- Policies will be updated, controls applied, and training conducted based on findings.
+
+#### 4.2.10 Continuous Improvement
+- Post-incident reviews will identify weaknesses and improve future incident response.
+- Security controls, policies, and procedures will be updated based on findings.
+
+### 4.3 Compliance and Governance
+- The incident response procedure must align with organizational policies, industry standards (e.g., ISO/IEC 27001, NIST), and regulatory frameworks.
+- Due diligence and accountability to auditors and regulators must be demonstrated.
+
+### 4.4 Incident Management Records Maintenance
+- Incident records must be maintained.
+
+### 5. Roles and Responsibilities
+
+#### 5.1 Types of Incidents and Stakeholders Involved
+
+1. **Security Incidents**  
+   - **Internal/External Stakeholders Involved**: IT, Infosec, Delivery/corporate functions, Legal  
+   - **Incident Reporting**: Can be from all associates  
+   - **Assessment and Classification**: IS Team, Infosec, CIO, other stakeholders as applicable  
+   - **Containment**: IS Team and Infosec  
+   - **Investigation and Analysis**: IS Team, Infosec, CIO, Legal, IT, and applicable associates  
+
+2. **Service Incidents**  
+   - **Internal/External Stakeholders Involved**: IT, Infosec, Delivery/corporate functions, Legal  
+   - **Incident Reporting**: Can be from all associates  
+   - **Assessment and Classification**: IS Team, Infosec, CIO, other stakeholders as applicable  
+   - **Containment**: NA  
+   - **Investigation and Analysis**: IS Team, IT, and applicable associates  
+
+3. **Policy Violations**  
+   - **Internal/External Stakeholders Involved**: IS Team, Infosec, CIO, other stakeholders as applicable  
+   - **Incident Reporting**: Employees violating Acceptable Usage Policy, Laptop usage, Internet Usage Policy  
+   - **Assessment and Classification**: NA  
+   - **Containment**: Infosec, CISO, and other stakeholders as applicable  
+   - **Investigation and Analysis**: IS Team, Infosec, CIO, and applicable associates  
+
+4. **Natural Calamities (Floods, Theft, Fire, etc.)**  
+   - **Internal/External Stakeholders Involved**: IT, Infosec, Delivery/corporate functions, Legal, Admin  
+   - **Incident Reporting**: Can be from all associates  
+   - **Assessment and Classification**: Admin & ERT Team, Infosec, CIO, other stakeholders as applicable  
+   - **Containment**: NA  
+   - **Investigation and Analysis**: Admin, Infosec, CIO, Legal, and applicable associates  
+
+5. **Physical Incidents (related to Theft, Damage of Equipment)**  
+   - **Internal/External Stakeholders Involved**: IT, Infosec, Delivery/corporate functions, Legal, Admin  
+   - **Incident Reporting**: Can be from all associates  
+   - **Assessment and Classification**: Admin & ERT Team, Infosec, IS Team, CIO, other stakeholders as applicable  
+   - **Containment**: NA  
+   - **Investigation and Analysis**: Admin, IS Team, Infosec, CIO, Legal, and applicable associates  
+
+6. **Privacy Breaches**  
+   - **Internal/External Stakeholders Involved**: IS Team, Infosec, IT, Delivery/corporate functions, CISO  
+   - **Incident Reporting**: Can be from all associates  
+   - **Assessment and Classification**: IS Team, Infosec, CIO, other stakeholders as applicable  
+   - **Containment**: IS Team, Infosec  
+   - **Investigation and Analysis**: IS Team, Infosec, CIO, Legal, and applicable associates
+
+### 6. Exit Criteria
+- The exit criteria for incident management include the completion of Incident Reporting Analysis and the management of Incident Records.
+
+### 7. Prerequisites
+
+#### 7.1 Resources & Training
+- Resources and training are required for Incident Management.
+
+#### 7.2 References
+- The relevant document for reference is the ISO 27001:2022 Standard.
+
+### 8. Related Guidelines, Templates and Checklists
+- The following documents are related:
+  - Incident Reporting Template
+  - Consolidated Incident Tracker & Analysis
+
+### 9. Measurement
+- The measurement of effectiveness is based on the number of reported incidents reviewed and analyzed compared to the number of actual incidents.
+
+### 10. ISO Control Mapping(s)
+- The following ISO 27001:2022 controls are mapped to the corresponding documents:
+
+  - **Organizational Controls**
+    - **5.24 Information Security Incident Management Planning and Preparation Control**: The organization shall plan and prepare for managing information security incidents by defining, establishing, and communicating information security incident management processes, roles, and responsibilities.
+    - **5.25 Assessment and Decision on Information Security Events Control**: The organization shall assess information security events and decide if they are to be categorized as information security incidents.
+    - **5.26 Response to Information Security Incidents Control**: Information security incidents shall be responded to in accordance with the documented procedures.
+    - **Learning from Information Security Incidents Control**: Knowledge gained from information security incidents shall be used to strengthen and improve the information security controls.
+  
+  - **People Control**
+    - **Information Security Event Reporting Control**: The organization shall provide a mechanism for personnel to report observed or suspected information security events through appropriate channels in a timely manner.
+
+### 5.28 Collection of Evidence
+- The Information Security Incident Management Procedure shall establish and implement procedures for the identification, collection, acquisition, and preservation of evidence related to information security events.
+
+### 5.29 Information Security During Disruption
+- The organization shall plan how to maintain information security at an appropriate level during disruption.
+
+### 11. Appendix Incident Severity
+- Incidents will be categorized into one of four severity levels based on their impact to the organization, which may include financial impact, reputation, brand value, and customer trust.
+
+#### Severity Levels:
+- **Critical**: 
+  - Description: Incident where the impact is severe.
+  - Examples: Disruption of business operations, compromise of proprietary or confidential information, widespread virus or worm.
+
+- **High**: 
+  - Description: Incident where the impact is significant.
+  - Examples: Delayed ability to order, delayed delivery of critical electronic mail or EDI transfers.
+
+- **Medium**: 
+  - Description: Incident where the impact is minimal.
+  - Examples: Harmless email SPAM, isolated virus infections.
+
+- **Low**: 
+  - Description: Incident where the impact is very low.
+  - Examples: False positives, where investigation of suspicious activity finds no evidence of a security incident.
+
+### 4.00 Approval for Baseline
+- The baseline was approved on 24-May-11.
+
+### 4.01 QMG Review
+- On 3-Aug-11, the following modifications were made:
+  - The term "Owner" was replaced with "Management Representative" in the Document Classification Scheme.
+  - The row stating "Retention period is 3 Years" was removed.
+
+### 5.00 Request for Baseline
+- The request for baseline was approved and baselined on 3-Aug-11.
+
+### 6.00 QMG Review
+- On 02-May-12, the following modifications were made:
+  - The template was modified to comply with documentation standards.
+  - The Causal Analysis Report and Escalation Matrix were removed.
+  - The diagram was modified to Visio for contacting specialists in the event of an information security incident.
+  - ISMC roles and responsibilities were removed.
+  - Clarity was provided on all sections.
+  - Diagrams for learning from Information Security Incidents were removed.
+
+### 7.00 Standardization of Blue Book Process
+- On 08-Nov-12, the template format was modified, and the logo was changed.
+
+### 8.00 Re-Certification Audit of ISO 27001:2005
+- On 03-Jun-13, sections 5.3 and 5.4 were modified to provide clarity on incident resolution and incident follow-up, following the audit conducted on 07th, 08th, 09th, and 10th May 2013.
+
+### 9.0 Analysis to Prevent Recurrence of Incidents
+
+- As of 16-May-15, the assessment and decision on upgrading to ISO 27001:2013 is in progress.
+
+### 9.1 Response to Information Security Incidents
+
+- As of 15-Feb-2024, the following updates have been made for review:
+  1. Non-IT Related Incidents have been added.
+  2. ISO Mappings have been updated.
+
+### 9.01 Client Audit and Incident Alignment
+
+- As of 25-Jan-16, the following rules apply regarding the progress of incidents:
+  - Progress reports on incidents, considering confidentiality, shall be provided to those who reported the incident and all relevant stakeholders.
+  - The types of incidents to be reported include:
+    - Data loss incidents
+    - Damage or physical loss of assets
+    - Unauthorized changes to privacy information
+  - A 24/7 incident response team must consist of the Delivery Head, CISO, and IT Head of respective locations.
+  - The Delivery Manager will serve as the primary contact with the client.
+
+### 10.0 Approval and Baselining
+
+- As of 08-Feb-16, the document has been approved by Mahesh (CISO) and is now baselined.
+
+### 10.0 Document Modifications
+- **10.01** (14-Oct-16) - Addition of cloud services as scope of certification. Modified the process to include cloud-related aspects.
+
+### 11.0 Document Approval
+- **11.00** (07-Dec-16) - Approved by CISO. Document baselined.
+- **11.00** (23-Jun-18) - Reviewed by Kamadev Pradhan. No changes made to the document.
+
+### 11.1 Information Classification
+- **11.1** (29-Apr-19) - Modified by Balu Nair and Joshy VM.
+
+### 12.0 Document Release
+- **12.0** (14-May-19) - Approved for release by Balu Nair and Ganesh Arunachala. Document baselined.
+
+### 12.1 Incident Reporting
+- **12.1** (11-May-20) - Reviewed by Karthik N and Balu Nair. Updated incident reporting tools and incident categorization. Integrated with new template.
+
+### 13.0 Document Approval
+- **13.0** (14-May-20) - Approved and baselined by Karthik N, Phani Krishna.
+
+### 13.1 Information Classification Update
+- **13.1** (9-Feb-21) - Reviewed by Balu Nair and Phani Krishna. Updated the information classification. Formatted with minor changes.
+
+### 14.0 Document Release
+- **14.0** (12-Feb-21) - Approved for release by Balu Nair and Phani Krishna. Document baselined.
+
+### 14.1 Lessons Learned Update
+- **14.1** (24-Mar-21) - Reviewed by Karthik N and Phani Krishna. Updated the lessons learned, section 5.7.
+
+### 15.0 Document Approval
+- **15.0** (25-Mar-21) - Approved and baselined by Karthik N and Phani Krishna.
+
+### 15.1 Procedure Update
+- **15.1** (30-Jul-21) - Reviewed by Karthik N and Phani Krishna. Updated the entire procedure as per standard practice.
+
+### 16.0 Document Approval
+- **16.0** (30-Jul-21) - For approval by Karthik N and Phani Krishna.
+
+### 16.1 Roles and Responsibilities Update
+- **16.1** (23-Feb-23) - Reviewed by Karthik N and Rama Madhavan. Updated the roles and responsibilities. New template change.
+
+### 17.0 Document Approval
+- **17.0** (09-May-23) - Approved and baselined by Karthik N, Karthik N, and Srikanth M.
+
+### 17.1 ISO 27k Controls Mapping
+- **17.1** (15-Feb-24) - Reviewed by Shalini, Vijaya, and Kruti. Mapped with new ISO 27k 2022 controls.
+
+### 18.0 Document Approval
+- **18.0** (23-Feb-24) - Approved and baselined by Shalini, Vijaya, and Srikanth M.
+
+### 18.1 Insider Threats Update
+- **18.1** (10-Jan-25) - Reviewed by Nagarathinam and Vijaya R. Updated sections on insider threats, MITM, zero-day attacks, forensic analysis, and monitoring post-recovery.
+
+### 19.0 Document Approval
+- **19.0** (07-Feb-25) - Approved and baselined by Nagarathinam, Balu Nair, and Vijaya R.
+
+### 19.1 Purpose Review
+- **19.1** (18-...) - Reviewed by Krutideepta and Balu N.
+
+### 2. Roles & Responsibilities
+- The Information Security and Data Privacy Assurance team and the Crisis Management Team have been updated.
+- The AI.saac Tool has been replaced by the MS Sentinel (SIEM) Tool.
+
+### 3. Responding to an Incident
+- The section has been updated.
+
+### 19.2 Incident Management Updates (16-Apr-2025)
+1. Updated types of incidents have been added.
+2. Incident management now includes impersonation incidents involving CEOs, CFOs, and senior executives.
+
+### 20.0 Incident Management Approval (15-May-2025)
+- The document has been approved and baselined.
+
+### 20.1 Incident Management Procedure Review (12-Sep-2025)
+- The Incident Management Procedure and Security Incident Reporting Procedure have been combined, and the RACI (Responsible, Accountable, Consulted, Informed) has been defined.
+- The Incident Management Reporting Template has been revisited.
+
+### Contact Information
+- **Name:** [Not specified]
+- **Email:** infosec@trianz.com
+- **Phone:** [Not specified]
+
+### Copyright Notice
+- The content in this document is copyrighted. Unauthorized use, in part or full, may violate copyright, trademark, and other laws. This document may not be modified, reproduced, publicly displayed, performed, distributed, or used for any public or commercial purposes. The Trianz name and its products are subject to trademark and copyright protections.
+
+It seems that the text you intended to provide is missing. Please share the content from part 10 of the policy document, and I will assist you in rewriting it according to your instructions.

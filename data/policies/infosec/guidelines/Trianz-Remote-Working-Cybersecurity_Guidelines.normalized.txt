@@ -1,0 +1,97 @@
+# Trianz-Remote-Working Cybersecurity Guidelines
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Important Responsibilities
+When working remotely or from home, you are responsible for:
+- Protecting Trianz’s, its clients’, suppliers’, or other third parties’ confidential and sensitive information.
+- Safeguarding Trianz’s devices.
+- Keeping devices, infrastructure, and information safe and secure.
+- Adhering to all agreements, policies, and declarations signed during your employment with Trianz, including but not limited to Confidentiality, IP Assignment Agreement, and Information Security Policy.
+- Complying with client confidentiality agreements, Information Security, Data Privacy, and any other policies as required by clients.
+
+## Remote Working Cybersecurity Guidelines
+
+### Cybersecurity
+- Ensure laptops/devices have hardware encryption.
+- Prevent shoulder-surfing by ensuring no one is standing behind or next to you while working on sensitive information.
+- Make two-factor authentication (2FA) mandatory for remote access to all systems and applications, wherever feasible.
+- Follow these password best practices:
+  - Do not share passwords with anyone.
+  - Do not send passwords through emails.
+  - Do not store passwords in browsers.
+  - Use different passwords for different applications where required.
+  - Configure password lockouts and timeouts to avoid password attacks.
+- Do not open links or documents with Coronavirus information without validating the source.
+- Always protect the confidentiality of information.
+- Ensure critical updates (patches) to software and firmware are applied.
+- Do not browse websites that are out of scope of work; contact is@trianz.com if in doubt.
+- Avoid using illegal movie websites due to risks of ransomware and malware infections.
+- Do not lend Trianz systems to children or other family members.
+- Laptop screens must not be included in any pictures taken by you or family members.
+- When sharing your screen, do not share the full desktop; only share the required program unless absolutely necessary.
+- Take utmost care to protect Trianz assets from theft, damage, and water spillover.
+- Ensure all system updates are installed in a timely manner.
+
+**Reference:** Refer and comply with the Information Security Policy in the Bluebook and Information Security Training on the LMS portal.
+
+### Privileged Users
+- All IT and business privileged users must:
+  - Be aware of security responsibilities while using high privilege access.
+  - Refrain from using high privilege logins unless absolutely necessary.
+  - Report all errors and issues immediately to is@trianz.com while using high privilege access.
+
+**Reference:** Refer and comply with the User Access Control Policy and procedure in the Bluebook.
+
+### Phishing Emails
+- Immediately report to is@trianz.com if you have:
+  - Accidentally clicked on a suspicious file or link.
+  - Opened a suspicious PDF, Word, or Excel file with a macro.
+  - Received any malware/ransomware infection messages.
+
+**Reference:** Refer and comply with the Phishing Awareness Training on the LMS portal.
+
+### Online Meetings and Calls
+- Keep the microphone on mute when not speaking during a conference call.
+- Ensure webcams are not switched on by default.
+- Do not leave the system unlocked, especially during a call or when moving away from the system.
+- Avoid working from coffee shops or public places, especially during confidential calls or while working on confidential documents.
+
+**Reference:** Refer and comply with the Work From Home Policy in the Bluebook.
+
+### Exceptions
+- An exception is a condition that does not align with formal security expectations as defined by the policy, standard, and/or procedure (e.g., access to specific sites, installing new software).
+- All exceptions should be routed through is@trianz.com.
+- All risks arising from the exception should be thoroughly analyzed.
+
+**Reference:** Refer and comply with the Exception Handling Policy in the Bluebook.
+
+### Privacy
+- Protecting privacy is essential.
+
+### 1. Privacy and Data Protection
+- All online activities may be monitored for potential breaches of IT, Security, and Privacy regulations.
+- Do not share personal information via email or store it in non-approved locations.
+- Obtain necessary consent before recording a video or audio call of a participant.
+- Reference: Refer and comply with the Data Protection Policy in the Bluebook.
+
+### 2. Backup
+- Ensure that all critical documents are backed up regularly to approved backup locations.
+- Do not use any unapproved external cloud storage services for backup.
+- For any cloud storage or cloud service-related issues, contact is@trianz.com.
+- Reference: Refer and comply with the Backup and Restoration Policy and procedure.
+
+### 3. Cyber-attack & Incident Response
+- Be alert for phishing emails and other attempts to compromise or steal account details.
+- Report phishing emails and any malicious activity to is@trianz.com.
+- Double-check before acting on any critical or non-BAU (Business as Usual) directions from managers. Preferably use out-of-band communication (such as phone calls) to reconfirm actions.
+- Always keep copies of Policies, Procedures, and SOPs ready for quick reference and reach out to concerned stakeholders when in doubt.
+- Report any technical errors or configuration mistakes immediately to is@trianz.com to initiate appropriate remedial actions and contain unwanted repercussions.
+- Reference: Refer and comply with the Anti-Malware Policy and Incident Management Policy and procedure in the Bluebook.

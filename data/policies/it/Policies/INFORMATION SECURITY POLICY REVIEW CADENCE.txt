@@ -1,0 +1,492 @@
+INFORMATION SECURITY
+POLICY REVIEW CADENCE
+
+
+
+
+TRIANZ INTERNAL         trianz.com
+                      Statement of Confidentiality
+
+  The information contained in this document is internal to Trianz. It shall not be
+  disclosed, duplicated, or used for any purpose other than that stated herein, in
+  whole or in part, without the express written consent of Trianz.
+
+
+
+
+                         Information Classification
+
+
+     ☐ Public
+
+     ☒ Internal
+
+     ☐ Confidential
+
+     ☐ Restricted
+
+
+
+
+TRIANZ INTERNAL                                                                  2
+                        Table of Contents
+1.   INTRODUCTION                           4
+
+2.   POLICY REVIEW CADENCE SCHEDULE         4
+
+3.   ISO CONTROL MAPPING(S)                 10
+
+
+
+
+ TRIANZ INTERNAL                            3
+      1. Introduction
+           This document will detail the Control objective-wise Review
+
+           Cadence of InformationSecurity Policies and Procedures
+
+
+
+      2. Policy Review Cadence Schedule
+
+#    Control        Control Objective                  Policy                 Review  Triggers for Policy
+                                                                              Cadence Review
+1    5.1            Objective: To provide              Information            Annual      •   Internal Audit
+     Managem
+                    managementdirection and            SecurityPolicy
+     ent
+                    support for information security   Apex Manual                        •   External Audit
+     direction
+     for            in accordance
+     informatio     with business requirements                                            •   Client Audit
+     n security     andrelevant laws and
+                    regulations.
+                                                                                          •   Client Visit
+2    6.1            Objective: To establish a          ISAC     Roles     and Annual
+                                                                                              feedback
+     Internal       management framework to            Responsibilities
+     organizati     initiate and control the           Access Control
+                                                                                          •   Management
+     on             implementation andoperation        Policy
+                                                                                              feedback
+                    of information security
+                    within the organization
+3                                                                             Bi-Annual   •   Changes due
+     6.2 Mobile     Objective: ensure the              Policy on the
+                                                                                              to
+     devices        security ofteleworking and         useMobile
+                                                                                              Technological
+     and            use of mobile devices.             computing and
+                                                                                              and
+     teleworki                                         Communicatio
+                                                                                              Environmental
+     ng                                                n Facilities
+                                                       BYOD Policy                            Factors
+4    7.1 Prior to   Objective: To ensure that          Background             Annual
+     Employm        employees and contractors          Verification                       •   Complianc
+     ent            understand their                   Policy                                 e to anynew
+                    responsibilitiesand are                                                   regulatory
+                    suitable for the roles for                                                standards
+                    which they are considered.
+5    7.2            Objective: To ensure that          Professional           Annual      •   Security
+     During         employees and contractors          Development Policy                     Incidents
+     Employm        are aware of and fulfil their      Policy for
+     ent            informationsecurity                DisciplinaryAction                 •   BCP Triggers
+                    responsibilities.
+6    7.3            Objective: To protect the          Asset                  Annual      •   Learnings
+     Terminati      organization’s interests as        Management                             from, VA
+     onand          part ofthe process of              Policy                                 findings
+     changeof       changing or terminating            Employee Exit
+     employm        employment.                        ProcessEmployee
+
+
+    TRIANZ INTERNAL                                                                                       4
+      ent                                               Transition Process
+
+
+
+
+7     8.1         Objective: To identify                Asset                Annual
+      Responsibil organizational assets and             management
+                  defineappropriate protection
+      ityfor                                            Policy
+                  responsibilities.
+      assets                                            Acceptable
+                                                        UsagePolicy
+8     8.2            Objective: To ensure that          Media Handling Policy Bi-Annual
+      Informatio     information receives an
+      n              appropriatelevel of protection
+      classificati   in accordance with its
+      on             importance to the
+                     organization.
+      8.3            Objective:     To       prevent    Access control Policy Bi-Annual
+                                                        Password Policy
+      Media          unauthorized         disclosure,
+      handlin        modification,    removal    or
+      g              destruction   of   information
+                     stored on
+                     media.
+
+#    Control         Control Objective                  Policy                Review  Triggers for Policy
+                                                                              Cadence Review
+10   9.1 Business    Objective: To limit access         Access control Policy Bi-Annual
+                                                        Password Policy
+     requirement     toinformation and
+     s               information processing
+     of              facilities.
+     access
+     control
+11   9.2 User        Objective: To ensure               Access control Policy Bi-Annual
+                                                        Password Policy
+     access          authorizeduser access and
+     manageme        to prevent unauthorized
+     nt             access to systems
+                    and services.
+12    9.3 User      Objective: To make users            Access control Policy Bi-Annual   •   Internal Audit
+     responsibiliti accountable for safeguarding        Password Policy
+     es             theirauthentication
+                    information                                                           •   External Audit
+13   9.4 System     Objective: To prevent               Access control Policy B-Annual
+                                                        Password Policy                   •   Client Audit
+     and             unauthorizedaccess to
+     applicatio      systems and applications.
+     naccess                                                                              •   Client Visit
+     control                                                                                  feedback
+14   10.1         Objective: To ensure proper           Policy on the         Annual
+     Cryptographi andeffective use of                   use of                            •   Management
+     ccontrols       cryptography to protect the        Cryptographic                         feedback
+                     confidentiality,                   Controls
+                     authenticity and/or                                                  •   Changes due
+                     integrity ofinformation.
+
+
+     TRIANZ INTERNAL                                                                                    5
+15   11.1 Secure     Objective: To prevent              Physical Access         Annual           to
+     areas           unauthorizedphysical access,       Control and                              Technological
+                     damage and interference to         Environmental                            and
+                     the organization’s information     Security Policy                          Environmenta
+                     and information                                                             l Factors
+                     processing facilities
+16   11.2            Objective: To prevent loss,        Acceptable usage        Annual
+                                                                                             •   Complian
+     Equipment                                          policy
+                     damage, theft or                                                            ce to any
+                     compromise ofassets and                                                     new
+                     interruption to the                                                         regulatory
+                     organization’s operations.
+17   12.1                                                                       Annual           standards
+                     Objective: To ensure correct       System            and
+     Operational     and secure     operations     of   software    change
+     procedures                                                                             •    Security
+                     information        processing      management
+     and                                                                                         Incidents
+                    facilities.                         policy
+     responsibiliti
+     e                                                                                       •   BCP Triggers
+     s
+18   12.2           Objective: To ensure that           Antivirus               Annual      Learnings from, VA
+     Protection     information and information         Malwarepolicy
+     from           processing facilities are                                               findings
+     malware         protected
+                     against malware.
+19   12.3 Backup     Objective: To protect against      Backup and              Annual
+                     lossof data                        Restoration Policy
+                                                        Data Retention and
+                                                        Secure disposal
+                                                        policyMedia
+                                                        Handling Policy
+                                                        Password Protection
+                                                        Policy
+                                                        Personal Data
+                                                        Protection and
+                                                        privacyPolicy
+20   12.4 Logging    Objective: To record events        Information security    Annual
+     and             andgenerate evidence               logging and
+     monitoring                                         monitoring
+                                                        policy
+21   12.5 Control    Objective: To ensure the           Patch                   Bi-Annual
+     of
+                     integrity ofoperational systems    Management
+     operational
+     software                                           Policy
+
+#     Control        Control Objective                   Policy                 Review Triggers for
+                                                                                Cadence Policy Review
+22    12.6           Objective: To prevent               Vulnerability          Bi-Annual
+      Technical      exploitationof technical            Management
+      vulnerabilit
+                     vulnerabilities.                    Policy
+      y
+      managem
+      ent
+
+
+     TRIANZ INTERNAL                                                                                         6
+23    12.7           Objective: To minimize the              Information         Annual
+      Information
+                     impactof audit activities on            SystemAudit trial               •    Internal Audit
+      systems
+      audit          operational systems.                    Management
+      considerati                                            Procedure                       •    External Audit
+      ons
+24    13.1 Network   Objective: To ensure the                Email Policy        Bi-Annual
+      security       protectionof information in             Network                         •    Client Audit
+
+      manageme networks and its supporting                   Security
+                                                                                             •    Client Visit
+      nt       information processing facilities.            Management
+                                                                                                  feedback
+                                                             Procedure
+25    13.2           Objective:    To     maintain     the   Email Policy        Bi-Annual
+      Informati                                                                              •    Management
+                     security       of         information   Network
+      on                                                                                          feedback
+                     transferred          within       an    Security
+      transfer       organization        and    with   any   Management
+                                                                                              •   Changes
+                     externalentity                          Procedure
+26                                                                               Annual           due to
+      14.1 Security Objective: To ensure that                Secure SDLC
+                                                                                                  Technologic
+      requiremen information security is an                  PolicyApplication
+                                                                                                  al and
+      ts        of integral part of information              security policy
+                                                                                                  Environment
+      information systems acrossthe entire                   Group Manual
+                                                                                                  al Factors
+      systems        lifecycle. This also includes the       ISOperations
+                     requirements for information
+                                                                                              •   Complia
+                     systems which provide
+                     services over public networks                                                nce to
+27    14.2           Objective: To ensure that               Secure SDLC         Annual           anynew
+      Securityin     information security is                 PolicyApplication                    regulator
+      developme      designedand implemented                 security policy                      y
+      ntand          within the development                                                       standard
+      support        lifecycle of                                                                 s
+      processes      information systems.
+28    14.3 Test      Objective: To ensure the                Personal data       Annual      •    Security
+      data           protectionof data used for              protection and                       Incidents
+                     testing                                 privacypolicy
+                                                             Information                      •   BCP Triggers
+                                                             SecurityPolicy
+29    15.1           Objective: To ensure protection         Supplier            Annual      Learnings from,
+      Informati      ofthe organization’s assets that        Securitypolicy
+      on             is accessible by suppliers                                              VA findings
+      security in
+      supplier
+      relationships
+30    15.2          Objective: To maintain an                                    Annual
+      Supplier       agreed level of information
+                                                             Supplier
+      service        security and service delivery in
+                                                             Securitypolicy
+      delivery  line with supplier
+      managemen agreements
+      t
+
+
+
+
+     TRIANZ INTERNAL                                                                                          7
+31    16.1          Objective: To ensure a                                 Annual
+      Manageme      consistentand effective
+      ntof          approach to the management
+      information                                      Information
+                    of information security
+                                                       security incident
+      security      incidents, including               management
+      incidents     communication on security          policy
+      and         events
+      improvement and weaknesses.
+      s
+32    17.1        Objective: Information security      Business            Bi-Annual
+      Informati
+                  continuity should be                 continuitypolicy
+      on
+      security    embedded inthe
+      continuity  organization’s business
+                  continuity management systems
+
+#    Control        Control Objective                 Policy               Review      Triggers for
+                                                                           Cadence     Policy Review
+33   17.2           Objective: To ensure              Business             Bi-Annual    •   Internal Audit
+     Redundanci
+                    availability ofinformation        continuitypolicy
+     es
+                    processing facilities.                                              •   External Audit
+34   18.1           Objective: To avoid breaches      Intellectual         Annual
+     Compliance     of legal, statutory, regulatory   propertyrights                    •   Client Audit
+     with legal     or contractual obligations        policy
+     and            related toinformation             Risk                              •   Client Visit
+     contractual    security and of any security      Management                            feedback
+     requirement    requirements.                     Policy
+     s                                                                     Bi-Annual    •   Management
+                                                      Information
+                                                                                            feedback
+                                                      SecurityPolicy
+35   18.2           Objective: To ensure that         Information          Bi-Annual
+                                                                                        •   Changes
+     Informatio     information security is           SecurityPolicy
+                                                                                            due to
+     nsecurity      implementedand operated in
+                                                                                            Technologic
+     reviews        accordance with the
+                                                                                            al and
+                    organizational policies and
+                                                                                            Environmen
+                    procedures
+                                                                                            tal Factors
+
+                                                                                        •   Complia
+                                                                                            nce to
+                                                                                            anynew
+                                                                                            regulato
+                                                                                            ry
+                                                                                            standar
+                                                                                            ds
+
+                                                                                        •   Security
+                                                                                            Incidents
+
+                                                                                        •   BCP
+
+                                                                                       Triggers
+
+     TRIANZ INTERNAL                                                                                  8
+                  Learnings from,
+
+                  VA findings
+
+
+
+
+TRIANZ INTERNAL                 9
+  3. ISO Control Mapping(s)
+
+
+
+         Category of      ISO 27001:2022 Control             Document Name as per
+         Control                                             ISO 27001:2022
+         Organizational    5.1 Policies for information       Information Security
+         Controls         security Control Information        Policy Review Cadence
+                          security policy and topic-
+                          specific policies shall be defined,
+                          approved by management,
+                          published, communicated to,
+                          and acknowledged by relevant
+                          personnel and relevant
+                          interested parties, and reviewed
+                          at planned intervals and if
+                          significant changes occur.
+         Organizational   5.36 Compliance with policies,     Information Security
+         Controls         rules and standards for            Policy Review Cadence
+                          information security Control
+                          Compliance with the
+                          organization's information
+                          security policy, topicspecific
+                          policies, rules and standards
+                          shall be regularly reviewed.
+
+
+
+
+TRIANZ INTERNAL                                                                       10
+                                                    Document Control
+
+Owner:                  CISO                                    Release ID:                   ISPR_POL_059
+
+
+
+
+                        For Trianz Process Improvement Group (TPIG) Purpose Only
+
+            Version History
+
+
+
+  Ver.                                                                     Reason for
+                 Date              Author   Reviewer     Approver                              Change Description
+      No.                                                                     Change
+
+0.1            16-May-         Vijaya       Ganesh      -               Client   Risk          Initial Draft
+              2020
+                               Rajeswari    Arunachal                   Assessment inputs
+                                            a
+
+1.00          20th May2020     Ganesh       Phani       Vivek           Modification to        For approval
+                               Arunachal    Krishna     Sambasivam      provide policy wise
+                               a                                        review cadence
+
+1.1            1-Feb-          Divya G      Vijaya R    Phani           For Review             Modified as per the new
+              2021                                                                             template
+
+2.00           1-Feb-          Divya G      Vijaya R    Phani           For Approval           Approved and Baselined
+              2021
+
+2.1           8-Nov-2021       Divya G      Vijaya R    Siva N          For Review             Modified as per the new
+                                                                                               template
+3.00          8-Nov-2021       Divya G      Vijaya R    Siva N          For Approval           Approved and Baselined
+
+3.00          3-Jan-2022       Divya G      Vijaya R    Siva N          For Review             Reviewed and no
+                                                                                               changes
+3.00          07-Apr-2023      Shivateja    Vijaya R    Srikanth M      For Review             Reviewed and no
+                                                                                               changes
+                               Rama                                                            Migrated to new
+3.1           12-May-2023                   Vijaya                      For Review
+                               Madhavan                                                        template
+
+                               Rama
+4.0           12-May-2023                   Vijaya      Srikanth M      For Approval           Approved and Baselined
+                               Madhavan
+
+
+
+
+            TRIANZ INTERNAL                                                                                      11
+                                                                       Mapped with ISO 27001,
+4.1    15-feb-24        Shalini   Vijaya   Srikanth M   For Review
+                                                                       2022 control 5.1 and 5.36
+
+       23-feb-24                                                       Approved and Baselined
+5.0                     Shalini   Vijaya   Srikanth M   For Approval
+
+
+                                                                       Migrated to new
+5.1    28-May-25        Kruti     Vijaya                For Review
+                                                                       template.
+
+                                                                       Approved and Baselined
+6.0    29-May-25        Kruti     Vijaya   Srikanth M   For Approval
+
+
+
+
+      TRIANZ INTERNAL                                                                  12
+                                Contact Information
+                                               Name
+
+                                               Email
+
+                                              Phone
+
+
+
+
+                                  Thank You
+                                     infosec@trianz.com
+
+
+
+
+ The content in this document is copyrighted; any unauthorized use – in part or full – may violate the
+ copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly
+   displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz
+ name and its products are subject to trademark and copyright protections, regardless of how and
+                                          where referenced.
+
+
+
+
+TRIANZ INTERNAL                                                                                      13
+

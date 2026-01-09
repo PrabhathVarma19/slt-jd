@@ -1,0 +1,159 @@
+# System and Software License Management Procedure
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. OBJECTIVE
+2. SCOPE
+3. REFERENCE(S)
+4. PROCEDURE
+   - 4.1 Law Compliance
+   - 4.2 License Control
+   - 4.3 License Inventory
+   - 4.4 Evaluation Software
+   - 4.5 Freeware
+   - 4.6 Periodic Audit
+5. ISO CONTROL MAPPING
+
+## 1. Objective
+The objective of this process is to manage the deployment, use, and monitoring of vendor software in Trianz. Systems and procedures should be developed and implemented to comply with the legal and regulatory requirements of the region in which Trianz operates.
+
+## 2. Scope
+The scope includes all internal and applicable vendor applications that are owned, operated, maintained, and controlled by Trianz, both internally and externally, either on premises or in the cloud.
+
+## 3. Reference(s)
+None
+
+## 4. Procedure
+
+### 4.1 Law Compliance
+- In case of a conflict between National and/or Local laws and Trianz policy, comply with the law and notify the CFO Finance/Legal.
+- The CFO Finance/Legal must ensure full compliance with laws and regulations related to information and IT applications.
+- Relevant laws and regulations include:
+  - Prohibition of the use of illegally acquired software.
+  - Prohibition of the use of illegally acquired data.
+
+### 4.2 License Control
+- Software licenses must be controlled and maintained to protect against defaults or contractual limitations and liabilities.
+- Monitor software license terms and conditions, including those for limited use, at all times.
+- Do not load illegally acquired software onto Trianz computer systems.
+- Products licensed for specific computers or projects/departments must not be copied to another computer or site without written authorization from the vendor.
+
+### 4.3 License Inventory
+- The IT Department must maintain original copies of licenses in a safe and secure place, with access based on authorization from the IT Head.
+- Make copies of licenses and store them in a safe and secure place, separate from the original licenses.
+
+### 4.4 Evaluation Software
+- Evaluation software is acquired to assess functionality and relevance for projects or the organization.
+- The following steps must be followed for managing evaluation software:
+  - IT Administrators must receive and pass on the media to the IT Helpdesk, who will update the inventory and license database with details such as software name, number of licenses, date of receipt, and duration of validity.
+  - The IT team must inform the requestor about the receipt of the software and receive a formal request to install it.
+  - The IT team must check for viruses and install the software on the specified machine(s).
+  - After installation, return the media to the IT Helpdesk, who will update the inventory and license database.
+  - When the evaluation period of the software is due... (text continues).
+
+### 4.4 Software Expiry Management
+- The IT Helpdesk must inform the IT Administrator and the requestor about software expiry.
+- The IT team must uninstall the software unless the requestor obtains a formal extension for the evaluation period.
+- The IT Helpdesk will update the inventory and license database accordingly.
+
+### 4.5 Freeware
+- The IT Administrator, with assistance from the legal department, must verify that the freeware usage terms and conditions are valid for organizational use.
+- The IT Helpdesk must be notified regarding the use of freeware software.
+- The IT team must check for viruses and install the freeware on the specified machine(s).
+- The IT Helpdesk must maintain a record of the freeware installed on the machines.
+- The IT team must uninstall the freeware once the purpose of the freeware or the timeframe is over, whichever occurs first.
+
+### 4.6 Periodic Audit
+- Licenses will be tracked periodically by the IT Administrator. Reports will be generated to aid the tracking process and sent to the IT Head. Any discrepancies detected in the tracking report will be reported to the IT Head, who will inform the concerned user(s) and initiate appropriate action.
+- User compliance with the License Management Policy will be audited twice a year during internal audits. Any discrepancies detected in the audit report will be reported to the IT Head, who will inform the concerned user(s) and initiate appropriate action.
+
+### 5. ISO Control Mapping
+- **Category of Control**: Organizational Controls
+  - **ISO 27001:2022 Control**: 5.20 Addressing Information Security within Supplier License Management Agreements
+  - **Document Name as per ISO 27001:2022**: System and Software License Management Procedure
+
+### Document Control
+- **Owner**: CISO
+- **Release ID**: SSLM-PROC-0054
+
+### Version History
+- **0.00**: 26-Feb-07, Author: Jyotessh G Nair, Draft
+- **1.00**: 26-Feb-07, Author: Jyotessh G Nair, Approved Baseline by Zulfikar Deen.
+- **1.01**: 14-May-09, Author: Bharateesh, Consolidated controls related to software license management.
+- **2.00**: 04-Jun-09, Author: Balu Nair, Baselined Approval.
+- **2.01**: 30-Dec-10, Author: Chakravarthi, Formatted entire document.
+- **3.00**: 30-Dec-10, Author: Chakravarthi, Baselined request.
+- **3.01**: 24-May-11, Author: Srilakshmi, Modified release ID for consistency.
+
+### 4.0 Document Updates
+
+#### 4.01 Updates
+- On 3-Aug-11, Sudharsana requested a QMG review. The following changes were made:
+  - Replace "Owner" with "Management Representative" in place of CIO.
+  - The row stating "Retention period is 3 Years" was removed from the Document Classification Scheme.
+
+#### 5.0 Baseline Request
+- On 3-Aug-11, Sudharsana's request for baseline was approved and baselined.
+
+#### 6.0 Standardization of Blue Book Process Assets
+- On 08-Nov-12, Balu Nair modified the template format and changed the logo.
+
+#### 6.01 Information Classification Update
+- On 29-Apr-19, Balu Nair and Joshy VM made the following modifications:
+  - Information classification was modified.
+  - Trianz logo was modified.
+
+#### 7.0 Release Approval
+- On 14-May-19, Balu Nair and Ganesh Arunachala received approval for release, which was baselined.
+
+#### 7.1 Template Migration
+- On 15-May-20, Balu Nair and Phani Krishna migrated to the new template for review.
+
+#### 8.0 Approval Status
+- On 15-May-20, Balu Nair and Phani Krishna received approval, which was baselined.
+
+#### 8.1 Information Classification Review
+- On 23-Dec-21, Balu Nair and Karthik N reviewed the information classification and updated section 4.6.
+
+#### 9.0 Approval Process
+- On 13-Jan-22, Balu Nair and Sivaramakrishna received approval, which was baselined.
+- On 05-Apr-23, Shivateja and Balu Nair reviewed the document with no changes.
+
+#### 9.1 Template Migration
+- On 12-May-23, Asha Veeramallu and Vijaya reviewed the migration to the new template.
+
+#### 10.0 Approval Status
+- On 12-May-23, Asha Veeramallu and Vijaya received approval, which was baselined.
+
+#### 10.1 ISO Control Mapping Update
+- On 15-Feb-24, Vijaya and Balu M reviewed the updated section on ISO Control Mapping, aligning it to ISO 27001:2022.
+
+#### 11.0 Approval Process
+- On 23-Feb-24, Vijaya and Balu M received approval, which was baselined.
+
+#### 11.1 Template Migration Review
+- On 30-Apr-25, Vijaya and Balu reviewed the migration to the new template.
+
+#### 12.0 Final Approval
+- On 14-May-25, Vijaya and Balu M received final approval, which was baselined.
+
+### Contact Information
+- For inquiries, please contact:
+  - **Email:** infosec@trianz.com
+
+### Copyright Notice
+- The content in this document is copyrighted; any unauthorized use – in part or full is prohibited.
+
+**Copyright and Trademark Policy**
+
+- This document may not be modified, reproduced, publicly displayed, performed, or distributed.
+- The document cannot be used for any public or commercial purposes.
+- The Trianz name and its products are protected by trademark and copyright laws, regardless of the context in which they are referenced.

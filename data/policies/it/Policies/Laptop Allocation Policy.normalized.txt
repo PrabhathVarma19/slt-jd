@@ -1,0 +1,218 @@
+# Laptop Allocation Policy
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. PURPOSE
+2. OBJECTIVE
+3. SCOPE
+4. ENTITLEMENT
+5. GENERAL TERMS OF USE
+6. RETURNING OF LAPTOP/COMPANY ASSETS DURING EMPLOYEES EXIT
+7. LAPTOP/OTHER ASSETS ALLOCATION ON TRANSFERS FROM ONE COUNTRY TO OTHER COUNTRIES GLOBAL
+8. EXCEPTION(S)
+9. ISO CONTROL MAPPING
+
+## 1. Purpose
+The purpose of this policy is to ensure that employees can be productive while away from the office by providing them with laptop computers that enable access to necessary computing resources.
+
+## 2. Objective
+This policy establishes a systematic framework for the distribution of laptops to all Trianz employees. Employees are accountable for the security of company-provided laptops, regardless of where they are used.
+
+## 3. Scope
+This policy applies to all Trianz employees, including Contractors and Interns.
+
+## 4. Entitlement
+- All Trianz associates will be allocated a laptop.
+- Associates who are Grade 10 and above will receive a sleeker version of the laptop that suits their business needs.
+
+## 5. General Terms of Use
+- Laptops are provided for Trianz business use only and remain official assets.
+- The IS Operations team will check the working condition of the laptop before issuance, which will be documented in the laptop allocation email. The user must acknowledge this.
+- Laptops and any connected input/output devices are for business use only and must not be used for transferring non-approved or unauthorized software.
+- The Trianz IS team reserves the right to install monitoring/tracking mechanisms on laptops and does not guarantee the privacy of any data stored on them.
+- Employees must adhere to the following security guidelines:
+  - Do not allow unauthorized persons (e.g., friends/relatives) to access the laptop.
+  - Do not use removable media (e.g., flash drives, external storage) without permission from the Trianz IS team and ensure they are scanned with Antivirus. Note that all USB ports are blocked by the IS team as a security measure.
+- Employees will be charged for lost laptops or physical damage to allocated laptops.
+- In case of a lost laptop, employees must submit a copy of the FIR along with an Incident report.
+- HR, IS Operations, and Infosec must be informed about the loss or physical damage of the laptop.
+- The recovery amount for lost or damaged laptops will be communicated to associates and sent to benefits@trianz.com by IS Operations. HR will coordinate with the Finance team for recovery.
+- Keep the allocated laptop in your possession and within sight whenever possible, especially in public places such as airports, railway stations, or restaurants.
+- The IS team has the right to conduct inspections of any allocated laptop without prior notice. Employees must submit the laptop for random audits to check for physical presence and functional usability if needed.
+- Employees must not take the laptop for repair to any external agency or vendor at any time.
+
+### 6. Returning of Laptop/Company Assets during Employees Exit
+
+1. The HR team shall send an email at least one week before the employee's exit and initiate the exit process in the e-separation tool for employees, contractors, and interns.
+
+2. The returning of the laptop shall be initiated during the exit process.
+
+3. The means of returning the laptop can be done through the following methods:
+   - **Direct Return**: The employee returns the laptop directly to the IS team at the office, with prior information to HR, in case of a direct walk-in (i.e., after the exit date).
+   - **Courier Service**: The Admin department will inform the IS department about the status of the laptop return once it is collected via courier service.
+   - **Remote Shipment**: Employees working remotely must arrange for the asset to be shipped directly to the front office and returned to the IS department.
+
+4. The IS team shall provide exit clearance only after the laptop is returned.
+
+**Note:**
+- Employees are responsible for returning laptops and accessories in good working condition.
+- Trianz does not entertain buyback of existing laptops or accessories for any reason.
+- If a laptop is returned more than one week after exit, employees will bear the monthly lease charges, which will be communicated to the Payroll team for deduction.
+- For laptops retained by exited employees for more than two months, an FIR shall be filed, and necessary action will be taken.
+- Employees leaving and likely to return after a duration of 2 to 6 months must return laptops to the IS team, and they may be allocated a fresh laptop upon return.
+
+### 7. Laptop/Other Assets Allocation on Transfers from One Country to Other Countries
+
+1. Upon notification from the HR function about an employee's transfer from one country to another (e.g., India to the USA or vice versa), laptop allocation shall be done.
+
+2. The employee must return the laptop to the IS team from the base location (e.g., India) before leaving for the other country.
+
+3. Employees must raise a ticket with the necessary approvals from their reporting manager to enable the return of the laptop at the base location and the issuance of a laptop in the transferred country.
+
+4. Employees must fill out the “Laptop/Other Assets Handover Checklist” available in the Blue Book and submit it to the IS team for further processing.
+
+5. Prior to returning the laptop, employees shall store the scoped data in the company’s OneDrive.
+
+6. Once the employee reaches the new base location (i.e., destination country), the local IS team shall issue a new laptop to the employee with the reporting manager’s approval.
+
+7. The laptop handover process shall follow the scenarios specified in Section 6.
+
+### 8. Exception(s)
+
+1. If an associate does not meet the laptop allocation criteria as stated in Section 4, they may still be eligible for a company laptop if there is a business requirement and approved business justification from their function head.
+
+2. Desktops, monitors, and other accessories will be provisioned based on business requirements.
+
+3. For any exceptions or deviations, the employee must obtain CIO approval through their project/department head. Post-approval requests can be submitted to the Trianz IS Team.
+
+4. Exceptions will be handled on a case-by-case basis.
+
+### 9. ISO Control Mapping
+
+- **Category of Control**: Organizational Controls
+- **ISO 27001:2022 Control**: 5.9 Inventory of Information and Other Associated Assets
+- **Document Name as per ISO 27001:2022**: Laptop Allocation Policy
+
+### Document Control
+
+- **Owner**: CISO
+- **Release ID**: LAP_POL_060
+
+**For Trianz Process Improvement Group (TPIG) Purpose Only**  
+**Version History**: [Details not provided]
+
+### Change Log
+
+1.0  
+- **Date:** 11-Aug-20  
+- **Author:** Pranesh Kulkarni (Trianz)  
+- **Reviewer:** Gangadhar Aka  
+- **Approver:** None  
+- **Description:** Initial Draft  
+
+1.1  
+- **Date:** 3-Jan-22  
+- **Author:** Karthik N  
+- **Reviewer:** None  
+- **Approver:** None  
+- **Description:** Updated with new information classification  
+
+2.0  
+- **Date:** 13-Jan-22  
+- **Author:** Karthik N  
+- **Reviewer:** Siva N  
+- **Approver:** Siva N  
+- **Description:** Approved and baselined  
+
+2.1  
+- **Date:** 24-Feb-22  
+- **Author:** Karthik N  
+- **Reviewer:** Siva N, Sanjana  
+- **Approver:** None  
+- **Description:** The scope has been extended to products and services  
+
+3.0  
+- **Date:** 24-Feb-22  
+- **Author:** Karthik N  
+- **Reviewer:** Siva N, Sanjana  
+- **Approver:** None  
+- **Description:** Approved and baselined  
+
+3.1  
+- **Date:** 03-May-23  
+- **Author:** Shalini Asha Veerammal  
+- **Reviewer:** Karthik N  
+- **Approver:** Srikanth  
+- **Description:** New template change; Field 1 is updated  
+
+4.0  
+- **Date:** 08-May-23  
+- **Author:** Shalini  
+- **Reviewer:** Karthik N  
+- **Approver:** Srikanth  
+- **Description:** Approved and baselined  
+
+4.1  
+- **Date:** 15-Feb-24  
+- **Author:** Vijaya Beniyel S  
+- **Reviewer:** Balu  
+- **Approver:** Srikanth  
+- **Description:** Updated the section ISO; Control Mapping aligning to ISO 27001:2022  
+
+5.0  
+- **Date:** 23-Feb-24  
+- **Author:** Vijaya Beniyel S  
+- **Reviewer:** Balu  
+- **Approver:** Srikanth  
+- **Description:** Approved and baselined  
+
+5.1  
+- **Date:** 17-Apr-24  
+- **Author:** Beniyel Vijaya, Naga Pranesh  
+- **Reviewer:** Balu  
+- **Approver:** None  
+- **Description:** Added the section: Returning of the Laptops and inputs from IS team in Section 4  
+
+6.0  
+- **Date:** 10-May-24  
+- **Author:** Beniyel Vijaya, Naga Pranesh  
+- **Reviewer:** Balu  
+- **Approver:** Srikanth  
+- **Description:** Approved and baselined  
+
+6.1  
+- **Date:** 24-July-24  
+- **Author:** Nagarathinam Pranesh K  
+- **Reviewer:** Vijaya  
+- **Approver:** None  
+- **Description:** Updated the section 5 – Charges on unused asset
+
+**7.0 Approval Status**  
+- Approved by Nagarathinam Pranesh K and Vijaya.  
+- Document is baselined.
+
+**7.1 Annual Review**  
+- Approved by Kruti and Vijaya R.  
+- Document migrated to a new template and is subject to yearly review.
+
+**8.0 Approval Status**  
+- Approved by Kruti, Vijaya R, and Srikanth M.  
+- Document is baselined.  
+
+**Contact Information**  
+- For inquiries, contact:  
+  - Email: infosec@trianz.com  
+  - Phone: [Phone Number Not Provided]  
+
+**Copyright Notice**  
+- The content in this document is copyrighted. Unauthorized use may violate copyright, trademark, and other laws.  
+- This document may not be modified, reproduced, publicly displayed, performed, distributed, or used for any public or commercial purposes.  
+- The Trianz name and its products are protected by trademark and copyright laws.

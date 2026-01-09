@@ -1,0 +1,243 @@
+# INFORMATION ASSET CLASSIFICATION POLICY
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- **Public**: Information available to the public at large.
+- **Internal**: Information for internal use only, accessible to all employees and authorized external parties.
+- **Confidential**: Information available only to authorized persons on a need-to-know basis.
+- **Restricted**: Information containing Personal or Sensitive Information protected by law, requiring the highest level of access control and security.
+
+## Table of Contents
+1. INTRODUCTION
+2. OBJECTIVE
+3. SCOPE
+4. ROLES AND RESPONSIBILITIES
+5. MEASUREMENT AND REPORTING
+6. COMPLIANCE AND MONITORING
+7. EXCEPTION(S)
+8. ISO CONTROL MAPPING(S)
+
+## 1. Introduction
+The information classification scheme is essential for protecting informational assets by assigning value and safeguarding confidentiality, integrity, and availability. The level of security afforded to company data depends directly on its classification level. Organizations shall consider confidentiality, availability, and integrity, including privacy requirements, when categorizing assets.
+
+## 1. Objective
+The purpose of this policy is to establish the key principles of information classification for both electronic and physical forms, supporting the "need to know" principle to protect information from unauthorized disclosure, use, modification, and deletion.
+
+## 2. Scope
+This policy applies to all Information Assets of Trianz located on premises, offshore, client premises, or on cloud infrastructure.
+
+## 3. Activities performed
+### 3.1 Policy
+- All associates are responsible for protecting and properly classifying company information assets as per the Information Classification policy.
+- All assets must be catalogued and tagged in the asset inventory.
+- Function owners are responsible for ensuring that Information Assets are classified according to the policy.
+
+### Information Classification Categories
+1. **Public**: 
+   - Available to the public.
+   - Care must be taken to prevent damage or alteration (e.g., website content, marketing brochures).
+   - Information Asset Owners ensure proper classification.
+
+2. **Internal**: 
+   - For internal use only, available to all employees and authorized external persons (e.g., clients, third-party service providers).
+   - Adequate security measures must be taken to prevent unauthorized access (e.g., operating procedure manuals).
+
+3. **Confidential**: 
+   - Available only to authorized persons on a need-to-know basis.
+   - Adequate security measures must be provided to prevent unauthorized access (e.g., business plans, marketing strategies).
+
+4. **Restricted**: 
+   - Contains Personal or Sensitive Information protected by law.
+   - Requires the highest level of access control and security (e.g., encryption).
+   - Examples include candidates' resumes, employee profiles, financial information, and health information.
+
+## 4. Roles and Responsibilities
+1. **Associates**: Responsible for classifying documents as per the policy.
+2. **Function/Product Owner**: Ensures information is classified according to the policy.
+3. **CISO/CIO**: Approves the policy.
+
+## 5. Measurement and Reporting
+- Measure the number of documents identified versus the number of documents classified.
+
+## 6. Compliance and Monitoring
+- Ensure 100% information classification is completed.
+
+## 7. Exception(s)
+- None.
+
+## 8. ISO Control Mapping(s)
+- Category not specified.
+
+# Organizational Controls
+
+## 5.12 Classification of Information
+- Information shall be classified according to the organization's information security needs, which are based on:
+  - Confidentiality
+  - Integrity
+  - Availability
+  - Relevant interested party requirements
+
+## 5.13 Labelling of Information
+- An appropriate set of procedures for information labelling shall be developed and implemented in accordance with the information classification scheme adopted by the organization.
+
+# Document Control
+- **Owner:** CISO
+- **Release ID:** IAC-POL-0004
+
+## Version History
+1. **Version 0.00**
+   - **Date:** 26-Feb-07
+   - **Author:** Jyotessh
+   - **Description:** Initial draft
+
+2. **Version 1.00**
+   - **Date:** 26-Feb-07
+   - **Author:** Jyotessh
+   - **Reviewer:** G Nair
+   - **Approver:** Zulfikar Deen
+   - **Description:** Approved Baseline.
+
+3. **Version 1.01**
+   - **Date:** 30-Jul-08
+   - **Author:** Bharatee
+   - **Description:** Revised the policies in accordance with the revised ISMS Framework.
+
+4. **Version 2.00**
+   - **Date:** 28-Apr-09
+   - **Author:** Balu Nair
+   - **Description:** Approved for Baseline.
+
+5. **Version 2.01**
+   - **Date:** 30-Dec-10
+   - **Author:** Chakravarthi
+   - **Description:** QMG review and formatted the entire document.
+
+6. **Version 3.00**
+   - **Date:** 31-Dec-10
+   - **Author:** Chakravarthi
+   - **Description:** Baselined.
+
+7. **Version 3.01**
+   - **Date:** 06-May-11
+   - **Author:** Srilaksh
+   - **Description:** Modified Release ID in cover page and header.
+
+8. **Version 4.00**
+   - **Date:** 06-May-11
+   - **Author:** Srilaksh
+   - **Description:** Baselined.
+
+9. **Version 4.01**
+   - **Date:** 03-Aug-11
+   - **Author:** Sudhars
+   - **Description:** Baselined and replaced Owner with Management Representative in place of CIO.
+
+10. **Version 5.00**
+    - **Date:** 03-Aug-11
+    - **Author:** Sudhars
+    - **Description:** Baselined.
+
+11. **Version 5.01**
+    - **Date:** 14-Oct-11
+    - **Author:** Venkatesh Reddy
+    - **Description:** Approved and Baselined.
+
+12. **Version 6.00**
+    - **Date:** 14-Oct-11
+    - **Author:** Venkatesh Reddy
+    - **Description:** Baselined.
+
+13. **Version 7.00**
+    - **Date:** 08-Nov-12
+    - **Author:** Balu Nair
+    - **Description:** Modified the template.
+
+14. **Version 7.01**
+    - **Date:** 24-Oct-16
+    - **Author:** Sriharsha G
+    - **Description:** Added Cloud infrastructure under scope.
+
+15. **Version 8.00**
+    - **Date:** 07-Dec-16
+    - **Author:** Shishir
+    - **Description:** Baselined.
+
+16. **Version 8.01**
+    - **Date:** 09-Oct-17
+    - **Author:** Balu Nair
+    - **Description:** Information classification is completely revamped.
+
+17. **Version 9.00**
+    - **Date:** 20-Jun-18
+    - **Author:** Balu Nair
+    - **Description:** Approval for Baseline.
+
+18. **Version 9.1**
+    - **Date:** 14-Jan-19
+    - **Author:** Balu Nair
+    - **Description:** Modified Asset classification scheme.
+
+19. **Version 10.0**
+    - **Date:** 14-May-19
+    - **Author:** Balu Nair
+    - **Description:** Modified Asset Classification scheme. Baselined.
+
+20. **Version 10.1**
+    - **Date:** 11-May-20
+    - **Author:** Karthik N
+    - **Description:** Roles modified with CISO/CIO.
+
+21. **Version 11.0**
+    - **Date:** 14-May-20
+    - **Author:** Karthik N
+    - **Description:** Approved and Baselined.
+
+22. **Version 12.0**
+    - **Date:** 31-Jul-20
+    - **Author:** Balu Nair
+    - **Description:** Reviewed and Baselined.
+
+23. **Version 12.1**
+    - **Date:** 12-Feb-21
+    - **Author:** Balu Nair
+    - **Description:** Information classification updated from “Confidential” to “Internal”.
+
+24. **Version 14.0**
+    - **Date:** 06-Jan-22
+    - **Author:** Krutidee
+    - **Description:** The scope has been extended to products and services.
+
+25. **Version 15.0**
+    - **Date:** 15-Mar-22
+    - **Author:** Sanjana
+    - **Description:** Approved and Baselined.
+
+26. **Version 15.1**
+    - **Date:** 03-May-2023
+    - **Author:** Rama Madhavan
+    - **Description:** Migrated to new template.
+
+27. **Version 16.0**
+    - **Date:** 12-May-2023
+    - **Author:** Rama Madhavan
+    - **Description:** Baselined.
+
+### 16.0 Introduction Changes
+- The introduction part has been updated in accordance with ISO 27k, 2022 new standard control 5.12.
+
+### 17.0 Document Review and Approval
+- **17.1** The document is scheduled for yearly review on 30-Apr-25.
+- The document has been approved and baselined, and it has been migrated to a new template.
+
+### 18.0 Approval Status
+- The document is currently under approval by Kruti, Vijaya, and Srikanth as of 14-May-25.
+
+### Contact Information
+- **Name:** [Not specified]
+- **Email:** infosec@trianz.com
+- **Phone:** [Not specified]
+
+### Copyright Notice
+- The content in this document is copyrighted. Unauthorized use, modification, reproduction, public display, performance, distribution, or use for public or commercial purposes may violate copyright, trademark, and other laws. The Trianz name and its products are protected by trademark and copyright laws.

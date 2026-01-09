@@ -1,168 +1,120 @@
-# RoleDraft - JD Copilot for Leaders
+﻿# Beacon - AI Service Desk and Self-Service Platform
 
-An AI-powered Job Description Creator that helps SLT/CXOs generate professional JDs in seconds.
+Beacon is an AI-powered internal Service Desk and self-service platform for Trianz. It combines IT and travel request workflows, approvals, ticketing, and multiple AI assistants in a single Next.js 14 app.
 
-## Features
+## Current scope
 
-- **Generate JD from Job Title**: Create complete job descriptions with optional context
-- **AI Autocomplete**: Get intelligent suggestions while editing responsibilities and skills
-- **JD Library**: Browse and search all generated JDs
-- **Multiple AI Providers**: Supports OpenAI and Anthropic with automatic fallback
+- Authentication with session cookies and role-based access control
+- User profile sync from external API (supports multiple project codes per user)
+- IT Service Desk request intake with AI classification and email notifications
+- Travel Desk request intake with supervisor and travel admin approvals
+- Ticketing system with assignments, events, and admin/engineer dashboards
+- Self-service actions: password reset (placeholder), account unlock (placeholder), ticket status check
+- AI agents:
+  - Policy Agent (policy Q and A with citations)
+  - New Joiner Buddy (basic)
+  - Expenses Coach (basic)
+  - Service Desk chat (basic intent and extraction)
+- Productivity tools:
+  - JD Creator
+  - Comms Hub
+  - Weekly Brief (UI and generation, history pending)
 
-## Tech Stack
+## Tech stack
 
-- **Framework**: Next.js 14+ (App Router) with TypeScript
-- **UI**: React + Tailwind CSS
-- **Backend**: Next.js API Routes
-- **Database**: Supabase (PostgreSQL)
-- **AI**: OpenAI GPT-4 / Anthropic Claude (with fallback)
+- Framework: Next.js 14 (App Router) + TypeScript
+- UI: React 18 + Tailwind CSS
+- Database: Supabase (PostgreSQL)
+- AI: OpenAI (primary) + Anthropic (fallback)
+- Email: Microsoft Graph API
 
-## Getting Started
+## Quick start
 
-### Prerequisites
-
-- Node.js 18+ 
-- Supabase account and project
-- OpenAI API key OR Anthropic API key (at least one required)
-
-### Installation
-
-1. Clone the repository:
-```bash
-git clone https://github.com/PrabhathVarma19/slt-jd.git
-cd slt-jd
-```
-
-2. Install dependencies:
-```bash
-npm install
-```
-
-3. Set up environment variables:
-```bash
-cp .env.example .env
-```
-
-Edit `.env` and add your credentials:
-```env
-DATABASE_URL=postgresql://postgres:[YOUR_PASSWORD]@db.eglycarrtfnjcnqfkvyd.supabase.co:5432/postgres
-OPENAI_API_KEY=your_openai_api_key
-ANTHROPIC_API_KEY=your_anthropic_api_key
-```
-
-4. Set up the database:
-   - Go to your Supabase project SQL Editor
-   - Run the migration file: `supabase/migrations/001_create_jds_table.sql`
-
-5. Run the development server:
-```bash
-npm run dev
-```
-
-6. Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-## Deployment to Vercel
-
-### Quick Deploy
-
-1. **Push to GitHub** (already done):
+1. Install dependencies:
    ```bash
-   git push origin main
+   npm install
    ```
 
-2. **Deploy to Vercel**:
-   - Go to [vercel.com](https://vercel.com)
-   - Click "Add New Project"
-   - Import repository: `PrabhathVarma19/slt-jd`
-   - Vercel will auto-detect Next.js
+2. Create env file:
+   ```bash
+   cp .env.example .env
+   ```
 
-3. **Add Environment Variables** in Vercel Dashboard:
-   - Go to Project Settings → Environment Variables
-   - Add:
-     - `DATABASE_URL` - Your Supabase PostgreSQL connection string
-     - `OPENAI_API_KEY` - Your OpenAI API key
-     - `ANTHROPIC_API_KEY` - Your Anthropic API key (optional)
+3. Configure required environment variables (see below).
 
-4. **Deploy**:
-   - Click "Deploy"
-   - Wait for build to complete
-   - Your app will be live at `your-project.vercel.app`
+4. Set up the database:
+   - Run `scripts/setup-database-complete.sql` in Supabase SQL editor
+   - Run `supabase/migrations/001_create_jds_table.sql` for JD Creator data
+   - Optional for vector search: `supabase/migrations/002_policy_vectors.sql`
 
-5. **Run Database Migration**:
-   - Go to Supabase Dashboard → SQL Editor
-   - Copy and run the SQL from `supabase/migrations/001_create_jds_table.sql`
+5. Start dev server:
+   ```bash
+   npm run dev
+   ```
 
-### Important Notes
+6. Open http://localhost:3000
 
-- **No separate backend needed** - Next.js API routes run automatically on Vercel
-- **Environment variables** must be set in Vercel dashboard (not in code)
-- **Database** must be accessible from Vercel (Supabase allows external connections)
-- **API routes** work automatically: `/api/generate-jd`, `/api/autocomplete`, etc.
+## Environment variables
 
-## Project Structure
+Required:
+- NEXT_PUBLIC_SUPABASE_URL
+- NEXT_PUBLIC_SUPABASE_ANON_KEY
+- SUPABASE_SERVICE_ROLE_KEY
+- OPENAI_API_KEY (or ANTHROPIC_API_KEY)
+- AZURE_TENANT_ID
+- AZURE_CLIENT_ID
+- AZURE_CLIENT_SECRET
+- GRAPH_SENDER_UPN
+- IT_SERVICEDESK_EMAIL
+- TRAVEL_DESK_EMAIL
 
-```
-/
-├── app/                    # Next.js App Router pages
-│   ├── api/               # API routes
-│   ├── library/           # JD library page
-│   └── page.tsx           # Main JD creator page
-├── components/            # React components
-│   ├── jd-creator/        # JD creation components
-│   ├── library/           # Library components
-│   └── ui/                # Reusable UI components
-├── lib/                   # Utility libraries
-│   ├── ai/                # AI integration (OpenAI/Anthropic)
-│   ├── supabase/          # Supabase clients
-│   └── utils.ts           # Helper functions
-├── types/                 # TypeScript type definitions
-└── supabase/              # Database migrations
-```
+Optional:
+- ANTHROPIC_API_KEY
+- NEXT_PUBLIC_APP_URL (for approval links)
+- USER_PROFILE_API_URL
+- USER_PROFILE_API_USERNAME
+- USER_PROFILE_API_PASSWORD
+- DEFAULT_USER_PASSWORD (default is test123 for auto-created users)
+- CHAT_MODEL (default: gpt-4o-mini)
+- POLICY_SOURCE_DIR (default: data/policies)
+- NODE_TLS_REJECT_UNAUTHORIZED=0 (dev only for SSL issues)
 
-## Usage
+## Database notes
 
-### Generate a JD
+- `scripts/setup-database-complete.sql` creates core tables (users, roles, tickets, approvals, events).
+- The script inserts a test user:
+  - Email: user@trianz.com
+  - Password: test123
+  - Role: SUPER_ADMIN
 
-1. Enter a job title (e.g., "Senior Cloud Architect")
-2. Optionally add context about the role
-3. Select tone, seniority level, and length
-4. Click "Generate JD"
-5. Edit responsibilities and skills with AI autocomplete (press Tab to accept suggestions)
-6. Copy the JD to clipboard
+## Key pages
 
-### Browse Library
+- /service-desk
+- /travel-desk
+- /approvals/supervisor
+- /approvals/travel-admin
+- /admin/dashboard
+- /engineer/tickets
+- /policy-agent
+- /new-joiner
+- /expenses-coach
+- /jd
+- /comms-hub
+- /weekly-brief
 
-- Visit `/library` to see all generated JDs
-- Use the search bar to filter by title or keywords
-- Click "Open" to view/edit a JD
-- Click "Copy JD" to copy to clipboard
+## Known gaps
 
-## API Routes
+- IT request approvals are not implemented yet (travel approvals are done)
+- Knowledge Base search endpoint is a placeholder
+- Password reset and account unlock are placeholders
+- Weekly Brief history and persistence are not implemented
+- LangChain packages are installed but not integrated
 
-- `POST /api/generate-jd` - Generate a new JD
-- `POST /api/autocomplete` - Get autocomplete suggestions
-- `GET /api/jds` - List all JDs (with optional query param for search)
-- `GET /api/jds/[id]` - Get a specific JD
+## Deployment
 
-## Database Schema
-
-The `jds` table stores:
-- `id` (UUID)
-- `job_title` (text)
-- `brief_context` (text, nullable)
-- `tone`, `seniority`, `length` (text)
-- `sections` (JSONB - structured JD sections)
-- `full_text` (text - formatted JD)
-- `created_at`, `updated_at` (timestamps)
-
-## Notes
-
-- No authentication required - all JDs are public/global
-- Every generation creates a new JD (no updates to existing ones)
-- Edits to responsibilities/skills are in-memory only (don't persist to DB)
-- AI provider fallback: Tries OpenAI first, falls back to Anthropic if OpenAI fails
+- Vercel deployment from main branch is supported
+- Add all environment variables in Vercel project settings
 
 ## License
 
 MIT
-

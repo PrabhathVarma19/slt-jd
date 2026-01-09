@@ -1,0 +1,196 @@
+# Forensic Investigation Policy
+
+## Statement of Confidentiality
+- The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- **Public**: Not classified
+- **Internal**: Classified
+- **Confidential**: Not classified
+- **Restricted**: Not classified
+
+## Table of Contents
+1. PURPOSE
+2. SCOPE
+3. POLICY STATEMENT
+4. ROLES AND RESPONSIBILITIES
+5. DEFINITIONS
+6. ISO CONTROL MAPPING
+
+## 1. Purpose
+- The purpose of this policy is:
+  - To provide a systematic, standardized, and legal basis for the admissibility of legal evidence that may be required from a formal dispute or legal process.
+  - To help protect the information assets of Trianz through the application of best practices in IT forensics, thereby minimizing the impact of information security incidents and safeguarding the interests of Trianz and its clients.
+  - To maximize the use of digital evidence while minimizing the cost of an investigation.
+
+## 2. Scope
+- This policy applies to:
+  - All Trianz’s full-time associates, contract employees, and vendors processing information assets of Trianz.
+  - All processes and technology in use, whether working from Trianz office, working from home, or at client locations.
+- The responsibility for forensic investigation primarily lies with:
+  - Information Security Incident Managers
+  - Legal Team
+  - IS Team
+  - HR Head
+  - Teams involved in the security incident.
+- This policy also applies to all Trianz products and services.
+
+## 3. Policy Statement
+- IT forensics involves the application of techniques to detect and react to security incidents that require the collection, storage, analysis, and preparation of digital evidence for legal or disciplinary proceedings.
+- The use of IT forensics is linked to decisions made during an IT security incident and should be read in conjunction with the IT Security – Information Security Incident Management Policy.
+- This policy outlines the requirements to collect, preserve, and analyze data in a systematic, standardized, and legally compliant manner to ensure the admissibility of evidence in legal cases, disputes, or disciplinary hearings related to incidents.
+- Trianz is committed to detecting and responding to all types of security incidents requiring the collection, storage, analysis, and preparation of digital evidence in a systematic, standardized, and legally compliant manner.
+- The policy covers both proactive forensic monitoring of targeted systems and reactive investigations of unforeseen incidents.
+
+### Types of Incidents Include:
+- Inappropriate use of equipment.
+- Use of another user’s logon credentials.
+- Attempts to circumvent existing or proposed security controls.
+- Attempts to defraud Trianz, its clients, or Trianz associates.
+
+- Forensic investigation tasks shall be conducted by a suitably trained team, including:
+  - Infosec Team
+  - Legal Team
+  - IS Team
+  - HR Head
+  - Any other applicable teams based on the incident, with support from external agencies if necessary.
+
+- Proactive forensic monitoring includes systems and practices for monitoring:
+  - Computers
+  - Users
+  - Groups
+  - Systems
+  - Examples include computer security logs, email logs, and internet traffic monitoring.
+
+- Reactive forensic investigations will require request/approval from the Chief Information Security Officer or Delivery.
+
+### 4. Roles and Responsibilities
+
+#### 4.1 CISO/InfoSec Assurance Team
+- Responsible for the development and maintenance of the forensic policy.
+- Conduct forensic readiness planning.
+- Provide periodic reports and briefings to the Senior Leadership Team (SLT) on forensic readiness at Trianz.
+- Report any suspicion of criminal activity to relevant stakeholders and notify the police for further investigations.
+- Oversee all investigations.
+- Ensure all incidents and investigations are reported at SLT meetings.
+
+#### 4.2 Information Asset Owners
+- Ensure that forensic readiness planning is adequately considered and documented for all information assets under their ownership.
+- Forensic planning must include:
+  - The ability to gather digital evidence without interfering with business processes.
+  - Prioritization of digital evidence gathering for processes that may significantly impact Trianz, its clients, and its associates.
+  - Allowing investigations to proceed at a cost proportional to the incident or event.
+  - Minimizing disruptions to Trianz.
+  - Ensuring that digital evidence positively impacts the outcome of any investigation, dispute, or legal action.
+
+#### 4.3 Project Managers/Delivery Managers/Delivery Head
+- Ensure that their team and area of responsibility operate within the information governance framework of Trianz.
+- Responsibilities include:
+  - Implementing effective methods for communicating information governance-related issues within the respective team.
+  - Ensuring associates receive relevant training, induction, and mandatory updates regarding information security.
+  - Making associates aware of information security policies and ensuring adherence.
+  - Conducting information security risk assessments at the project level or within their area of responsibility.
+  - Addressing information security issues and risks.
+
+### 4. Information Security
+
+- **4.1 Forensic Investigation Management**
+  - The Information Security Manager is responsible for managing forensic investigations.
+  - The Information Security Manager must maintain and establish a secure chain of custody for the evidence.
+
+- **4.2 Legal Counsel Responsibilities**
+  - The Trianz legal head or legal counsel must ensure that appropriate external relationships are maintained to facilitate forensic investigations by an independent investigator or investigation agency, such as the police, as necessary.
+
+- **4.3 Responsibilities of Trianz’s Associates**
+  - All associates must maintain an up-to-date awareness of and comply with all Trianz policies and procedures.
+  - Associates must cooperate with the investigating officer.
+
+### 5. Definitions
+
+- **Forensic Readiness**
+  - The ability of an organization to utilize digital evidence when required, aimed at maximizing Trianz’s capability to gather and use digital evidence.
+
+- **Forensic Readiness Planning**
+  - Proactive planning for a digital investigation, which includes identifying scenarios, sources of admissible evidence, related monitoring and collection processes, capabilities, storage requirements, and costs.
+
+- **Chain of Custody**
+  - In legal contexts, the chain of custody (CoC) refers to the chronological documentation or paper trail that records the sequence of custody, control, transfer, analysis, and disposition of physical or electronic evidence.
+
+### 6. ISO Control Mapping
+
+- **Category of Control: Organizational Controls**
+  - **ISO 27001:2022 Control 5.26**: Response to Information Security Incidents
+    - Document Name: Forensic Investigation Policy
+
+  - **ISO 27001:2022 Control 5.33**: Protection of Records
+    - Records shall be protected from loss, destruction, falsification, unauthorized access, and unauthorized release.
+    - Document Name: Forensic Investigation Policy
+
+### Document Control
+
+- **Owner**: CISO
+- **Release ID**: FOIN-POL-053
+
+### Version History
+
+- **Version 0.1** (Apr-19)
+  - Author: Joshy VM
+  - Reviewer: Balu Nair
+  - Change Description: Initial Draft
+
+- **Version 0.2** (May-19)
+  - Author: Joshy VM
+  - Reviewer: Phani Krishna
+  - Change Description: Modified policy purpose, scope, review statements, roles, and definitions.
+
+- **Version 0.3** (May-19)
+  - Author: Joshy VM
+  - Reviewer: Ganesh A
+  - Change Description: Reviewed.
+
+- **Version 1.0** (May-19)
+  - Author: Joshy VM
+  - Reviewer: Phani Krishna
+  - Approver: Ganesh A
+  - Change Description: Reviewed scope and roles.
+
+- **Version 1.1** (M) 
+  - Change Description: Roles modified.
+
+### 2.0 Approval Process
+- The approval process is managed by Karthik N Balu Nair and Phani Krishna. 
+- The approval is baselined for information classification.
+
+### 3.0 Information Classification
+- Karthik N Balu Nair and Phani Krishna are responsible for the approval process.
+- The information classification has been updated.
+
+### 4.0 Scope of Policy
+- The scope has been extended to include products and services, with approval baselined by Karthik N Balu Nair and Phani Krishna.
+
+### 5.0 Policy Statement and Roles & Responsibilities
+- The policy statement and roles & responsibilities have been updated and migrated to a new template.
+- This update is for review by Vijaya and Anjaneyulu.
+
+### 6.0 Approval Process Update
+- The approval process has been baselined and approved by Vijaya, Anjaneyulu, and Srikanth M.
+
+### 6.1 ISO Control Mapping
+- The section on ISO Control Mapping has been updated to align with ISO 27001:2022.
+- This update is for review by Vijaya and Balu.
+
+### 7.0 Yearly Review
+- A yearly review has been migrated to a new template.
+- This review is for approval by Vijaya and Balu.
+
+### 8.0 Final Approval
+- The final approval has been baselined by Vijaya, Balu, and Srikanth M.
+
+### Contact Information
+- For inquiries, contact: 
+  - Email: infosec@trianz.com
+
+### Copyright Notice
+- The content in this document is copyrighted. Unauthorized use may violate copyright, trademark, and other laws. The document may not be modified, reproduced, or publicly displayed without permission.
+
+It appears that the text provided does not contain any specific policy rules or structured information that can be rewritten into a clearer format. The mention of "mark and copyright protections" is too vague and lacks context or details necessary for creating explicit policy rules. If you have additional text or specific sections from the policy document that need to be rewritten, please provide that information for further assistance.

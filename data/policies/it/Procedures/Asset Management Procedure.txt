@@ -1,0 +1,600 @@
+ASSET MANAGEMENT PROCEDURE
+
+
+
+
+TRIANZ INTERNAL       trianz.com
+                         Statement of Confidentiality
+
+  The information contained in this document is internal to Trianz. It shall not be
+  disclosed, duplicated, or used for any purpose other than that stated herein, in
+  whole or in part, without the express written consent of Trianz.
+
+
+
+
+                            Information Classification
+
+     ☐ Public
+
+     ☒ Internal
+
+     ☐ Confidential
+
+     ☐ Restricted
+
+
+
+
+TRIANZ INTERNAL                                                                  2
+                                 Table of Contents
+1.   INTRODUCTION                                                               4
+
+2.   OBJECTIVES                                                                 4
+
+3.   SCOPE                                                                      4
+
+4.   ASSETS                                                                     5
+
+5.   ASSET RISK ASSESSMENT                                                      5
+
+6.   ASSET MANAGEMENT PROCEDURE                                                 6
+
+     6.1 Asset Identification:                                                  6
+
+     6.2 Asset Register/Asset inventory                                         6
+
+     6.3 Asset Tracking                                                         6
+
+     6.4 Asset Tagging                                                          7
+
+     6.5 Asset Review                                                           7
+
+     6.6 Secure Disposal:                                                       8
+
+     6.7 Acceptable usage of Assets.                                            8
+
+     6.8 Monitoring, Auditing, Compliance and Reconciliation of Asset Records   8
+
+7.   ROLES AND RESPONSIBILITIES                                                 9
+
+8.   ACRONYMS/ABBREVIATIONS                                                     11
+
+     8.1 Related Guidelines, Templates and Checklists                           11
+
+9.   MEASUREMENT                                                                11
+
+10. ISO CONTROL MAPPING(S)                                                      12
+
+
+
+
+ TRIANZ INTERNAL                                                                3
+1. Introduction
+  The purpose of Asset Management procedure is to establish a formal,
+  structured and precise process for classifying and managing Assets in
+  accordance with Information Security Policy and Asset Management Policy.
+
+
+
+2. Objectives
+
+  The Asset Management procedure describes the mechanism, Trianz will use to
+  develop and maintain best practice in asset management. The key objectives
+  in this area that are to:
+
+         •   Establish a structured framework for managing information assets
+             effectively.
+         •   Define roles and responsibilities for asset management.
+         •   Ensure accountability for asset identification, classification, and protection.
+         •   Ensure accountability for information assets across all business functions.
+         •   Ensure adequate resources to ensure effective implementation and
+             continuous improvement of asset management practices.
+         •   Maintain a comprehensive asset inventory, including hardware,
+             infrastructure, equipment, and licenses.
+         •   Improve visibility into the actual cost of assets for better financial
+             planning.
+         •   Ensure detailed asset insights to assess the Total Cost of Ownership (TCO)
+             of IT services.
+
+
+
+3. Scope
+
+  All employees, contractors, part-time and temporary workers, and those who are
+  employed by others to perform work regardless of geographical location, are
+  covered by this procedure and must comply with associated policies and
+  procedures.
+  This procedure applies to all the assets available in all forms but not limited to
+  physical and electronic form.
+
+
+
+
+   TRIANZ INTERNAL                                                                       4
+ This procedure applies to all the assets available on premises, either with vendor,
+ suppliers, partners etc. or on cloud.
+
+
+
+
+4. Assets
+
+
+ Assets are used to deliver services within Trianz. Assets will also include the computer
+ systems, Cloud, network hardware, software etc. that are used to process the data.
+ Some assets in a service are also configuration items (CIs) subject to configuration
+ management. For example, a service monitoring application or a server are assets
+ that are likely to be CIs, because they are critical to delivering the service and need
+ to be controlled.
+ Non-computerized systems holding information must be asset registered with
+ relevant file identifications and storage locations.
+
+
+ These are main categories of assets:
+        •   Information– this includes databases, system documentation and
+            procedures, archive media and data.
+        •   Software – this includes application programs, systems, development
+            tools and
+        •   utilities.
+        •   Physical – this includes infrastructure, equipment, furniture and
+            accommodation used for data processing
+        •   Services – including computing and communications used for data
+            processing
+        •   People – including qualifications, skills and experience in the use of
+            information systems
+        •   Other – for example contracts and agreements etc.
+
+
+
+
+5. Asset Risk assessment
+
+ Risk assessment has to be carried out all the assets of Trianz.
+ Please refer to Risk and Opportunity Management Procedure.
+
+  TRIANZ INTERNAL                                                                          5
+6. Asset Management Procedure
+
+       6.1 Asset Identification:
+              •    Identify all the assets pertaining to the project along with the source
+                  (Client/Trianz).Identify all the assets pertaining to the corporate
+                  function.
+
+
+       6.2 Asset Register/Asset inventory
+
+
+          •       All Assets shall be documented in an asset register/asset inventory.
+          •       Assets should also include the assets in the cloud-computing
+                  environment as a cloud service customer and inventory of assets
+                  should identify cloud service customer data and cloud service derived
+                  data.
+          •       The Asset Register will be held and maintained by respective project
+                  managers/leads.
+          •       The data/Information owner based on data type, value, sensitivity, and
+                  criticality to the organization must classify data and objects
+                  containing data.
+
+ .
+
+
+       6.3 Asset Tracking
+
+          •       All assets shall be tracked using the asset management control doc
+                  tool as per the categories mentioned below.
+          •       Asset categories – For e.g. desktop, laptop, HDD, network assets,
+                  printers, cloud assets, servers, storage, TV, projectors, RSA tokens and
+                  information assets critical documents and data.
+          •       Procurement mode – For e.g. rental, purchase direct lease etc.
+
+
+
+
+     TRIANZ INTERNAL                                                                         6
+     •    Asset status – For e.g. active, damaged, e-waste, not working, End of
+          life, theft etc.
+     •    Asset location - any location
+     •    Vendor/agency
+     •    Asset id
+     •    Serial number
+     •    Assigned to
+     •    Warranty/ insurance
+     •    Project code
+     •    Asset allocation date
+     •    Organization’s     Assets   which   was   assigned   to   individuals   or
+          projects/functions for Business purposes should be returned in case of
+          termination or transfer of respective individual or a group.
+      .
+
+
+  6.4 Asset Tagging
+
+
+     •    Physical Assets shall be tagged as per the Guidelines for Information
+          Labelling & Handling. All other information assets will be tagged based
+          on the respective license / subscription details.
+
+
+  6.5 Asset Review
+
+
+     •    All the assets will be reviewed on a quarterly basis and email
+          communication shall be sent to each individual asset owner.
+     •    The purpose of this activity is to maintain asset records: change,
+          update, or delete asset data as required.
+     •    Incident Management, Problem Management and Configuration
+          Management can trigger modifications to asset data. This activity also
+          administers the asset database and performs asset reconciliation.
+     •    The asset database includes all assets with a status designation such
+          as ordered, in storage, assigned, retired, or disposed of, etc.
+
+
+
+
+TRIANZ INTERNAL                                                                        7
+     •   Asset owner should acknowledge and confirm the status of the assets
+         they own.
+
+
+
+  6.6 Secure Disposal:
+
+     •   Organization Assets need to be securely disposed when no longer
+         needed. This includes removal of Physical devices, Hard copies or
+         Digital assets, cloud service customer assets that has information.
+     •   Disposal of Assets may determine that an asset is:
+              •    Obsolete
+              •    Unserviceable
+              •    To be traded in
+              •    To be sold
+              •    Missing (stolen)
+              •    To be disposed of by other means.
+
+
+                  Please refer to Data Retention And Secure Disposal Policy
+
+
+
+  6.7 Acceptable usage of Assets.
+
+
+     •   All Trianz assets shall be used only official purposes and project
+         manager should ensure accordingly.
+     •   Personal assets shall not be allowed in the Trianz premises and secure
+         areas and depends on the project needs and requirements with
+         necessary approvals.
+
+
+         Refer Acceptable usage policy.
+
+
+
+  6.8 Monitoring, Auditing, Compliance and Reconciliation of
+         Asset Records
+
+
+
+TRIANZ INTERNAL                                                                   8
+       •   In this activity, compliance status for licensing and information
+           security requirements is also monitored.
+       •   Formal inventory audits of all physical assets occur in this activity.
+           Additionally, audits of the Asset Management System and audit
+           reconciliation are performed.
+       •   Audits of logical assets include installed software on workstations and
+           IT configurations or as required by the organization.
+       •   Compliance with this procedure is mandatory and all project
+           managers must ensure continuous compliance monitoring within
+           their projects.
+       •   Compliance with the statements of this procedure is a matter of
+           periodic review by Internal Audit and any violation of the procedure
+           will result in corrective action by the management.
+       •   An earlier review may be warranted if one or more of the following
+           occurs:
+                     •   As   a       result   of   regulatory/statutory    changes   or
+                         developments
+                     •   Due to the results/effects of critical incidents
+                     •   Or any other relevant or compelling reason
+
+
+
+
+7. Roles and Responsibilities
+    Each role involved in this procedure should have main responsibilities as follows:
+
+
+
+
+            Role                                       Responsibilities
+
+           CISO
+                                  •    Ensures organization's asset management strategy
+                                       aligned with security policies and regulatory
+                                       requirements.
+                                  •    Approve acquisition or disposal of assets.
+
+
+
+
+  TRIANZ INTERNAL                                                                          9
+                           •   Accountable for ensuring that the “Asset
+     Infosec Team              Management policy and “Asset Management
+                               Procedure” (to classify asset, identify asset’s value
+                               and manage appropriately) is properly
+                               communicated and understood within its respective
+                               organizational units with the approval of CISO.
+
+
+                           •   Accountable for ensuring that the “Information Asset
+                           •   Classification policy and “Information Asset
+                               Management Policy & Procedure” are properly
+                               communicated and understood within their
+                               project teams.
+   Project Manager         •   Responsible for ensuring all project assets are
+                               classified, approved and adequate user access
+                               controls are implemented
+                           •   Responsible for the design of the information
+                               system and ensuring classification of the
+                               information processed by the systems.
+                           •   Responsible for maintaining and updating the
+                               assets inventory.
+                     Accountable for ensuring information assets are classified
+     Asset Owner     as per organization Information Asset Management Policy.
+                     Responsible for complying with the “Information Asset
+                     Management policy and Information Asset Management
+          User       Procedure”.
+
+                     Responsible for protecting the assets entrusted to the user.
+    IS Senior
+    Manager
+                       •       Ensure capacity planning, acquisition, deployment,
+                               maintenance, and disposal of IT assets.
+                       •       Manage IT asset procurement, track financials, and
+                               optimize cost efficiency.
+                       •       Ensure IT assets are protected against security
+                               incidents and properly managed during changes.
+                       •       Maintain an up-to-date asset inventory, generate
+                               reports, and ensure visibility of IT assets.
+
+
+
+TRIANZ INTERNAL                                                                        10
+                           Responsible for Tracking assets through their acquisition,
+         IS Asset          distribution, use, and disposal and for ensuring that all
+       Coordinator         Information Technology asset management policies
+                           conform to Trianz standards.
+
+
+
+
+                           Responsible for procurement of assets
+          Purchase
+       Coordinator
+
+
+
+8. Acronyms/Abbreviations
+
+
+
+   Acronym/Abbreviation                     Expansion
+   ITAM                                     IT Asset Management
+
+   HAM                                      Hardware Asset Management
+
+   SAM                                      Software Asset Management
+
+   AMC                                      Annual Maintenance Contract
+
+
+
+
+    8.1 Related Guidelines, Templates and Checklists
+
+
+          Document Name
+          Media Handling
+
+          Data Retention and Disposal Procedure
+
+          Acceptable usage policy
+
+
+9. Measurement
+
+
+  TRIANZ INTERNAL                                                                       11
+ Key Performance Indicator (KPI)                             Definition
+
+
+
+  New Asset purchases                        Number of new purchases made of asset
+                                             types
+                                             Number of assets updated as "in stock",
+  Assets in Stock                            "reserved" or "deployed" from status "in-
+                                             transit" or "received"
+
+                                             Number of Change requests for 'lost/stolen'
+  Assets Lost                                over period
+
+                                             Number of requests to deploy assets over
+  Assets Deployed                            period
+
+  Assets Disposed                            Number of requests for asset disposal
+
+
+
+
+10. ISO Control Mapping(s)
+
+
+
+
+ Category of        ISO 27001:2022 Control            Document Name as per
+ Control                                              ISO 27001:2022
+ Organizational     5.9 Inventory of information and Asset Management
+ Controls           other associated assets Control Procedure
+                    An inventory of information and
+                    other associated assets,
+                    including owners, shall be
+                    developed, and maintained.
+ Organizational     5.10 Acceptable use of            Asset Management
+ Controls           information and other             Procedure
+                    associated assets Control Rules
+                    for the acceptable use and
+                    procedures for handling in
+                    formation and other associated
+
+
+
+
+  TRIANZ INTERNAL                                                                        12
+                   assets shall be identified,
+                   documented, and implemented.
+Organizational     5.11 Return of assets Control   Asset Management
+Controls           Personnel and other interested Procedure
+                   parties as appropriate shall
+                   return all the organization's
+                   assets in their possession upon
+                   change or termination of their
+                   employment, contract or
+                   agreement.
+
+
+
+
+ TRIANZ INTERNAL                                                      13
+                                        Document Control
+
+
+      Owner:            CISO                                    Release ID:          AMP-PROC-0129
+
+
+
+                      For Trianz Process Improvement Group (TPIG) Purpose Only
+
+         Version History
+
+
+
+  Ver.         Date          Author      Reviewer     Approver        Reason for        Change
+  No.                                                                  Change           Description
+
+0.1        24th Oct         Karthik N    Phani                     Initial Draft       None
+           2019                          Krishna
+0.2        5th Nov          Karthik N    Phani                     Review post         Review changes
+           2019                          Krishna                   changes             incorporated
+                                                                   suggested by
+                                                                   Phani
+1.0         20-Nov-         Balu Nair                Vivek         Approved for        Baselined
+           19                                        Sambasi       release to
+                                                     vam           bluebook
+1.1         11-May-         Karthik N    Balu Nair                 Review              Roles modified with
+           2020                                                                        CISO/CIO
+                                                                                       Integrated with the
+                                                                                       new
+                                                                                       template
+2.0         15-May-         Karthik N    Phani                     For Approval        Approved and
+           20                            Krishna                                       Baselined
+2.1        18th Jan         Ankur        Rakesh                    Initial Version     Asset Management
+           2021             Rastogi      Vijendra                                      Procedure updated
+                                                                                       in alignment with ISO
+                                                                                       20000-1 : 2018
+                                                                                       standard
+3.0        18th Jan         Ankur        Rakesh      Vivek S.      Baseline and        Baselined version
+           2021             Rastogi      Vijendra                  Approval
+3.1        22-Dec-          Balu Nair    Karthik N                 Yearly Review       Corrected few areas
+           2021                                                                        & formatted to
+
+
+          TRIANZ INTERNAL                                                                          14
+                                                                                     increase the
+                                                                                     readability
+
+
+
+
+ 4.0    13-Jan -         Balu Nair    Siva N       Siva N        Baseline and        Baselined version
+        2022                                                     Approval
+ 5.1    14-Mar-          Kruti        Karthik N                  For Review          The scope has been
+        2022                                                                         extended to
+                                                                                     products and
+                                                                                     services
+ 6.0    20-Mar-          Kruti        Siva N       Siva N        For Approval        Approved and
+        2022                                                                         baselined
+
+ 6.1    07-Apr-          Shivateja,   Karthik N    Srikanth M    For Review          Reviewed with no
+        2023                                                                         changes
+                         Rama
+                         Madhavan
+                                                                                     Migrated to new
+                                                                                     template
+ 7.0    12-May-          Rama         Vijaya       Srikanth M    For Approval        Approved and
+        2023             Madhavan                                                    Baselined
+ 7.1    10-Jan-          Beniyel      Balu Nair,                 For Review          Updated with ISO/IEC
+        2024                          Vijaya R                                       27001:2022 standard
+                                                                                     requirement on
+                                                                                     “return of Assets
+                                                                                     during
+                                                                                     termination/transfer”
+                                                                                     in section 6.3
+                                                                                     ISO Controls
+                                                                                     Mappings has been
+                                                                                     updated.
+8.0    23-Feb-24     Beniyel          Balu Nair, Srikanth M     For Approval        Approved &
+                                      Vijaya R                                      Baselined.
+8.1    04-March- Krutideepta Vijaya R,                          For Yearly Review
+       25        Barik       Balu Nair                                              Objective, Scope,
+                                      & Beniyel                                     Asset Risk
+                                      S                                             assessment, Asset
+                                                                                    Identification, Asset
+
+       TRIANZ INTERNAL                                                                              15
+                                                                       Resister/Inventory,
+                                                                       Asset Tagging section
+                                                                       has been Updated &
+                                                                       Modified.
+
+                                                                       CISO, Infosec Team, IS
+                                                                       Senior Manager,
+                                                                       Purchase Coordinator
+                                                                       Roles and
+                                                                       Responsibilities have
+                                                                       been modified.
+
+                                                                       Migrated to a new
+                                                                       Template.
+
+
+9.0    14-May-          Kruti   Balu Nair, Srikanth M   For Approval   Approved &
+       2025                     Vijaya R                               Baselined.
+
+
+
+
+      TRIANZ INTERNAL                                                                16
+                                Contact Information
+                                               Name
+
+                                               Email
+
+                                              Phone
+
+
+
+
+                                  Thank You
+                                     infosec@trianz.com
+
+
+
+
+ The content in this document is copyrighted; any unauthorized use – in part or full – may violate the
+ copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly
+   displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz
+ name and its products are subject to trademark and copyright protections, regardless of how and
+                                          where referenced.
+
+
+TRIANZ INTERNAL                                                                                      17
+

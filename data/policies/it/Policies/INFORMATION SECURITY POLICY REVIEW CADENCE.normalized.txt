@@ -1,0 +1,311 @@
+# INFORMATION SECURITY
+## POLICY REVIEW CADENCE
+
+### Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+### Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+### Table of Contents
+1. INTRODUCTION
+2. POLICY REVIEW CADENCE SCHEDULE
+3. ISO CONTROL MAPPING(S)
+
+---
+
+## 1. Introduction
+This document will detail the control objective-wise review cadence of Information Security Policies and Procedures.
+
+## 2. Policy Review Cadence Schedule
+
+1. **Control 5.1**  
+   **Objective:** To provide management direction and support for information security in accordance with business requirements and relevant laws and regulations.  
+   **Policy:** Information Security Policy Apex Manual  
+   **Review Cadence:** Annual  
+   **Triggers for Policy Review:** 
+   - Internal Audit
+   - External Audit
+   - Client Audit
+   - Client Visit
+
+2. **Control 6.1**  
+   **Objective:** To establish a management framework to initiate and control the implementation and operation of information security within the organization.  
+   **Policy:** ISAC Roles and Responsibilities, Access Control Policy  
+   **Review Cadence:** Annual  
+   **Triggers for Policy Review:** 
+   - Feedback
+   - Management feedback
+
+3. **Control 6.2**  
+   **Objective:** To ensure the security of teleworking and the use of mobile devices.  
+   **Policy:** Policy on the use of Mobile Computing and Communication Facilities, BYOD Policy  
+   **Review Cadence:** Bi-Annual  
+   **Triggers for Policy Review:** 
+   - Changes due to Technological and Environmental Factors
+
+4. **Control 7.1**  
+   **Objective:** To ensure that employees and contractors understand their responsibilities and are suitable for the roles for which they are considered.  
+   **Policy:** Background Verification Policy  
+   **Review Cadence:** Annual  
+   **Triggers for Policy Review:** 
+   - Compliance to any new regulatory standards
+
+5. **Control 7.2**  
+   **Objective:** To ensure that employees and contractors are aware of and fulfill their information security responsibilities.  
+   **Policy:** Professional Development Policy, Policy for Disciplinary Action  
+   **Review Cadence:** Annual  
+   **Triggers for Policy Review:** 
+   - Security Incidents
+   - BCP Triggers
+
+6. **Control 7.3**  
+   **Objective:** To protect the organization’s interests as part of the process of changing or terminating employment.  
+   **Policy:** Asset Management Policy, Employee Exit Policy  
+   **Review Cadence:** Annual  
+   **Triggers for Policy Review:** 
+   - Learnings from VA findings
+
+### 8.1 Objective: Organizational Asset Protection
+- The organization aims to identify its assets and define appropriate protection responsibilities.
+- Relevant policies include:
+  - Asset Management Policy (Annual Review)
+  - Acceptable Usage Policy (Annual Review)
+
+### 8.2 Objective: Information Classification
+- The organization ensures that information receives an appropriate level of protection based on its importance.
+- Relevant policy: Media Handling Policy (Bi-Annual Review)
+
+### 8.3 Objective: Media Handling
+- The organization aims to prevent unauthorized disclosure, modification, removal, or destruction of information stored on media.
+- Relevant policies include:
+  - Access Control Policy (Bi-Annual Review)
+  - Password Policy (Bi-Annual Review)
+
+### 9.1 Business Requirements for Access Control
+- The objective is to limit access to information and information processing facilities.
+- Relevant policies include:
+  - Access Control Policy (Bi-Annual Review)
+  - Password Policy (Bi-Annual Review)
+
+### 9.2 User Access Management
+- The objective is to ensure authorized user access and prevent unauthorized access to systems and services.
+- Relevant policies include:
+  - Access Control Policy (Bi-Annual Review)
+  - Password Policy (Bi-Annual Review)
+
+### 9.3 User Responsibilities
+- The objective is to hold users accountable for safeguarding their authentication information.
+- Relevant policies include:
+  - Access Control Policy (Bi-Annual Review)
+  - Password Policy (Bi-Annual Review)
+
+### 9.4 System and Application Access Control
+- The objective is to prevent unauthorized access to systems and applications.
+- Relevant policies include:
+  - Access Control Policy (Bi-Annual Review)
+  - Password Policy (Bi-Annual Review)
+
+### 10.1 Objective: Cryptographic Controls
+- The organization ensures proper and effective use of cryptography to protect the confidentiality, authenticity, and integrity of information.
+- Relevant policy: Policy on the Use of Cryptographic Controls (Annual Review)
+
+### 11.1 Objective: Secure Areas
+- The objective is to prevent unauthorized physical access, damage, and interference to the organization’s information processing facilities.
+- Relevant policy: Physical Access Control and Environmental Security Policy (Annual Review)
+
+### 11.2 Objective: Equipment Protection
+- The objective is to prevent loss, damage, theft, or compromise of assets and interruption to the organization’s operations.
+- Relevant policy: Acceptable Usage Policy (Annual Review)
+
+### 12.1 Review Cadence
+- The review cadence for policies is set to Annual.
+
+### 12.2 Antivirus Protection
+- Objective: To ensure that information and information processing facilities are protected against malware.
+
+### 12.3 Backup
+- Objective: To protect against loss of data.
+  - Policies involved:
+    - Backup and Restoration Policy
+    - Data Retention and Secure Disposal Policy
+    - Media Handling Policy
+    - Password Protection Policy
+    - Personal Data Protection and Privacy Policy
+
+### 12.4 Logging and Monitoring
+- Objective: To record events and generate evidence.
+  - Policy: Information Security Logging and Monitoring Policy
+
+### 12.5 Control of Operational Software
+- Objective: To ensure the integrity of operational systems.
+  - Policy: Patch Management Policy
+  - Review Frequency: Bi-Annual
+
+### 12.6 Technical Vulnerability Management
+- Objective: To prevent exploitation of technical vulnerabilities.
+  - Policy: Vulnerability Management Policy
+  - Review Frequency: Bi-Annual
+
+### 12.7 Information Systems Audit Considerations
+- Objective: To minimize the impact of audit activities on operational systems.
+  - Policy: Information System Audit Management Procedure
+  - Review Triggers:
+    - Internal Audit
+    - External Audit
+    - Client Audit
+    - Client Visit Feedback
+
+### 13.1 Network Security Management
+- Objective: To ensure the protection of information in networks and its supporting information processing facilities.
+  - Policy: Email Policy
+  - Review Frequency: Bi-Annual
+
+### 13.2 Information Transfer
+- Objective: To maintain the security of information transferred within an organization and with any external entity.
+  - Policy: Network Security Management Procedure
+  - Review Frequency: Bi-Annual
+  - Review Triggers:
+    - Management Feedback
+    - Changes
+
+### 14.1 Security
+- Objective: To ensure that secure software development life cycle (SDLC) practices are followed.
+  - Review Frequency: Annual
+  - Review Triggers: Due to Technological Changes
+
+### 14.2 Security in Development and Support
+- **Objective**: To ensure that information security is designed and implemented within the development lifecycle of information systems.
+
+### 14.3 Test Data
+- **Objective**: To ensure the protection of data used for testing in accordance with the Personal Data Protection and Privacy Policy and the Information Security Policy.
+
+### 15.1 Information Security in Supplier Relationships
+- **Objective**: To ensure protection of the organization’s assets that are accessible by suppliers.
+
+### 15.2 Supplier Service Delivery
+- **Objective**: To maintain an agreed level of information security and service delivery in line with supplier management agreements.
+
+### 16.1 Management of Information Security Incidents
+- **Objective**: To ensure a consistent and effective approach to the management of information security incidents, including communication on security events and improvements.
+
+### 17.1 Information Security Continuity
+- **Objective**: Information security continuity should be embedded in the organization’s business continuity management systems.
+
+### 17.2 Redundancies
+- **Objective**: To ensure availability of information processing facilities.
+
+### 18.1 Compliance with Legal and Contractual Obligations
+- **Objective**: To avoid breaches of legal, statutory, regulatory, or contractual obligations related to information security and any security requirements.
+
+### 18.2 Objective: Information Security Reviews
+
+- The objective is to ensure that information security is implemented and operated in accordance with organizational policies and procedures.
+- Reviews will occur bi-annually and will focus on:
+  - Changes due to technological and environmental factors.
+  - Compliance with any new regulatory standards.
+  - Security incidents.
+  - Business Continuity Plan (BCP) triggers.
+
+### 3. ISO Control Mapping(s)
+
+- **Category of Control: Organizational Controls**
+  - **ISO 27001:2022 Control 5.1**: Policies for information security must be defined, approved by management, published, communicated to relevant personnel and interested parties, and reviewed at planned intervals or when significant changes occur.
+  - **ISO 27001:2022 Control 5.36**: Compliance with information security policies, rules, and standards must be regularly reviewed.
+
+### Document Control
+
+- **Owner**: CISO
+- **Release ID**: ISPR_POL_059
+
+### Version History
+
+- **Version 0.1**
+  - **Date**: 16-May-2020
+  - **Author**: Vijaya Rajeswari
+  - **Reviewer**: Ganesh Arunachala
+  - **Change Description**: Initial Draft based on client risk assessment inputs.
+
+- **Version 1.00**
+  - **Date**: 20th May 2020
+  - **Author**: Ganesh Arunachala
+  - **Reviewer**: Phani Krishna
+  - **Approver**: Vivek Sambasivam
+  - **Change Description**: Modification to provide policy-wise approval.
+
+### 6. Review Cadence
+
+1. **1.1 Review Date**: 
+   - Date: 1-Feb-2021
+   - Reviewed by: Divya G, Vijaya R, Phani
+   - Status: For Review
+   - Notes: Modified as per the new template
+
+2. **2.00 Approval Date**: 
+   - Date: 1-Feb-2021
+   - Reviewed by: Divya G, Vijaya R, Phani
+   - Status: For Approval
+   - Notes: Approved and Baselined
+
+3. **2.1 Review Date**: 
+   - Date: 8-Nov-2021
+   - Reviewed by: Divya G, Vijaya R, Siva N
+   - Status: For Review
+   - Notes: Modified as per the new template
+
+4. **3.00 Approval Date**: 
+   - Date: 8-Nov-2021
+   - Reviewed by: Divya G, Vijaya R, Siva N
+   - Status: For Approval
+   - Notes: Approved and Baselined
+
+5. **3.00 Review Date**: 
+   - Date: 3-Jan-2022
+   - Reviewed by: Divya G, Vijaya R, Siva N
+   - Status: For Review
+   - Notes: Reviewed and no changes
+
+6. **3.00 Review Date**: 
+   - Date: 07-Apr-2023
+   - Reviewed by: Shivateja, Vijaya R, Srikanth M
+   - Status: For Review
+   - Notes: Reviewed and no changes
+
+7. **3.1 Review Date**: 
+   - Date: 12-May-2023
+   - Reviewed by: Vijaya
+   - Status: For Review
+   - Notes: Migrated to new template
+
+8. **4.0 Approval Date**: 
+   - Date: 12-May-2023
+   - Reviewed by: Vijaya, Srikanth M
+   - Status: For Approval
+   - Notes: Approved and Baselined
+
+9. **4.1 Review Date**: 
+   - Date: 15-Feb-2024
+   - Reviewed by: Shalini, Vijaya, Srikanth M
+   - Status: For Review
+   - Notes: Mapped with ISO 27001, 2022 control 5.1 and 5.36
+
+10. **5.0 Approval Date**: 
+    - Date: 23-Feb-2024
+    - Reviewed by: Shalini, Vijaya, Srikanth M
+    - Status: For Approval
+    - Notes: Approved and Baselined
+
+11. **5.1 Review Date**: 
+    - Date: 28-May-2025
+    - Reviewed by: Kruti, Vijaya
+    - Status: For Review
+    - Notes: Migrated to new template
+
+12. **6.0 Approval Date**: 
+    - Date: 29-May-2025
+    - Reviewed by: Kruti, Vijaya, Srikanth M
+    - Status: For Approval
+    - Notes: Approved and Baselined

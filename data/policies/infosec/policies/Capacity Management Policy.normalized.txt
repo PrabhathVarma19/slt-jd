@@ -1,0 +1,115 @@
+# Capacity Management Policy
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. Purpose
+2. Objective
+3. Scope
+4. Policy Statements
+   1. Thresholds
+5. Roles & Responsibilities
+6. Applicable Standards
+7. Reference Policies & Procedures
+8. Exceptions(s)
+9. ISO Control Mapping
+
+## 1. Purpose
+The use of resources shall be monitored, tuned, and projections made for future capacity requirements to ensure the required system performance. Capacity demands shall be monitored, and projections of future capacity requirements shall be made to enable adequate processing power and storage to be available.
+
+## 2. Objective
+The objective of Capacity Management is to understand the business requirements, the organization’s operations, and the IT infrastructure to ensure that all current and future capacity and performance aspects of the business requirements are provided cost-effectively.
+
+## 3. Scope
+- This policy applies to all Trianz Associates, Contractors, Vendors, Clients, Cloud Service Providers, Cloud Service Customers, and Products using Trianz IT infrastructure and communication services.
+- The requirements of this policy shall be implemented in all systems under the ownership of Trianz, either on-premises or in the cloud, and for all other Trianz managed systems, wherever applicable.
+- It is applicable for all Trianz Products and services.
+
+## 4. Policy Statements
+- Capacity demands shall be monitored, and projections of future capacity requirements shall be made to enable adequate processing power and storage to be available.
+- The IS team shall track information processing needs of various users in coordination with the respective Operations Manager. The Project Manager, along with the IS Team, will estimate critical computer resources required and initiate hardware or software procurement through the finance department.
+- System tuning and monitoring shall be applied to ensure and improve the availability and efficiency of systems. Detective and preventive controls shall be implemented to indicate problems in a timely manner.
+- Sufficient capacity shall be achieved by increasing capacity or optimizing resource utilization. Examples of managing capacity demand include:
+  - Deletion of obsolete data (disk space).
+  - Decommissioning of applications, systems, databases, or environments.
+  - Optimizing batch processes and schedules.
+  - Optimizing application logic or database queries.
+  - Denying or restricting bandwidth for non-business critical resource-hungry services (e.g., video streaming).
+- For Cloud Services, computing systems shall adapt to workload changes by provisioning and de-provisioning resources automatically (Elastic Scaling) to match current demand. Cost and utilization shall be optimized through Cloud Reservations and periodic reviews of consumption.
+- In case of capacity constraints (e.g., processor core applications, storage availability, network bandwidth), changing the subscription or the cloud service provider shall be considered.
+
+### 4.1 Thresholds
+- **Threshold 1:**
+  - **Value:** 70%
+  - **Description:** Warning Alert
+  - **Action:** Message will be emailed to IT Admins; appropriate action will be initiated.
+
+- **Threshold 2:**
+  - **Value:** 80%
+  - **Description:** High Alert
+  - **Action:** Message will be emailed to IT Admins; RCA will be performed, and immediate correction will be done; corrective action will be identified and initiated.
+
+- **Threshold 3:**
+  - **Value:** 90%
+  - **Description:** Critical Alert
+  - **Action:** Message will be emailed to IT Admins; capacity will be suitably enhanced.
+
+## 5. Roles & Responsibilities
+- **Capacity Management Provider:**
+  - **Responsibility:** Monitoring total capacity to prevent any information security incidents caused by resource shortages. Resources will be made available to the Cloud Service Customer.
+
+### 6. Capacity Management
+
+- The Capacity Management Team shall be responsible for implementing and maintaining this policy.
+- The team shall monitor the use of Cloud services and forecast capacity to ensure performance.
+- Cloud service customers shall have access to relevant statistics on resource usage, including:
+  - Statistics for a particular time period
+  - Maximum level of resource usage
+
+### 7. Applicable Standards
+- ISO 27001:2013
+
+### 8. Reference Policies & Procedures
+- Asset Management Policy
+- Asset Management Procedure
+- System and Software Change Management Policy and Procedure
+
+### 9. Exceptions
+- There are no exceptions to the Capacity Management policy. Any exceptions shall follow the Exception Handling Policy.
+
+### 12.1 ISO Control Mapping
+- **Category of Control**: Technological Controls
+- **ISO 27001:2022 Control**: 8.6 Capacity Management
+
+### Document Control
+- **Owner**: CISO
+- **Release ID**: CMP-POL-0030
+
+### Version History
+- **Version 0.01**: Initial Draft (19-May-15) by Sudhars
+- **Version 1.00**: Baselined (19-May-15) by Sudhars
+- **Version 1.01**: Content added related to Cloud services (24-Oct-16) by Balu Nair
+- **Version 2.00**: Baselined (07-Dec-16) by Balu Nair
+- **Version 2.01**: Information classification modified (30-Apr-19) by Balu Nair
+- **Version 3.0**: Approved for Release (14-May-19) by Balu Nair
+- **Version 4.0**: Updated to align with ISO 27017 and ISO 27018 (25-Nov-19) by Vijaya
+- **Version 5.0**: Formatting changes incorporated (14-May-20) by Karthik N
+- **Version 6.0**: Updates on Cloud consumption (14-Jan-21) by Balu Nair
+- **Version 7.0**: Approved and Baselined (3-Jan-22) by Divya G
+- **Version 8.0**: Scope extended to products and services (3-Jan-22) by Divya G
+- **Version 9.0**: Approved and Baselined (18-Mar-22) by Sanjana
+- **Version 10.0**: Yearly Review, no changes (06-May-23) by Balu Nair
+- **Version 11.0**: Migrated to a new Template (14-May-25) by Balu Nair
+
+### Contact Information
+- **Email**: infosec@trianz.com
+
+### Copyright Notice
+- The content in this document is copyrighted. Unauthorized use may violate copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly displayed without permission.

@@ -1,0 +1,203 @@
+# System Acquisition Procedure
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public: No
+- Internal: Yes
+- Confidential: No
+- Restricted: No
+
+## Table of Contents
+1. INTRODUCTION
+2. OBJECTIVE(S)
+3. SCOPE
+4. DEFINITIONS/ACRONYMS/ABBREVIATIONS
+5. REFERENCE(S)
+6. PROCESS DESCRIPTION
+   - 6.1 System Acquisition Planning
+   - 6.2 Analysis
+   - 6.3 Evaluation of system
+   - 6.4 Purchase
+   - 6.5 System Modification and Customization
+   - 6.6 Piloting
+   - 6.7 Deployment
+   - 6.8 Transition to Support
+7. ISO CONTROL MAPPING
+
+## 1. Introduction
+This process addresses the need for a systematic approach to acquiring new systems/products that support various business processes within the organization. It details the steps involved in acquiring a Commercial Off the Shelf (COTS) software product/application/system.
+
+## 2. Objective(s)
+- Reduce the system failure rate in real-time environments through systematic acquisition of systems/products.
+- Reduce the probability of unexpected system failures.
+- Reduce the cost of ownership.
+
+## 3. Scope
+This process applies to all systems/products acquired to support business processes at Trianz.
+
+## 4. Definitions/Acronyms/Abbreviations
+- **COTS**: Commercial Off the Shelf
+- **RFP**: Request for Proposal
+
+## 5. Reference(s)
+None
+
+## 6. Process Description
+
+### 6.1 System Acquisition Planning
+- Initiate the system acquisition process with project definition, which includes constraints such as time, budget, and project type.
+- Define managerial aspects including review boards, stakeholders, and pilot groups.
+- Develop functional and non-functional requirements based on the original problem description, including user requirements, use cases, test plans, quality requirements, and technical requirements.
+
+### 6.2 Analysis
+The analysis step involves the following procedures:
+- Develop an estimate of the custom development effort (in-house).
+- Identify vendors.
+- Create a Request for Proposal (RFP).
+- Conduct testing.
+
+### 6.3 Evaluation of System
+- Conduct a final evaluation of the system to select the product based on analysis of demonstration products from identified vendors.
+- Seek feedback from relevant stakeholders before making a decision on product selection.
+- Refer to the Tool Evaluation Process for evaluation of tools.
+
+### 6.4 Purchase
+Once the vendor is chosen, the following procedures shall be followed:
+- Conduct technical and commercial negotiations.
+- Create a Purchase Order/Purchase Contract.
+- Identify additional customization requirements.
+
+### 6.5 System Modification and Customization
+- After purchasing the COTS product, the acquirer and vendor shall collaborate on customization and modification activities as per the plan.
+- Test the modified product against the test plan to ensure conformity to product requirements.
+- Follow these sub-practices during modification and customization:
+  - Planning
+  - Monitoring
+  - Testing
+
+### 6.6 Piloting
+- Deploy the acquired system to a subset of the systems for initial testing and feedback.
+
+### 6.6 Pilot Testing
+
+**Definition:**
+- The acquirer of the system shall:
+  - Define the pilot group size.
+  - Identify the pilot group members.
+  - Identify pilot test resources.
+  - Outline steps to be followed by the pilot group.
+  - Define pilot test cases.
+
+**Evaluation:**
+- The evaluation process includes:
+  - Execution of the pilot process steps.
+  - Grading of the system against defined criteria.
+  - Identification of further modifications and risk factors.
+
+**Analysis:**
+- The acquirer shall analyze evaluation results and summarize defects/issues as follows:
+  - **Major Defect/Issue:** A critical miss that must be fixed but is difficult to resolve.
+  - **Minor Defect/Issue:** A miss that can be fixed during or after deployment.
+  - **Cosmetic Defect/Issue:** A miss that should be fixed but does not necessitate a change.
+
+### 6.7 Deployment
+
+- The deployment of the acquired system into the production environment involves the following sub-steps:
+  - **Installation:** The system is installed into production.
+  - **Data Reporting:** The deployment team shall provide the acquirer with data regarding:
+    - Work performed.
+    - Schedule.
+    - Expenses.
+    - Problem reports.
+
+### 6.8 Transition to Support
+
+- Once the deployed system is stable and management agrees, the system transitions to operation/maintenance mode. The following sub-steps shall be followed:
+  - Identify the Transition Team.
+  - Prepare a Transition Plan.
+  - Obtain commitments from various stakeholders.
+  - Transition the system/product.
+  - Monitor and control the transition process.
+  - Generate a Data report.
+  - Perform Transition sign-off.
+
+### 7 ISO Control Mapping
+
+- **Category of Control:** Organizational Controls
+  - **ISO 27001:2022 Control:** 5.20 Addressing Information Security within Supplier Agreements
+  - **Document Name as per ISO 27001:2022:** System Acquisition Procedure
+
+### Document Control
+
+- **Owner:** CISO
+- **Release ID:** SAP-PROC-0052
+
+### Version History
+
+| Version No. | Date         | Author         | Reviewer | Approver | Reason for Change                      |
+|-------------|--------------|----------------|----------|----------|----------------------------------------|
+| 0.0         | 05-May-09   | Bharateesha B R| NA       |          | Initial Draft                         |
+| 0.1         | 17-May-09   | Bharateesha B R| Self Review |        | Incorporated Transition to Support section |
+| 1.0         | 03-Jun-09   | Balu Nair      |          | Approval for Baseline |                |
+| 1.1         | 30-Dec-10   | Chakravarthi   |          | QMG review | Formatted entire document and updated header/footer |
+| 2.0         | 30-Dec-10   | Chakravarthi   |          | Request for Baseline |                |
+
+**3.0 Approval for Baseline**  
+- The baseline must be approved and baselined.
+
+**3.1 QMG Review**  
+- Replace the Owner with a Management Representative in place of the CIO.  
+- Update the Document Classification Scheme.  
+- The retention period is 3 years; the row indicating this is removed.
+
+**4.0 Request for Baseline**  
+- The request for baseline must be approved and baselined.
+
+**5.0 QMG Review**  
+- The document must be formatted as per the latest template format.
+
+**5.1 Information Classification**  
+- Information classification has been modified.  
+- The Trianz logo has been modified.
+
+# 6.0 Review Process
+- **6.1** On 12-May-20, Balu Nair and Phani Krishna conducted a yearly review and migrated to the new template.
+
+# 7.0 Approval Process
+- **7.0** On 15-May-20, Balu Nair and Phani Krishna submitted the document for approval, which was approved and baselined.
+- **7.1** On 3-May-21, Balu Nair and Vijaya Phani Krishna submitted the document for review, which was updated with new information classification.
+
+# 8.0 Approval Process
+- **8.0** On 3-May-21, Balu Nair and Vijaya Phani Krishna submitted the document for approval, which was approved and baselined.
+- **8.1** On 23-Dec-21, Balu Nair and Karthik N submitted the document for review, which included updates to the footer and formatting changes.
+
+# 9.0 Approval Process
+- **9.0** On 13-Jan-22, Balu Nair and Sivaram Krishna submitted the document for approval, which was approved and baselined.
+- **9.1** On 03-Apr-23, Balu Nair and Karthik N and Asha Veeramallu conducted a yearly review, with formatting and a few small changes made, including a new template change.
+
+# 10.0 Review Process
+- **10.0** On 09-May-23, Balu Nair and Srikanth Mantena conducted a yearly review, which was approved and baselined.
+- **10.1** On 4-Feb-2024, Vijaya Balu and Srikanth Mantena submitted the document for review, which was updated to align the section on ISO Control Mapping with ISO 27001:2022.
+
+# 11.0 Approval Process
+- **11.0** On 23-Feb-2024, Vijaya Balu and Srikanth Mantena submitted the document for approval, which was approved and baselined.
+- **11.1** On 28-May-2025, Vijaya Balu submitted the document for yearly review, which was migrated to a new template.
+
+# 12.0 Approval Process
+- **12.0** On 29-May-2025, Vijaya Balu and Srikanth M submitted the document for approval, which was approved and baselined.
+
+# Contact Information
+- **Name:** [To be filled]
+- **Email:** [To be filled]
+- **Phone:** [To be filled]
+
+# Thank You
+- For inquiries, contact: infosec@trianz.com
+
+**Copyright Notice**
+
+- This document is copyrighted. Any unauthorized use, in part or full, may violate copyright, trademark, and other laws.
+- The document may not be modified, reproduced, publicly displayed, performed, distributed, or used for any public or commercial purposes.
+- The Trianz name and its products are protected by trademark and copyright laws, regardless of how and where they are referenced.

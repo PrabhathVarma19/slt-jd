@@ -1,0 +1,337 @@
+System and Software License
+Management Procedure
+
+
+
+
+TRIANZ INTERNAL          trianz.com
+                      Statement of Confidentiality
+
+  The information contained in this document is internal to Trianz. It shall not be
+  disclosed, duplicated, or used for any purpose other than that stated herein, in
+  whole or in part, without the express written consent of Trianz.
+
+
+
+
+                         Information Classification
+
+
+     ☐ Public
+
+     ☒ Internal
+
+     ☐ Confidential
+
+     ☐ Restricted
+
+
+
+
+TRIANZ INTERNAL                                                                  2
+                               Table of Contents
+1.   OBJECTIVE                                     4
+
+2.   SCOPE                                         4
+
+3.   REFERENCE(S)                                  4
+
+4.   PROCEDURE                                     4
+
+     4.1 Law Compliance                            4
+
+     4.2 License Control                           4
+
+     4.3 License Inventory                         5
+
+     4.4 Evaluation Software                       5
+
+     4.5 Freeware                                  6
+
+     4.6 Periodic Audit                            6
+
+5.   ISO CONTROL MAPPING                           7
+
+
+
+
+ TRIANZ INTERNAL                                   3
+1. Objective
+   The objective of this process is to manage the process of deployment, use and
+   monitoring of vendor software in Trianz. Systems and Procedures should be
+   developed and implemented to comply with the legal and regulatory
+   requirements of the region in which Trianz operates.
+
+
+
+2. Scope
+   The scope includes all internal and applicable vendor applications that are
+   owned, operated, maintained, and controlled by Trianz by Internally and Externally
+   either on premises or on cloud.
+
+
+
+3. Reference(s)
+      None
+
+
+4. Procedure
+
+ 4.1 Law Compliance
+      Where a conflict arises between National and/or Local laws and the
+      Trianz policy, the law should be complied with and the CFO
+      Finance/Legal is to be notified of the situation. The CFO Finance/Legal
+      must ensure full compliance with the laws and regulations relating to
+      their information and the IT applications that process that information.
+      The laws and regulations mayinclude, among others: -
+
+                  i. Prohibition of the use of illegally acquired software.
+                  ii. Prohibition of the use of illegally acquired data.
+
+
+ 4.2 License Control
+      •   Software Licenses must be controlled and maintained to ensure
+          protection against default orcontractual and / or other limitations
+          and liabilities.
+
+      •   Software License terms and conditions, including those applying
+          to limited use, must bemonitored at all times.
+
+TRIANZ INTERNAL                                                                    4
+      •   Illegally acquired software must not be loaded on to computer systems
+          used by Trianz
+
+      •   Products licensed to run on a specific computer or at a particular
+          Project/Department must not be copied onto another computer or
+          another site without written authorization from the vendor
+
+
+
+ 4.3 License Inventory
+      The original copies of Licenses must be maintained by the IT Department.
+      The licenses must bestored in a safe and secured place. Access to licenses
+      must be based on authorization of theIT-Head.
+
+      Copies of the Licenses must be made, and they must also be stored in a safe
+      and securedplace. They must be stored in a place other than where Original
+      Licenses are kept.
+
+
+ 4.4 Evaluation Software
+      Evaluation software is acquired to assess the functionality and
+      relevance of such software toeither a project or the organization as a
+      whole. Such software may be acquired on physical media, or
+      sparingly downloaded from the Internet. The steps involved in
+      managing such software are outlined in the following section:
+
+           •      The IT Administrators must receive and pass on the media to
+                  the IT Helpdesk, who will update the Inventory and license
+                  database with the necessary details such as name of
+                  software, number of licenses, date of receipt, duration of
+                  validity etc
+           •      The IT team must inform the requestor about the receipt of the
+                  software and receive aformal request to install the software.
+           •      The IT team must check for viruses and install the software on
+                  the specified machine(s)
+           •      Once installation is done, the media must be returned to the IT
+                  Helpdesk, who willupdate the the Inventory and license
+                  database.
+           •      When the evaluation period of the software is due for expiry, the IT
+                  Helpdesk must inform the IT Administrator and the requestor about
+
+TRIANZ INTERNAL                                                                          5
+                  the same.
+             •    The IT team must uninstall the software unless the requestor
+                  obtains formal extensionfor the evaluation period. The IT
+                  Helpdesk will update the Inventory and license database to
+                  reflect the same.
+
+
+ 4.5 Freeware
+
+      Freeware is a software that is either downloaded or obtained free of
+      cost. The steps involved inmanaging such software are outlined in the
+      following section:
+
+                 • The IT Administrator, with the assistance of the legal
+                     department must verify if thefreeware usage terms and
+                     conditions are valid for organizational use
+                 • The IT Helpdesk must be notified regarding the use of freeware
+                    software
+                 • The IT team must check for viruses and install the software
+                     on the specifiedmachine(s)
+                 • The IT Helpdesk must keep record of the freeware installed on the
+                    machines
+                 • The IT team must uninstall the freeware once the purpose of
+                     the freeware or the timeframe is over, whichever is earlier
+
+
+
+ 4.6 Periodic Audit
+         •       Licenses will be tracked on periodic basis by the IT
+                 Administrator. Reports will be generated toaid the process of
+                 tracking and will be sent to the IT-Head. In the event that any
+                 discrepancy isdetected in the tracking report, the same will be
+                 reported to IT-Head who will inform the concerned user(s) and
+                 initiate appropriate action.
+
+         •       User(s) compliance to the License management policy will be
+                 audited twice in a year during internal audit. In the event that
+                 any discrepancy is detected in the audit report,the same will be
+                 reported to IT-Head who will inform the concerned user(s) and
+                 initiateappropriate action.
+
+TRIANZ INTERNAL                                                                        6
+5. ISO Control Mapping
+
+
+          Category of      ISO 27001:2022 Control        Document Name as
+          Control                                        per ISO 27001:2022
+          Organizational   5.20 Addressing Information   System and Software
+          Controls         Security within Supplier      License Management
+                           Agreements                    Procedure
+
+
+
+
+TRIANZ INTERNAL                                                                7
+                                       Document Control
+
+   Owner:            CISO            Release ID:               SSLM-PROC-0054
+
+
+
+
+             For Trianz Process Improvement Group (TPIG) Purpose Only
+
+  Version History
+
+Ver.                                                Approve    Reason for
+            Date            Author       Reviewer                               Change Description
+No.                                                    r        Change
+
+0.00   26-Feb-07      Jyotessh G                              Draft
+                      Nair
+
+1.00   26-Feb-07      Jyotessh G                              Baseline is      Approved Baseline.
+                      Nair                                    approved by
+                                                              Zulfikar Deen.
+
+1.01   14- May-       Bharateesh                              Risk             Consolidated the
+       09                                                     Assessment       controls related to
+                                                              and Risk         software license
+                                                              Treatment        management
+                                                              Plan
+
+2.00   04-Jun-09      Balu Nair                               Approval for     Baselined
+                                                              Baseline
+
+2.01   30-Dec-10      Chakravarthi                            QMG review       Formatted entire
+                                                                               document
+3.00   30-Dec-10      Chakravarthi                            Request for      Baselined
+                                                              baseline
+
+3.01   24-May-11      Srilakshmi                               QMG             Modified release id in
+                                                              Review           header and coverpage
+                                                                               to make consistency
+4.00   24-May-11      Srilakshmi                              Approval for     Baselined
+                                                              Baseline
+
+
+
+
+   TRIANZ INTERNAL                                                                         8
+4.01      3-Aug-11      Sudharsana                          QMG review     Replace Owner with
+                                                                           Management
+                                                                           Representative inplace
+                                                                           of CIO
+                                                                           In Document
+                                                                           Classification Scheme,
+                                                                           "Retention period is3
+                                                                           Years" row is removed
+5.00      3-Aug-11      Sudharsana                          Request for    Approved andBaselined
+                                                            baseline
+
+6.00      08-Nov-12     Balu Nair                           Standardizat    Modified the
+                                                            ion of Blue     template format
+                                                            Book Process   Changed the Logo
+                                                            Assets
+
+6.01      29-Apr-19     Balu Nair    JoshyVM                                •   Information
+                                                                                classification
+                                                                                modified
+                                                                            •   Trianz logomodified
+7.0       14-May-19     Balu Nair                Ganesh     Approved for   Baselined
+                                                 Arunach    Release
+                                                 ala
+
+7.1       15-May-20     Balu Nair    Phani                  For review     Migrated to thenew
+                                     Krishna                               template
+
+
+8.0       15-May-20     Balu Nair    Phani       Phani      For approval   Approved andBaselined
+                                     Krishna     Krishna
+
+8.1       23-Dec-21     Balu Nair    Karthik N              For review      •   Information
+                                                                                classification
+                                                                            •   Updated section
+                                                                                4.6
+9.0       13-Jan-22     Balu Nair    Sivaram     Sivaram    For approval   Approved andBaselined
+                                     akrishna    akrishna
+                                     nN          nN
+
+9.0       05-Apr-       Shivateja    Balu Nair   Srikanth   For Review     Reviewed No Changes
+          2023                                   M
+
+
+
+      TRIANZ INTERNAL                                                                  9
+9.1        12-May-23     Asha         Vijaya              For Review     Migrated to New
+                         Veeramallu                                      Template
+
+
+10.0       12-May-23     Asha         Vijaya   Srikanth   For Approval   Approved andBaselined
+                         Veeramallu            M
+
+10.1       15-Feb-       Vijaya       Balu     Srikanth   For Review     Updated the section
+           2024                                M                         ISO Control Mapping
+                                                                         aligning to ISO
+                                                                         27001:2022
+11.0       23-Feb-       Vijaya       Balu     Srikanth   For Approval   Approved and
+           2024                                M                         Baselined
+
+
+11.1       30-Apr-25     Vijaya       Balu                For Review     Migrated to new
+                                                                         template.
+12.0       14-May-25     Vijaya       Balu     Srikanth   For Approval   Approved and
+                                               M                         Baselined
+
+
+
+
+       TRIANZ INTERNAL                                                                10
+                                Contact Information
+                                               Name
+
+                                               Email
+
+                                              Phone
+
+
+
+
+                                  Thank You
+                                     infosec@trianz.com
+
+
+
+
+ The content in this document is copyrighted; any unauthorized use – in part or full – may violate the
+ copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly
+   displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz
+ name and its products are subject to trademark and copyright protections, regardless of how and
+                                          where referenced.
+
+
+TRIANZ INTERNAL                                                                                      11
+

@@ -1,0 +1,19 @@
+# Microsoft Information Protection
+
+This document utilizes encryption powered by Microsoft Information Protection. 
+
+## Access Restrictions
+- You may see this page if:
+  - You are not authorized to view the content.
+  - You are using an unsupported PDF viewer.
+
+## Required Actions
+- To open this document, use a PDF viewer that supports Azure Rights Management.
+- If you need access, contact the document owner to request permissions.
+
+## Additional Information
+- Learn more about PDF documents protected by Microsoft Information Protection.
+
+## Privacy Notice
+- Microsoft respects your privacy. 
+- For more information, refer to the privacy statement provided by Microsoft Corporation, One Microsoft Way, Redmond, WA 98052.

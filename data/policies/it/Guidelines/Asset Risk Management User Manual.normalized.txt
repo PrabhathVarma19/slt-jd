@@ -1,0 +1,106 @@
+# Asset Risk Management User Manual
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public: ☐
+- Internal: ☒
+- Confidential: ☐
+- Restricted: ☐
+
+## Table of Contents
+1. INTRODUCTION
+2. TOOL USAGE
+
+## 1. Introduction
+The Risk Management Process involves the identification, analysis, evaluation, treatment, and monitoring of risks throughout the project or system life cycle. A risk arises when a threat actor exploits a vulnerability present in the System/Project/Asset. This document details the steps involved in using the Asset Risk Management tool in the PMO portal.
+
+## 2. Tool Usage
+To access the Asset Risk Management tool, navigate to the following link: Portfolio & Project Management - Risk Management.
+
+### Steps to Use the Tool:
+1. Click on "Risk Management" from the left navigation menu.
+2. Click on the "New" link to add a new Asset Risk.
+3. A form will open for data entry.
+4. Select the Project ID from the dropdown; the Project name will automatically populate. Fields highlighted in grey are read-only and will populate upon saving data.
+5. Select "Asset Risk" as the Risk type from the dropdown.
+6. Upon selecting Asset Risk, additional fields will appear for entering information such as:
+   - Asset Risk Type
+   - Asset Risk Name/Description
+   - Threats and Vulnerabilities
+7. If the Asset Risk type options are not available, you can type your own value in the provided blank space.
+8. Fill out mandatory fields marked with a red asterisk (*), including:
+   - Risk Identification
+   - Risk Assessment
+   - Risk Analysis
+     - The CIAP field is calculated automatically based on your selections for confidentiality, integrity, availability, and privacy.
+     - CIAP = Product of (Confidentiality, Integrity, Availability, Privacy).
+     - Select Risk control from the dropdown.
+9. For threats, select from the dropdown; if a threat is not available, you can type it in the empty field. For vulnerabilities, if the option is not available, you can type it in the empty text box.
+10. If you do not wish to specify your own values, uncheck the empty option checkbox and check the other provided options.
+11. For Probability:
+    - Select the Probability of occurrence and Impact occurrence.
+    - Magnitude is automatically calculated based on your dropdown selections.
+    - Magnitude = Product of (Probability and Impact).
+    - Fill out the Risk impact by clicking on the provided checkbox.
+12. In the Risk Monitoring and Control section, fill out the required details.
+13. If the mitigation plan ETA is greater than today, the Residual Risk section will appear; it will be hidden if the Mitigation Plan ETA is less than or equal to today’s date.
+14. Add details on status and click "Submit."
+15. To edit/update an Asset Risk that has been submitted, expand the section, select the item, and click "Edit."
+16. The default view will show only the Asset Risks added by you. To see other assets, click on "Global View RM." 
+
+Owner: Management
+
+**Version History**
+
+1. **Version 0.1**
+   - **Author:** Purnima Ramdas
+   - **Reviewer:** Danabel
+   - **Date:** 6-Aug-2020
+   - **Reason for Change:** Initial draft for review.
+
+2. **Version 1.0**
+   - **Author:** Purnima Ramdas
+   - **Reviewer:** Danabel
+   - **Approver:** Phani Krishna
+   - **Date:** 8-Aug-2020
+   - **Reason for Change:** Initial draft approved and baselined.
+
+3. **Version 1.1**
+   - **Author:** Kruti
+   - **Reviewer:** Vijaya
+   - **Date:** 03-June-2024
+   - **Reason for Change:** Annual review; information classification has been updated.
+
+4. **Version 2.0**
+   - **Author:** Kruti
+   - **Reviewer:** Vijaya
+   - **Approver:** Srikanth M
+   - **Date:** 03-June-2024
+   - **Reason for Change:** Approved and baselined.
+
+5. **Version 2.1**
+   - **Author:** Vijaya
+   - **Reviewer:** Balu
+   - **Date:** 26-May-2025
+   - **Reason for Change:** Yearly review; migrated to a new template.
+
+6. **Version 3.0**
+   - **Author:** Vijaya
+   - **Reviewer:** Balu
+   - **Approver:** Srikanth
+   - **Date:** 29-May-2025
+   - **Reason for Change:** Approved and baselined.
+
+---
+
+**Contact Information**
+- **Name:** [To be filled]
+- **Email:** [To be filled]
+- **Phone:** [To be filled]
+
+---
+
+**Copyright Notice**
+- The content in this document is copyrighted. Unauthorized use, in part or full, may violate copyright, trademark, and other laws. This document may not be modified, reproduced, publicly displayed, performed, distributed, or used for any public or commercial purposes. The Trianz name and its products are subject to trademark and copyright protections, regardless of how and where referenced.

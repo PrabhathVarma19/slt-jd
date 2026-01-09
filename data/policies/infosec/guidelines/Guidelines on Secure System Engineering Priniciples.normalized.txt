@@ -1,0 +1,139 @@
+# SECURE SYSTEM ARCHITECTURE AND ENGINEERING PRINCIPLES
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. Objectives
+2. Scope
+3. Security Principles
+4. Security Foundation
+5. Risk Based
+6. Secure Development
+7. Secure Implementation
+8. Ease of Use
+9. Reduce Vulnerabilities
+10. Reference(s)
+11. ISO Control Mapping
+
+## 1. Objectives
+The objective of this procedure is to provide guidelines on secure system architecture and engineering principles established in the organization.
+
+## 2. Scope
+This procedure is applicable to all new and existing systems and application architecture developed at Trianz. It applies to all managed Trianz products and services.
+
+## 3. Security Principles
+- Establish a Security Foundation.
+- Implement a Risk-Based approach.
+- Ensure Ease of Use.
+- Increase Flexibility.
+- Reduce Vulnerabilities.
+- Apply Security by Design.
+- Utilize Defense in Depth.
+- Ensure Security by Default.
+- Design to Fail Securely.
+- Never trust inputs from external sources or applications.
+- Ensure Secure Deployment.
+- Always assume breach and design or implement controls accordingly.
+- Follow least privilege or default deny rules.
+- Design with usability, manageability, and least functionality in mind.
+
+## 4. Security Foundation
+The principles related to Security Foundation include:
+- Establish a sound security policy as the foundation, implementing the Information Security Policy.
+- Ensure confidentiality, integrity, and availability of critical information at all times.
+- Protect information assets from unauthorized access, use, disclosure, modification, and disposal.
+- Implement security requirements from the initial project initiation.
+- Understand and implement security requirements such as:
+  - User authentication
+  - Secure session controls
+  - LDAP authentication
+  - Role-based security
+  - Rule or role or attribute-based access control with least privilege or default deny policy
+  - Track user activities while changing data
+  - Encrypt data at the database level
+  - Track user activities during read access at the database level (Query band implementation)
+- Participate in the evaluation of security products.
+- Define physical and logical security boundaries:
+  - Implement access control mechanisms for physical access.
+  - Provide logical access at the application or product level based on requirements.
+- Ensure the project team develops and validates secure applications.
+- Define security standards, such as encryption algorithms, as per project requirements.
+- Train the team on defined standards.
+- Periodically perform Threat Modeling on applications to cover known threats, attack patterns, and vulnerabilities.
+- Design and integrate security at all architecture layers (DB, network, application, platform, etc.).
+- Implement Data Loss Prevention (DLP) and Dynamic Access Management where required.
+- Follow secure design principles and conduct security-oriented design reviews.
+- Adhere to system hardening procedures and perform Threat and Vulnerability Management (TVM) regularly.
+- Design or architect information systems with zero-trust principles in mind.
+- Use immutable infrastructure wherever possible.
+
+## 5. Risk Based
+- Perform Risk Assessment to ensure risk handling reduces risk to an acceptable level for all projects.
+- Based on the risk assessment, implement required controls such as:
+  - Encryption
+  - Integrity checks
+  - Digital signatures
+  - Data validation
+  - Tokenization
+  - Anonymization
+  - Pseudonymization
+- Implement controls that can detect, prevent, and respond to security events, incidents, and attacks.
+
+## 6. Secure Development
+- Adopt "Microsoft Secure Development Guidelines" or an equivalent methodology for Secure Software Development Life Cycle.
+
+## 7. Secure Implementation
+- Implement a multilayer access approach to protect assets from unauthorized access or modification.
+- Use layered security to protect the application layer and database.
+
+### 8. Ease of Use
+- Security measures should be based on open standards to ensure portability and interoperability wherever possible.
+- Common language must be used when developing security requirements.
+- Security designs should facilitate the regular adoption of new technologies and platforms, including a secure and logical technology upgrade process.
+
+### 9. Reduce Vulnerabilities
+- Common errors and vulnerabilities must be identified and prevented, including:
+  - Buffer overflows
+  - Race conditions
+  - Format string errors
+  - Failing to check input for validity
+  - Programs being given excessive privileges
+- Profile or role privileges should be implemented to reduce risk by limiting access to critical system security controls.
+- Role-based access controls must be established for various aspects of the system.
+- Control must be enforced on who can enable or disable system security features or change user or program privileges.
+- Application vulnerabilities, such as cross-site scripting and SQL injection, can be mitigated by adhering to coding standards, such as using prepared statements in Java, and by utilizing browser plug-ins like Tamper IE during testing.
+- SSL certificates must be installed to implement secure transactions.
+
+### 10. Reference(s)
+- This policy is based on the implementation guidelines of ISO 27002:2022 and CSA STAR guidelines.
+
+### 11. ISO Control Mapping
+- The principles for engineering secure systems must be established, documented, maintained, and applied to any information system development activities, as per ISO 27001:2022 Control 8.27 (Preventive).
+
+### Document Control
+- **Owner:** CISO
+- **Release ID:** SEP-GUID-0066
+
+### Version History
+- **Version 0.1**: Initial draft (4-May-15, Author: Sudharshana, Reviewer: Balu Nair)
+- **Version 1.0**: Approved baseline (15-May-15, Author: Balu Nair, Reviewer: Zulfikar Deen)
+- **Version 1.1**: Added security foundations points (25-Jan-16, Authors: Paramita Ghosh and Balu Nair)
+- **Version 2.0**: Added security foundations references (8-Feb-16, Author: Vijaya, Reviewer: Zulfikar Deen)
+- **Version 2.1**: Added CSA STAR in the reference section and security architecture principles (9-Feb-24, Authors: Balu Nair, Sraveen, Reviewer: Srikanth Mantena)
+- **Version 3.0**: Modified in alignment with ISO 27001:2022 (23-Feb-24, Authors: Sraveen, Reviewer: Vijaya)
+- **Version 3.1**: For Approval (28-May-25, Author: Kruti, Reviewer: Vijaya)
+- **Version 4.0**: Approved and Baselined, migrated to new template (29-May-25, Author: Kruti, Reviewer: Vijaya)
+
+### Contact Information
+- **Email:** infosec@trianz.com
+- **Phone:** [Not provided]
+
+### Copyright Notice
+The content in this document is copyrighted; any unauthorized use may violate copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz name and its products are subject to trademark and copyright protections.

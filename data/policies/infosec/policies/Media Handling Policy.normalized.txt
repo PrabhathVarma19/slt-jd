@@ -1,0 +1,153 @@
+# Media Handling Policy
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. PURPOSE
+2. OBJECTIVE
+3. SCOPE
+4. PRIVACY
+5. POLICY STATEMENTS
+   - 5.1 Media Handling
+   - 5.2 Media Shipping for Work-from-home Associates
+   - 5.3 Disposal of Media and Equipment
+   - 5.4 Removal of Equipment
+   - 5.5 Reuse of Equipment
+6. ROLES & RESPONSIBILITIES
+7. APPLICABLE STANDARDS
+8. REFERENCE POLICIES & PROCEDURES
+9. IMPLEMENTATION PROCEDURES
+10. EXCEPTIONS(S)
+11. ENFORCEMENT
+12. ISO CONTROL MAPPING(S)
+
+## 1. Purpose
+Improper handling of removable media can cause data loss and leakage. This policy outlines the media handling requirements to ensure confidentiality, integrity, availability, and privacy of information.
+
+## 2. Objective
+To ensure the secure management of media to protect sensitive or personal information from intentional or accidental exposure or misuse.
+
+## 3. Scope
+This policy applies to all Management, Employees, Contractors, and Third-Party Employees who use Trianz media, as well as all products, services, and organizational IT assets of Trianz.
+
+## 4. Privacy
+The media handling policy document is considered "confidential" and shall be made available to authorized personnel with proper access control. Changes and versions of the document shall be controlled.
+
+## 5. Policy Statements
+
+### 5.1 Media Handling
+- All Trianz associates are responsible for ensuring the physical security of media.
+- Use of USB flash drives is blocked for all associates; approval from CIO/CISO is required for use.
+- Personal CDs, DVDs, data tapes, hard drives, flash drives, external memory cards, and other devices are not allowed.
+- Use of CD/DVD writers is restricted; printer facilities are for official use only.
+- Media must be handled with care, kept away from magnetic materials, and not exposed to extreme heat or pollution.
+- Compliance with this policy is the responsibility of overall delivery and corporate functions.
+
+### 5.2 Media Shipping for Work-from-home Associates
+- All devices containing information must be shipped securely, following special procedures when associates work from home.
+- Shipping must be done from Trianz office or to/from non-office locations.
+- Special controls should protect sensitive information during transit from unauthorized disclosure or modification.
+- A record must be maintained for incoming and outgoing physical media containing Personally Identifiable Information (PII) or Personal Sensitive Data.
+- Packaging for media in transit must adequately protect contents from physical damage according to manufacturers’ specifications.
+
+### 5.3 Disposal of Media and Equipment
+- Media must be disposed of securely and safely when no longer required to prevent sensitive information leakage.
+- Reusable media must be low-level formatted before removal from the company, with prior approval from CISO/CIO.
+- Disposal of sensitive items must be logged to maintain an audit trail and meet regulatory requirements.
+- Equipment containing storage media must be checked for confidential information, which should be backed up or removed prior to disposal.
+- Storage devices with sensitive information must be physically destroyed or securely overwritten; low-level formatting is preferred over standard deletion.
+- All licensed software on equipment must be removed before disposal.
+- Damaged storage devices with sensitive data must be assessed for data access before deciding to repair, discard, or destroy.
+
+### 5.4 Removal of Equipment
+- Equipment such as desktops and laptops must be handled according to the established procedures for removal.
+
+### 5.4 Off-Site Information Handling
+- Information or software will not be taken off-site without prior authorization from IS Operations and the CISO/CIO.
+- A Verification Report must be prepared by an authorized IT representative and sent, either physically signed or via email, to the admin for preparing a gate pass.
+
+### 5.5 Reuse of Equipment
+- Equipment shall be reused where feasible. Data and software will be securely removed, and the equipment will be re-provisioned for use.
+- Parts may be dismantled and reused if there is potential for recovering valuable components from the item.
+- Equipment will be recycled at the unit or component level using the external disposal contract coordinated by IT Services.
+
+### 6. Roles & Responsibilities
+- **All Associates**: Any exceptions to this policy must be requested with proper business justification and approved by the reporting Manager and CISO/CIO.
+- **Admin Team**: Ensure all logistics are in line with this policy and related procedures.
+- **IS Operation Team**: Ensure all IS operations comply with this policy and related procedures.
+- **Infosec Team (CISO/CIO)**: Approve exceptions based on business justifications and the risk of information loss.
+
+### 7. Applicable Standards
+- ISO 27001:2013
+- ISO 27701:2019
+
+### 8. Reference Policies & Procedures
+- Media Handling Procedure of Work from Home Associates
+- Data Retention and Secure Disposal Policy
+- Information Removal Verification Report Template
+
+### 9. Implementation Procedures
+- TDCPL Administration Procedure
+- ISO Operations Process
+- Physical Access Control and Environmental Security Policy and Procedure
+
+### 10. Exceptions
+- This policy applies to all Trianz Associates. Any project-specific needs and CISO/CIO approved systems will be excluded from this policy, with prior approval from project managers and IS Operations. Refer to the Exception Handling Policy.
+
+### 11. Enforcement
+- Any employee found to have violated this policy may be subject to disciplinary action in accordance with the HR policy.
+
+### 12. ISO Control Mapping
+- **Category of Control**: Physical Controls
+  - **ISO 27001:2022 Control**: 7.10 Storage Media Control
+    - Storage media shall be managed throughout their life cycle of acquisition, use, transportation, and disposal in accordance with the organization's classification scheme and handling requirements.
+
+### Document Control
+- **Owner**: CISO
+- **Release ID**: MH-POL-0007
+
+### Version History
+- **0.00**: Initial Draft (26 Feb 07)
+- **1.00**: Baseline approved (26 Feb 07)
+- **1.01**: Changed policy statements (30 Jul 08)
+- **2.00**: Revised policies per ISMS Framework (28 Apr 09)
+- **3.00**: QMG review and formatting (31 Dec 10)
+- **4.00**: Request for baseline (06 May 11)
+- **5.00**: Standardization and template modification (03 Aug 11)
+- **6.00**: Approval for baseline (14 Oct 11)
+- **7.00**: Client audit and alignment (08 Nov 12)
+- **8.0**: Added reference section (08 Feb 16)
+- **10.0**: Updated requirements (22 Nov 19)
+
+# Policy Document Updates
+
+## 10.0 Document Updates
+- **10.1**: The document was baselined on May 8, 2020, by Balu Nair and Phani Krishna.
+- **11.0**: Document approved and baselined on July 28, 2020, with updates for legibility and the addition of CISO as an approval authority.
+- **12.0**: Updated policy for COVID-19 approved and baselined on July 30, 2020.
+- **12.1**: Policy added for shipping devices from non-office locations, approved on September 15, 2020.
+- **13.0**: Document baselined and approved on September 15, 2020.
+- **13.1**: Version review conducted on February 11, 2021.
+- **14.0**: Updated information classification, approved and baselined on February 11, 2021.
+- **14.1**: Annual review conducted on July 30, 2021.
+- **15.0**: Policy template changed and revamped, approved and baselined on January 6, 2022.
+- **15.1**: Scope extended to products, approved on March 17, 2022.
+- **16.0**: Document approved and baselined on March 21, 2022.
+- **16.1**: Policy statement and enforcement added, under review as of May 3, 2023.
+- **17.0**: Editorial changes made and mapped with new ISO control 7.10, approved and baselined on February 23, 2024.
+- **17.1**: Document approved and baselined on May 5, 2025.
+- **19.0**: Document approved and baselined on May 14, 2025.
+
+## Contact Information
+- **Email**: infosec@trianz.com
+- **Phone**: [Not provided]
+
+## Copyright Notice
+The content in this document is copyrighted. Unauthorized use may violate copyright, trademark, and other laws. This document may not be modified, reproduced, publicly displayed, performed, or distributed for any public or commercial purposes. The Trianz name and its products are subject to trademark and copyright protections.

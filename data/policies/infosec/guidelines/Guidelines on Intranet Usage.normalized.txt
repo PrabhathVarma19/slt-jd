@@ -1,0 +1,72 @@
+# Guidelines on Intranet Usage
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. Objective
+2. Scope
+3. Reference(s)
+4. Rules on Intranet Usage
+5. Roles and Responsibilities
+
+## 1. Objective
+The company utilizes Intranet as a critical resource to carry on the business processes. Therefore, Trianz has developed systems and procedures to ensure that security is maintained for Intranet at all times, with a uniform code of conduct.
+
+## 2. Scope
+These guidelines apply to all users of TRIANZ and cover:
+- Local Area Network (LAN) and Wide Area Network (WAN) connected with Trianz’s workstations and servers, including applications and system software.
+- All systems under the jurisdiction and/or ownership of TRIANZ, including hired systems.
+- All workstations and servers supplied by the customers of TRIANZ, as long as they are operated from within TRIANZ premises.
+
+## 3. Reference(s)
+- Information Security Code of Conduct
+
+## 4. Rules on Intranet Usage
+- All services on the Intranet of Trianz LAN and WAN network are for the purpose of information update and dissemination among employees and selected third-party vendors. All information posted to the Intranet must have a designated owner, and all postings or modifications must be approved.
+
+- **Default Access:**
+  - Default Intranet access is granted to all employees based on their department.
+  - Default usernames and passwords for Intranet access will be communicated to users.
+  - Employees with private protected VLAN/Isolated Wi-Fi connections will also receive default access based on project requirements.
+  - All Intranet access will be protected with Zscaler webproxy for security.
+
+- **Access to Other Resources of Intranet:**
+  - For access beyond the default, users must raise a Service Request to the IS Department with approval from their respective Head of Department. Access will be granted as per the approval for the specified duration.
+
+- **Authentication & Authorization:**
+  - All Intranet access is governed by proper authorization, and access to all intranet servers will be protected and managed through PAM.
+
+- **Information Dissemination:**
+  - Intranet information is for dissemination only to authorized individuals. Users must not forward this information to others without seeking approval through the appropriate channel.
+
+## 5. Roles and Responsibilities
+- Any user, as defined in the “Scope section,” is responsible for using TRIANZ’s intranet resources in compliance with this policy.
+- The IS Manager is responsible for reviewing these guidelines once a year.
+- The designated Information Security Officer/Designated member of the Security Forum, along with the Human Resources group, shall be responsible for distributing these guidelines.
+
+**5.0 Change History**
+
+- **5.1** On 3-Aug-11, Sudharsan approved and baselined the request for baseline.
+- **5.2** On 28-Sep-12, Sudharsan formatted the document as per the latest template format during the QMG review.
+- **5.3** On 30-Jul-21, Pranesh Kulkarni updated the IT name to IS and revised the rules on Intranet Usage to include VLAN information.
+- **5.4** On 30-Jul-21, Kruti submitted the document for approval with no changes noted during the annual review scheduled for 03-June-2024.
+- **5.5** On 26-May-25, Vijaya Balu submitted the document for the annual review after migrating to a new template.
+- **5.6** On 28-May-25, Vijaya Siva reviewed and updated the rules.
+- **5.7** On 29-May-25, Vijaya Siva submitted the document for approval, which was approved and baselined.
+
+**Contact Information**
+
+- **Name:** [Not provided]
+- **Email:** infosec@trianz.com
+- **Phone:** [Not provided]
+
+**Copyright Notice**
+
+The content in this document is copyrighted. Unauthorized use, in part or full, may violate copyright, trademark, and other laws. This document may not be modified, reproduced, publicly displayed, performed, distributed, or used for any public or commercial purposes. The Trianz name and its products are subject to trademark and copyright protections.

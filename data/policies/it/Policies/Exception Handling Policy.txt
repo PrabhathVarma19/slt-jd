@@ -1,0 +1,247 @@
+Exception Handling Policy
+
+
+
+
+TRIANZ INTERNAL             trianz.com
+                         Statement of Confidentiality
+
+  The information contained in this document is internal to Trianz. It shall not be
+  disclosed, duplicated, or used for any purpose other than that stated herein, in
+  whole or in part, without the express written consent of Trianz.
+
+
+
+
+                            Information Classification
+
+     ☐ Public
+
+     ☒ Internal
+
+     ☐ Confidential
+
+     ☐ Restricted
+
+
+
+
+TRIANZ INTERNAL                                                                  2
+                           Table of Contents
+1.   PURPOSE                                   4
+
+2.   SCOPE                                     4
+
+3.   POLICY STATEMENT                          4
+
+4.   EXCEPTION REQUEST                         4
+
+5.   ISO CONTROL MAPPING                       5
+
+
+
+
+ TRIANZ INTERNAL                               3
+1. Purpose
+    The purpose of this Exception Handling Policy is to establish a structured approach for
+    identifying, reporting, analysing, and resolving exceptions within the organization. This
+    ensures timely resolution, minimizes security risks, and maintains operational efficiency
+    while complying with legal, regulatory, and organizational requirements.
+
+
+2. Scope
+    This policy applies to all the published Trianz’s defined policy, procedure and guidelines. This
+    policy does not apply to any of the policies or procedures published by groups outside of
+    Trianz Information Security Management System.
+
+
+
+3. Policy Statement
+    An exception to the ISMS/PIMS practices may be granted by Product/Project Manager, IT
+    Manager and CISO, if required for non-compliance resulting from:
+
+•   Implementation of a solution with equivalent protection.
+•   Implementation of a solution with superior protection.
+•   Impending retirement of a legacy system.
+•   Inability to implement the standard due to some limitation
+➢ Exceptions are granted for a specific period, not exceeding one month to three months or
+  the end of the contract, whichever is earlier. Exceptions are reviewed on a case-by-case
+  basis and their approval renewal is not automatic.
+➢ The exception review process must log all findings and results in a central repository
+➢ Approved exceptions must be periodically reviewed semi-annually by Information systems,
+    InfoSec and compliance, and the unit requesting the exception.
+
+
+
+4. Exception Request
+    All Exception Requests should be logged in the control doc under the exception request
+    feature. All requests will go via service desk team to for the first level reporting Manager
+    Approval and then IT manager approval.
+•   Exception ticket creation > IS Help Desk > Reporting Manager Approval > IT
+    Manager Approval (Can decide for further Approval required or not) if ‘Yes’ > CISO
+    for final approval / rejection.
+•   An exception requestor should review and work with IS team and InfoSec and compliance
+    team member to:
+➢ Assess the risks created by the exception,
+
+TRIANZ INTERNAL                                                                                    4
+➢ Evaluate potential alternatives,
+➢ Attain recommendations.
+
+   The Exception Request must include:
+   ▪   Description of the non-compliance
+   ▪   Anticipated length of non-compliance
+   ▪   Assessment of risk associated with the requested non-compliance
+   ▪   Proposed plan for managing the risk associated with non-compliance
+   ▪   Proposed metrics for evaluating the success of risk management
+   ▪   Proposed review date to evaluate progress toward compliance
+   ▪   Approval of the exception request by the Project manager/Function head by email and
+       duly signed in the exception request form.
+   •   After InfoSec has reviewed the request and confirmed the details of the requested
+       exception, the Chief Information Security Officer (CISO) will review and
+       approve/reject.
+   •   If the non-compliance is due to a superior solution, an exception will normally be
+       granted until the published standard or procedure can be revised to include the new
+       solution. An exception request must still be submitted.
+
+
+
+5. ISO Control Mapping
+
+         Category of         ISO 27001:2022 Control              Document Name as per
+         Control                                                 ISO 27001:2022
+         Organizational      5.1 to 5.37                         Exception Handling Policy
+         controls
+         People controls     6.1 to 6.8                          Exception Handling Policy
+         Physical controls   7.1 to 7.14                         Exception Handling Policy
+                             8.1 to 8.34                         Exception Handling Policy
+         Technological
+         Controls
+
+
+
+
+TRIANZ INTERNAL                                                                              5
+                                Document Control
+
+Owner:            CISO             Release ID:                            EXCP-POL-055
+
+
+
+             For Trianz Process Improvement Group (TPIG) Purpose Only
+Version History
+
+
+ Ver.      Date     Author     Reviewer      Approver        Reason           Change
+ No.                                                           for            Description
+                                                             Change
+
+0.01              Joshy VM                                Initial Draft      Nil
+
+0.02    26-Aug-               Phani                       Initial draft      All sections
+        19                    Krishna                     review
+
+0.03    11-Sep-   Karthik N   Phani                       Initial draft      Attached the
+        19                    Krishna                     review             exception
+                                                                             request form.
+0.05    13-Sep-   Karthik N   Phani                       Final review       Review
+        19                    Krishna &                                      feedback
+                              Balu Nair                                      incorporated
+
+0.06    16-Sep-               Phani                       Incorporated
+        19                    Krishna                     feedback from
+                                                          Vivek
+1.0     16-Sep-   Karthik N   Phani       Vivek S         Baselined
+        19                    Krishna
+
+1.1     11-May-   Karthik N   Balu Nair                   Review       1. Format
+        20                                                                change
+                                                                       2. Tool based
+                                                                          Integration
+                                                                          added
+2.0     14-May-   Karthik N   Balu Nair   Phani Krishna   For Approval Approved and
+        20                                                             Baselined
+
+2.1     25-Jan-   Karthik N   Phani                       For Review         Updated the
+        21                    Krishna                                        section 3, 4.
+
+                                                                            Updated the
+                                                                            information
+                                                                            classification.
+
+
+
+TRIANZ INTERNAL                                                                              6
+3.0   25-Jan-     Karthik N     Phani       Phani Krishna   For Approval Approved and
+      21                        Krishna                                  Baselined
+
+3.1   21-Dec-     Divya G       Karthik N                   For Review    Removed
+      21                                                                  section 5
+
+4.0   13-01-      Divya G       Karthik N   Sivaramakrishnan For Approval Approved and
+      22                                           N                      Baselined
+
+4.1   13-03-      Sanjana       Karthik N   Sivaramakrishnan For Review   The scope has
+      22                                           N                      been extended
+                                                                          to products
+                                                                          and services
+5.0   18-03-      Sanjana       Karthik N   Sivaramakrishnan For Approval Approved and
+      22                                           N                      Baselined
+
+5.1   21-Apr-     Sanjana,      Karthik N                   For Review    New template
+      23          Pallavi                                                 change
+                  Chakrabarty
+6.0   12-May-     Sanjana       Karthik N      Srikanth M   For Approval Approved and
+      23                                                                 Baselined
+
+6.1   15-Feb-     Shalini       Vijaya          Srikanth    For Review   Mapped with
+      24                                                                 new ISO
+                                                                         control from
+                                                                         ISO 27001,
+                                                                         2022, 8.15
+7.0   23-Feb-     Shalini       Vijaya          Srikanth    For Approval Approved and
+      24                                                                 Baselined
+
+7.1   16-Apr-     Vijaya        Pranesh &                   For Review    Periodicity for
+      2025                      Chaitanya                                 exceptions
+                                                                          added
+7.2   5-May-      Vijaya        Balu                        For review    Migrated to
+      2025                                                                new template,
+
+8.0   15-May-     Vijaya        Balu                        For Approval Approved and
+      2025                                                               Baselined
+
+
+
+
+TRIANZ INTERNAL                                                                         7
+.
+
+
+
+
+                                  Contact Information
+                                                 Name
+
+                                                 Email
+
+                                                Phone
+
+
+
+
+                                    Thank You
+
+                                      infosec@trianz.com
+
+The content in this document is copyrighted; any unauthorized use – in part or full – may violate the
+copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly
+    displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz
+name and its products are subject to trademark and copyright protections, regardless of how and
+                                          where referenced.
+
+
+
+
+TRIANZ INTERNAL                                                                                         8
+

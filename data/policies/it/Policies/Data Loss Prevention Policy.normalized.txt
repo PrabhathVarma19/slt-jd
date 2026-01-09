@@ -1,0 +1,128 @@
+# Data Loss Prevention Policy
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. PURPOSE
+2. SCOPE
+3. OBJECTIVE
+4. POLICY
+5. MONITORING
+6. COMPLIANCE
+7. EXCEPTION(S)
+8. ISO CLAUSE MAPPING
+   - Document Control
+
+## 1. Purpose
+The purpose of this policy is to ensure that users do not send sensitive or critical information outside the corporate network. Data Loss Prevention (DLP) is the practice of detecting and preventing data breaches, exfiltration, or unwanted destruction of sensitive data.
+
+## 2. Scope
+The scope of the policy includes:
+1. Network DLP
+2. End Point DLP
+3. Cloud DLP
+4. Storage DLP
+
+## 3. Objective
+The objective of this policy is to ensure data protection and incident prevention for Trianz’s business-critical data and Personally Identifiable Information (PII) data, which includes sensitive data as per applicable regulations.
+
+## 4. Policy
+- Trianz shall adopt a DLP solution that includes data identification and classification to meet complex and evolving compliance standards.
+- DLP must be implemented across:
+  - **Network**: Prevent, monitor, and control the flow of information, including PII data, via the company’s network, email, or web.
+  - **Endpoint**: Monitor endpoint devices (servers, computers, laptops, and mobile devices) where Trianz’s critical information is used, moved, and stored.
+  - **Cloud**: Protect data stored in the cloud by encrypting sensitive data and ensuring it is sent only to authorized cloud applications.
+  - **Storage**: Protect unstructured data on servers and structured data in databases.
+- The DLP solution must be fully integrated within Trianz’s cybersecurity architecture.
+
+## 5. Monitoring
+The IS operation team shall implement required solutions and constantly monitor and analyze data to identify potential violations of security policies.
+
+## 6. Compliance
+The InfoSec and Data Privacy Assurance Team will verify compliance with this policy through internal and external audits.
+
+## 7. Exception(s)
+Exceptions to the Data Loss Prevention policy shall follow the Exception handling policy, such as for Finance and HR data with adequate safeguards.
+
+## 8. ISO Clause Mapping
+- **Technological Controls**:
+  - **8.11 Data Masking Control**: Data masking shall be used in accordance with the organization's topic-specific policy on access control and other related policies, considering applicable legislation.
+  - **8.12 Data Leakage Prevention Control**: Data leakage prevention measures shall be applied to systems, networks, and any devices that process, store, or transmit sensitive information.
+
+## Document Control
+- **Owner**: CISO
+- **Release ID**: DLP-POL-0073
+
+### Version History
+- **Ver. No.**: [Details not provided]
+
+### Change Log
+
+**0.1**  
+- Date: 12-Oct-2022  
+- Authors: Shiva Beniyel, Srikanth Mantena, Balu, Vijaya  
+- Status: Initial Draft  
+- Changes: None  
+
+**1.00**  
+- Date: 12-Oct-2022  
+- Authors: Shiva Beniyel, Srikanth Mantena, Balu, Vijaya  
+- Status: Approval for Baseline  
+- Changes: Baseline  
+
+**1.0**  
+- Date: 28-March-2023  
+- Authors: Krutideep Vijaya R  
+- Status: For Review  
+- Changes: Reviewed with no changes  
+
+**1.1**  
+- Date: 10-May-2023  
+- Authors: Rama Madhavan  
+- Status: For Review  
+- Changes: Migrated to new template, editorial changes, rephrased purpose and monitoring  
+
+**2.0**  
+- Date: 12-May-2023  
+- Authors: Rama Madhavan  
+- Status: For Approval  
+- Changes: Approved and Baselined  
+
+**2.1**  
+- Date: 23-Jan-2024  
+- Authors: Beniyel S, Aishee G, Balu Nair, Vijaya R  
+- Status: For Review  
+- Changes: Migrated from standard ISO 27001:2013 to ISO 27001:2022 mapping updated  
+
+**3.0**  
+- Date: 23-Feb-2024  
+- Authors: Beniyel S, Aishee G, Balu Nair, Srikanth M, Vijaya R  
+- Status: For Approval  
+- Changes: Approved and Baselined  
+
+**3.1**  
+- Date: 17-Apr-2025  
+- Authors: Vijaya, Balu  
+- Status: For Review  
+- Changes: Migrated to a new template and yearly review  
+
+**4.0**  
+- Date: 14-May-2025  
+- Authors: Vijaya, Balu  
+- Status: For Approval  
+- Changes: Approved and Baselined  
+
+### Contact Information
+- **Name:** [To be filled]  
+- **Email:** [To be filled]  
+- **Phone:** [To be filled]  
+
+### Copyright Notice
+The content in this document is copyrighted; any unauthorized use – in part or full – may violate copyright, trademark, and other laws. This document may not be modified, reproduced, publicly displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz name and its products are subject to trademark and copyright protections, regardless of how and where referenced.

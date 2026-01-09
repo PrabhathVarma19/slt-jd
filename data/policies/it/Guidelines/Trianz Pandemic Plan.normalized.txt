@@ -1,0 +1,257 @@
+# Pandemic Response Plan
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. Purpose
+2. Scope
+3. Objectives of Trianz Pandemic plan
+4. Definition of a Pandemic
+5. Trianz Pandemic Response Objectives
+6. Plan Triggers and Actions
+7. Pandemic Preparedness and Response measures
+8. Pandemic Working Group
+9. Business continuity strategies
+   - 9.1 Work from home model (Remote Working)
+     - 9.1.1 Information technology Assets
+     - 9.1.2 Power and network connectivity
+     - 9.1.3 Security requirements
+10. Hybrid Model
+11. Pandemic Response Plan Test
+
+## 1. Purpose
+The purpose of the Pandemic Response Plan is to guide Trianz through the development of the steps and procedures necessary to successfully respond to and recover from pandemics.
+
+## 2. Scope
+The guidelines and procedures listed in this plan cover a variety of business activities, including sensitive or critical daily operational activities, and apply to all company personnel.
+
+## 3. Objectives of Trianz Pandemic Plan
+The objectives of this pandemic plan are to:
+- Limit the impact of the pandemic on Trianz by reducing morbidity and mortality.
+- Minimize social disruption caused by the pandemic.
+- Reduce economic losses attributable to the pandemic.
+- Mitigate risks of delivery impact to clients.
+
+## 4. Definition of a Pandemic
+A pandemic is defined as a virulent global outbreak to which humans have little or no immunity, which mutates and develops the ability to transmit easily between people, spreading worldwide. Viruses can range in severity from mild to severe, and their effects can vary greatly among different age groups or at-risk populations.
+
+## 5. Trianz Pandemic Response Objectives
+The objectives of the Trianz Pandemic Response are to:
+- Detect and identify early symptoms through employee wellness surveys to identify sick individuals.
+- Diagnose by enabling medical care from Trianz empanelled doctors and clinics.
+- Contain by enabling remote working and providing business continuity for client delivery.
+- Monitor the health of associates and assist as needed, along with tracking project delivery status.
+- Communicate the overall status to key stakeholders, including internal teams, clients, suppliers, and vendors.
+
+## 6. Plan Triggers and Actions
+Trianz has developed triggers to assist in the activation of pandemic-related strategies. Immediate action may be required if there is an impact on employee health and client delivery.
+
+### Triggers and Key Actions
+- **Alert Phase Triggers:**
+  - New strain identified.
+  - Media coverage of a potential pandemic strain.
+  - Human-to-human transmission in the disease's country of origin.
+  - Potential for the disease to affect the organization and/or its clients.
+
+- **Key Actions:**
+  - Establish situational awareness.
+  - The Crisis Management team will publish a situation assessment report to the Business Resilience Group.
+  - Validate the organization’s geographic and employee footprint.
+  - Assess potential impacts on business operations.
+
+### 5. Operations
+
+#### Phase Trigger and Key Actions
+
+**Pre-Pandemic Phase**  
+**Trigger:**  
+- Presence of strain in localized hot spots.  
+- Minimal spread beyond the disease's source (country of origin).  
+- Beginning of government reactions (travel warnings issued, some transportation network closures).  
+- Anticipated impact to Trianz and/or its suppliers.
+
+**Key Actions:**  
+- Accelerate the Business Continuity Planning (BCP) checkpoints for continuous crisis management response.  
+- Initiate health surveys and assess the health status of associates.  
+- Coordinate with business areas, projects, and functions likely to be affected by the event.  
+- Establish communication with potentially affected third parties and re-evaluate continuity strategies.  
+- Develop an approach to manage financial impacts.  
+- Assess sanitation procedures.  
+- Develop transportation and travel restrictions.  
+- Identify means to track absenteeism.  
+- Determine the level of support provided via insurance and health care providers.  
+- Identify more aggressive strategies that may be used if conditions deteriorate.  
+- Assess the suitability of technology infrastructure for extensive remote operations.  
+- Establish continuous health and delivery status reporting for all business units.  
+- Plan and conduct proactive vaccination drives if suitable vaccines are available as per government directives.
+
+**Pandemic Phase**  
+**Trigger:**  
+- Global/dispersed proliferation of the pandemic.
+
+**Key Actions:**  
+- Activate crisis management and appropriate business continuity measures.
+
+### 7.0 Pandemic Preparedness and Response Measures
+
+#### 7.1 People
+- HR will distribute awareness mailers highlighting pandemic outbreaks along with Dos and Don’ts.
+- The organization will establish partnerships with empaneled clinics across all Trianz locations for medical advice.
+- A 24/7 help desk facility will be available, directing associates to medical facilities when needed.
+- An Employee Wellness Survey will be conducted to assess any medical assistance required for employees and their families due to symptoms.
+- Location-specific HR, Admin, and IT points of contact will be established, along with their contact numbers.
+
+#### 7.2 Environment Readiness
+- Delivery centers will undergo fumigation and disinfecting on a location-wise basis.
+- Hand sanitizers will be made available at security desks, washrooms, and other prominent locations within delivery centers.
+- Face masks will be readily available.
+- Security desk officers will screen for symptoms.
+- Thermal sensors will be utilized for health monitoring.
+- Housekeeping services will also screen for symptoms.
+- Cab drivers will be required to screen for symptoms.
+- Building environment cleansing will be coordinated with building owners.
+
+#### 7.3 Travel and Local Commute
+- There will be a freeze on both domestic and international travel.
+- A travel advisory will be issued to assess the risk of travel to countries or cities experiencing a pandemic outbreak.
+- Self-quarantine will be mandatory for individuals traveling from or transiting through pandemic outbreak countries.
+- Visitors and vendors will be required to answer diagnostic questions to assess risks before arriving on campus.
+
+#### 7.4 Remote Working & IT Enablement
+- Work From Home (WFH) enablement will include proactive assessment and allocation of laptops, internet connectivity, and power backups for critical associates.
+- Daily status reports (DSRs) will be conducted with delivery managers to check on the wellbeing and delivery status of associates.
+
+### 7.0 Data Connectivity and Power
+- Ensure data connectivity and power are provided wherever feasible.
+
+### 8.0 Cyber Security, Technology & Delivery Aspects
+- Implement remote working guidelines and best practices.
+- Roll out and implement cybersecurity guidelines.
+- Enable secure remote workspaces, including:
+  - Hardened laptops
+  - Protected web and email access
+  - Conditional access
+- Conduct daily delivery risk reviews across all projects.
+- Provide information security and privacy refresher training and awareness campaigns.
+
+### 9.0 Daily BCP Checkpoint Calls
+Daily calls will assess:
+- Employee health and wellbeing.
+- Endpoint device and connectivity issues, addressing any challenges.
+- Delivery status and risk monitoring.
+- Client status updates and briefings.
+
+### 10.0 Pandemic Working Group
+The Pandemic Working Group consists of the following primary members:
+- Crisis Management Representatives (across locations)
+- Senior Leadership Team Representatives
+- Project Delivery Representatives
+- Business Continuity Representative
+- Human Resources Representative
+- Facilities/Administration Representative
+- Finance Representative
+- Communications Representative
+- Information Technology Representative
+- Information Security Representative
+- Travel Representative
+
+Key stakeholders engaged on a need basis include:
+- Legal/Compliance
+- Marketing Representative
+- Government Liaison
+- Media (if needed)
+
+#### 10.1 Business Resilience Group
+**Escalation Contacts:**
+- **Information Systems:**
+  - Primary Contact: Pranesh Sivakrishna
+  - Phone: 91 9704906608
+  - Escalation Contact: Srikanth M
+  - Phone: 91 9000599259
+
+- **Admin/Physical Security:**
+  - Primary Contact: Rajani Nagaraj
+  - Phone: 91 9448457666
+  - Escalation Contact: Yogesh Patel
+  - Phone: 91 80 46640000
+
+- **Chief Information Security Officer:**
+  - Primary Contact: Srikanth M
+  - Phone: 91 9000599259
+
+- **Business Continuity/Information Security Manager:**
+  - Primary Contact: Beniyel S
+  - Phone: 91 9843315098
+  - Escalation Contact: Srikanth M
+  - Phone: 91 9000599259
+
+- **HR Group Manager:**
+  - Primary Contact: Sanuj Krishnan
+  - Phone: 8971022337
+  - Escalation Contact: Raja Perumal
+  - Phone: 91 80 46640000
+
+- **Travel - Assistant Manager:**
+  - Primary Contact: Neelakandan Thekkedathu
+  - Phone: 91 8123029150
+  - Escalation Contact: Rajani Nagaraj
+  - Phone: 91 9448457666
+
+- **Finance Controller:**
+  - Primary Contact: Sandeep T
+  - Phone: 91 9900505759
+  - Escalation Contact: Yogesh Patel
+  - Phone: 91 80 46640000
+
+### 11.0 Business Continuity Strategies
+#### 11.1 Work from Home Model (Remote Working)
+- The Work from Home model is activated when primary or secondary facilities are inoperable due to a pandemic or epidemic.
+- This model allows associates to work from a remote location using Trianz assets and equipment for a prolonged duration.
+
+#### 11.2 Information Technology Assets
+- Trianz will provide official laptops, headphones, and other peripherals.
+- Connectivity to the Trianz network or email requires IS configuration for the Trianz environment.
+- Any request for such equipment must be authorized by the Project/Delivery Manager.
+
+### 9.1.2 Connectivity
+- All associates working from home must have continuous power and sufficient power backups. Trianz has provided power backups, such as UPS, to identified critical employees in projects/functions.
+- All associates must be equipped with sufficient broadband internet connectivity and backup internet dongles provided by the company.
+
+### 9.1.3 Security Requirements
+- All identified associates who qualify to work from home must complete all mandatory security trainings (including Information Security and Data Privacy) before availing work from home.
+- All associates must adhere to the remote cybersecurity guidelines published by the information security team.
+- All work from home users must comply with policies specified under the Information Security Management System in the Bluebook.
+
+### 10. Hybrid Model
+- The hybrid working model is a flexible arrangement that allows employees to work remotely while others work on-premises, with suitable preventive controls.
+- The hybrid model achieves:
+  - Structure and sociability in an office environment.
+  - Flexibility and independence of remote working.
+
+### 11. Pandemic Response Plan Test
+- The pandemic response plan test shall be conducted as per management guidelines at the organizational or engagement level.
+- Testing can be conducted in the form of a simulation, tabletop exercise, or plan walkthrough test aligned with the Trianz Business Continuity Plan.
+
+### 3.0 Document Updates
+- **3.0**: Updated by Beniyel S on 10/06/2024. Approved by Vijaya R and baselined.
+- **3.1**: Updated by Beniyel S on 05/03/2025 for the Annual Review. Contact details updated.
+- **3.2**: Reviewed by Kruti on 28-May-2025. For review by Vijaya R. Document migrated to new template.
+- **4.0**: Approved by Kruti on 29-May-2025. Approved by Srikanth M and baselined.
+
+### Contact Information
+- **Name**: [To be filled]
+- **Email**: [To be filled]
+- **Phone**: [To be filled]
+
+### Thank You
+- For inquiries, contact: infosec@trianz.com
+
+### Copyright Notice
+- The content in this document is copyrighted. Unauthorized use may violate copyright, trademark, and other laws. This document may not be modified, reproduced, publicly displayed, performed, distributed, or used for any public or commercial purposes. The Trianz name and its products are protected by trademark and copyright laws.

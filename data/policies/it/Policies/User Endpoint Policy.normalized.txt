@@ -1,0 +1,200 @@
+# USER ENDPOINT POLICY
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. PURPOSE
+   - 1.1 Mobile Computing
+   - 1.2 Communication Facilities
+2. OBJECTIVES
+3. SCOPE
+4. POLICY STATEMENTS
+5. ROLES & RESPONSIBILITIES
+6. APPLICABLE STANDARDS
+7. REFERENCE POLICIES & PROCEDURES
+8. EXCEPTIONS(S)
+9. ISO CONTROL MAPPING
+
+## 1. Purpose
+The purpose of the User Endpoint Policy is to protect information against risks introduced by using user endpoint devices, mobile computing, and communication facilities. The specific aims are:
+- To prevent misuse of electronic communications and computing resources.
+- To ensure employees are not exposed to unethical behavior such as:
+  - Error
+  - Fraud
+  - Defamation
+  - Breach of copyright
+  - Unlawful discrimination
+  - Illegal activity
+  - Privacy violations
+  - Computing resource service interruptions
+
+### 1.1 Mobile Computing
+Mobile computing facilities include, but are not limited to:
+- Laptops
+- Mobile phones
+- Other portable computing devices
+- Media (CD-ROMs, DVDs, disks, pen drives, memory storage devices)
+- Video conferencing
+
+### 1.2 Communication Facilities
+Communication facilities include, but are not limited to:
+- E-mail
+- Internet
+- Mobile phones
+- VOIP phones
+- Skype
+- Microsoft Teams
+- Kaizala
+- Forums, blogs, and other internet-based communication tools
+
+## 2. Objectives
+The objectives of this Policy are:
+- To facilitate the efficient, effective, responsible, and lawful use of Trianz computing and communication facilities.
+- To safeguard the interests of Trianz and all authorized users of its computing and communication facilities.
+- To provide guidelines and instructions to authorized users regarding the appropriate use of Trianz’s computing and communication facilities.
+
+## 3. Scope
+This policy applies to all Trianz Associates and contractors who have access to Trianz mobile computing and communication facilities.
+
+## 4. Policy Statements
+Trianz shall ensure that effective measures are in place to protect confidential information regarding the use of mobile computing and communication facilities. The following rules apply:
+- Protection measures are in place to avoid unauthorized access to or disclosure of confidential data stored and processed by mobile computing and communication facilities.
+- Mobile devices, including laptops, smartphones, and tablet computers, can provide substantial productivity benefits but also present significant risks to Trianz’s information assets.
+- Employees and others may use their own equipment (BYOD - refer to BYOD Policy) to connect to Trianz's network and systems, provided they install specific security controls as per the BYOD Policy.
+- IT shall review devices and remove any Trianz data if the relationship with Trianz terminates, if devices or services change, or in similar situations.
+- It is recommended to use encryption and other protection strategies (e.g., device management software, access controls, remote wiping in case of loss or theft) on any mobile device that contains confidential or high-risk information.
+
+### 4. Mobile Device Security Policy
+
+- Mobile devices that provide access to Trianz email must be protected using Multi-Factor Authentication (MFA), which includes a password and/or other approved authentication methods.
+- Physically secure any mobile devices used to access or store Trianz information. Laptops must never be left unattended.
+- Associates are prohibited from taking pictures with mobile phones or cameras inside any ODCs provided to customers as part of the MSA/SOW.
+- It is recommended that mobile devices containing Trianz information not be connected to any unsecured networks without an up-to-date firewall or other security controls in place.
+- Unsecured networks include:
+  - Home networks
+  - Hotel networks
+  - Open or for-pay wireless hotspots
+  - Convention networks
+  - Any other network that Trianz has not approved or does not control.
+- Remote geolocation capabilities must be maintained for all mobile devices.
+- A remote wipe feature must be enabled on all Trianz-managed mobile devices to securely erase data if the device is lost.
+- Ensure all endpoints are periodically updated with the latest versions and definitions.
+- The use of removable devices, including removable memory devices, is restricted, and physical ports (e.g., USB ports, SD cards) must be disabled.
+
+### 5. Roles & Responsibilities
+
+- **All Associates**:
+  - Responsible for all activities on mobile computing and communication facilities initiated by their ID.
+  - Must report any suspected breaches or compromises of their computing and communication facilities to the IS Team.
+
+- **IS Team**:
+  - Responsible for responding to and investigating reported breaches.
+
+- **InfoSec Team**:
+  - Conducts a bi-annual review of the policy on the use of mobile computing and communication facilities.
+
+### 6. Applicable Standards
+
+- ISO 27001:2013
+- ISO 27001:2022
+- ISO 27701:2019
+
+### 7. Reference Policies & Procedures
+
+- BYOD Policy
+- Access Control Policy
+- Antivirus Malware Policy
+- Asset Management Policy
+- Data Loss Prevention Policy
+- Email Security Policy
+- System and Software Change Procedure
+- Encryption Key Management Policy
+- Password Policy
+- Media Handling Policy
+
+### 8. Exceptions
+
+- Exceptions to the Change Management Policy require formal written approval from the Information Security Assurance Team. Refer to the Exception Handling Policy for more details.
+
+### 9. ISO Control Mapping
+
+- **Category of Control**: Technological
+  - **ISO 27001:2022 Control**: 8.1 User endpoint devices
+  - **Document Name as per ISO 27001:2022**: User Endpoint Policy
+  - Control Information stored on, processed by, or accessible via user endpoint devices must be protected.
+
+### Document Control
+
+- **Owner**: CISO
+- **Release ID**: MCCF-POL-0023
+
+### Version History
+
+- **Version 1.00**: Initial release to Blue Book on 09-Jan-14 by Srilakshmi.
+- **Version 1.01**: Addition of modified cloud services on 14-Oct-16 by Sriharsha.
+
+### Section 3: Scope of Certification
+
+**2.0** Approved by Balu Nair, CISO on 07-Dec-16. Status: Baselined.
+
+**2.1** For review by Balu Nair and Phani Krishna on 12-May-20. Status: Migrated to the new template.
+
+**3.0** Approved by Balu Nair, Phani Krishna on 15-May-20. Status: Baselined.
+
+**3.1** Review by Karthik N and Srilakshmi on 19-May-20. Updates include:
+- Updated comments from DA.
+- Added more details on mobile computing.
+
+**4.0** Approved by Karthik N, Anitha Ravindran, and Phani Krishna on 19-May-20. Status: Baselined.
+
+**4.1** For review by Balu Nair, Vijaya Rajeswari, and Phani Krishna on 28-Jul-20. Updates include:
+- Formatted the document for legibility.
+- Updated communication facilities.
+- Referred to BYOD policy wherever applicable.
+
+**5.0** Approved by Balu Nair and Phani Krishna on 31-Jul-20. Status: Baselined.
+
+**5.1** For review by Balu Nair and Phani Krishna on 11-Feb-21. Updates include:
+- Updated information classification.
+- Formatted and made minor changes.
+
+**6.0** Approved by Balu Nair and Phani Krishna on 11-Feb-21. Status: Baselined.
+
+**6.1** For review by Divya G and Phani Krishna on 30-Jul-21. Updates include:
+- Updated objectives and roles and responsibilities.
+
+**7.0** Approved by Divya G and Phani Krishna on 30-Jul-21. Status: Baselined.
+
+**8.0** Annual review by Divya G, Balu N, and Siva N on 04-Jan-22. Reviewed with no changes.
+
+**8.1** For review by Sanjana, Divya G, and Siva N on 15-Mar-22. The scope has been extended to products and services.
+
+**9.0** For review by Sanjana, Divya G, and Siva N on 15-Mar-22. Approved and Baselined.
+
+**9.0** For review by Sanjana and Balu N on 05-Apr-23. Reviewed with no changes.
+
+**9.1** For review by Rama Madhavan and Vijaya on 12-May-23. Migrated to new template.
+
+**10.0** Approved by Rama Madhavan on 12-May-23.
+
+### 10.0 Document Review and Approval Process
+
+- **10.1 Review Dates and Responsibilities:**
+  - On **11-Feb-23**, the document was mapped with ISO 27k 2022 controls and is pending approval from Vijaya, Srikanth M, and Bala.
+  - On **23-Feb-23**, the document is approved and baselined by Vijaya, Srikanth M, and Bala, pending final approval.
+  - On **24-Feb-24**, the document was reviewed with no changes by Vijaya and Bala.
+  - On **28-May-25**, the document was migrated to a new template and is pending review by Kruti and Vijaya.
+  - On **29-May-25**, the document is approved and baselined by Kruti, Vijaya, and Srikanth M, pending final approval.
+
+### Contact Information
+- **Email:** infosec@trianz.com
+
+### Copyright Notice
+- The content in this document is copyrighted. Unauthorized use, modification, reproduction, or distribution may violate copyright, trademark, and other laws. The Trianz name and its products are protected by trademark and copyright laws.

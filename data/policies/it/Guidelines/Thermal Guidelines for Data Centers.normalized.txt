@@ -1,0 +1,50 @@
+# Thermal Guidelines for Data Centers
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public: No
+- Internal: Yes
+- Confidential: No
+- Restricted: No
+
+## Table of Contents
+1. THERMAL GUIDELINES FOR DATA CENTERS
+2. GLOSSARY
+3. INTRODUCTION
+4. TEMPERATURE AND RELATIVE HUMIDITY MEASUREMENT
+5. APPENDIX A: FORMAT OF TEMPERATURE AND RELATIVE HUMIDITY MEASUREMENT
+
+## 1. Glossary
+- **Hygro-Thermometer**: A device used to measure the relative humidity and temperature.
+- **ASHRAE**: American Society of Heating, Refrigerating and Air-Conditioning Engineers.
+
+## 2. Temperature and Relative Humidity Measurement
+- Temperature and relative humidity will be measured using a Hygro-Thermometer placed inside the data center.
+- Security Personnel will record the measurements every 2 hours, 24/7, including weekdays, weekends, and company holidays.
+- The acceptable ranges for measurements in the Trianz data center are:
+  - **Temperature**: 15 °C to 25 °C
+  - **Relative Humidity**: 20% to 80% RH
+- If the temperature or relative humidity is found to be outside the acceptable range, Security Personnel must inform the IT Administrator by phone.
+
+## 3. Appendix A: Format of Temperature and Relative Humidity Measurement
+- The format for recording temperature and relative humidity includes the following fields:
+  - S.No
+  - Date
+  - Time
+  - Temperature (°C)
+  - Relative Humidity (%RH)
+  - Name
+  - Signature
+
+**Contact Information**  
+- For inquiries, contact:  
+  - Name: [Insert Name]  
+  - Email: infosec@trianz.com  
+  - Phone: [Insert Phone Number]  
+
+**Copyright Notice**  
+- The content in this document is copyrighted. Unauthorized use, in part or full, may violate copyright, trademark, and other laws.  
+- This document may not be modified, reproduced, publicly displayed, performed, distributed, or used for any public or commercial purposes.  
+- The Trianz name and its products are protected by trademark and copyright laws, regardless of how and where referenced.

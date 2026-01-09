@@ -1,0 +1,212 @@
+# Physical Access Control and Environmental Security Policy
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. PURPOSE
+2. SCOPE
+3. POLICY
+   - 3.1 Physical Security Perimeter
+   - 3.2 Physical Entry Access
+   - 3.3 Visitor Management System
+   - 3.4 CCTV
+   - 3.5 Securing Offices, Telecommunications Closets, Data Center and Facilities
+   - 3.6 Power Supplies
+   - 3.7 Equipment Maintenance
+   - 3.8 Wireless Access Points
+   - 3.9 Clear Desk and Clear Screen Policy
+   - 3.10 Protection Against Environmental Factors
+4. MONITORING AND REPORTING
+5. COMPLIANCE
+6. EXCEPTION(S)
+7. ISO CONTROL MAPPING(S)
+
+## 1. Purpose
+The purpose of this policy is to define the requirements for protecting Trianz information and technology resources from physical and environmental threats and to reduce the risk of loss, theft, damage, or unauthorized access to those resources or interference with Trianz operations.
+
+## 2. Scope
+This policy applies to all parties operating within Trianz’s network environment or utilizing Information Resources. It covers:
+- Data networks
+- LAN servers
+- Personal computers (stand-alone or network-enabled) located at Trianz offices and company production-related locations
+- Any personal computers, laptops, mobile devices, and servers authorized to access Trianz’s data networks
+
+No employee is exempt from this policy.
+
+## 3. Policy
+
+### 3.1 Physical Security Perimeter
+The physical layout of Trianz’s information processing facilities will be segregated into perimeter zones, each with varying levels of access restrictions and authorization requirements:
+- **Public Zone and Reception Zone**: Limited restrictions; area under overall surveillance.
+- **Office Zone**: Limited access; registration with reception required; area under overall surveillance.
+- **Restricted Access Zone**: Limited access; access logged; escorted access for visitors; area under surveillance (e.g., secure bays).
+- **Highly Restricted Access Zone**: Specifically authorized personnel only; highly restricted access; logged access; specific authorization required for employee and visitor access; area under surveillance (e.g., server room).
+
+### 3.2 Physical Entry Access
+- All employees, contractors, consultants, and visitors entering Trianz premises must carry Trianz approved identification badges.
+- Physical access to Trianz information systems facilities is restricted to authorized persons only. Authorization is granted only for business or technical reasons.
+- All access logs must be retained for a minimum of three years.
+- Secure areas (restricted zones) must be protected with a combination of access control devices (e.g., physical barriers, intrusion alarms) and access-logging equipment (e.g., card key systems, security cameras).
+
+### 3.3 Visitor Management System
+- Visitors must have supervised and controlled access to secure areas.
+- Visitors are required to:
+  - Sign in to a Visitors Log, which must be retained and reviewed. The log should include:
+    - Visitor’s name
+    - Company
+    - Purpose of visit
+    - Time of entrance
+    - Time of departure
+    - Date
+  - Wear a visitor badge to indicate that a non-associate is present. Visitors must present picture identification to obtain the badge. Those without badges should be challenged for identification.
+  - Be escorted by Trianz personnel or an individual with a current Trianz company badge while in the building.
+- Visitors must declare their belongings (e.g., laptop computers, mobile phones) before entering restricted premises. Security must verify these declarations to prevent the removal of Trianz property from the building.
+
+### 3.4 CCTV
+- Surveillance cameras shall be installed and monitoring performed in areas perceived as high risk, unless otherwise required.
+
+### 3.5 Securing Offices, Telecommunications Closets, Data Center and Facilities
+- Data centers, equipment rooms, and telecommunications closets must be protected from unauthorized or unnecessary access.
+- All data centers, equipment rooms, and telecommunications closets must be locked when unattended.
+- Network devices (e.g., routers, switches, hubs) must be placed in restricted access zones to protect against unauthorized access.
+- All source media for operating system software, applications, backup tapes/devices, and license keys must be clearly labeled and stored in a software library within a restricted access zone, accessible only to authorized personnel.
+- Adequate intrusion detection controls (e.g., burglar alarms, motion detectors) and safety devices (e.g., fire alarms, smoke detectors, closed-circuit televisions) must be installed in all office locations, switch rooms, and data centers. Data centers must also have appropriate air conditioning and very early smoke detection systems.
+- Support functions and equipment (e.g., photocopiers, fax machines) should be protected from unauthorized access.
+- No combustible or hazardous materials are allowed in restricted zones.
+
+### 3.6 Power Supplies
+- Equipment must be protected from power failures and electrical anomalies.
+- Electrical supply must conform to the manufacturer’s specifications for each piece of equipment.
+- Critical equipment must be supported by an uninterruptible power supply (UPS). Backup power generating equipment should be in place where possible.
+- Power supply backup equipment (including UPSs and backup generators) must undergo regular maintenance and testing.
+
+### 3.7 Equipment Maintenance
+- Equipment must be maintained according to manufacturers' recommendations to ensure availability and integrity.
+- All faults (or suspected faults) must be logged in the current Incident Management System.
+- All changes must be logged in the current Change Management System.
+
+### 3.8 Wireless Access Points
+- Wireless access points should be installed at a high level to reduce exposure and enhance security against theft or tampering.
+
+### 3.9 Clear Desk and Clear Screen Policy
+- Clear desk and clear screen guidelines must be written and implemented at each Trianz office location, including:
+  - Paper and computer media must be stored in suitable locked cabinets, offices, or other secure furniture when not in use, especially outside working hours.
+  - Sensitive or critical business information should be locked away (ideally in a fire-resistant safe or cabinet) when not required, particularly when the office is unattended.
+
+### 3.10 Protection against Environmental Factors
+- IT management must implement and maintain sufficient measures to protect against environmental factors such as fire, dust, power issues, excessive heat, and humidity. Refer to the BCP policy for details.
+
+### 4. Monitoring and Reporting
+- Reporting metrics and documentation templates are outlined in the approved Trianz Physical and Environmental Security Procedure.
+- These reports are to be used for evaluating the effectiveness of physical and environmental security controls.
+- Reports must be made available to Information Security and Internal Audit upon request.
+
+### 5. Compliance
+- The responsibility for the implementation and enforcement of this policy lies with the IT Operations and Admin Team.
+- The Information Security and Internal Audit Team will conduct periodic audits to ensure compliance with the policy and procedures without prior notice.
+
+### 6. Exception(s)
+- Any exceptions to this policy require formal written approval from the Information Security Assurance Team.
+
+### 7. ISO Control Mapping(s)
+- The following ISO 27001:2022 controls are mapped to the Trianz Physical Access and Environmental Security Procedure:
+
+  - **7.0 Physical Controls**: 
+    - 7.0 Physical Controls
+    - 7.2 Physical entry
+    - 7.3 Securing offices, rooms, and facilities
+    - 7.4 Physical security monitoring
+    - 7.5 Protecting against physical and environmental threats
+    - 7.6 Working in secure areas
+    - 7.8 Equipment siting and protection
+    - 7.9 Security of assets off premises
+    - 7.11 Supporting utilities
+    - 7.12 Cabling security
+
+### Document Control
+- **Owner**: CISO  
+- **Release ID**: PACES-POL-0042  
+
+### Version History
+- **Version 0.01**: 
+  - **Date**: 2-Jun-17 
+  - **Author**: Roshni M 
+  - **Reviewer**: Kamadev Gane 
+  - **Approver**: [Not specified] 
+  - **Reason for Change**: Introduction/Change Description [Not specified]
+
+### 1. Document History
+
+1. **Initial Draft Creation**
+   - Date: 14-May-18
+   - Created by: Kamadev Ganesh A
+   - Status: Approved and Baselined
+
+2. **Annual Review**
+   - Date: 10-May-20
+   - Reviewed by: Balu Nair, Phani Krishna
+   - Status: Template changed
+
+3. **Approval for Version 2.0**
+   - Date: 14-May-20
+   - Reviewed by: Balu Nair, Phani Krishna
+   - Status: Approved and Baselined
+
+4. **Update for Version 2.1**
+   - Date: 21-Jan-21
+   - Reviewed by: Divya G, Phani Krishna
+   - Status: Updated with new information classification
+
+5. **Approval for Version 3.0**
+   - Date: 21-Jan-21
+   - Reviewed by: Divya G, Phani Krishna
+   - Status: Approved and Baselined
+
+6. **Review for Version 3.0**
+   - Date: 11-Jan-22
+   - Reviewed by: Divya G
+   - Status: Reviewed with no changes
+
+7. **Log Retention Period**
+   - Date: 11-Jan-23
+   - Reviewed by: Sanjana, Vijaya, Bal Srikanth, Shalini Kumari
+   - Status: For review
+   - Note: Log retention period is defined for three years; new template change.
+
+8. **Approval for Version 4.0**
+   - Date: 11-Jan-23
+   - Reviewed by: Sanjana, Srikanth Mantena
+   - Status: Approved and Baselined
+
+9. **Review for Version 4.0**
+   - Date: 28-Mar-23
+   - Reviewed by: Sanjana, Vijaya
+   - Status: Reviewed with no changes
+
+10. **ISO Check for Version 4.0**
+    - Date: 23-Feb-24
+    - Reviewed by: Shalini, Vijaya
+    - Status: Reviewed and ISO checked
+
+11. **Yearly Review for Version 4.1**
+    - Date: 06-May-25
+    - Reviewed by: Balu Nair, Vijaya
+    - Status: Migrated to a new template
+
+12. **Approval for Version 5.0**
+    - Date: 14-May-25
+    - Reviewed by: Balu Nair, Vijaya, Srikanth M
+    - Status: Approved and Baselined
+
+### 2. Contact Information
+- **Email:** infosec@trianz.com
+
+### 3. Copyright Notice
+- The content in this document is copyrighted. Unauthorized use may violate copyright, trademark, and other laws. This document may not be modified, reproduced, publicly displayed, performed, or distributed for any public or commercial purposes. The Trianz name and its products are subject to trademark and copyright protections.

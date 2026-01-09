@@ -1,0 +1,181 @@
+# INFORMATION SECURITY
+## POLICY REVIEW CADENCE
+
+### Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+### Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+---
+
+## 1. Introduction
+This document details the control objective-wise review cadence of Information Security Policies and Procedures.
+
+## 2. Policy Review Cadence Schedule
+
+### Control Objectives and Policies
+1. **Management Direction for Information Security**
+   - **Objective**: To provide management direction and support for information security in accordance with business requirements and relevant laws and regulations.
+   - **Policy**: Information Security Policy Apex Manual
+
+2. **Access Control**
+   - **Objective**: To establish a management framework to initiate and control the implementation and operation of information security within the organization.
+   - **Policies**:
+     - Responsibilities Policy
+     - Mobile Devices Policy
+
+3. **Employee Responsibilities**
+   - **Objective**: To ensure that employees and contractors understand their responsibilities and are suitable for the roles for which they are considered.
+   - **Policies**:
+     - Employment Verification Policy
+     - Professional Development Policy
+     - Disciplinary Action Policy
+
+4. **Review Triggers for Policy Cadence Review**
+   - **Annual Triggers**:
+     - External Audit
+     - Client Audit
+     - Client Visit feedback
+     - Management feedback
+     - Security Incidents
+     - BCP Triggers
+     - Learnings from VA findings
+   - **Bi-Annual Triggers**:
+     - Changes due to Technological and Environmental Factors
+     - Compliance with any new regulatory standards
+
+5. **Asset Management**
+   - **Objective**: To identify organizational assets and define appropriate protection responsibilities.
+   - **Policies**:
+     - Employee Exit Process Policy
+     - Acceptable Usage Policy
+     - Media Handling Policy
+     - Access Control Policy
+     - Password Policy
+
+6. **Access Control**
+   - **Objective**: To limit access to information and require authorized user access to prevent unauthorized information processing.
+   - **Policies**:
+     - Access Control Policy
+     - Password Policy
+
+7. **Cryptographic Controls**
+   - **Objective**: To ensure proper and effective use of cryptography to protect the confidentiality, authenticity, and/or integrity of information.
+   - **Policies**:
+     - Access Control Policy
+     - Password Policy
+
+8. **Physical Access Control and Environmental Security**
+   - **Objective**: To prevent damage and interference to the organization’s information and information processing facilities.
+   - **Policies**:
+     - Environmental Security Policy
+
+--- 
+
+This concludes the rewritten section of the policy document.
+
+### 12.3 Backup
+- **Objective**: To protect against loss of data and ensure correct operations.
+- **Frequency**: Annual compliance to any new regulatory standards.
+
+### 12.2 Protection
+- **Objective**: To ensure that information and processing facilities are protected against malware, damage, theft, or compromise of assets and information.
+- **Frequency**: Annual.
+
+### 12.4 Logging
+- **Objective**: To record events and monitor information security, generating evidence.
+  
+### 12.5 Control of Operational Software
+- **Objective**: To ensure the integrity of operational systems through logging and monitoring.
+  
+### 12.6 Technical Vulnerability Management
+- **Objective**: To prevent exploitation of technical vulnerabilities.
+- **Frequency**: Annual.
+
+### 12.7 Information Systems Audit Considerations
+- **Objective**: To minimize the impact of audit activities on operational systems.
+
+### 13.1 Network Security
+- **Objective**: To ensure the protection of information in networks and its supporting information processing facilities.
+
+### 14.1 Security Requirements of Information Systems
+- **Objective**: To ensure that information security is an integral part of information systems across the entire lifecycle.
+
+### 14.2 Secure SDLC
+- **Objective**: To ensure that information security is designed and implemented within the development lifecycle of information systems.
+
+### 14.3 Test Data Protection
+- **Objective**: To ensure the protection of data used for testing.
+
+### 15.1 Supplier Security
+- **Objective**: To ensure protection of systems which provide services over public networks.
+
+### 15.2 Supplier Relationships
+- **Objective**: To maintain an agreed level of information security and service delivery in line with supplier management agreements.
+
+### 16.1 Management of Information Security Incidents
+- **Objective**: To ensure a consistent and effective approach to the management of information security incidents, including communication on security events and improvements.
+
+### 17.1 Information Security Continuity
+- **Objective**: To embed information security continuity into the organization’s business continuity management systems.
+
+### 17.2 Redundancies
+- **Objective**: To ensure availability of information processing facilities.
+
+### 18.1 Compliance
+- **Objective**: To avoid breaches of legal, statutory, regulatory, or contractual obligations related to information security and any security requirements.
+
+### 18.2 Information Security Reviews
+
+**Objective:** To ensure that information security is implemented and operated in accordance with organizational policies and procedures.
+
+**Review Cadence:**
+- Reviews of the Information Security Policy and topic-specific policies shall occur bi-annually.
+
+**Triggers for Policy Review:**
+- Internal Audit
+- External Audit
+- Client Audit
+- Client Visit
+- Annual Feedback
+- Bi-Annual Feedback
+- Changes due to Technological and Environmental Factors
+- Compliance with any new regulatory standards
+- Security Incidents
+- Business Continuity Planning (BCP)
+- Learnings from Vulnerability Assessment findings
+
+### 3. ISO Control Mapping(s)
+
+**Category of Control: Organizational Controls**
+- **5.1 Policies for Information Security Control:** The Information Security Policy and topic-specific policies shall be defined, approved by management, published, communicated to, and acknowledged by relevant personnel and interested parties. These policies shall be reviewed at planned intervals and if significant changes occur.
+  
+- **5.36 Compliance with Policies, Rules, and Standards for Information Security Control:** The organization’s information security policy, topic-specific policies, rules, and standards shall be regularly reviewed.
+
+### Document Control
+
+- **Owner:** CISO
+- **Release ID:** ISPR_POL_059
+
+**Version History:**
+- **0.1** - Initial Draft (16-May-2020)
+- **1.00** - Modification to provide policy-wise review cadence (20-May-2020)
+- **1.1** - Modified as per the new template (1-Feb-2021)
+- **2.00** - Approved and Baselined (1-Feb-2021)
+- **2.1** - Modified as per the new template (8-Nov-2021)
+- **3.00** - Reviewed and no changes (3-Jan-2022)
+- **3.00** - Reviewed and no changes (07-Apr-2023)
+- **3.1** - Migrated to new template (12-May-2023)
+- **4.0** - Approved and Baselined (12-May-2023)
+- **5.0** - Mapped with ISO 27001, 2022 control 5.1 and 5.36 (15-Feb-2024)
+- **6.0** - Migrated to new template, Approved and Baselined (29-May-2025)
+
+### Contact Information
+- **Email:** infosec@trianz.com
+- **Phone:** [Not provided]
+
+**Copyright Notice:** The content in this document is copyrighted; any unauthorized use may violate copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz name and its products are subject to trademark and copyright protections.

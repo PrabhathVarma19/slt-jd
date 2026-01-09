@@ -1,0 +1,435 @@
+Supplier Security Policy
+
+
+
+
+TRIANZ INTERNAL            trianz.com
+                         Statement of Confidentiality
+
+  The information contained in this document is internal to Trianz. It shall not be
+  disclosed, duplicated, or used for any purpose other than that stated herein, in
+  whole or in part, without the express written consent of Trianz.
+
+
+
+
+                            Information Classification
+
+     ☐ Public
+
+     ☒ Internal
+
+     ☐ Confidential
+
+     ☐ Restricted
+
+
+
+
+TRIANZ INTERNAL                                                                  2
+                             Table of Contents
+1.   PURPOSE                                                      4
+
+2.   SCOPE                                                        4
+
+3.   POLICY STATEMENTS                                            4
+
+     3.1 Information security policy for supplier relationships   5
+
+     3.2 Addressing security within supplier agreements           5
+
+     3.3 Information and communication technology supply chain    7
+
+4.   EXCEPTIONS(S)                                                7
+
+5.   ISO CONTROL MAPPING(S)                                       8
+
+
+
+
+ TRIANZ INTERNAL                                                  3
+1. Purpose
+  This document specifies the requirements that must be met by suppliers in
+  handling, management, storage and processing of information belonging to
+  Trianz and Trianz clients.
+
+
+
+2. Scope
+  This policy is applicable to all third party, contract suppliers including cloud
+  service providers and vendors offering products and services to Trianz and its
+  clients.
+
+
+3. Policy Statements
+  Trianz Information security requirements for mitigating the risks associated with
+  supplier’s access to the organization’s assets are agreed with the supplier and
+  documented.
+
+  Trianz must identify and mandate information security controls to be addressed
+  by supplier, such as:
+
+     •   Identify and document the types of suppliers including cloud service
+         providers.
+     •   Rank the supplier based on the confidential & personal data being
+
+         exchanged and also the financial value.
+
+     •   Respective functional coordinators from projects and functions shall perform
+
+         vendor risk assessment for their critical vendors.
+
+     •   Information security and privacy risk assessment of all critical vendors shall
+
+         be conducted at least annually by respective functional coordinators.
+
+     •   Once the risk assessment form is obtained by the vendor, information
+
+         security team shall review and provide feedback to the respective functional
+
+         coordinator.
+
+     •   Respective functional coordinator shall coordinate with the vendor to close
+         the review feedback.
+
+
+ TRIANZ INTERNAL                                                                       4
+    •   Define the types of access that are allowed to suppliers. – incomplete
+
+    •   Minimum information access (least privilege) to the supplier.
+
+    •   Types of obligations to supplier to protect organization information.
+    •   Handling of incidents associated with suppliers.
+    •   Business continuity for the information provided by either parties.
+
+    •   Security requirements and controls documented in agreement signed by
+        both parties.
+
+
+  3.1 Information security policy for supplier relationships
+        • Information security requirements should be addressed to secure the
+
+          processes and procedures to ensure appropriate controls that may be
+
+          implemented either within the organization or by the suppliers, cloud
+
+          service providers and cloud service customers.
+
+        • Access control, especially for sensitive information must be accurately
+
+          defined, managed and monitored.
+
+        • Awareness training for both the organization’s staff and supplier staff that
+
+          handle or interact with sensitive data shall be addressed.
+
+        • Service transitions should be documented and include procedures for
+
+          secure data transfers and availability as the supplier relationship changes
+
+          during the course of time.
+
+
+
+  3.2 Addressing security within supplier agreements
+        All relevant information security requirements are established and agreed
+
+        with each supplier that may access, process, store, communicate, or provide
+
+        IT infrastructure components for, the Trianz data.
+
+
+
+
+TRIANZ INTERNAL                                                                      5
+       Supplier agreements should be established and documented to ensure there
+
+       is no misunderstanding regarding both parties’ obligations to fulfill relevant
+
+       security requirements. Supplier agreements should include clear and concise
+
+       information regarding:
+
+        • Trianz data classification requirements as it apply to the supplier.
+
+        • Definition of acceptable uses for the data handled by the supplier.
+
+        • Processes and procedures for monitoring compliance with the contract
+
+          requirements.
+
+        • A “right to audit” the supplier or regular access to external assessments, as
+
+          applicable   Conflict and defect resolution.
+
+        • Required screening, training or other obligations of the supplier’s staff.
+
+        • The use of sub-contractors to provide services and the extension of
+
+          security requirements to them. It is important to address the risk early in
+
+          the procurement phase of the relationships with external parties so that
+
+          roles, and responsibilities and expectations can be clearly defined in
+
+          agreements or contracts.
+
+        • Ensure Security patch compliance by the Suppliers / vendors and also
+
+          ensuring the verification to the Vendor Risk Assessment/ Periodic vendor
+
+          audits.
+
+       As a cloud service customer, information security roles and responsibilities
+
+       shall be defined related to the cloud services as below,
+
+        • Malware protection
+
+        • Backup
+
+        • Cryptographic controls
+
+        • Vulnerability management
+
+TRIANZ INTERNAL                                                                         6
+         • Incident management
+
+         • Security testing and auditing etc.
+
+         • Authentication and access control
+
+        As a cloud service provider, necessary information security measures need
+
+        to be taken and ensured that there is no disagreement between cloud
+
+        service provider and customer.
+
+
+
+   3.3 Information and communication technology supply chain
+         • Agreements with suppliers shall include requirements to address the
+
+           information security risks associated with information and
+
+           communications technology services and product supply chain.
+
+         • Trianz information and communication technology supply chain is
+
+           specifically related to their use of technology, both software and hardware.
+
+           – a statement not a command
+
+         • There shall be a process to identify a product or service that is critical, and
+
+           requires increased scrutiny.
+
+         • Trianz shall address the risks of a component or service becoming
+
+           unavailable or no longer supported.
+
+         • Trianz shall perform risk assessment of information processing and
+
+           storage vendors/suppliers at the time of their termination or service no
+
+           longer required.
+
+
+
+4. Exceptions(s)
+  There is no exception to this policy.
+
+
+
+
+ TRIANZ INTERNAL                                                                        7
+5. ISO Control Mapping(s)
+
+
+     Category of      ISO 27001:2022 Control               Document Name as
+     Control                                               per ISO 27001:2022
+     Organizational   5.19 Inform action security in       Supplier Security Policy
+     controls         supplier relationships Control
+                      Processes and procedures shall
+                      be defined and implemented to
+                      manage the information
+                      security risks associated with the
+                      use of supplier's products or
+                      services.
+     Organizational   5.20 Addressing information     Supplier Security Policy
+     controls         security within supplier
+                      agreements within supplier
+                      agreements Control Relevant
+                      information security
+                      requirements shall be
+                      established and agreed with
+                      each supplier based on the type
+                      of supplier relationship.
+     Organizational   5.21 Managing information       Supplier Security Policy
+     controls         security in the information and
+                      communication technology
+                      (JCT) supply chain Control
+                      Processes and procedures shall
+                      be associated defined and with
+                      implemented the ICT products
+                      to manage and the information
+                      security risks services supply
+                      chain.
+
+     Organizational   5.22 Monitoring, review and          Supplier Security Policy
+     controls         change management of
+                      supplier services Control The
+                      organization shall regularly
+                      monitor, review, evaluate and
+
+
+ TRIANZ INTERNAL                                                                      8
+                  manage change in supplier
+                  information security practices
+                  and service delivery.
+
+
+
+
+TRIANZ INTERNAL                                    9
+                                 Document Control
+
+Owner:            CISO                        Release         SSP-POL-0029
+                                              ID:
+
+
+
+For Trianz Process Improvement Group (TPIG) Purpose Only
+
+Version History
+
+
+Ver.                                                    Reason for Change
+
+No.                                                      Change        Description
+       Date       Author         Reviewer Approver
+
+0.01   28-        Sudharsana.c                          Initial Draft None
+       April- v
+       15
+1.00   19-        Sudharsana.c                          Reviewed       Approved
+       May- v                                           by CISO
+       15
+1.01   14-        Sriharsha                             Addition of Scope
+       Oct-
+                                                        Cloud          section is
+       16
+                                                        services       modified
+
+                                                        as scope
+                                                                       Modified
+                                                        of             Trianz Logo
+
+                                                        Certificatio
+                                                        n.
+2.00 07-          Balu Nair                             Approved       Baselined
+       Dec-                                             by CISO
+       16
+
+
+
+
+TRIANZ INTERNAL                                                               10
+2.1    07-        Karthik N and   Phani                       Review       Added cloud
+       Nov-       Balu Nair       Krishna                                  aspects      of
+       19                                                                  supplier
+                                                                           security
+3.0    22-        Karthik N                   Vivek           Approved     Baselined
+       Nov-                                   Sambasivam      for
+       19
+                                                              Release to
+
+                                                              Blue Book
+3.1    13-        Balu Nair       Phani                                    Migrated to
+       May-                       Krishna                                  the new
+       20                                                                  template
+4.0    14-        Balu Nair       Phani       Phani Krishna   For          Approved
+       May-                       Krishna                     Approval     and
+       20                                                                  Baselined
+
+
+4.1    18-        Karthik N       Phani                       For          Updated the
+       Jan-                       Krishna                     Review       information
+       21                                                                  classification
+                                                                           and format
+                                                                           level
+                                                                           changes
+5.0    18-        Karthik N       Phani       Phani Krishna   For          Approved
+       Jan-                       Krishna                     Approval     and
+       21
+                                                                           Baselined
+5.1    3-         Divya G         Karthik N   Sivaramakrish For            Modified as
+       Jan-                                   nan N           Review       per the new
+       22                                                                  template
+6.0    13-        Divya G         Karthik N   Sivaramakrish For            Approved
+       Jan-                                   nan N           Approval     and
+       2022                                                                Baselined
+
+
+TRIANZ INTERNAL                                                                    11
+6.1    15-        Divya G       Karthik N                 For review   Modified the
+       07-                                                             policy
+       2022                                                            statements.
+7.0    15-        Divya G       Karthik N   Sivaramakrish For          Approved
+       07-                                  nan N         Approval     and
+       2022                                                            baselined
+7.1    10-        Beniyel S,    Balu N                    For review   New
+       Mar-       Pallavi                                                 template
+       2023                                                               change
+                  Chakrabarty
+8.0    12-        Beniyel S     Balu N      Srikanth M    For          Approved
+       May-                                               Approval     and
+       2023                                                            Baselined
+8.1    11-        Beniyel S     Vijaya R    Srikanth M    For Review ISO Control
+       Feb-                                                            Mappings
+       2024                                                            Has been
+                                                                       added.
+
+9.0    23-        Beniyel S     Vijaya R    Srikanth M    For          Approved
+       Feb-                                               Approval     and
+       2024                                                            Baselined
+
+9.1    30-        Kruti         Vijaya R                  For Annual Migrated to a
+       Apr-                                               Review     new
+       25
+                                                                     Template
+                                                                     and Yearly
+                                                                     Review
+10.0   14-        Kruti         Vijaya R    Srikanth M    For          Approved
+       May-                                               Approval     and
+       25                                                              Baselined
+
+
+
+
+TRIANZ INTERNAL                                                                 12
+                                Contact Information
+                                               Name
+
+                                               Email
+
+                                              Phone
+
+
+
+
+                                  Thank You
+                                     infosec@trianz.com
+
+
+
+
+ The content in this document is copyrighted; any unauthorized use – in part or full – may violate the
+ copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly
+   displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz
+ name and its products are subject to trademark and copyright protections, regardless of how and
+                                          where referenced.
+
+
+TRIANZ INTERNAL                                                                                      13
+

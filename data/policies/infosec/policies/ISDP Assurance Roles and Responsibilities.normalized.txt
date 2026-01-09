@@ -1,0 +1,277 @@
+# ISDP Assurance Roles and Responsibilities
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. Introduction
+   - 1.1 Objectives
+2. Definitions/Abbreviations/Acronyms
+   - 2.1 Organization Chart - Information Security and Data Privacy Assurance
+3. Information Security and Data Privacy Assurance Roles, Responsibilities and Authorities
+   - 3.1 Chief Information Officer (CIO)
+   - 3.2 Chief Information Security Officer (CISO)
+   - 3.3 Information Security Group
+   - 3.4 Data Privacy Assurance Group
+   - 3.5 Audits
+   - 3.6 Business Continuity
+4. Outputs
+5. Process Assets
+6. Measurement
+7. Standards Addressed
+8. ISO Control Mapping(s)
+
+## 1. Introduction
+The ISDP Assurance Team enables Information Security and Data Privacy Assurance across Trianz and ensures compliance with various ISO Standards and Regulations.
+
+### 1.1 Objectives
+- Ensure that the organization’s Information Security & Privacy Management System is established, implemented, maintained, and improved.
+- Demonstrate the organization’s commitment to securing organizational and client information assets against vulnerabilities and threats.
+
+## 2. Definitions/Abbreviations/Acronyms
+- **ISMS**: Information Security Management System
+- **CIO**: Chief Information Officer
+- **CISO**: Chief Information Security Officer
+- **ISM**: Information Systems Manager
+- **DPR**: Data Privacy Representative
+- **IP**: Internet Protocol
+
+### 2.1 Organization Chart - Information Security and Data Privacy Assurance
+- Chief Information Security Officer / Chief Information Officer
+- Information Management
+- Security Systems
+- Audit Function
+- Business Continuity Management Systems
+- Privacy Information Management Systems
+
+## 3. Information Security and Data Privacy Assurance Roles, Responsibilities and Authorities
+
+### 3.1 Chief Information Officer (CIO)
+- Holds overall responsibility for Information/Cyber Security and Privacy for Trianz.
+- Sets clear vision, mission, and direction for the Information Security and Data Privacy Assurance Team.
+- Communicates the cybersecurity posture and any risks to stakeholders both internally and externally on a periodic basis.
+
+### 3.2 Chief Information Security Officer (CISO)
+- Ensures that ISMS policies and procedures are defined and implemented throughout the organization.
+- Updates information security policies and recommended practices in a timely manner to reflect current modifications.
+- Reviews the information security policy at least annually.
+- Provides information security awareness to all personnel in the organization, as applicable.
+- Identifies and approves security requirements for new information processing facilities.
+- Defines appropriate technical architecture for IT infrastructure security and monitors compliance.
+- Arranges necessary resources and skills for conducting periodic information security reviews.
+- Assesses and ensures disaster recovery and business continuity preparedness for IT systems.
+- Defines appropriate security controls for all applications in consultation with application owners.
+- Maintains risk assessment documentation and a list of identified vulnerabilities.
+- Reviews all critical incidents and their resolution timeframes.
+- Conducts ongoing risk assessments of Trianz Information Assets.
+- Carries out quarterly Vulnerability Assessment Tests of Trianz network and Cloud infrastructure.
+- Involves in-house or external security specialists as needed for specific information security requirements.
+- Decides on the applicability of disciplinary policy for reported security incidents.
+- Provides directives for ensuring organization-wide information security.
+- Delegates executive responsibilities for ensuring Information Security & Privacy.
+- Takes necessary measures to maintain the security of information systems.
+- Ensures staff is adequately trained to meet security and privacy requirements.
+
+### 3.2 Requirements of the Organization
+- Responsibilities will be defined, and procedures will be established to promptly detect, investigate, report, and resolve information security incidents.
+- Provisions will be in place for the continued protection of information systems resources within the organization.
+- Authority is granted to approve vendors for selecting appropriate information security products.
+- Root Cause Analysis (RCA) will be conducted for information security incidents and exceptions.
+- All Information Security Management System (ISMS) and Privacy Information Management System (PIMS) related policies and process documents require approval.
+
+### 3.3 Information Security Group
+The responsibilities of the Information Security Compliance Group and its team members include:
+- Ensuring that ISMS functions within their respective business groups comply with Trianz Information Security Policy and Data Privacy Policies and Procedures.
+- Maintaining data classification according to Trianz's classification labeling and handling standards.
+- Monitoring adherence to Trianz Information Security and Data Privacy Policies and Procedures.
+- Reporting any information security incidents and data privacy breaches to the Information Security Assurance Council and relevant supervisory authorities, such as reporting security breaches to CERT-in within 6 hours.
+- Coordinating with other members of the Information Security Assurance Council for the continuous implementation of ISMS and PIMS.
+- Being accountable on behalf of their respective groups for ISMS and PIMS.
+- Providing suggestions to the Information Security Assurance Council for enhancing information security and data privacy measures.
+- Ensuring that information security procedures relevant to business groups align with Trianz Information Security Policy and Data Privacy Policy.
+- Mapping contractual obligations to the Master Service Agreement (MSA) and providing walkthroughs to project teams.
+- Ensuring third-party risk and compliance with vendors.
+
+### 3.4 Data Privacy Assurance Group
+#### Procedure
+- Follow the Security Incident Response Procedure for containment, eradication, etc.
+
+#### Breach Notification Procedure
+- If Trianz is a Processor, the Data Privacy Representative (DPR) will notify the Controller of data privacy breaches within 48 hours of the breach and follow further actions as directed by the Controller (Client).
+- If Trianz is a Controller, the DPR/CISO will notify the Supervisory Authority of data privacy breaches within 72 hours of the incident.
+- If Trianz is a Controller, the DPR/CISO will notify CERT-In of data privacy breaches within 6 hours of identification, based on the incident's criticality.
+- The DPR/CISO will notify data subjects as advised by the Supervisory Authority and as required by data privacy regulations.
+
+#### Consent Procedure
+- Ensure that the consent procedure is followed for processing personal and sensitive data.
+
+#### Cross Border Data Transfer Procedure
+- Assist the project delivery/support team in ensuring compliance with cross-border data regulations.
+- Review data portability requests from all functions and maintain a central register.
+- Address data portability requests within 30 days.
+- If data cannot be shared within 30 days, update the data subject within that timeframe and document the communication.
+- Ensure data is shared within 90 days of the request from the data subject.
+
+#### Data Privacy Impact Assessment (DPIA) Procedure
+- Ensure the availability of Data Privacy Diagnostic or threshold assessments where applicable at project initiation.
+- Support the Project Manager and Delivery Manager in conducting DPIAs or PIAs where applicable.
+- Assist in identifying risks, prioritizing them, and developing risk mitigation plans, including tracking and documenting their effectiveness.
+
+#### Data Subject Rights Procedure
+- Conduct an annual review of Data Subjects' Rights Procedures for adequacy.
+- Perform a quarterly review of the Data Subject Rights log for compliance with regulations and implement corrective actions as needed.
+
+#### Withdrawal of Consent Procedure
+- Periodic review of privacy by design procedures by the Information Security Assurance Council and DPR.
+
+### 3.4 Modification/Withdrawal of Consent Forms and Status of Processing of Personal Data
+
+- Support the implementation of Privacy by Design and Default by identifying data protection requirements.
+- Incorporate applicable geography-related data protection requirements into internal processes.
+- Establish a procedure for Privacy Notices.
+
+### Retention of Records Procedure
+
+- Review the Retention of Records Procedure annually.
+
+### Information Security Governance Council
+
+- Conduct a yearly review of privacy concerns of data subjects and implement corrective actions.
+- Review the Privacy Notice and sample privacy consent notice for adequacy.
+
+### Audits & Compliance
+
+- Facilitate internal and external audits and compliance with respect to privacy/security assessments, certifications, or seals.
+- Support privacy/security assessments by clients.
+- Ensure project compliance with various security standards and regulations, such as ISO 27701 and SOC.
+- Ensure organizational compliance with applicable privacy laws, including GDPR and CCPA.
+- Document and present internal review and audit findings to leadership.
+
+### Policies and Procedures
+
+- Maintain and ensure compliance with the Data Privacy Management System (DPMS) / Privacy Information Management System (PIMS) for privacy policies, procedures, and templates.
+
+### Risk and Privacy Impact Assessment
+
+- Conduct Data Protection Impact Assessments (DPIA) to identify privacy risks and manage them for IT services projects and corporate functions.
+- Ensure third-party risk management for privacy/security by supporting the contract management process and conducting privacy risk assessments of vendors.
+- Assess internal applications for any privacy/security risks and facilitate privacy risk management.
+
+### Privacy Trainings
+
+- Roll out required amendments of Data Privacy Trainings to the organization.
+- Continually learn, share knowledge, and foster exchanges of skills.
+- Proactively identify opportunities to improve the quality of reporting and usability of information.
+- Implement applicable privacy laws for any amendments or new business geographies related to privacy laws.
+- Interact with internal and external security and privacy professionals as needed.
+
+### Maintenance of Personal Data Inventory
+
+- Maintain a Personal Data Inventory for corporate functions in the role of Data Controller.
+
+### 3.5 Audits
+
+- Ensure yearly planning for internal and external audits.
+- Conduct bi-annual internal audits and yearly external audits for Quality Management System, Information Security Management System, Privacy Information Management System, and Service Management System across Trianz locations in India, US-Virginia, and US-California.
+- Ensure end-to-end internal audit planning, implementation, auditor selection, training, and closure of audit findings.
+- Conduct internal and external audits for products.
+- Ensure SOC audits for projects and functions across Trianz.
+
+### 3.6 Business Continuity
+
+- Establish a Business Resilience and Crisis Management structure across all locations to facilitate local resumption of activities and deployment of recovery resources.
+- Design and establish a Business Continuity Management (BCM) framework for the company, including subsidiary operations, to guide business continuity efforts.
+- Conduct business impact analysis and BCP risk assessments for Trianz offices and critical functions, developing continuity plans accordingly.
+- Regularly test business continuity plans for key engagements and IT systems, reporting results to management.
+- Periodically review and update business continuity plans in response to changes.
+- Develop and provide staff training on BCM through awareness sessions, eLearning, and mailers.
+- Collaborate with delivery and corporate functions to develop and implement best practices for data and system protection and restoration in the event of natural disasters and security/privacy incidents.
+
+### 4. Outputs
+
+- Identify and map roles and responsibilities of the Information Security and Data Privacy Assurance Council.
+
+### 5. Process Assets
+
+- Document Name: ISMS Policy and Procedures
+- Document Name: PIMS Policy and Procedures
+
+### 6. Measurement
+
+- None
+
+### 7. Standards Addressed
+
+- ISO 27001:2022 Control
+  - A 6.1.1: Management commitment to information security
+  - A 6.1.2: Information security coordination
+  - A 6.1.3: Allocation of information security responsibilities
+
+### 8. ISO Control Mapping(s)
+
+- Category of Control: Technological Controls
+- ISO 27001:2022 Control: [Details not provided]
+
+### 5.2 Information Security Roles
+
+**ISDP Assurance Roles and Responsibilities**  
+- Information security roles and responsibilities shall be defined and allocated according to the organization's needs. 
+
+### Document Control
+- **Owner:** CISO  
+- **Release ID:** ISDPRR_PROC_0170  
+
+### Version History
+- **Version 0.1**  
+  - **Auth Reviewer:** Vijay Balu  
+  - **Date:** 14 Jul 2020  
+  - **Approver:** Siva N  
+  - **Reason for Change:** Initial Version  
+
+- **Version 1.0**  
+  - **Auth Reviewer:** Rajes Karthik  
+  - **Date:** 14 Jul 2020  
+  - **Approver:** Siva N  
+  - **Reason for Change:** Approved and Baselined  
+
+- **Version 1.1**  
+  - **Auth Reviewer:** Krutika Karthik  
+  - **Date:** 24 April 2023  
+  - **Approver:** Rama Madhavan  
+  - **Reason for Change:** Migrated to new template  
+
+- **Version 2.0**  
+  - **Auth Reviewer:** Shalin Vijay  
+  - **Date:** 12 May 2023  
+  - **Approver:** Srikanth  
+  - **Reason for Change:** Approved and Baselined  
+
+- **Version 2.1**  
+  - **Auth Reviewer:** Vijaya Balu  
+  - **Date:** 15 Feb 2024  
+  - **Approver:** Srikanth  
+  - **Reason for Change:** Mapped with new ISO 5.2 control  
+
+- **Version 3.0**  
+  - **Auth Reviewer:** Shalin Vijay  
+  - **Date:** 23 Feb 2024  
+  - **Approver:** Srikanth  
+  - **Reason for Change:** Migrated to new template and Yearly Review  
+
+- **Version 4.0**  
+  - **Auth Reviewer:** Vijaya Balu  
+  - **Date:** 14 May 2025  
+  - **Approver:** Srikanth  
+  - **Reason for Change:** Approved and Baselined  
+
+### Contact Information
+- **Email:** infosec@trianz.com  
+- **Phone:** [Not provided]  
+
+**Note:** The content in this document is copyrighted; any unauthorized use – in part or full – may violate copyright, trademark, and other laws. This document may not be modified, reproduced, publicly displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz name and its products are subject to trademark and copyright protections, regardless of how and where referenced.

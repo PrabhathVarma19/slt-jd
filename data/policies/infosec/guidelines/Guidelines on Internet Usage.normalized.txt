@@ -1,0 +1,135 @@
+# Guidelines on Internet Usage
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. Overview
+2. Scope
+3. Reference(s)
+4. Rules
+
+## 1. Overview
+Trianz utilizes the Internet as a critical resource for business processes. The company has developed systems and procedures to ensure that Internet usage is strictly for business purposes and conducted securely.
+
+## 2. Scope
+This policy establishes a framework to ensure all legitimate Internet use for the business needs of Trianz is met and that the utilization of organizational Internet resources is optimal.
+
+## 3. Reference(s)
+- IT Operations Process
+- Anti-virus Policy
+
+## 4. Rules
+
+### Internet Communication
+- All Internet communication must be logged, monitored, and audited periodically to prevent unauthorized access and ensure availability.
+
+### Access
+- All users are granted Internet access by default.
+- The IT Department is authorized to provide Internet access to Trianz users upon joining, via a Service Request from HR.
+- Access to specific sites is determined based on official work requirements.
+- Users must enter their username and password to access any site on the Internet.
+
+### Use of Non-Standard Internet Sources
+- Only authenticated users may access the Internet.
+- Dial-up access, PSTN, CDMA, GPRS, EDGE, GSM, or any other non-permissible means of Internet access are prohibited within Trianz office premises.
+- Users authorized by the CIO/IT Manager to access the Internet on handheld devices must not use these devices to access the Internet on any device connected to the Trianz network.
+
+### Use of Firewall, Proxy & URL-Filtering
+- All Internet activities must pass through the firewall, proxy, and URL-filtering gateway.
+
+### User Authentication & Authorization
+- All Internet access is governed by Trianz Domain access and authorization.
+
+### Gateway Level Virus Scan
+- Anti-virus policies apply to all Internet activities.
+
+### Internet Usage Code of Conduct
+- Personal use of Trianz information systems to access the Internet is discouraged.
+- Employees have no ownership or privacy rights to any information gathered via online resources.
+- Trianz reserves the right to monitor all online communications, including email and Internet access. All information stored on company computers belongs to Trianz, which may inspect such computers and information as necessary.
+- Accessing, downloading, or transmitting pornographic or obscene materials, or materials related to non-discrimination and harassment, including sexual harassment, is strictly prohibited.
+- Trianz is not responsible for material viewed or downloaded by users from the Internet. Users access information at their own risk.
+- Trianz reserves the right to record the locations of all Internet sites accessed by users and may share this information with any requesting party.
+- The company reserves the right to block access to any Internet resources deemed to have no legitimate company purpose or that could negatively impact company computing resources (e.g., web mail, chat).
+- Users must not engage in activities that noticeably affect system availability for others, such as online gaming or using web channels that frequently update.
+- Users are prohibited from downloading screensavers, wallpapers, songs, music, videos, etc. This is considered an offense.
+- Users may not upload any information to the Internet, except for official purposes and only after obtaining approval from the Head of Department or Director.
+- Trianz reserves the right to take disciplinary action against users who violate these rules.
+
+# Version History
+
+## 1.0 Version History
+- **Version Number:** 0.0
+  - **Author:** Jyotessh G
+  - **Reviewer:** Nair
+  - **Date:** 26-Feb-07
+  - **Reason for Change:** Draft; Baseline approved by Zulfikar Deen.
+
+- **Version Number:** 1.0
+  - **Author:** Jyotessh G
+  - **Reviewer:** Nair
+  - **Date:** 26-Feb-07
+  - **Reason for Change:** Approved Baseline; Changed title from Policy to Rules on Internet Usage; Removed Section on Enforcement.
+
+- **Version Number:** 2.0
+  - **Author:** Bharateesha BR
+  - **Reviewer:** Balu Nair
+  - **Date:** 24-Feb-09
+  - **Reason for Change:** New Asset Management Documentation Framework; Added Document Classification Scheme; Formatted entire document; Modified release ID in header and cover page.
+
+- **Version Number:** 3.0
+  - **Author:** Chakravarthi
+  - **Reviewer:** QMG
+  - **Date:** 30-Dec-10
+  - **Reason for Change:** Request for baseline review.
+
+- **Version Number:** 4.0
+  - **Author:** Srilakshmi
+  - **Reviewer:** Sudharsana
+  - **Date:** 24-May-11
+  - **Reason for Change:** Baselined; Replace Owner with Management Representative in place of CIO; Removed "Retention period is 3 Years" row.
+
+- **Version Number:** 5.0
+  - **Author:** Sudharsana
+  - **Reviewer:** QMG
+  - **Date:** 28-Sep-12
+  - **Reason for Change:** Formatted as per latest template format; Updated with new template.
+
+- **Version Number:** 6.0
+  - **Author:** Pranesh Kulkarni
+  - **Reviewer:** Gangadhar
+  - **Date:** 30-July-21
+  - **Reason for Change:** Reviewed with No Change.
+
+- **Version Number:** 7.0
+  - **Author:** Krutideeptha
+  - **Reviewer:** Karthik N
+  - **Date:** 03-June-24
+  - **Reason for Change:** Annual Review.
+
+- **Version Number:** 7.1
+  - **Author:** Vijaya
+  - **Reviewer:** Balu
+  - **Date:** 26-May-25
+  - **Reason for Change:** For Annual Review; Migrated to a new template.
+
+- **Version Number:** 8.0
+  - **Author:** Vijaya
+  - **Reviewer:** Balu
+  - **Date:** 29-May-25
+  - **Reason for Change:** Approved and Baselined.
+
+# Contact Information
+- **Name:** [Contact Name]
+- **Email:** infosec@trianz.com
+- **Phone:** [Contact Phone]
+
+# Copyright Notice
+The content in this document is copyrighted. Unauthorized use, in part or full, may violate copyright, trademark, and other laws. This document may not be modified, reproduced, publicly displayed, performed, distributed, or used for any public or commercial purposes. The Trianz name and its products are subject to trademark and copyright protections, regardless of how and where referenced.

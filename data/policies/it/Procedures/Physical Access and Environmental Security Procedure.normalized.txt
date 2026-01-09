@@ -1,0 +1,751 @@
+# Physical Access and Environmental Security Procedure
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public: ☐
+- Internal: ☒
+- Confidential: ☐
+- Restricted: ☐
+
+## Table of Contents
+1. INTRODUCTION
+2. OBJECTIVE(S)
+3. SCOPE
+4. ENTRY CRITERIA AND INPUTS
+5. PROCESS DESCRIPTION (PROCEDURE)
+   - 5.1 Zones Identification
+   - 5.2 Perimeter Security
+     - 5.2.1 Zone 1
+     - 5.2.2 Loading and Unloading Areas
+     - 5.2.3 Zone 2
+     - 5.2.4 Zone 3
+   - 5.3 Physical Access Controls
+     - 5.3.1 Access Cards
+     - 5.3.2 Identity Cards
+     - 5.3.3 Visitor Register
+     - 5.3.4 Access to Server Rooms
+     - 5.3.5 Protection Against Unauthorized Access
+     - 5.3.6 Data Center Personnel Training
+   - 5.4 Work Environment Regulation
+   - 5.5 Health and Safety Regulation
+   - 5.6 Emergency and Safety Services
+   - 5.7 Protection against external and environmental Threats
+     - 5.7.1 Fire protection
+     - 5.7.2 Lightning Protection
+     - 5.7.3 Telecommunication Failure
+     - 5.7.4 Water supply Failure
+     - 5.7.5 Power Failure
+     - 5.7.6 Emergency Lighting
+     - 5.7.7 Emergency Evacuation Procedure
+   - 5.8 Equipment protection
+   - 5.9 Equipment Maintenance
+   - 5.10 Control of Movement of Assets
+   - 5.11 Physical Access Monitoring and Control
+   - 5.12 Re-use, Disposal and Removal of Equipment
+6. EXIT CRITERIA AND OUTPUT
+7. ROLES AND RESPONSIBILITIES
+8. PREREQUISITES
+   - 8.1 Reference Policy, Process, Procedure, Templates, Checklist
+9. APPLICABLE STANDARDS
+10. EXCEPTIONS(S)
+11. REVIEW
+12. APPENDIX
+13. ISO CONTROL MAPPING(S)
+
+## 1. Introduction
+Physical access control and environmental security are essential for protecting Trianz’s information assets. The organization should implement multiple physical barriers around its business processes and information processing facilities. A well-designed security system should include at least four layers of physical access security:
+- Environmental design
+- Mechanical and electronic access control
+- Intrusion detection
+- Video monitoring
+
+The goal is to deter potential attackers by ensuring that the cost of an attack exceeds the value of the target.
+
+## 2. Objective(s)
+The objective of this framework is to establish physical access controls to protect Trianz’s information assets from unauthorized physical access, damage, and interference.
+
+## 3. Scope
+This framework applies to information assets and all users, including employees.
+
+**4. Entry Criteria and Inputs:**
+- Physical Access Control Monitoring
+- Utility Services Maintenance
+- Zone Identifications
+- Access Card and Identity Card Allocation
+
+**5. Process Description (Procedure)**
+
+**5.1 Zones Identification**
+Trianz has established the following zones based on the security category of information assets:
+
+- **Zone 1:** Areas open to the public, company employees, third-party service providers, and contractors. This includes:
+  - Receptions
+  - Discussion rooms
+  - Cafeteria
+  - Lounge
+  - Company premises
+
+- **Zone 2:** Areas not open to the public but accessible to company staff, third-party service providers, and contractors. This includes:
+  - Company working areas
+  - Conference rooms
+  - Employee cabins
+  - Pantry
+  - Boardrooms
+  - Training rooms
+
+- **Zone 3:** Areas accessible only to those with authorized access, applicable to all individuals regardless of their affiliation. This includes:
+  - Server rooms
+  - Equipment rooms
+  - File cabinets
+  - AC control rooms
+  - UPS rooms
+
+Each zone will have a visible board displaying the zone number at the entry point.
+
+**5.2 Perimeter Security**
+
+**5.2.1 Zone 1: Office Building**
+- The office building will have security guards present 24/7 at various entry points.
+- Employees must accompany visitors and register their names and employee IDs at the office building reception.
+- The reception area will have security guards monitoring the movement of people and materials 24/7.
+- No confidential or internal use information will be displayed in the reception area.
+
+**5.2.2 Loading and Unloading Areas**
+- Access to loading and unloading areas is restricted to authorized personnel, including employees, third-party service providers, and contractors.
+- Visitors are not permitted in loading and unloading areas under any circumstances.
+- Loading and unloading areas will be designed to prevent delivery personnel from accessing other parts of the building.
+- The main access should not be used for moving heavy equipment or cargo; loading bay facilities should be utilized where available.
+- Hydrogen sensors will be deployed in areas where lead-acid batteries are used.
+- Discussion rooms will be designed to prevent visitors from accessing non-public information and will be located as far from Zone 2 and Zone 3 as possible.
+- No confidential or internal use information will be displayed in discussion rooms.
+
+**5.2.3 Zone 2: Cabins**
+- Cabin walls will be soundproofed to ensure confidentiality.
+- Information processing equipment will be arranged to prevent unauthorized disclosure of information.
+- Tinted glasses will be used to limit visibility of confidential information.
+- Cabins must be locked when unattended to prevent unauthorized physical access.
+
+**Work Areas, Conference Rooms, Training Rooms, Boardrooms**
+- Visitors are not allowed in working areas, conference rooms, or training rooms unless there is a business need, and they must be accompanied by a concerned employee.
+- Workstations will be designed to prevent the disclosure of confidential information.
+- Conference rooms, training rooms, and boardrooms will have locker facilities to prevent theft of equipment when unattended.
+
+### 5.2.3 Conference and Training Rooms
+- No display of confidential information is allowed in conference and training rooms and working areas.
+- Conference and training room walls will be soundproofed as much as possible, and tinted glasses will be used to prevent unauthorized access to confidential information.
+- Display boards and projectors will be positioned to prevent the disclosure of confidential information to unauthorized individuals.
+- Records of trainings and meetings held in training and conference rooms will be maintained.
+
+### 5.2.4 Zone 3: Server Rooms
+- Server rooms will be positioned and designed to restrict viewing angles, reducing the risk of unauthorized viewing of information.
+- Server rooms will be secured to prevent theft of equipment.
+- Access to server rooms will be logged and registered.
+- Server rooms will have tinted glasses to prevent unauthorized leakage of information.
+- Server room doors will be locked when unattended to prevent unauthorized physical access.
+- All exterior-facing windows and doors will have forced open and breakage alarms installed.
+- Zone 3 areas on the ground floor and areas susceptible to flooding will be equipped with fluid or water sensors.
+
+### 5.3 Physical Access Controls
+
+#### 5.3.1 Access Cards
+- Physical access will be controlled by an electronic access control system.
+- Access will be granted based on the verification of the following information at entry points:
+  - Access card number
+  - Employee name
+  - Employee ID
+- Access cards will only be issued to employees and contractors.
+
+#### 5.3.2 Identity Cards
+- The following types of identity cards will be issued:
+  - Employee Identity Card: For employees.
+  - Temporary Identity Card: For employees, contractors, and third-party service providers (refer to Admin process for details).
+  - Visitor Card: For visitors.
+- Physical access will require both access and identity cards to be displayed.
+- Access during non-working hours:
+  - Employees, contractors, or third-party service providers needing access beyond 2100 hours must sign a "Late Exit" register with the security guard at reception.
+- Access during non-working days:
+  - Access will be restricted to employees and contractors only. A separate register will be maintained for all employees and contractors visiting during off-working hours (including weekends and holidays), to be filled out by the designated individual.
+- Access rights for third-party service providers will be granted based on business needs and relevant authority approvals.
+- Refer to the Admin process at Trianz QMS for more information on the issuance of identity and access cards.
+
+#### 5.3.3 Visitor Register
+- A visitor register will be maintained to track the movement of visitors, including third-party service providers.
+
+#### 5.3.4 Access to Server Rooms
+- Access to server rooms will be restricted to authorized individuals and managed through the access control system.
+- An access register will be maintained to track entries to server rooms.
+
+#### 5.3.5 Protection Against Unauthorized Access
+- The Admin team will regularly monitor access points (doors, gates, and entryways) using security cameras, physical security systems, access logs, and security alerts from all system logs.
+- The Admin team will conduct physical access reviews of access logs.
+
+### 5.3.4 Security Procedures
+
+1. In case of any discrepancy in access logs, the Admin team will review CCTV logs.
+2. Trianz shall implement a security alarm system wherever required.
+3. Security personnel will be trained to:
+   - Recognize and identify suspicious or unauthorized individuals attempting to gain physical access.
+   - Maintain a visitor register and vendor register.
+   - Allow vendors and visitors only after verifying appropriate approval from the respective business or department heads and confirming government-issued identification (ID), such as an official identity document, driver's license, or passport.
+4. Security personnel must update all required details in the visitor and vendor register.
+5. In cases of unauthorized entry or breach, security personnel must:
+   - Respond immediately by approaching the intruder and verifying their identity.
+   - Take necessary actions to secure the area.
+6. If unauthorized entry is confirmed or if the situation escalates, the security supervisor should be notified to assess the severity and decide on further actions.
+7. Relevant parties, such as facility management and law enforcement, should be notified if required. Incident reports must be prepared for documentation and legal purposes.
+8. If necessary, unauthorized individuals must be physically restrained and escorted out of the premises in a safe and controlled manner.
+9. Evidence, including security camera footage and eyewitness statements, must be gathered to support investigations or legal actions.
+10. Access points, entry procedures, and security measures should be reviewed to identify weaknesses and implement enhancements to prevent future unauthorized access.
+11. Security alerts must be investigated and analyzed to distinguish between false positives and actual unauthorized access attempts.
+
+### 5.3.5 Data Center Personnel Training
+
+1. Professional Development and the IS team shall develop and conduct training and awareness programs for personnel who have access to the data center.
+2. Training materials must be reviewed and approved by Professional Development in conjunction with the IS team.
+3. Records shall be kept and tracked to confirm that personnel with access to the data center have completed training on a timely basis, and a test shall be conducted if required.
+4. Personnel must maintain a constant state of vigilance by regularly patrolling and monitoring access points to deter unauthorized access attempts.
+5. Records of all unauthorized physical access incidents, actions taken, and outcomes must be maintained for future reference and compliance purposes.
+6. A post-incident review must be conducted to identify lessons learned and areas for improvement in the physical access security process.
+
+### 5.4 Work Environment Regulation
+
+1. Personnel in zone 2 and zone 3 should only be aware of activities within that area on a need-to-know basis.
+2. Unsupervised working in zone 2 and 3 will be avoided for safety reasons and to prevent opportunities for malicious activities.
+3. Vacant areas in zone 2 and zone 3 will be physically locked and periodically checked wherever possible.
+4. Confidential information will not be kept in any form on work desks unless absolutely required to prevent leakage of information.
+5. All employees, contractors, third-party service providers, and visitors must wear and display their identity cards at all times while present in zone 2 and 3.
+6. No employee of Trianz is allowed to bring media such as floppies, CDs, DVDs, USB drives, tapes, portable hard disks, personal laptops, or video cameras to Trianz premises without written permission from the head of Administration. 
+7. Any media brought by employees can be deposited at reception. Media taken inside without declaration will be considered a serious policy violation.
+
+### 5.5 Health and Safety Regulation
+- Smoking is strictly prohibited in all zones except in designated smoking areas within the office premises.
+- Combustible and hazardous materials are strictly prohibited. If there is a business need, such materials must be stored at a safe distance from Zones 2 and 3.
+- Beverages, food, and other eatables are prohibited in Zone 3. Zone 2 is also subject to this restriction, except in cases of absolute business need, such as client visits, board meetings, and pantry use.
+- Equipment that emits electromagnetic radiation is strictly prohibited.
+- The bursting of firecrackers is strictly prohibited in all zones unless authorized.
+- Medical kits will be kept at the reception and with the admin team.
+
+### 5.6 Emergency and Safety Services
+- The emergency and safety services contact list will be maintained by the admin department and displayed at selected locations on the floor. This list will be reviewed and updated regularly by interacting with relevant authorities.
+
+### 5.7 Protection against External and Environmental Threats
+- The admin team will identify and document critical equipment and their external and environmental threats, such as flooding, earthquakes, and damage from wind, dust, and other natural disasters. They will assess the potential impact of these hazards.
+- Trianz will conduct an adequate risk assessment for the probability of external and environmental threats before selecting a location.
+- In the event of external and environmental threat scenarios, the admin team will implement protective measures, including:
+  - Elevating equipment above flood-prone areas.
+  - Securing glass windows and doors against wind damage using toughened glass.
+  - Sealing against dust infiltration.
+- The admin team will install surge protectors and backup power sources to safeguard against electrical issues during natural disasters.
+- An emergency response plan will be maintained and monitored by the admin team as applicable.
+
+#### 5.7.1 Fire Protection
+- Smoke detectors will be installed above the false ceilings on each floor. Manual call points will be provided on each floor to raise alarms manually in emergencies or disasters.
+- Fire extinguishers will be available on each floor and within the office premises. Different types of fire extinguishers will be used for different situations; for example, gas-based fire extinguishers will be used in server rooms.
+- All fire exits will be prominently marked for easy visibility. Keys to the fire exit doors will be kept in a small glass box beside the fire exit, which can be broken to retrieve the keys in emergencies. Duplicate keys for the fire exit will be available upon request from the Head of Administration. The emergency exit will be kept locked at all other times.
+- A periodic check will be conducted to ensure the proper functioning of fire safety equipment within the specified expiry time.
+
+### 5.7.1 Fire Safety
+- Fire drills will be conducted once a year to ensure employees are aware of the steps to take in case of a fire.
+- Smoke detectors will be checked for proper functioning during fire drills.
+- An Emergency Power Off switch will be provided to prevent the spread of fire to multiple floors.
+
+### 5.7.2 Lightning Protection
+- The building's power supply and distribution are managed through MCBs mounted in a metal box.
+- All power points are safely grounded to earthing pits using flat long copper plates inserted in the building wall.
+
+### 5.7.3 Telecommunication Failure
+- In the event of PBX communication failure, an alternate phone will be provided to Security Personnel.
+
+### 5.7.4 Water Supply Failure
+- The office building owner will ensure that a backup water supply is available in case of primary supply failure.
+
+### 5.7.5 Power Failure
+- Information processing equipment will be protected from power failures and electrical anomalies, including voltage surges and spikes.
+- All computers and related electronic devices will be connected to a power supply from a UPS.
+- UPS will be regularly checked to ensure adequate power output, and a maintenance plan will include periodic tests and servicing.
+- Backup generators will be activated in case of UPS failure.
+- Critical areas (e.g., Data centers, hub rooms, server rooms) will have power redundancy, including multiple power feeds, standby UPS, and DG sets.
+- The Admin team and Security Personnel will monitor the temperature and humidity of the Data Center/Hub/Switch Room, maintaining levels between 18°C to 24°C. In case of overheating, Security Personnel will inform the Admin team for necessary actions.
+- Temperature and humidity readings will be recorded every two hours and maintained for 3 to 6 months, after which they will be disposed of by shredding.
+- The Admin team will monitor and refill fire extinguishers annually, with prior approval from the head of the Admin team and a gate pass provided for the refill.
+- Periodic testing of utility services will be performed as per the Master Service Agreement, with logs maintained and reviewed by the Building Management/Admin team.
+- The Building Management and Admin team will monitor utility services to identify areas for improvement, update contact information, and adjust response plans as necessary.
+
+### 5.7.6 Emergency Lighting
+- Emergency lighting facilities are available at specific locations on the floor.
+
+### 5.7.7 Emergency Evacuation Procedure
+- The objective of emergency evacuation procedures is to familiarize all members of the Emergency Response Team (ERT) with the procedures in place to facilitate safe, orderly, and timely evacuation when necessary.
+
+### 7. Emergency Procedures
+
+#### 7.1 Emergency Exits
+- Emergency exits are located closer to the staircase entries.
+
+#### 7.2 Emergency Lighting
+- Emergency lighting is provided at selected locations on the floor to facilitate safe evacuation during an emergency.
+
+#### 7.3 Air Conditioning
+- The air-conditioning system will automatically shut down upon the declaration of an emergency.
+
+#### 7.4 Fire Alarms
+- Fire alarms are installed on each floor to assist in identifying fire incidents.
+
+#### 7.5 Fire Extinguishers
+- Fire extinguishers are strategically placed at selected locations based on the proximity to critical information processing facilities.
+
+#### 7.6 Emergency Response Team (ERT)
+- The ERT consists of an ERT Lead, a deputy, and several appointed members for each section.
+- The ERT Lead reports to the Building ERT head regarding the implementation of the building evacuation plan, coordination of evacuations, and maintenance of fire safety equipment.
+- The standard working day at Trianz is 9 hours, from 8:00 a.m. to 6:00 p.m., Monday to Friday. Outside these hours, the duty or security officer assumes ERT responsibilities.
+
+#### 7.7 ERT Lead Responsibilities
+- Maintain an up-to-date list of ERT members.
+- Nominate a Deputy Building Warden to assume duties in the ERT Lead's absence.
+- Arrange and coordinate evacuation exercises.
+- Log performance and issues encountered during exercises.
+- Conduct debriefings after practice evacuations.
+- Strive to improve the effectiveness of the evacuation plan.
+- Keep an updated list of mobility-impaired persons' names and workplace locations.
+- Upon hearing the fire alarm or being advised of an emergency, the ERT Lead will:
+  - Ensure relevant emergency services are called.
+  - Proceed to the fire indicator panel.
+  - Inform the affected section using the PA system or a runner and initiate a search or designated actions.
+  - Reassure staff/students that the alarm/emergency is being investigated.
+
+- If a fire or emergency is confirmed, the ERT Lead will:
+  - Evacuate the section immediately (if not already in progress).
+  - Inform the building ERT head/security of the situation.
+  - Consider the evacuation of the entire premises.
+  - Meet emergency services upon arrival and inform them of the situation.
+  - If no fire/emergency is found, the ERT head will inform staff of the false alarm.
+
+#### 7.8 Equipment
+- Essential equipment includes:
+  - Good quality torch
+  - Emergency procedures documentation
+  - Floor plan identifying:
+    - Different sections of the floor
+    - Section ERT members
+    - Location of fire-fighting equipment
+    - Location of exits
+    - Fire indicator panel
+    - List of all on-duty staff, where applicable
+
+#### 7.9 Deputy ERT Lead Responsibilities
+- The Deputy ERT Lead will assume the duties of the ERT Lead in their absence.
+- The ERT Lead and Deputy ERT Lead will not be simultaneously absent from the building.
+- The Deputy ERT Lead will have the same equipment as the ERT Lead.
+
+### 8. ERT Members Responsibilities
+
+- ERT members are appointed to direct and control emergency procedures as directed by the ERT Lead.
+- ERT members have the authority to evacuate their area of responsibility if they perceive any danger to staff, students, or visitors.
+
+#### 8.1 Actions Upon Activation of Fire Alarm or Emergency
+
+- Upon activation of the fire alarm or emergency actions, ERT members may receive instructions from the ERT Lead. Upon receiving instructions, they will:
+  - Direct section staff to reassure others while preparing to evacuate.
+  - Initiate a search or emergency procedures for their section.
+
+#### 8.2 If a Fire or Emergency Situation is Found
+
+- The ERT member will:
+  - Inform the ERT Lead.
+  - Evacuate the section, directing people to the fire stairs and preventing the use of lifts.
+  - Attempt to extinguish the fire or control the emergency situation, considering their own safety.
+
+#### 8.3 If the Fire or Emergency Cannot Be Extinguished or Controlled
+
+- The ERT member will:
+  - Inform the ERT Lead.
+  - Evacuate all section staff.
+  - Isolate the incident by closing all possible doors.
+  - Report to the ERT Lead and act on any instructions.
+  - Prevent anyone from entering the fire-affected area.
+
+#### 8.4 If No Fire or Emergency is Found
+
+- The ERT member will:
+  - Inform the ERT Lead.
+  - Reassure staff that the situation is under control and instruct them to resume normal operations.
+
+#### 8.5 Familiarization and Preparedness
+
+- ERT members must familiarize themselves with the area they represent, noting all means of escape and being familiar with the operation of installed firefighting equipment.
+- Responsibilities include:
+  - Conducting staff roll calls at assembly points and reporting any absences to the ERT Lead (if applicable).
+  - Raising the alarm by operating manual break glass alarms or contacting the ERT Lead.
+  - Guiding occupants down the fire stairs to the assembly area when directed.
+  - Assisting mobility-impaired individuals.
+  - Operating first attack firefighting equipment (e.g., fire extinguishers and hose reels) or instigating emergency procedures.
+  - Searching a floor or area to ensure no one has been left behind, including checking toilets.
+  - Searching for suspicious articles.
+  - Ensuring lifts are not used during evacuation.
+
+### 8.6 Equipment
+
+- ERT members should have the following equipment:
+  - A good quality torch.
+  - A floor plan of the entire building identifying:
+    - Section exits.
+    - Section firefighting equipment.
+    - Section evacuation assembly areas.
+    - A list of all on-duty staff and emergency contacts, if applicable.
+
+### 8.7 During Evacuation
+
+- The ERT Lead and members will be prepared to:
+  - Wait until the fire stairs are clear before entering. If congested, wait a moment and check again or use an alternative exit.
+  - Lead occupants down the stairs, preventing running or lagging behind.
+  - Provide assistance to any occupant who falls or trips.
+  - Allow room for Emergency Services Personnel who may also be using the fire stairs.
+  - Prevent any person from re-entering the floor or building unless authorized by the ERT Lead or Officer-in-Charge of the Emergency Services.
+  - Permit only non-bulky personal items, such as purses.
+
+### 5.7 Evacuation Procedures
+
+When an evacuation of a section is initiated by either an ERT lead or ERT member, the following procedures must be followed:
+
+- Usher staff and visitors to the nearest exit as quickly and calmly as possible.
+- Check toilets and other areas for stragglers.
+- Report to the ERT lead and act on any instructions given.
+- All staff and visitors should remain in the assembly area until the situation is stabilized.
+- ERT members conducting searches of toilets and other areas must report their findings to the ERT lead, including the status of the area (clear or otherwise) and the locations of mobility-impaired persons.
+- Under no circumstances should staff members be permitted to re-enter the building until advised it is safe to do so.
+- Arrange assistance for handicapped persons.
+- Secure cash and valuable documents if it is safe to do so.
+- Evacuate with a minimum of personal belongings.
+- Where possible, close doors and windows upon departure.
+- Prevention of panic is of paramount importance.
+- Obey directions given by emergency services personnel.
+- Keep all exits and entrances clear at all times.
+- Do not allow anyone except emergency services personnel to re-enter the building while the alarm is sounding.
+- If a person refuses to comply with directions given by an ERT lead or member:
+  - Ensure the person has been clearly advised they are required to evacuate due to an emergency situation.
+  - Notify the ERT lead, who will inform the Officer-in-Charge of the Emergency Service, who may take appropriate action under law to remove the person.
+
+### 5.8 Equipment Protection
+
+#### Electrical and Electronic Equipment
+- This includes projectors, televisions, photocopiers, UPS, and air conditioners.
+  - Access to air conditioners in server rooms is restricted to admin, IT, and maintenance engineers.
+  - Access to air conditioners in Zone 2 is restricted to authorized persons.
+  - All equipment is provided with fire, peril, and theft insurance.
+
+#### Communication Equipment
+- This includes telephones, Blackberries, VOIP phones, video conferencing equipment, and fax machines.
+  - Equipment will be located in appropriate areas, such as keeping the fax machine under administration control to avoid misuse and reduce environmental risks.
+  - Shared resources like photocopiers and fax machines will be restricted to Zone 2 only.
+  - Fax machines will be password protected to prevent misuse.
+  - The fax machine for general use will be kept under the custody of administration at the reception, with a log maintained in a separate register where every employee using the fax machine must make an entry specifying details of the fax sent. Personal use of the fax machine is not allowed.
+  - All equipment is provided with fire, peril, and theft insurance.
+  - Laptops and Blackberries are provided with additional insurance for accidental loss and special perils.
+
+#### Fire Safety Equipment
+- Fire safety equipment is kept under the custody of the ERT.
+
+#### Cabling Security for Electrical & Telephone
+- All network connection points will be marked and identified.
+- Measures will be taken to protect network cabling within Trianz premises or locations where Trianz equipment is located from unauthorized interception or damage, such as using conduit or avoiding routes through public areas.
+- All cables, including power and telecommunication cables, will be protected from damage or unauthorized interception.
+
+### 5.8 Cabling Infrastructure
+
+- Cables must be laid beneath walls, floors, or other obstructions to avoid exposure, except at critical terminal points.
+- Within Company premises, power and telecommunications lines should be underground when possible or protected adequately.
+- Power cables must be segregated from communication cables to prevent interference.
+- The Admin team is responsible for maintaining the cabling infrastructure diagram or obtaining it from the building management team and maintaining it as needed.
+- The Admin team must establish a schedule for regular cable inspection and maintenance, which includes:
+  - Checking for signs of wear, damage, or exposure.
+  - Promptly addressing any issues.
+  - Replacing damaged cables or connectors as necessary.
+- If security is a concern, the Admin team should consider additional measures such as:
+  - Cable locks
+  - Tamper-evident seals
+  - Physical access controls to prevent unauthorized access to cabling infrastructure.
+- The Admin team must maintain detailed records of:
+  - Cable installations
+  - Maintenance activities
+  - Any changes made to the cabling infrastructure for future reference and troubleshooting.
+- The Admin team, in collaboration with the Building Management team, must conduct periodic risk assessments on cabling security and security audits to evaluate the effectiveness of cabling security measures. These assessments and audits should be performed annually or as needed. Trianz will adjust practices and materials as necessary to address evolving threats or changing environmental conditions.
+
+### 5.9 Information Processing Equipment
+
+- All information processing equipment, including desktops, laptops, servers, routers, and switches, must have a log-on process to prevent unauthorized physical access.
+- An inventory of information processing equipment must be maintained and reviewed monthly.
+- Laptop allotment letters will be issued to laptop users, who will be held accountable for the safety of their laptops.
+- Environmental requirements for critical areas (work areas, server rooms, data centers, hub rooms, etc.) must maintain temperature and humidity within the acceptable range of 18 to 22 °C and below 65%.
+
+### Equipment Maintenance
+
+- For Electrical and Electronic Equipment, Communication Equipment, and Fire Safety Equipment, refer to the Admin process at \\thehub\trianzqms for the required procedures.
+- For Information Processing Equipment:
+  - The IT Department will maintain a list of all critical IT hardware assets along with their maintenance schedules as prescribed by vendors/IT.
+  - Equipment must be maintained according to the supplier’s recommended service intervals and specifications.
+  - Only authorized maintenance personnel are allowed to carry out repairs and service equipment.
+  - Records must be kept of all suspected or actual faults and all preventive and corrective maintenance.
+  - Maintenance personnel from vendors will be adequately monitored during in-house maintenance operations.
+  - If an IT asset needs to be sent out for maintenance, documentation must be prepared to ensure traceability and accountability. Adequate packing and handling instructions must be provided to the transporter to ensure physical safety during transit.
+
+### 5.10 Control of Movement of Assets
+
+- Trianz is bound by STPI regulations and will provide proper protection for equipment and information taken outside its premises.
+- The following rules apply to the movement of assets:
+  - The manufacturer’s instructions on equipment protection must be adhered to.
+  - Portable computers must be carried as hand luggage.
+  - Magnetic media must be protected from exposure to strong magnetic radiation and heat.
+  - A gate pass must be initiated by the concerned person for any material going outside, specifying details of the material. This pass must be approved by the administration department.
+    - The gate pass must be completely filled and indicate whether the item is returnable or non-returnable.
+    - If the item is returnable, the tentative date of return must be indicated, and the item will be tracked for return by security.
+    - If the item is not returned by the tentative date, security will inform Administration for follow-up.
+    - Exceptions apply to laptops issued by Trianz to employees for work-related usage, both within and outside Trianz premises.
+- Items belonging to Trianz that are brought inside the office premises require prior approval from Administration.
+  - Security will maintain an inward register to track the status of inward items.
+  - If a laptop is brought inside by a third party, the following information must be recorded:
+    - Name of the person
+    - Contact address
+    - Time in
+    - Contact number
+    - Person to meet
+    - Purpose of meeting
+    - Serial number and manufacturer of the laptop
+
+### 5.11 Physical Access Monitoring and Control
+
+- CCTVs will be installed at all receptions, server rooms, and entry/exit points to monitor and track asset movement and prevent tailgating.
+- The Physical Access Control System will be regularly monitored to detect any intrusions.
+- Fire alarms will be installed in zone 2 and zone 3 to detect and signal fire.
+- CCTV footage will be archived for a minimum of 90 days.
+- Physical access logs will be stored for a minimum of 365 days.
+
+### 5.12 Re-use, Disposal and Removal of Equipment
+
+- For the re-use of equipment:
+  - All items containing storage media must be checked for confidential information, which must be backed up, removed, or securely overwritten based on business requirements.
+  - All licensed software installed on the equipment must be removed if not required during re-use.
+  - A record of activities performed on the equipment before issuing it for re-use must be maintained.
+  - Care must be taken to ensure no compromise of security while re-using the equipment.
+
+### 6. Exit Criteria and Output
+
+- Identification and resolution of physical access security breaches.
+- Data Centre personnel awareness training.
+- Temperature monitoring.
+- Utility service maintenance.
+
+### 7. Roles and Responsibilities
+
+- **Admin Team**: Responsibilities to be defined.
+
+### 7. Responsibilities
+
+**7.1 Building Management Team**
+- Responsible for reviewing, implementing, and managing:
+  - Cabling security
+  - UPS (Uninterruptible Power Supply)
+  - Server room security
+  - Fire equipment
+- Coordinates and guides security personnel regarding physical and environmental security.
+- Performs physical access reviews on a frequent basis.
+
+**7.2 Security Personnel**
+- Responsible for maintaining and monitoring physical and environmental security.
+- Maintains registers, such as visitor and vendor logs.
+
+**7.3 Professional Development / IS Team**
+- In collaboration with the IS team, responsible for:
+  - Creating, reviewing, and approving data centre personnel training for the respective individuals.
+
+### 8. Prerequisites
+
+**8.1 Reference Policy, Process, Procedure, Templates, Checklist Document Names**
+- User Access Management Procedure
+- Media Handling Policy
+- Physical Access Control and Environmental Security Policy
+
+### 9. Applicable Standards
+- ISO/IEC 27001:2022
+- CSA Cloud Controls Matrix v4.0.8
+
+### 10. Exceptions
+- There are no exceptions to this policy.
+
+### 11. Review
+- This procedure shall be reviewed and approved once a year or at the time of any major change in the existing environment, whichever occurs first.
+
+### 12. Appendix
+- None
+
+### 13. ISO Control Mapping(s)
+
+**Category of Control: Physical Controls**
+- **7.0 Physical Controls**: Refer to the "Physical Access and Environmental Security Procedure" for the following controls:
+  - 7.0 Physical Controls
+  - 7.2 Physical entry
+  - 7.3 Securing offices, rooms, and facilities
+  - 7.4 Physical security monitoring
+  - 7.5 Protecting against physical and environmental threats
+  - 7.6 Working in secure areas
+  - 7.8 Equipment siting and protection
+  - 7.9 Security of assets off premises
+  - 7.11 Supporting utilities
+  - 7.12 Cabling security
+
+### Document Control
+- **Owner**: CISO
+- **Release ID**: PACES_PROC_0172
+
+### For Trianz Process Improvement Group (TPIG) Purpose Only
+
+#### Version History
+
+1. **Version 0.00**
+   - **Date:** 26-Feb-07
+   - **Author:** Jyotessh G Nair
+   - **Reviewer:** Not specified
+   - **Approver:** Not specified
+   - **Reason for Change:** Initial draft
+   - **Description:** None
+
+2. **Version 0.01**
+   - **Date:** 26-Feb-07
+   - **Author:** Jyotessh G Nair
+   - **Reviewer:** Not specified
+   - **Approver:** Not specified
+   - **Reason for Change:** Review
+   - **Description:** Review feedback incorporated
+
+3. **Version 1.00**
+   - **Date:** 26-Feb-07
+   - **Author:** Jyotessh G Nair
+   - **Reviewer:** Not specified
+   - **Approver:** Zulfikar Deen
+   - **Reason for Change:** Baseline is approved
+   - **Description:** Approved Baseline
+
+4. **Version 1.01**
+   - **Date:** 9-Mar-09
+   - **Author:** Bharatesha B
+   - **Reviewer:** Not specified
+   - **Approver:** Not specified
+   - **Reason for Change:** Risk Assessment
+   - **Description:**
+     - Changed the Physical Access Control framework.
+     - Incorporated provisions made in the hardware lifecycle.
+     - Changed document properties regarding ownership and added custodian.
+     - Decreased the number of Zones from 4 to 3 to simplify and increase coverage.
+     - Added sections on Introduction, definitions/acronyms/terms.
+     - Revised the scope in line with the current scope of the ISMS.
+     - Revised the objectives to align with business requirements.
+     - Added a section on Perimeter Security to provide controls for perimeters with Trianz information assets based on risk assessment.
+     - Provided clarifications on Physical Access Controls.
+     - Added sections on work environment regulation, health and safety regulation, and emergency and safety services as a result of risk assessment and risk mitigation plan.
+     - Included sections on water supply failure, telecommunication failure, and emergency evacuation procedures.
+
+### 1. Protection Against External and Environmental Threats
+
+- New sections have been added to clarify coverage for the following types of equipment:
+  - Electrical and electronic equipment
+  - Communication equipment
+  - Fire fighting equipment
+  - Information processing equipment
+
+- The section on equipment maintenance has been clarified.
+
+- Monitoring controls have been distinguished from physical access controls.
+
+- A new section has been included regarding the re-use, disposal, and removal of equipment.
+
+- The procedure for off-site equipment security has been reviewed and removed.
+
+### 1.02 Review by Bharatesha B and Sujit Sahoo (24-Mar-09)
+
+- Changes have been incorporated into Section 6.2.2.
+
+- Section 6.3.3 now provides a reference to the ID card issue process.
+
+- Section 6.5 has been updated with examples for clarity.
+
+### 2.00 Approval for Baseline (29-Apr-09)
+
+- The document has been baselined.
+
+### 2.01 QMG Review (31-Dec-09)
+
+- The entire document has been reformatted.
+
+### 3.00 Request for Baseline (31-Dec-09)
+
+- The document has been baselined.
+
+### 3.01 QMG Review (14-May-10)
+
+- The document has been reformatted, and the cover page has been modified.
+
+### 4.00 Request for Baseline (20-May-10)
+
+- The document has been baselined.
+
+### 4.01 QMG Review (24-May-11)
+
+- The release ID in the header and cover page has been modified for consistency.
+
+### 5.00 Approval for Baseline (24-May-11)
+
+- The document has been baselined.
+
+### 5.01 QMG Review (3-Aug-11)
+
+- The term "Owner" has been replaced with "Management Representative" in place of CIO.
+
+- The row stating "Retention period is 3 Years" in the Document Classification Scheme has been removed.
+
+### 6.00 Request for Baseline (3-Aug-11)
+
+- The document has been approved and baselined.
+
+### 7.00 ISMS Surveillance (17-Sep-12)
+
+- The surveillance template has been modified.
+
+### 6.12 Re-use, Disposal and Removal of Equipment
+- The procedure for the removal of equipment and disposal of equipment is aligned with the shared assessment checklist and is moved to the Media Handling Policy.
+
+### Document History
+1. **Version 7.01** (25-Jan-16) - Client Audit: Removal of equipment and disposal of equipment moved to Media Handling Policy.
+2. **Version 8.00** (08-Feb-16) - Approved by Mahesh (CISO).
+3. **Version 8.01** (29-Apr-19) - Information classification modified; Trianz logo modified.
+4. **Version 9.0** (14-May-19) - Approved for Release.
+5. **Version 9.1** (12-May-20) - Migrated to the new template.
+6. **Version 10.0** (15-May-20) - Approved and Baselined.
+7. **Version 10.1** (3-May-21) - Updated with new information classification.
+8. **Version 11.0** (3-May-21) - Approved and Baselined.
+9. **Version 11.0** (4-Jan-22) - For review; no changes.
+10. **Version 11.1** (11-Jan-23) - Reviewed with no changes; migrated to new template.
+11. **Version 12.0** (12-May-23) - Approved and Baselined.
+12. **Version 12.1** (30-Oct-23) - Made changes in line with CSA CCM v4.0 requirements.
+13. **Version 13.0** (10-Nov-23) - Approved and Baselined.
+14. **Version 13.1** (11-Feb-24) - Mapped to ISO 27k 2022 Physical controls.
+15. **Version 14.0** (23-Feb-24) - Approved and Baselined.
+16. **Version 14.1** (06-May-25) - Yearly Review; migrated to a new template.
+17. **Version 15.0** (29-May-25) - Yearly Review; approved and Baselined.
+
+# Contact Information
+
+- **Name:** [Insert Name]
+- **Email:** [Insert Email]
+- **Phone:** [Insert Phone]
+
+# Thank You
+
+For any inquiries, please contact:  
+**Email:** infosec@trianz.com
+
+---
+
+# Copyright Notice
+
+The content in this document is copyrighted. Unauthorized use, in part or full, may violate copyright, trademark, and other laws. This document may not be modified, reproduced, publicly displayed, performed, distributed, or used for any public or commercial purposes. The Trianz name and its products are protected by trademark and copyright laws, regardless of how and where referenced.

@@ -1,0 +1,168 @@
+Thermal Guidelines for Data Centers
+
+
+
+
+TRIANZ INTERNAL             trianz.com
+                      Statement of Confidentiality
+
+  The information contained in this document is internal to Trianz. It shall not be
+  disclosed, duplicated, or used for any purpose other than that stated herein, in
+  whole or in part, without the express written consent of Trianz.
+
+
+
+
+                         Information Classification
+
+
+     ☐ Public
+
+     ☒ Internal
+
+     ☐ Confidential
+
+     ☐ Restricted
+
+
+
+
+TRIANZ INTERNAL                                                                  2
+                            Table of Contents
+THERMAL GUIDELINES FOR DATA CENTERS                                         1
+
+1.   GLOSSARY                                                           4
+
+1.   INTRODUCTION                                                       5
+
+     1.1. Definitions/Acronyms/Abbreviations                            5
+
+2.   TEMPERATURE AND RELATIVE HUMIDITY MEASUREMENT                      5
+
+3.   APPENDIX A: FORMAT OF TEMPERATURE AND RELATIVE HUMIDITY MEASUREMENT 6
+
+
+
+
+ TRIANZ INTERNAL                                                        3
+                      1. Glossary
+
+
+  Word/Abbreviation                 Description
+
+
+
+
+TRIANZ INTERNAL                                   4
+1. Introduction
+
+This document gives detailed guidelines on how the temperature and relative
+humidity are measured in data center.
+
+           1.1. Definitions/Acronyms/Abbreviations
+
+
+      Word/Acronym/Abbreviation                     Definition/Description
+  Hygro-Thermometer                      A device used to measure the relative
+                                         humidity andtemperature
+
+  ASHRAE                                 American Society of Heating, Refrigerating
+                                         and Air-Conditioning Engineers
+
+
+
+2. Temperature and Relative Humidity Measurement
+
+The temperature and relative humidity will be measured by Hygro-Thermometer
+placed inside the data center.
+      •    The measured details will be noted down by the Security Personnel in the
+           format mentioned in Appendix A, with a frequency of 2 Hrs. on all
+           weekdays and weekends including company holidays (24/7)
+
+      •    The acceptable range for temperature and relative humidity of Trianz
+           data center are as given below:
+
+
+                   Measurement                   Trianz Acceptable Range
+            Temperature (°C)                           15 °C to 25°C
+            Relative Humidity(%RH)                    20% to 80% RH
+
+
+      •    If the Temperature/Relative humidity if found to be out of allowable
+           range, the security personnel will inform the same to IT Administrator
+           through phone.
+
+
+
+
+ TRIANZ INTERNAL                                                                      5
+3. Appendix A: Format of Temperature and Relative Humidity
+   measurement
+
+
+                         Server Room Temperature and Relative
+                                   Humidity Tracker
+      S.No Dat    Tim   Temperature(°C    Relative Humidity     Name Signatu
+           e      e     )                 (%RH)                      re
+
+
+
+
+TRIANZ INTERNAL                                                         6
+            For Trianz Process Improvement Group (TPIG) Purpose Only
+
+ Version History
+
+                                                          Reason for
+Ver.      Author        Reviewer Approver Date             Change              Change Description
+No.
+1.00      Srilakshm                          29-May-13   Initial Version   •   None
+          i
+2.00      Srilakshm                          16-May-14   Review            •   Modified Trianz Logo
+          i                                                                •   Modified acceptable
+                                                                               range forRelative
+                                                                               Humidity(%RH)
+2.1       Karthik       Karthik              3-Jan-      For Review        •   Modified as per the
+          N             N                    2022                              new template
+
+3.0       Karthik       Sivaram Sivaram 3-Jan-           For               •   Approved and
+          N             akrishna akrishna 2022           Approval              Baselined
+                        nN       nN
+3.0       Aishee        Vijaya            8th June       Review and        •   No Changes made
+                                             2024        Approval
+
+3.1       Kruti         Vijaya               28-May-25 For Review          •   Migrated to new
+                                                                               Template.
+
+4.0       Kruti         Vijaya    Srikanth   29-May-25 For                 •   Approved and
+                                  M                      Approval              Baselined
+
+
+
+
+      TRIANZ INTERNAL                                                                         7
+                                Contact Information
+                                               Name
+
+                                               Email
+
+                                              Phone
+
+
+
+
+                                  Thank You
+                                     infosec@trianz.com
+
+
+
+
+ The content in this document is copyrighted; any unauthorized use – in part or full – may violate the
+ copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly
+   displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz
+ name and its products are subject to trademark and copyright protections, regardless of how and
+                                          where referenced.
+
+
+TRIANZ INTERNAL                                                                                      8
+

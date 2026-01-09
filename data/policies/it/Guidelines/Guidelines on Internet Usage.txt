@@ -1,0 +1,278 @@
+Guidelines on Internet Usage
+
+
+
+
+TRIANZ INTERNAL            trianz.com
+                         Statement of Confidentiality
+
+  The information contained in this document is internal to Trianz. It shall not be
+  disclosed, duplicated, or used for any purpose other than that stated herein, in
+  whole or in part, without the express written consent of Trianz.
+
+
+
+
+                            Information Classification
+
+     ☐ Public
+
+     ☒ Internal
+
+     ☐ Confidential
+
+     ☐ Restricted
+
+
+
+
+TRIANZ INTERNAL                                                                  2
+                    Table of Contents
+1.   OVERVIEW                           4
+
+2.   SCOPE                              4
+
+3.   REFERENCE(S)                       4
+
+4.   RULES                              4
+
+
+
+
+ TRIANZ INTERNAL                        3
+  1. Overview
+      The company utilizes Internet as a critical resource to carry on the business processes.
+      Therefore, Trianz has developed systems & procedures to ensure that Internet is used
+      only for business purposes in a secure manner.
+
+
+  2. Scope
+      To stipulate a framework for ensuring all legitimate use of internet for business needs of
+      TRIANZ are met and the utilization of organizational internet resources is optimal.
+
+
+  3. Reference(s)
+      IT Operations Process
+      Anti-virus Policy
+
+
+  4. Rules
+      All Internet communication is to be logged, monitored and audited periodically, for
+      unauthorized access and ensuring availability.
+             Access:
+             All users shall be provided access to the internet by default. IT Department is
+             authorized to give Internet access to Trianz users at the time of joining by a
+             Service Request from HR.
+             The sites that he/she is allowed to access on the Internet shall be based on the
+             official work requirements.
+             Users shall need to enter their username / password to access any site on the
+             internet.
+             Use of Non-Standard Internet sources:
+             Only the authenticated users are allowed to access Internet. Users should not
+             access internet via dial-up access, PSTN, CDMA, GPRS, EDGE, and GSM etc.
+             or any other means as it is not permissible within office premises of Trianz.
+             Users who have been authorized by CIO / IT Manager to access Internet on their
+             hand-held computing devices should ensure that they do not use these
+             computing devices to access Internet on any device connected to Trianz
+             network.
+             Use of firewall, proxy & URL-Filtering:
+             All Internet activities shall pass through firewall, proxy and URL-Filtering
+             gateway.
+             User Authentication & Authorization:
+             All Internet access is governed by Trianz Domain access and authorization.
+
+TRIANZ INTERNAL                                                                                4
+             Gateway level Virus scan:
+             Anti-Virus policies also apply to all Internet activities
+             •    Internet Usage Code of Conduct:
+             •    Use of Trianz information systems to access Internet for personal purpose is
+                  discouraged.
+             •    Employees have no ownership or privacy rights, to any information gathered
+                  via online resources.
+             •    Trianz has the right to monitor all online communication (Including email and
+                  online access to internet). It is the policy of the company that all information
+                  stored on company computers belongs to the company, and the company
+                  may inspect all such computers and information at any time as necessary for
+                  the conduct of its business.
+             •    Trianz specifically prohibits the use of the Internet or other electronic
+                  communications services or equipment to access, download or transmit
+                  materials that can be interpreted as pornographic or obscene, concerning
+                  non-discrimination and harassment, including sexual harassment.
+             •    Trianz shall not be responsible for material viewed or downloaded by users
+                  from Internet. The Internet is worldwide network of computers that contains
+                  millions of pages of information. Users are cautioned that many of these
+                  pages include offensive, sexually explicit, and inappropriate material. Users
+                  access the information over the Internet at their own risk
+             •    Trianz reserves the right to record the location of all Internet sites accessed
+                  by users. Company reserves the rights in its sole discretion to share this
+                  information or make public a complete listing of all sites visited by the users
+                  to any requesting party.
+             •    Trianz reserves the right to block users from any internet resources including,
+                  but not limited to those which company determines in its sole discretion to
+                  have no legitimate company purpose or which could have detrimental impact
+                  on company computing resources i.e. web mail, chat etc.
+             •    The users’ use of the system should not have a noticeable effect on the
+                  availability of the system for other users. Therefore, a user should not
+                  participate in online games, or have active any web channels that broadcast
+                  frequent updates to his/her PC, such as the BBC News tickers, Cricket
+                  updates etc.
+             •    As per download policy, the users are not allowed to download any
+                  screensavers, wallpapers, songs, music, videos etc. This shall be considered
+                  an offence.
+             •    Users are not allowed to upload any kind of information over the Internet,
+                  except for information for official purposes only, after approval from Head of
+                  Department / Director.
+             •    Trianz reserves the right to take disciplinary action up to and including
+                  termination against users who violate the Trianz’s Rules on Internet Usage.
+
+
+
+TRIANZ INTERNAL                                                                                     5
+       For Trianz Process Improvement Group (TPIG) Purpose Only
+
+  Version History
+
+
+   Ver.                                                    Reason for
+           Author        Reviewer   Approver        Date                     Change Description
+   No.                                                          Change
+
+
+   0.0    Jyotessh G                           26-Feb-
+                                                           Draft         •   None
+   0      Nair                                 07
+
+
+                                                           Baseline is
+   1.0    Jyotessh G                           26-Feb-     approved by
+                                                                         •   Approved Baseline.
+   0      Nair                                 07          Zulfikar
+                                                           Deen.
+
+
+                                                                         •   Changed the title from
+                                                                             Policy to Rules on Internet
+                                                                             usage
+                                                                         •   Removed Section
+                                                           New Asset
+                                                           Manageme      •   Enforcement,
+   1.0    Bharatee sha                         24-Feb-
+          BR                                               nt            •   Documentation
+   1                                           09
+                                                           Framework     •   Framework
+                                                                         •   Added Document
+                                                                         •   Classification Scheme
+
+
+
+                                                           Approval
+   2.0                                         29-Feb-
+          Balu Nair                                        for           •   Baselined
+   0                                           09
+                                                           Baseline
+
+   2.0    Chakrav                              30-Dec-     QMG
+                                                                         •   Formatted entire document
+   1      arthi                                10          review
+
+   3.0    Chakrav                              31-Dec-     Request for
+                                                                         •   Baseline
+   0      arthi                                10          baseline
+
+
+   3.0                                         24-May-                   •   Modified release id in
+          Srilaksh mi                                      QMG Review
+   1                                           11                            header and cover page
+
+
+
+
+TRIANZ INTERNAL                                                                                    6
+   Ver.                                                       Reason for
+           Author        Reviewer    Approver         Date                       Change Description
+   No.                                                          Change
+
+                                                              Approval
+   4.0                                           24-May-
+          Srilaksh mi       •                                 for            •   Baselined
+   0                                             11
+                                                              Baseline
+
+                                                                             •   Replace Owner with
+                                                                                 Management
+                                                                                 Representative in place of
+                                                                                 CIO
+   4.0
+                                                              QMG            •   In Document
+   1      Sudhars ana                            3-Aug-11
+                                                              review         •   Classification
+                                                                             •   Scheme,
+                                                                             •   "Retention period is 3
+                                                                                 Years" row is removed
+
+   5.0                                                        Request for
+          Sudhars ana                            3-Aug-11                    •   Approved and Baselined
+   0                                                          baseline
+
+
+   6.0                                           28-Sep-      QMG            •   Formatted as per latest
+          Sudhars ana
+   0                                             12           review             template format
+
+
+          Pranesh       Pranesh     Gangadh      30-July-
+   6.1                                                        For review     •   Updated with new template
+          Kulkarni      Kulkarni    ar           21
+
+   7.0    Pranesh       Pranesh     Gangadh
+                                                 30-Ju-21     Baseline       •   Baselined
+   0      Kulkarni      Kulkarni    ar
+
+
+   7.0    Krutideepta   Karthik N   Karthik N    12-Aug22     For Review     •   Reviewed with No Change
+
+
+                                                              Annual
+   7.0    Krutideepta   Vijaya R                 03-June-24                  •   Reviewed with No Change
+                                                              Review
+
+
+                                                 26-May-      For Annual
+   7.1    Vijaya        Balu                                                 •   Migrated to a new template
+                                                 2025         Review
+
+
+
+   8.0    Vijaya        Balu        Srikanth M   29-May-25    For Approval   •   Approved and Baselined
+
+
+
+
+TRIANZ INTERNAL                                                                                        7
+                                Contact Information
+                                               Name
+
+                                               Email
+
+                                              Phone
+
+
+
+
+                                  Thank You
+                                     infosec@trianz.com
+
+
+
+
+ The content in this document is copyrighted; any unauthorized use – in part or full – may violate the
+ copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly
+   displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz
+ name and its products are subject to trademark and copyright protections, regardless of how and
+                                          where referenced.
+
+
+
+
+TRIANZ INTERNAL                                                                                      8
+

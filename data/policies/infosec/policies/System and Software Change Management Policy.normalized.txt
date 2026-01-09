@@ -1,0 +1,191 @@
+# SYSTEM AND SOFTWARE CHANGE MANAGEMENT POLICY
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public: ☐
+- Internal: ☒
+- Confidential: ☐
+- Restricted: ☐
+
+## Table of Contents
+1. PURPOSE
+2. SCOPE
+3. POLICY
+4. ROLES & RESPONSIBILITIES
+5. OPERATIONAL REQUIREMENTS
+   - 5.1 Change Documentation
+   - 5.2 Change Classification
+   - 5.3 Change Testing
+   - 5.4 Changes affecting SLA’s
+   - 5.5 Approval
+   - 5.6 Communicating changes
+   - 5.7 Change Implementation
+   - 5.8 Roll-Back Procedure
+   - 5.9 Emergency Changes
+   - 5.10 Verification of Changes
+   - 5.11 Communication of Changes
+6. MONITORING
+7. COMPLIANCE
+8. EXCEPTIONS(S)
+9. ISO CONTROL MAPPING(S)
+
+## 1. Purpose
+The purpose of this policy is to establish management direction and high-level objectives for change management, ensuring control over changes to the organization, business processes, information processing facilities, and systems that affect information security. The policy aims to mitigate risks such as:
+- Information corruption and/or destruction
+- Disruption and/or degradation of computer performance
+- Productivity losses
+- Exposure to reputational risk
+- Ensuring that changes in cloud services do not affect the services provided
+
+## 2. Scope
+This policy applies to all parties operating within Trianz’s network environment or utilizing Information Resources, including:
+- Cloud service provisioning and consumption
+- Data networks, LAN servers, and personal computers (stand-alone or network-enabled) at Trianz offices and production locations
+- Any personal computers, laptops, mobile devices, and servers authorized to access Trianz’s data networks and Cloud Networks
+- All employees are subject to this policy without exemption.
+
+## 3. Policy
+Changes to information resources must be managed and executed according to a formal change control process. This process ensures that proposed changes are:
+- Reviewed
+- Authorized
+- Tested
+- Implemented
+- Released in a controlled manner
+- Monitored for status
+
+## 4. Roles & Responsibilities
+1. **Change Management Provider**
+   - Responsible for implementing and maintaining this policy.
+   - Must provide:
+     - Categories of changes
+     - Planned date and time of changes
+     - Technical description of changes to the Cloud Service and underlying systems
+     - Notification of start and completion of changes
+     - Ensure that changes dependent on Peer Cloud Service Providers are communicated to cloud service customers.
+
+2. **Change Management Customer**
+   - Must consider any changes that would impact services provided by the Cloud Provider.
+
+3. **Audit & Compliance Assurance**
+   - Refer to the System and Software Change Management Procedure for roles and responsibilities related to ISO 20000-1:2018 (Service Management System).
+
+## 5. Operational Requirements
+### 5.1 Change Documentation
+- All change requests must be logged, whether approved or rejected, in a standardized central system.
+- Documentation must include:
+  - Change request details
+  - Change authorization
+  - Outcome of the change
+- An audit trail must be maintained at the Business Unit Level.
+- No individual may effect changes to production information systems without approval from authorized personnel.
+- All change items must be included in either MSA or SLA.
+
+### 5.2 Change Classification
+- All change requests must be prioritized based on:
+  - Benefits
+  - Urgency
+  - Effort required
+  - Potential impact on operations
+
+### 5.3 Change Testing
+- Changes must be tested in an isolated, controlled, and representative environment (where feasible) prior to implementation to:
+  - Minimize effects on relevant business processes
+  - Assess impact on operations and security
+  - Verify that only intended changes are made
+
+### 5.4 Changes affecting SLA’s
+- The impact of changes on existing Service Level Agreements (SLAs) shall be considered.
+- Changes to the SLA shall be controlled through a formal change process, which includes contractual amendments where applicable.
+
+### 5.5 Approval
+- All changes must be approved prior to implementation.
+- Approval is based on formal acceptance criteria, which include:
+  - The change request was submitted by an authorized user.
+  - An impact assessment was performed.
+  - Proposed changes were tested.
+- All major changes must be communicated to the information security and data privacy assurance team, and approvals must be sought if necessary.
+
+### 5.6 Communicating changes
+- All users significantly affected by a change must be notified.
+- The user representative must sign off on the change.
+- Users are required to make submissions and comments prior to the acceptance of the change.
+
+### 5.7 Change Implementation
+- Implementation shall only occur after appropriate testing and approval by stakeholders.
+- All major changes will be treated as new system implementations and established as projects.
+- Major changes will be classified according to the effort required to develop and implement them.
+
+### 5.8 Roll-Back Procedure
+- Procedures for aborting and recovering from unsuccessful changes must be documented.
+- If the outcome of a change differs from the expected result (as identified in testing), procedures and responsibilities for recovery and continuity of affected areas must be noted.
+
+### 5.9 Emergency Changes
+- Specific procedures must be in place to ensure proper control, authorization, and documentation of emergency changes.
+- Parameters will be defined as a standard for classifying changes as emergency changes.
+
+### 5.10 Verification of Changes
+- All changes must be verified during and after implementation.
+- In the event of unsuccessful implementation, fallback procedures will ensure systems can revert to their state prior to the implementation of changes.
+
+### 5.11 Communication of Changes
+- All changes must be communicated to all stakeholders to confirm that information security requirements have been met.
+
+### 6. Monitoring
+- Reporting metrics, documentation templates, and change implementation reports are described in the approved and published Trianz Change Management Procedure.
+- Change implementation reports must be generated and maintained by the IT team to summarize the outcomes of implemented changes.
+- These reports shall be made available to Information Security and Internal Audit upon request.
+
+### 7. Compliance
+- Any person subject to this policy who fails to comply with its provisions or any amendments shall face appropriate disciplinary or legal action in accordance with the Trianz Disciplinary Code and Procedures.
+- Company Information Security policies, standards, procedures, and guidelines must comply with legal, regulatory, and statutory requirements.
+- All changes must adhere to the policy to ensure the reliability of systems and applications.
+
+### 8. Exceptions(s)
+- Exceptions to the System and Software change management policy must follow the Exception handling policy.
+
+### 9. ISO Control Mapping(s)
+- **Category of Control**: Technological
+  - **ISO 27001:2022 Control**: 8.32 Change management
+  - **Document Name as per ISO 27001:2022**: Change Management Policy
+  - Changes to information processing facilities and information systems shall be subject to change management procedures.
+
+### Document Control
+- **Owner**: CISO
+- **Release ID**: SSCM-POL-0044
+
+### Version History
+- **Version 0.1**: Initial Draft created on 13-Oct-2017 by Chan.
+- **Version 1.00**: Baseline approved on 14-May-2018 by Ganesh Pradhan.
+- **Version 1.01**: Approved for release on 29-Apr-2019 by Ganesh Arunachalam.
+- **Version 2.0**: Updated to align with standards – ISO 27017 on 22-Nov-2019 by Vijaya Rajeswari.
+- **Version 3.0**: For approval on 12-May-2020 by Balu Nair.
+- **Version 4.0**: For approval on 14-May-2020 by Phani Krishna.
+- **Version 4.1**: Finalized on 29-Jan-2021 by Phani Krishna.
+
+# 5.0 Purpose, Roles & Responsibilities
+
+The policy is aligned to the ISO 20000-1:2018 Standard and includes information classification.
+
+# 6.0 Updates and Approvals
+
+- **29-Jan-21**: Approved and Baseline by Vijaya, Phani, Rajesw, Krishna.
+- **21-Dec-21**: For Approval on updated formatting changes by Vijaya, Rajesw, Karthik N, Phani Krishna.
+- **13-Jan-22**: Approved and Baseline by Vijaya, Karthik N, Rajesw, Sivaramakrishnan N.
+- **11-Apr-23**: For Approval on updated section 5.5 (Approval) by Vijaya, Karthik N.
+- **12-May-23**: Approved and Baseline for new template change by Vijaya, Karthik N, Srikanth M.
+- **11-Feb-24**: For Review, mapped with new ISO 27001:2022 controls by Shalini, Vijaya, Srikanth M.
+- **23-Feb-24**: For Approval, approved and baselined by Shalini, Vijaya, Srikanth M.
+- **28-May-24**: For Review, migrated to new template by Kruti, Vijaya.
+- **29-May-24**: For Approval, approved and baselined by Kruti, Vijaya, Srikanth M.
+
+# Contact Information
+
+- **Name**: Trianz Information Security Team
+- **Email**: infosec@trianz.com
+- **Phone**: [Not provided]
+
+# Copyright Notice
+
+The content in this document is copyrighted. Unauthorized use may violate copyright, trademark, and other laws. This document may not be modified, reproduced, publicly displayed, performed, distributed, or used for any public or commercial purposes. The Trianz name and its products are subject to trademark and copyright protections.

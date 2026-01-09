@@ -1,0 +1,232 @@
+# Email Security Policy
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. PURPOSE
+2. SCOPE
+3. OBJECTIVE
+4. ROLES AND RESPONSIBILITIES
+5. POLICY
+   - 5.1 Acceptable Email Usage
+   - 5.2 Email Account Privacy and Responsibility
+   - 5.3 Email Account Expiry and Deletion
+   - 5.4 Quotas and Limits
+6. MEASUREMENT AND REPORTING
+7. EXCEPTION(S)
+8. ISO CONTROL MAPPING
+
+## 1. Purpose
+The purpose of this email policy is to ensure proper use of the Trianz email system and to make users aware of what constitutes acceptable and unacceptable use of its email system. This policy outlines the minimum requirements for the use of email within the Trianz Network.
+
+## 2. Scope
+- This policy applies to all associates and contractors of Trianz who use email services for sending or receiving email messages and attachments, utilizing any IS facilities, including hardware, software, and networks provided by Trianz.
+- The policy is applicable to all Trianz Associates, Contractors, Vendors, clients, and other authorized users of the Trianz Email System.
+
+## 3. Objective
+*(No content provided in the original text.)*
+
+## 4. Roles and Responsibilities
+1. **Email Service**  
+   - **Roles:** Associates  
+   - **Responsibility:** Use of email service by associates at Trianz adopts and implies compliance with this policy, without exception.
+
+2. **Email Service Access**  
+   - **Roles:** IS Operations  
+   - **Responsibility:** Responsible for providing and maintaining central email systems.
+
+3. **Training and Awareness**  
+   - **Roles:** InfoSec Assurance  
+   - **Responsibility:** Conduct periodic Information Security Awareness training.
+
+4. **Audit & Compliance**  
+   - **Roles:** InfoSec Assurance  
+   - **Responsibility:** Conduct annual policy and compliance review.
+
+5. **Unauthorized Email Service Usage**  
+   - **Roles:** HR  
+   - **Responsibility:** Take disciplinary action on associates for not adhering to the policy requirements.
+
+## 5. Policy
+
+### 5.1 Acceptable Email Usage
+- IT infrastructures provided by Trianz for email services must be used in a responsible, effective, and lawful manner.
+- Associates must not transmit any material that infringes on the copyright of another person, company, or Trianz, including intellectual property rights.
+- Associates shall have no expectation of privacy in anything they store, send, or receive on the company’s email system.
+- Associates must not transmit any offensive, obscene, or indecent images, data, or other material.
+- Associates must not transmit any material that is abusive or threatening to others, serves to harass or bully others, discriminates, or encourages discrimination based on racial or ethnic grounds, gender, sexual orientation, marital status, disability, political or religious beliefs.
+- Associates must not transmit any material that violates the privacy of others or unfairly criticizes or misrepresents others; this includes copying distribution to other individuals.
+- Associates must not transmit anonymous messages or deliberately forge messages.
+
+### 5.1 Email Usage Policy
+- Associates are prohibited from automatically forwarding emails to third-party email systems. Individual messages forwarded by the user must not contain confidential or sensitive information.
+- Users must not use third-party email systems (e.g., Google, Yahoo, MSN Hotmail) for business communications. Such communications require proper approval from InfoSec Assurance and IS Operations.
+- The Trianz email system is strictly for legitimate business purposes. Sending personal emails, chain letters, junk mail, and jokes is prohibited. All messages sent via the Trianz email system are considered Trianz property.
+- Letters, files, and documents attached to emails may belong to others. Forwarding this information without the sender's permission may result in copyright infringement liability.
+
+### 5.2 Email Account Privacy and Responsibility
+- Trianz IS Operations aims to protect user privacy and respects correspondence privacy between associates.
+- Extra caution is required when sending confidential or commercially sensitive information. If uncertain, consult the Trianz IT Service desk.
+- Trianz confidential messages should only be distributed to Trianz associates. Forwarding to external locations is prohibited.
+- If you receive offensive, unpleasant, harassing, or phishing emails, report them to your Manager or IT Personnel immediately.
+- Trianz reserves the right to review, audit, intercept, access, and disclose all messages created, received, or sent over the email system for any purpose.
+
+### 5.3 Email Account Expiry and Deletion
+- Upon termination of employment, associates' email accounts will be disabled, and emails will be deleted by IS Operations based on instructions from Trianz Human Resources.
+- For Long Term Leave:
+  - Email accounts will be disabled by Trianz IS Operations upon notification from Human Resources for leaves over one month (including sick leave, maternity leave, and sabbatical leave). Emails will be retained, and the account will be re-activated upon the employee’s return.
+  - Requests to keep the email account active during long-term leave must be submitted to Human Resources by the Associate's Manager/Supervisor for approval.
+
+### 5.4 Quotas and Limits
+- Email policies include mechanisms to limit message sizes to prevent server and network overload.
+- No email greater than 10 MB can be received or transmitted by the email servers.
+
+### 6. Measurement and Reporting
+- The InfoSec Assurance team will verify compliance with this policy through various methods, including periodic walk-throughs, business tool reports, internal and external audits, and feedback to the policy owner.
+- Non-compliance may result in disciplinary action, up to and including termination of employment.
+
+### 7. Exception(s)
+- Any exceptions to the policy must be approved in advance by the InfoSec Assurance team and IS Operations.
+
+### 8. ISO Control Mapping
+- **Category of Control**: Technological Controls
+  - **ISO 27001:2022 Control**: 8.1 User endpoint devices - Information stored on, processed by, or accessible via user endpoint devices shall be protected.
+
+### Document Control
+- **Owner**: CISO
+- **Release ID**: EMSEC-POL-0049
+
+### Version History
+
+1. **Version 0.1**
+   - Date: 27-Apr-18
+   - Author: Kamadev
+   - Reviewer: Gangadhar
+   - Approver: Kamadev
+   - Reason for Change: Initial Draft
+
+2. **Version 1.0**
+   - Date: 20-Jun-18
+   - Author: Kamadev
+   - Approver: Kamadev Pradhan
+   - Reason for Change: Approval for Baseline
+
+3. **Version 1.1**
+   - Date: 11-May-20
+   - Author: Karthik N
+   - Reviewer: Karthik N
+   - Reason for Change: Updated information classification and format changes
+
+4. **Version 2.0**
+   - Date: 14-May-20
+   - Author: Karthik N
+   - Reviewer: Phani Krishna
+   - Approver: Karthik N
+   - Reason for Change: Approved and Baselined
+
+5. **Version 2.1**
+   - Date: 18-Jan-21
+   - Author: Karthik N
+   - Reviewer: Phani Krishna
+   - Reason for Change: Updated information classification and format changes
+
+6. **Version 3.0**
+   - Date: 18-Jan-21
+   - Author: Karthik N
+   - Reviewer: Phani Krishna
+   - Approver: Karthik N
+   - Reason for Change: Approved and Baselined
+
+7. **Version 3.1**
+   - Date: 06-Oct-21
+   - Author: Karthik N
+   - Reason for Change: Minor changes in section 3 (Roles and Responsibilities)
+
+8. **Version 4.0**
+   - Date: 11-Oct-21
+   - Author: Karthik N
+   - Reason for Change: Approved and Baselined
+
+9. **Version 4.0**
+   - Date: 21-Dec-21
+   - Author: Karthik N
+   - Reviewer: Karthik N
+   - Approver: Karthik N
+   - Reason for Change: Annual Review with no change
+
+10. **Version 4.1**
+    - Date: 13-Mar-22
+    - Author: Sanjana
+    - Reviewer: Karthik N
+    - Approver: Sanjana
+    - Reason for Change: The scope has been extended to products and services
+
+11. **Version 5.0**
+    - Date: 15-Mar-22
+    - Author: Sanjana
+    - Reviewer: Karthik N
+    - Approver: Sanjana
+    - Reason for Change: Approved and Baselined
+
+12. **Version 5.1**
+    - Date: 03-May-23
+    - Author: Shalini, Rama Madhavan
+    - Reviewer: Balu Nair
+    - Approver: Srikanth
+    - Reason for Change: Reviewed and migrated to new template
+
+13. **Version 6.0**
+    - Date: 12-May-23
+    - Author: Rama Madhavan
+    - Reviewer: Vijaya M
+    - Approver: Srikanth
+    - Reason for Change: Approved
+
+14. **Version 6.1**
+    - Date: 15-Feb-24
+    - Author: Vijaya
+    - Reviewer: Balu
+    - Approver: Srikanth
+    - Reason for Change: Updated the section ISO Control Mapping aligning to ISO 27001:2022
+
+15. **Version 7.0**
+    - Date: 23-Feb-24
+    - Author: Vijaya
+    - Reviewer: Balu
+    - Approver: Srikanth
+    - Reason for Change: Approved and baselined
+
+16. **Version 7.1**
+    - Date: 06-May-25
+    - Author: Balu Nair
+    - Reviewer: Vijaya
+    - Reason for Change: Yearly Review and migrated to a new Template
+
+17. **Version 8.0**
+    - Date: 14-May-25
+    - Author: Balu Nair
+    - Reviewer: Vijaya
+    - Approver: Srikanth
+    - Reason for Change: Approved and baselined
+
+### Contact Information
+- Name: [Not Provided]
+- Email: [Not Provided]
+- Phone: [Not Provided]
+
+### Thank You
+- Email: infosec@trianz.com
+
+**Note:** The content in this document is copyrighted; any unauthorized use – in part or full – may violate the copyright, trademark.
+
+**4. Policy Restrictions**
+
+- This document may not be modified, reproduced, publicly displayed, performed, distributed, or used for any public or commercial purposes.
+- The Trianz name and its products are protected by trademark and copyright laws, regardless of the context in which they are referenced.

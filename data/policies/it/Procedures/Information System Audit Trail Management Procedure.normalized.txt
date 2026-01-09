@@ -1,0 +1,257 @@
+# Information System Audit
+## Trial Management Procedure
+
+### Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+### Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+### Table of Contents
+1. Objectives
+2. Scope
+3. Reference(s)
+4. Procedure
+   - 4.1 Purpose of Monitoring
+   - 4.2 Audit Trail Rules
+   - 4.3 Monitoring of System Use
+   - 4.4 Monitoring of Firewall Audit Reports
+   - 4.5 Windows Environment
+   - 4.6 UNIX Environment
+   - 4.7 Oracle Environment
+   - 4.8 Vulnerability Assessment and Penetration Testing (VAPT)
+5. ISO Control Mapping(s)
+
+### 1. Objectives
+To monitor the logging of events, associate each logged event with a particular user, provide a mechanism to retrieve and report information on logged events, and report on the effectiveness and compliance with the ISO 27001:2022 standard.
+
+### 2. Scope
+This procedure applies to all Trianz users and operating units, including third parties, and all Trianz Information System Resources, including corporate data, applications, products, and systems software.
+
+### 3. Reference(s)
+None
+
+### 4. Procedure
+
+#### 4.1 Purpose of Monitoring
+Monitoring of Trianz Information System Resources is conducted to:
+- Safeguard information and computing resources from business and environmental threats.
+- Ensure that information is not disclosed to unauthorized individuals.
+- Maintain the integrity of data.
+- Ensure conformity to the Logical Access Security Policy and related procedures.
+
+#### 4.2 Audit Trail Rules
+- Auditing must be enabled on all servers and network devices to record exceptions and security-related events.
+- All audit records should, if possible, be sent to a central server for monitoring and correlation.
+- The IT Department must maintain all audit records for at least one month and a maximum of one year to assist in future investigations and access control monitoring.
+- A record of successful system access, in addition to rejected attempts, must be created.
+- At a minimum, audit trails must include:
+  - User IDs
+  - Dates and times for logon and logoff
+  - Terminal identity or location
+
+#### 4.3 Monitoring of System Use
+System use must be monitored to ensure users are performing explicitly authorized processes. The level of monitoring required for individual systems should be determined by a separate risk assessment. Areas that must be monitored include:
+- Access failures
+- Allocation and use of accounts with privileged access capability
+- Tracking of selected transactions
+- Use of sensitive resources
+- IDS/IPS activity
+- Firewall activity
+- Operating system and application access attempts
+- Real-time alerts for publicly accessible systems (e.g., external websites) for any suspicious user activity.
+
+#### 4.4 Monitoring of Firewall Audit Reports
+- The designated IT Administrator in the IT Department will review the Internet connection audit reports created on the firewall for any unusual or suspicious activities.
+- The period between reviews must not exceed one week.
+- Alarms must be configured to alert the IT Administrator about any suspicious activities.
+
+### 4.4 Monitoring and Security Events
+The following events must be monitored for security breaches or violations:
+- A session being initiated from the external world.
+- Spoofing activities.
+- Suspicious activities occurring internally and from external sources.
+- Well-known hacker signatures.
+- Password guessing attempts.
+- Unauthorized use of privileges.
+- Modifications to production application software.
+- Modifications to system software.
+
+### 4.5 Windows Environment
+#### Logging and Reporting
+- Windows provides monitoring and auditing tools for effective logging and auditing.
+- Without auditing and logging, it may be impossible to:
+  - Track attackers during a security breach.
+  - Detect unauthorized access attempts.
+  - Identify causes of errors or unauthorized changes.
+  - Control changes to critical settings, such as the Registry.
+- Detective controls are weakened without appropriate monitoring and auditing.
+- It is recommended to use Windows auditing and monitoring features effectively, focusing on selected events to minimize performance impact. Suggested events to log include:
+  - Audit account logon events: Success, Failure.
+  - Audit account management: Success, Failure.
+  - Audit directory service access: Failure.
+  - Audit logon events: Success, Failure.
+  - Audit object access: Failure.
+  - Audit policy change: Success, Failure.
+  - Audit privilege use: Failure.
+  - Audit process tracking: No auditing.
+  - Audit system events: Success, Failure.
+
+### 4.6 UNIX Environment
+#### Logging and Reporting
+The following system logs should be reviewed and have restricted access:
+- **/etc/wtmp**: Contains a history of system logins (requires UNIX utility for interpretation).
+- **/usr/adm/sulog**: Logs the use of the `su` command, which can compromise security.
+- **/usr/bin/uulog**: Contains a history of each use of `uucp`, `uuto`, and `uux`.
+- **/etc/security/failedlogin**: Logs failed login attempts.
+- Enable logging for specific commands (e.g., `kill`, `killall`, `chown`, `chmod`, `shutdown`, `chgrp`) using TCB (if installed).
+- Maintain FTP logs due to the critical nature of FTP services; regular monitoring of FTP activities is recommended.
+
+**Note**: The most important files to review are **/usr/adm/syslog** and **/usr/adm/messages** (or equivalent). Enabling only selected auditing features may have limited impact on application or server performance.
+
+### 4.7 Oracle Environment
+#### Logging and Reporting
+- Policies and procedures must be established to review audit trails in a timely manner and develop an audit trail archiving strategy. This strategy should address:
+  - Archive rotation period (time before an archive can be overwritten).
+  - Security of audit trails (confidentiality and integrity).
+  - Redundancy of audit trails (disaster recovery planning).
+- The enabling of auditing features in a database should be conducted according to established policies.
+
+### 4.6 Auditing Features
+
+1. **Identification of Critical Tables**: The concerned Department must identify critical tables in a database that need to be kept confidential. Auditing features can then be enabled for these areas.
+
+2. **User Transaction Logs**: If user transactional level details are captured at the application level, database-level auditing can be restricted to key actions, including:
+   - Account logon
+   - Modification to system settings
+
+   These actions should be evaluated for their impact on business operations and monitored over time to analyze their effect on system performance.
+
+3. **Auditing Features to be Logged**: The following auditing features may be logged based on requirements:
+   - Application Account Activity
+   - Failed Attempts to Access Objects
+   - Failed Attempts to Issue Sensitive Commands
+   - Failed Connections
+   - Failed Login Attempts
+   - Firecall Accounts: 
+     - Firecall accounts have a high level of privilege and are used only for emergencies. 
+     - Actions performed by these accounts must be audited to identify irregular or unauthorized use and to reference events during emergencies.
+   - SYSTEM Account Activity
+   - Vendor Account Activities
+
+### 4.7 Vulnerability Assessment and Penetration Testing (VAPT)
+
+1. **Vulnerability Analysis**: This process defines, identifies, and classifies security vulnerabilities in computer, network, or communications infrastructure.
+
+2. **Penetration Testing**: A penetration test evaluates the security of IT infrastructure by attempting to exploit vulnerabilities, which may exist in:
+   - Operating systems
+   - Service and application flaws
+   - Improper configurations
+   - Risky end-user behavior
+
+3. **Purpose of VAPT**: VAPT provides a comprehensive view of threats to Trianz's information assets, enabling better protection against malicious attacks.
+
+4. **Testing Environment**: 
+   - VAPT should not disrupt business operations; therefore, testing should occur in a separate environment identical to production.
+   - The testing environment must have the same application and network-layer controls as the production environment.
+
+5. **Impact of Testing**: Direct attacks during testing can push systems into unknown states or disable them, which may hinder future testing and vulnerability reporting.
+
+6. **Correction of Vulnerabilities**: All exploitable vulnerabilities identified during testing must be corrected on production systems, and testing should be repeated to verify that security weaknesses have been addressed.
+
+### 5. ISO Control Mapping(s)
+
+- **Category of Control**: Technological Controls
+  - **ISO 27001:2022 Control**: Clause 9.2 Internal audit
+  - **Document Name**: Information System Audit Trail Management Procedure
+
+- **Category of Control**: Technological Controls
+  - **ISO 27001:2022 Control**: 8.34 Protection of information systems during audit testing
+
+### Document Control
+
+- **Owner**: CISO
+- **Release ID**: ISAM-PROC-0044
+
+### Version History
+
+- **Version No.**: [Details not provided]
+- **Date**: [Details not provided]
+- **Author**: [Details not provided]
+- **Reviewer**: [Details not provided]
+- **Approver**: [Details not provided]
+- **Reason for Change**: [Details not provided]
+- **Change Description**: [Details not provided]
+
+### 1. Document History
+
+- **0.00** (19-Feb-07) - Initial draft by Jyotessh G, approved by Nair.
+- **1.00** (26-Feb-07) - Approved baseline by Zulfikar Deen.
+- **1.01** (14-May-09) - Consolidated controls related to audit management by Bharateesh.
+- **2.00** (03-Jun-09) - Approved baseline by Balu Nair.
+- **2.01** (30-Dec-10) - Document formatting and updated properties by Chakravarthi.
+- **3.00** (30-Dec-10) - Baselined request by Chakravarthi.
+- **3.01** (24-May-11) - Modified release ID in header and cover page for consistency by Srilakshmi.
+- **4.00** (24-May-11) - Baselined approval by Srilakshmi.
+- **4.01** (3-Aug-11) - Removed "Retention period is 3 Years" from Document Classification Scheme by Sudharsan.
+- **5.00** (3-Aug-11) - Approved and Baselined by Sudharsan.
+- **6.00** (28-Sep-12) - Formatted as per latest template by Sudharsan.
+- **6.01** (16-Oct-16) - Added cloud service related process steps and included vulnerability assessment and penetration testing (VAPT) under section 4.8 by Sudharsan & Shishir.
+- **7.00** (17-Dec-16) - Approved baseline by Balu Nair.
+
+### CISO
+
+#### 7.01 Information Classification
+- Modified on 29-April-19 by Balu Nair and Joshy VM.
+
+#### 8.00 Baseline Release
+- Approved on 14-May-19 by Balu Nair and Arunachal.
+
+#### 8.01 Integrated with New Template
+- Modified on 12-May-20 by Karthik N and Balu Nair.
+
+#### 9.00 For Approval
+- Approved on 14-May-20 by Karthik N and Balu Nair.
+
+#### 9.01 Information Classification Update
+- For Review on 30-May-20 by Vijaya Rajeswari, Phani Krishna.
+
+#### 10.00 For Approval
+- Approved on 30-May-20 by Vijaya Rajeswari, Phani Krishna.
+
+#### 10.01 Scope Extension
+- Extended to products on 15-Mar-22 by Krutideepta.
+
+#### 10.2 Migrated and Packaged to New Template
+- Reviewed on 28-Mar-23 by Krutideepta, Pravakar, Siva N.
+
+#### 11.0 For Approval
+- Approved on 15-May-23 by Krutideepta, Karthik N, Srikanth M.
+
+#### 11.1 For Review
+- Mapped with new ISO 27001, 2022 Clause 9.2 Internal Audit on 15-Feb-24 by Shalini, Vijaya, Srikanth.
+
+#### 12 Approved and Baselined
+- For Approval on 23-Feb-24 by Shalini, Vijaya, Srikanth M.
+
+#### 12.1 Yearly Review
+- Migrated to a new Template on 06-May-25 by Balu Nair, Vijaya.
+
+#### 13.0 For Approval
+- Approved on 14-May-25 by Balu Nair, Vijaya, Srikanth.
+
+### Contact Information
+- Name: [Not provided]
+- Email: [Not provided]
+- Phone: [Not provided]
+
+### Thank You
+- Email: infosec@trianz.com
+
+### Copyright Notice
+- The content in this document is copyrighted; any unauthorized use – in part or full – may violate copyright, trademark, and other laws. This document may not be modified, reproduced, publicly displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz name and its products are subject to trademark and copyright protections, regardless of how and where referenced.
+
+It appears that the text provided is incomplete and does not contain any specific policy rules or information to rewrite. Please provide the relevant content or sections from the policy document for me to assist you in rewriting it into clear policy rules.

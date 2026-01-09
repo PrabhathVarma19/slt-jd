@@ -1,0 +1,350 @@
+Email Security Policy
+
+
+
+
+TRIANZ INTERNAL         trianz.com
+                         Statement of Confidentiality
+
+  The information contained in this document is internal to Trianz. It shall not be
+  disclosed, duplicated, or used for any purpose other than that stated herein, in
+  whole or in part, without the express written consent of Trianz.
+
+
+
+
+                            Information Classification
+
+     ☐ Public
+
+     ☒ Internal
+
+     ☐ Confidential
+
+     ☐ Restricted
+
+
+
+
+TRIANZ INTERNAL                                                                  2
+                              Table of Contents
+1.   PURPOSE                                            4
+
+2.   SCOPE                                              4
+
+3.   OBJECTIVE                                          4
+
+4.   ROLES AND RESPONSIBILITIES                         4
+
+5.   POLICY                                             5
+
+     1.1   5.1 Acceptable Email Usage                   5
+
+     1.2 5.2 Email Account Privacy and Responsibility   6
+
+     1.3 5.3 Email Account Expiry and Deletion          6
+
+     1.4 5.4 Quotas and Limits                          7
+
+6.   MEASUREMENT AND REPORTING                          7
+
+7.   EXCEPTION(S)                                       7
+
+8.   ISO CONTROL MAPPING                                7
+
+
+
+
+ TRIANZ INTERNAL                                        3
+  1. Purpose
+     The purpose of this email policy is to ensure proper use of Trianz email
+     system and make users aware of what deems as acceptable and
+     unacceptable use of its email system.
+
+     This policy outlines the minimum requirements for the use of email within
+     Trianz Network.
+
+
+  2. Scope
+         •   This policy is intended to detail the rules of conduct for all associates
+             and contractors of Trianz who use email services. This Email Policy
+             applies for the purpose of sending or receiving email messages and
+             attachments, of any IS facilities, including hardware, software and
+             networks, provided by the Trianz.
+         •   The Policy is applicable to all Trianz Associates, Contractors, and
+             Vendors, clients and other authorized users of Trianz Email System.
+
+
+   3. Objective
+
+
+   4. Roles and Responsibilities
+
+   Sl              Item                   Roles                Responsibility
+ No
+
+    1.             Email Service          Associates           Use of email Service by
+                                                            Associates at Trianz adopts and
+                                                            implies compliance with this policy,
+                                                            without exception.
+
+    2.            Email Service          IS                  Responsible for providing and
+                Access                 Operations           maintaining central email systems.
+
+    3.            Training and           InfoSec              Periodic Information Security
+                Awareness              Assurance            Awareness training.
+
+
+
+
+TRIANZ INTERNAL                                                                          4
+    4.            Audit &             InfoSec            Annual Policy & Compliance
+             Compliance            Assurance           Review
+
+
+
+    5.         Unauthorized           HR                  Disciplinary action on associates
+             Email Service                             for not adhering to the policy
+             usage                                     requirements.
+
+
+
+   5. Policy
+
+   5.1 Acceptable Email Usage
+      •   IT Infrastructures provided by Trianz for Email Services should use in a
+          responsible, effective and lawful manner.
+      •   Associates should not transmit any material that infringes the copyright
+          of another person, company or Trianz including intellectual property
+          rights.
+      •   Associates shall have no expectation of privacy in anything they store,
+          send or receive on the company’s email system.
+      •   Associates should not transmit any offensive, obscene or indecent
+          images, data or other material.
+      •   Associates should not transmit any material that is abusive or
+          threatening to others, serves to harass or bully others, discriminates or
+          encourages discrimination on racial or ethnic grounds, or on grounds of
+          gender, sexual orientation, marital status, and disability, political or
+          religious beliefs.
+      •   Associates should not transmit any material that violates the privacy of
+          others or unfairly criticize, misrepresent others; this includes copying
+          distribution to other individuals.
+      •   Associates should not transmit anonymous messages or deliberately
+          forging messages or email header information, (i.e. without clear
+          identification of the sender) or for 'flaming'.
+      •   Associates are prohibited from automatically forwarding email to a
+          third-party email system Individual messages which are forwarded by
+          the user must not contain confidential or above information
+      •   Users are prohibited from using third-party email systems and storage
+          servers such as Google, Yahoo, and MSN Hotmail etc. to conduct
+
+
+TRIANZ INTERNAL                                                                       5
+          business. Such communications and transactions should be conducted
+          through proper approval from InfoSec Assurance and IS Operations.
+      •   It is strictly forbidden to use Trianz’s email system for anything other
+          than legitimate business purposes. Therefore, sending of personal
+          emails, chain letters, junk mail, and jokes is prohibited. All messages
+          distributed via the Trianz’s email system are Trianz’s property.
+      •   Letters, files and other documents attached to emails may belong to
+          others. By forwarding this information, without permission from the
+          sender, to another recipient associates may be liable for copyright
+          infringement.
+
+   5.2 Email Account Privacy and Responsibility
+  •   Trianz IS Operations strives to protect the privacy of system users, and
+      respects the privacy of correspondence between associates.
+  •   Particular care should be taken when sending confidential or commercially
+      sensitive information. If in doubt, please consult Trianz IT Service desk.
+  •   Trianz confidential messages should be distributed to Trianz associates.
+      Forwarding to locations outside is prohibited.
+  •   If you receive any offensive, unpleasant, harassing or phishing messages
+      via email or intranet you are requested to inform your Manager or the IT
+      Personnel immediately.
+  •   Trianz reserves and intends to exercise the right to review, audit, intercept,
+      access and disclose all messages created, received or sent over the
+      electronic mail system for any purpose.
+
+
+   5.3 Email Account Expiry and Deletion
+      •   During termination of employment, associates email accounts shall be
+          disabled and emails will be deleted by IS Operations based on
+          instructions provided by Trianz Human Resources function.
+      •   Long Term Leave:
+  ➢ Email accounts will be disabled by Trianz IS Operations upon notification
+    from Human Resources for an employee leave of over one month, including
+    sick leave, maternity leave and sabbatical leave. Emails will be retained.
+    The email account will be re-activated upon the employee’s return to work.
+  ➢ Requests to maintain the email account as active during an employee’s
+    long-term leave must be submitted to the Human Resources Office by the
+      Associates Manager/Supervisor for approval.
+
+
+
+TRIANZ INTERNAL                                                                        6
+   5.4 quotas and Limits
+      •   Email policies include mechanisms to limit the size of messages to
+          prevent the overloading of servers and network bandwidth.
+      •   There are limits on the size of an email that can be received and
+          transmitted. No email greater that 10 MB can be accepted for delivery.
+          No email greater than 10 Mbytes can be accepted for transmission by
+          the email servers.
+
+
+   6. Measurement and Reporting
+  •   InfoSec Assurance team will verify compliance to this policy through
+      various methods, including but not limited to, periodic walk-through,
+      business tool reports, internal and external audits, and feedback to the
+      policy owner.
+  •   Non-Compliance: An employee found to have violated this policy may be
+      subject to disciplinary action, up to and including termination of
+      employment.
+
+
+   7. Exception(s)
+  •   Any exception to the policy must be approved by the InfoSec Assurance
+      team and IS Operations in advance.
+
+
+   8. ISO Control Mapping
+
+
+              Category        ISO 27001:2022 Control           Document Name
+           of Control                                        as per ISO 27001:2022
+              Technologi      8.1 User end point devices-      Email Security
+           cal Controls    Information stored on             Policy
+                           processed by or accessible
+                           via user end point devices
+                           shall be protected
+
+
+
+
+TRIANZ INTERNAL                                                                      7
+                                      Document Control
+
+Owner:        CISO                         Release ID:                     EMSEC-POL-0049
+
+
+
+
+           For Trianz Process Improvement Group (TPIG) Purpose Only
+
+       Version History
+
+ Ver.       Date         Author        Reviewer     Approv      Reason for Change Description
+ No.                                                er          Change
+
+
+ 0.1       27-Apr-18     Kamadev       Gangadha      Kama            Initial   Initial Draft
+                                       r             dev
+
+
+ 1.0       20-Jun-18     Kamadev                     Kama      Approval        Baseline
+                                                     dev       for Baseline
+                                                     Pradh
+                                                     an
+
+ 1.1       11-May-20      Karthik N                  Karthik   Review          Updated
+                                                     N                         information
+                                                                               classification
+                                                                               and format
+                                                                               changes
+
+ 2.0       14-May-20      Karthik N    Phani         Karthik   For             Approved and
+                                       Krishna       N         Approval        Baselined
+
+
+
+
+ TRIANZ INTERNAL                                                                           8
+2.1     18-Jan-21   Karthik N   Phani        Karthik   For Review   Updated
+                                Krishna      N                      information
+                                                                    classification
+                                                                    and format
+                                                                    changes
+
+3.0     18-Jan-21   Karthik N   Phani       Karthik    For          Approved and
+                                Krishna     N          Approval     Baselined
+
+
+3.1     06-Oct-21               Karthik N              For Review   Minor changes in
+                                                                    section 3 (Roles
+                                                                    and
+                                                                    Responsibilities)
+
+4.0     11-Oct-21               Karthik N              For          Approved and
+                                                       Approval     Baselined
+
+
+4.0     21-Dec-21   Karthik N   Karthik N   Karthik    Annual       No change
+                                            N          Review
+
+
+4.1     13-Mar-22   Sanjana     Karthik N   Sanjana For Review      The scope has
+                                                                    been extended
+                                                                    to products and
+                                                                    services
+
+5.0     15-Mar-22   Sanjana,    Karthik N   Sanjana For             Approved and
+                                                       Approval     Baselined
+
+
+
+5.1     03-May-23   Shalini,    Balu Nair   Srikanth   For review   Reviewed
+                    Rama                                            Migrated to new
+                    Madhavan                                        template
+
+6.0     12-May-23   Rama        Vijaya      Srikanth   For          Approved
+                    Madhavan                M          approval
+
+
+
+
+TRIANZ INTERNAL                                                                 9
+6.1     15-Feb-24   Vijaya      Balu     Srikanth    For Review   Updated the
+                                                                  section ISO
+                                                                  Control Mapping
+                                                                  aligning to ISO
+                                                                  27001:2022
+
+7.0     23-Feb-24   Vijaya      Balu     Srikanth   For           Approved and
+                                                    Approval      baselined
+
+
+7.1     06-May-25   Balu Nair   Vijaya              Yearly        Migrated to a
+                                                    Review        new Template
+
+
+8.0     14-May-25   Balu Nair   Vijaya   Srikanth   For           Approved and
+                                                    Approval      baselined
+
+
+
+
+TRIANZ INTERNAL                                                            10
+                                Contact Information
+                                               Name
+
+                                               Email
+
+                                              Phone
+
+
+
+
+                                  Thank You
+                                     infosec@trianz.com
+
+
+
+
+ The content in this document is copyrighted; any unauthorized use – in part or full – may violate the
+ copyright, trademark, and other laws. This document may not be modified, reproduced, or publicly
+   displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz
+ name and its products are subject to trademark and copyright protections, regardless of how and
+                                          where referenced.
+
+
+TRIANZ INTERNAL                                                                                      11
+

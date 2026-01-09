@@ -1,0 +1,210 @@
+# Media Handling Procedure of Work From Home Associates
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. PURPOSE
+2. OBJECTIVE
+3. SCOPE
+4. ROLES AND RESPONSIBILITIES
+5. MEDIA SHIPPING FOR WORK-FROM-HOME ASSOCIATES
+6. RESOURCES
+7. TRAINING
+8. REFERENCES
+9. ISO CONTROL MAPPING(S)
+
+## 1. Purpose
+The purpose of this document is to describe the Media Handling procedure when requests are raised to ship devices containing information across non-office locations, especially when Associates are working from home.
+
+## 2. Objective
+To ensure that any media or devices, such as laptops containing personal, sensitive, or confidential information, are shipped securely and that all corresponding actions are addressed proactively to minimize any information risks.
+
+## 3. Scope
+- Applies to all Associates (Permanent and contractor employees).
+- Covers all corporate functions and delivery functions in Trianz.
+- Includes all Trianz products and services.
+
+## 4. Roles and Responsibilities
+- All employees, contractors, or temporary personnel must follow the Consent Procedure before collecting any personal data.
+
+### Responsibilities by Role:
+- **All Associates, Including Contract Employees**: 
+  - Raise requests with the admin team and IS team with necessary approvals as indicated in the procedure.
+  
+- **Admin Team**: 
+  - Ensure shipping of devices across non-office locations by working with vendors following the steps mentioned in the procedure.
+  
+- **HR Operations Team**: 
+  - Coordinate with Associates serving resignation to ensure a smooth implementation of the process as indicated in the procedure.
+  
+- **IS Team**: 
+  - Ensure verification and/or required implementation for safeguarding data or information in the device.
+  
+- **Purchase Team**: 
+  - Ensure required insurance and/or vendor agreements are in place.
+  
+- **Infosec Team**: 
+  - Provide any approvals for exceptions to this process or clarifications on these procedures.
+
+## 5. Media Shipping for Work-from-home Associates
+For Trianz owned Information Assets (e.g., Laptops):
+- **For New Hires**: Follow the onboarding process; no changes are required.
+- **For Resigned Associates**: 
+  - HR will communicate to the Associate to raise a request with IS at trianz.com with the subject “IS Verification and approval for shipping device (laptop) due to resignation.”
+- **For Other Active Associates**: 
+  - If there is a required movement of a device from one Associate to another, the Admin will communicate to the Associate to raise a request with IS at trianz.com with the subject “IS Verification and approval for shipping device (laptop) for Project purpose.”
+- **IS Team Verification**: 
+  - Upon receiving a request from an Associate, the IS team will verify the following:
+    - Conduct a live video call to check the health or condition of the device (laptop).
+
+### 5. Device Handling for Resigned Associates
+
+- For laptops of resigned Associates, a remote wipe should be performed if technically possible. If not possible due to technical reasons or project needs:
+  - Verify if encryption is enabled.
+  - The Associate must obtain approval from the Project Manager (PM) confirming that there is no critical client or Trianz data on the device.
+  - Ensure that relevant data is backed up from the device.
+- The Information Systems (IS) team will provide approval to the Admin team to proceed with shipping after the above steps are completed.
+- The Admin team may proceed with shipping only after receiving approval from the IS team.
+
+### 6. Client-Owned Information Assets (e.g., Laptops)
+
+- The Admin team must ensure the following:
+  - Obtain approval and confirmation from the PM that there is no critical client or Trianz data on the device (laptop).
+  - Ensure adequate backups have been taken for the data on the device (laptop).
+- The Admin team may proceed with shipping only after the above steps are completed.
+- The Admin team must also consider the following generic points in collaboration with the Purchase team:
+  - Establish agreements with shipping vendors that include loss recovery or damage costs and nondisclosure clauses (e.g., agreements for DTDC, Bluedart).
+  - Assess the feasibility of insurance for transit damage.
+  - Update the asset movement register.
+
+### 7. General Asset Handling Requirements
+
+For both assets, regardless of ownership, the Admin team must ensure:
+- Packaging is adequate to protect contents from physical damage during transit and complies with manufacturers’ specifications.
+- Special controls are implemented to protect sensitive information from unauthorized disclosure or modification, such as:
+  - Use of locked containers.
+  - Tamper-evident packaging that reveals any attempts to gain access.
+
+The Admin and Purchase teams must ensure:
+- Agreements with shipping vendors include adequate clauses for asset protection during transit, such as loss recovery or damage costs and nondisclosure clauses.
+- Insurance is secured wherever possible.
+- The asset movement register is updated with:
+  - Type of physical media.
+  - Authorized sender/recipients.
+  - Date and time of movement.
+  - Number of physical media.
+  - Presence of any personal or critical information.
+
+### 8. Resources
+
+- Admin Team
+- Information Systems Team
+- Purchase Team
+- HR Operations Team
+- Information Security Assurance Team
+
+### 9. Training
+
+- None
+
+### 10. References
+
+- Media Handling Policy
+- Data Disposal Policy, procedure, and template
+
+### 11. ISO Control Mapping
+
+- **Category of Control**: Technological Controls
+  - **ISO 27001:2022 Control**: 7.10 Storage Media Control
+  - **Document Name**: Media Handling Procedure for Work from Home Associates
+  - **Description**: Storage media shall be managed throughout their lifecycle of acquisition, use, transportation, and disposal in accordance with the organization's classification scheme and handling requirements.
+
+### Document Control
+
+- **Owner**: CISO
+- **Release ID**: MEDHL_PROC_0133
+
+### Version History
+
+- **Version**: 0.01
+- **Date**: 15-Sep-2020
+- **Author**: Anitha Ravindran
+- **Reviewer**: Phani Krishna
+- **Approver**: Phani Krishna
+- **Reason for Change**: Updated policy for shipping devices from non-office locations due to Covid-19 circumstances.
+
+# Policy Document Version History
+
+1.0 - 21-Sep-2020  
+- Author: Anitha Phani Krishna  
+- Status: Baselined and approved  
+
+1.1 - 28-Jan-2021  
+- Author: Vijaya Rajeswari Phani Krishna  
+- Status: For Review  
+- Note: Information classification updated  
+
+2.0 - 28-Jan-2021  
+- Author: Vijaya Rajeswari Phani Krishna  
+- Status: For Approval  
+- Note: Approved and Baselined  
+
+2.0 - 06-Jan-2022  
+- Author: Divya Balu Nair  
+- Status: For Review  
+- Note: No Changes  
+
+2.1 - 24-Feb-2022  
+- Author: Kruti Karthik  
+- Status: For Review  
+- Note: The scope has been extended to products and services  
+
+3.0 - 18-Mar-2022  
+- Author: Kruti Siva N  
+- Status: For Approval  
+- Note: Approved and baselined  
+
+3.1 - 03-May-2023  
+- Author: Shalini Rama Madhavan Balu Nair Srikanth  
+- Status: For Review  
+- Note: Reviewed and No changes; Migrated to new template  
+
+4.0 - 12-May-2023  
+- Author: Rama Vijaya Srikanth M  
+- Status: For Approval  
+- Note: Approved and Baselined  
+
+4.1 - 15-Feb-2024  
+- Author: Shalini Vijaya Srikanth  
+- Status: For Review  
+- Note: Mapped with new ISO control 7.10  
+
+5.0 - 23-Feb-2024  
+- Author: Shalini Vijaya Srikanth  
+- Status: For Approval  
+- Note: Approved and Baselined  
+
+5.1 - 28-May-2025  
+- Author: Kruti Vijaya  
+- Status: For Review  
+- Note: Migrated to new template  
+
+6.0 - 29-May-2025  
+- Author: Kruti Vijaya Srikanth  
+- Status: For Approval  
+- Note: Approved and Baselined  
+
+# Contact Information
+- Name: [To be filled]  
+- Email: [To be filled]  
+- Phone: [To be filled]  
+
+# Copyright Notice
+The content in this document is copyrighted; any unauthorized use – in part or full – may violate copyright, trademark, and other laws. This document may not be modified, reproduced, publicly displayed, performed, or distributed, or used for any public or commercial purposes. The Trianz name and its products are subject to trademark and copyright protections, regardless of how and where referenced.

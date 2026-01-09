@@ -1,0 +1,900 @@
+# Information Security Policy
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- **Public**: Not classified
+- **Internal**: Classified
+- **Confidential**: Not classified
+- **Restricted**: Not classified
+
+## Table of Contents
+1. INTRODUCTION
+2. PURPOSE
+3. OBJECTIVES
+4. TRIANZ INFORMATION SECURITY POLICY STATEMENT
+   - 4.1 Guiding Principles
+   - 4.2 Scope
+   - 4.3 Resources
+   - 4.4 No Exception of Privacy and Monitoring
+   - 4.5 Regulatory Compliance
+5. RESPONSIBILITIES: SECURITY ORGANIZATION, AUTHORITY, AND OBLIGATIONS
+   - 5.1 The Infosec & Data Privacy Assurance Team
+   - 5.2 Policy Authority and Maintenance
+   - 5.3 Policy Review
+   - 5.4 Exceptions
+   - 5.5 Workforce Obligation to Comply
+   - 5.6 Sanctions
+   - 5.7 Acknowledgment
+   - 5.8 Information Security Awareness, Education and Training
+   - 5.9 Client Policies
+   - 5.10 Data: Information Classification and Risk-Based Controls
+     - 5.11 Public
+     - 5.12 Internal
+     - 5.13 Confidential
+     - 5.14 Restricted
+6. PEOPLE: ROLES, ACCESS CONTROL, AND ACCEPTABLE USE
+   - 6.1 Roles
+   - 6.2 Identity and Access Management
+   - 6.3 Acceptable Use Policy
+7. INFORMATION SECURITY OBJECTIVES
+8. INFORMATION ASSETS
+   - 8.1 Protecting Information Assets
+   - 8.2 Managing Information Assets
+   - 8.3 Mobile Device Management & Mobile Application Management
+9. THREAT INTELLIGENCE
+10. PHYSICAL SECURITY, MONITORING AND PROTECTING AGAINST PHYSICAL AND ENVIRONMENTAL THREATS
+11. CONFIGURATION MANAGEMENT
+12. INFORMATION DELETION
+13. DATA MASKING
+14. DATA LEAKAGE PREVENTION
+15. SUPPLIER MONITORING ACTIVITIES
+16. WEB FILTERING
+17. SECURE CODING
+18. INCIDENT REPORTING AND RESPONSE
+   - 18.1 Incident Reporting
+   - 18.2 Event Management
+   - 18.3 Breach Notification
+19. SERVICE PROVIDERS: RISKS AND GOVERNANCE
+   - 19.1 Service Provider Approval Required
+   - 19.2 Contract Obligations
+20. CLIENT INFORMATION: MANAGING INTAKE, MAINTENANCE, AND CLIENT REQUESTS
+   - 20.1 Requirements Identification
+   - 20.2 Intake Management
+   - 20.3 Client Data Protection
+   - 20.4 Client Data and Media Disposal
+21. RISK AND COMPLIANCE MANAGEMENT
+   - 21.1 Risk Assessment and Analysis
+   - 21.2 Remediation and Mitigation Plans
+   - 21.3 Vulnerability and Penetration Tests
+   - 21.4 Compliance Management
+22. EFFECTIVE DATE
+23. ISO CONTROL MAPPING(S)
+
+## 1. Introduction
+This Information Security Policy promotes an effective balance between information security practices and business needs. The Policy helps Trianz Inc. (hereinafter “Trianz”) meet our legal obligations and our clients' expectations. Trianz may implement different levels of security controls for different information assets based on risk and other considerations.
+
+## 2. Purpose
+Trianz handles sensitive information of clients. Protection of client information is vital to Trianz. To fulfill this strategic objective, Trianz has implemented an information security management system.
+
+## 3. Objectives
+Top Management will provide commitment and direction to establish and maintain information security:
+- Ensure confidentiality, integrity, and availability of critical information at all times.
+- Protect information assets.
+- Protect critical information from unauthorized access, use, disclosure, modification, and disposal, whether intentional or unintentional.
+- Ensure identification of the Information Security Objectives.
+- Commit to continually improve the Information Security Management System based on Information Security Objectives.
+
+## 4. Trianz Information Security Policy Statement
+Trianz is committed to implementing processes and systems to protect and safeguard the Confidentiality, Integrity, and Availability (CIA) of all critical information and information processing assets from internal and external threats to ensure secure business operations. All associates are expected to read, understand, and follow this Policy. However, no single policy can cover all possible information security issues the organization may face. Associates must seek guidance from their manager or other designated Trianz resources before taking any actions that create information security risks or deviate from this Policy's requirements.
+
+**4.1 Guiding Principles**  
+Trianz follows these guiding principles when developing and implementing information security controls:  
+- Trianz strives to protect the confidentiality, integrity, and availability of its information assets and those of its clients.  
+- Trianz will comply with applicable privacy and data protection laws.  
+- Trianz will balance the need for business efficiency with the need to protect sensitive, proprietary, or other confidential information from undue risk.  
+- Trianz will grant access to sensitive, proprietary, or other confidential information only to those with a need to know and at the least level of privilege necessary to perform their assigned functions.  
+- Recognizing that an astute workforce is the best line of defense, Trianz will provide security training opportunities and expert resources to help individuals understand and meet their information security obligations.  
+- Trianz will define Information Security Objectives against Information Security Controls for better control effectiveness and continual improvement.  
+
+**4.2 Scope**  
+- This Policy applies across the entire Trianz enterprise, including external vendors, service providers, clients, and business partners that may have access to Trianz’s organizational information.  
+- Employees must follow this Policy in addition to any obligations listed in the applicable code of conduct or employee handbook.  
+- Individuals are personally responsible for taking or avoiding specific actions as stated in the Policy. In some situations, the Infosec & Data Privacy Assurance Team, or another Trianz resource, will take or avoid the stated actions.  
+- Trianz may approve and make available more detailed or location or business unit-specific policies, procedures, standards, and processes to address specific information security issues. Compliance with these additional documents is required unless an approved exception is obtained.  
+
+**4.3 Resources**  
+- No single document can cover all possible information security issues. Balancing the need to protect Trianz's information assets with work requirements can be challenging.  
+- Many effective organizational, people, physical, and technical controls are available. Do not assume the cost or time required to implement them; seek help if needed.  
+- You must seek guidance before taking any actions that create information security risks. Contact your manager for assistance.  
+
+**4.4 No Expectation of Privacy and Monitoring**  
+- Except where applicable law provides otherwise, there is no expectation of privacy when using Trianz's network or systems, including transmitting and storing files, data, and messages.  
+- To enforce compliance with Trianz's policies and protect its interests, Trianz reserves the right to monitor any and all use of its network and systems as permitted by applicable law.  
+- By using Trianz's systems, you agree to such monitoring, which may include intercepting and reviewing network traffic, emails, or other messages or data sent or received, and inspecting data stored on individual file directories, hard disks, or other printed or electronic media.  
+
+**4.5 Regulatory Compliance**  
+- Various information security and data protection or privacy laws, regulations, and industry standards apply to Trianz and the data handled, including Personally Identifiable Information (PII), Personal Data, or Personal Sensitive Data.  
+- Trianz is committed to complying with all applicable laws, regulations, and standards, as our clients expect nothing less from us.  
+- This section lists the obligations that you are most likely to encounter.
+
+### 4. Personal Information: Data Protection and Breach Notification Laws
+- State laws protect individuals' personal information, including Social Security numbers, driver's license numbers, financial account information, and other sensitive data.
+- Organizations must notify affected individuals if personal information is lost or accessed by unauthorized parties, as required by breach notification laws in most states.
+- Organizations are required to protect personal information using reasonable data security measures or more specific means as mandated by certain state data protection laws.
+- These laws apply to personal information related to Trianz’s employees, clients, business partners, external vendors, service providers, and others.
+- Before collecting, creating, using, or processing personal information, contact the Data Privacy team via email at Privacy@trianz.com.
+
+### 5. Responsibilities: Security Organization, Authority, and Obligations
+
+#### 5.1 The Infosec & Data Privacy Assurance Team
+- The Chief Information Officer (CIO) and Chief Information Security Officer (CISO) lead the Information Security and Data Privacy Assurance team, which is accountable for all aspects of Trianz’s information security program.
+- For guidance, clarifications, or support, contact the team via email at InfoSec@trianz.com.
+
+#### 5.2 Policy Authority and Maintenance
+- The Information Security and Data Privacy Assurance team is authorized to develop, maintain, and enforce this Policy and any additional policies, procedures, standards, and processes as necessary.
+
+#### 5.3 Policy Review
+- The Information Security and Data Privacy Assurance team will conduct an annual review of this Policy, engaging stakeholders such as individual business units, Human Resources, Legal, and other relevant Trianz organizations.
+
+#### 5.4 Exceptions
+- Specific business needs may necessitate exceptions to this Policy. Exception requests must be logged in the exception handling tool by the IS Team and require necessary approvals from the CISO, referencing the exception handling policy.
+- The Information Security and Data Privacy Assurance team will periodically review all exceptions. Approval of exceptions will not be granted solely based on previous approvals; each situation will be reviewed based on its specific facts and risks.
+
+#### 5.5 Workforce Obligation to Comply
+- Employees and contractors must comply with all applicable aspects of this Policy.
+- This Policy does not restrict communications or actions protected or required by federal, state, or local law.
+- Attempts to bypass or circumvent security controls, such as sharing passwords, deactivating anti-virus software, modifying secure configurations, or creating unauthorized network connections, are prohibited.
+- Employees and contractors are responsible for their actions and compliance with this Policy and should report any violations or security risks to their manager or the Infosec & Data Privacy Assurance Team.
+
+#### 5.6 Sanctions
+- Violations of this Policy may result in disciplinary action or sanctions, which may include suspension, access restrictions, work assignment limitations, or termination, in accordance with applicable law.
+- Trianz may report suspected illegal activities to authorities and assist in investigations or prosecutions.
+
+#### 5.7 Acknowledgment
+- All employees and contractors must acknowledge that they have read, understood, and agree to comply with this Policy, either in writing or through an approved online process.
+- Acknowledgment must be completed promptly following a new hire or as designated by the Information Security and Data Privacy Assurance team.
+- Material changes to this Policy may require additional acknowledgment, and Trianz will retain acknowledgment records.
+
+#### 5.8 Information Security Awareness, Education, and Training
+- Trianz is committed to providing awareness, education, and training regarding information security.
+
+### 4. Information Security Awareness Programme
+
+The Information Security Awareness Programme aims to make personnel aware of their responsibilities regarding information security and how to fulfill those responsibilities. 
+
+- The programme will consider the roles of both internal and external personnel, including external consultants and supplier personnel.
+- Activities will be conducted in the form of mailers.
+
+#### Information Security Awareness Topics
+The awareness programme will cover the following general aspects:
+
+- Management's commitment to information security throughout the organization.
+- Familiarity and compliance with applicable information security rules and obligations, including policies, standards, laws, statutes, regulations, contracts, and agreements.
+- Personal accountability for actions and inactions, and responsibilities for securing or protecting information belonging to the organization and interested parties.
+- Basic information security procedures, such as information security event reporting and baseline controls (e.g., password security).
+- Contact points and resources for additional information and advice on information security matters, including further awareness materials.
+
+### 5. Education & Training
+
+- Trianz will identify, prepare, and implement a training plan for technical teams requiring specific skills and expertise.
+- Technical teams must possess skills for configuring and maintaining the required security level for devices, systems, applications, and services. If skills are lacking, the organization will take action to acquire them.
+- The education and training program may include various forms, such as:
+  - On-the-job training mentored by expert staff or consultants.
+  - Rotating staff members to follow different activities.
+  - Recruiting already skilled individuals and hiring consultants.
+  
+- Trianz recognizes that a knowledgeable workforce is the best defense. Therefore, security training opportunities and expert resources will be provided to help employees and contractors understand their obligations and avoid undue risks.
+- Employees must complete information security training within a reasonable time after initial hire.
+- All workforce members are required to complete information security training at least annually.
+- Managers are responsible for ensuring their employees complete all required training.
+- Failure to participate in required training may be deemed a violation of this Policy.
+- Attendance records and copies of training materials will be retained by Trianz.
+
+### 5.9 Client Policies
+
+- Trianz may handle sensitive client information and may agree to comply with specific client information security policies or standards.
+- To minimize exceptions, Trianz has developed this Policy to include common requirements for most clients.
+- If Trianz agrees to comply with additional client-specific policies or standards, affected workforce members will be notified.
+- The workforce must comply with any such policies or standards, including related training or additional background screening requirements.
+- Legal and the Information Security and Data Privacy Assurance team must review and approve any client agreements requiring compliance with specific information security policies or standards.
+
+### 5.10 Data: Information Classification and Risk-Based Controls
+
+- Trianz has established a three-tier classification scheme to protect information based on risk levels, allowing for the selection of appropriate security controls while balancing protection needs with costs and business efficiencies.
+- All Trianz information may be classified as:
+  - Public
+  - Internal
+  - Confidential
+  - Restricted
+
+- Unless marked otherwise or clearly intended to be Public Information, treat all Trianz and client information as Confidential Information, regardless of its source or form (electronic, paper, verbal, etc.).
+- Apply security controls appropriate for the assigned information classification level to all information stored, transmitted, or otherwise handled. Use classification level markings where feasible.
+
+### 5.11 Public
+
+- Public Information is defined as information that Trianz has made available to the general public.
+- Information received from another party (including a client) covered under a current, signed non-disclosure agreement must not be classified or treated as Public Information.
+
+#### Public Information Examples
+Examples of Public Information include, but are not limited to:
+- Press releases
+- Trianz marketing materials
+- Announcements
+
+### 5.12 Internal
+- Internal classification applies to all organization assets owned by Trianz and intended for internal circulation only.
+- Internal use only information will be accessible to all employees of Trianz and may be shared with authorized external parties (e.g., clients or third-party service providers).
+- Adequate security measures must be implemented to prevent unauthorized access and modifications.
+- Examples of Internal Information include:
+  - Operating procedure manuals
+  - Internal announcements
+  - Process assets
+
+### 5.13 Confidential
+- Confidential Information is defined as information that could harm Trianz, its clients, employees, or other entities if disclosed improperly, or that is not publicly available.
+- Potential harms may relate to:
+  - Individual privacy
+  - Business Confidential information
+  - Trianz’s or its clients’ marketplace position
+  - Legal or regulatory liabilities
+- Confidential Information must be marked to denote its status when technically feasible.
+- Applications or databases containing Confidential Information should display an initial banner upon access.
+- Authorization is required to disclose Confidential Information to external parties.
+- Guidance from a manager or Legal must be sought before disclosing Confidential Information, and an appropriate nondisclosure or other agreement must be verified.
+
+#### (a) Confidential Information Examples:
+Confidential Information includes, but is not limited to:
+- Trianz financial data, client lists, revenue forecasts, program or project plans, and intellectual property.
+- Client-provided data, information, and intellectual property.
+- Client contracts and contracts with external parties, including vendors.
+- Communications or records regarding internal Trianz matters and assets, including operational details and audits.
+- Trianz policies, procedures, standards, and processes (e.g., this Policy is Confidential Information and should not be shared without authorization from the Infosec & Data Privacy Assurance Team).
+- Any information designated as "confidential" or another protected classification by an external party, subject to a current non-disclosure agreement.
+- Information regarding employees.
+- Summaries, reports, or other documents containing Confidential Information.
+- Drafts, summaries, or other working versions of any of the above.
+
+#### (b) Safeguards:
+Confidential Information must be protected with specific safeguards, including:
+- **Authentication**: Electronically stored Confidential Information must be accessible only after logging into Trianz’s network.
+- **Discussions**: Discuss Confidential Information only in non-public places. If necessary in public, take reasonable steps to avoid being overheard.
+- **Copying/Printing/Faxing/Scanning**: Only scan, copy, and distribute Confidential Information as necessary or allowed under applicable agreements. Ensure that unauthorized individuals do not view the information. When faxing, use a cover sheet indicating the information is Confidential and set fax machines to print a confirmation page after sending. Office equipment must be located in secured areas and configured to avoid storing Confidential Information.
+- **Encryption**: Encrypt Confidential Information stored on laptops, smartphones, or other mobile devices. Consider encrypting when processing or transmitting it externally based on specific risks. Seek assistance from the IS Team or Information Security and Data Privacy Assurance Team if needed.
+- **Mailing**: Use a service that requires a signature for receipt when sending Confidential Information outside Trianz.
+
+### 5.13 Confidential Information
+
+- **Sealed Security Envelope**: Information inside Trianz must be placed in a sealed security envelope marked "Confidential Information."
+
+- **Meeting Rooms**: Confidential Information should only be shared in physically secured meeting rooms. Any Confidential Information written on a whiteboard or presentation tool must be erased or removed after the meeting concludes.
+
+- **Need to Know**: Access, sharing, or inclusion of Confidential Information in documents, presentations, or other resources is permitted only when there is a business need to know.
+
+- **Physical Security**: Systems containing Confidential Information, or any stored Confidential Information in paper or other forms, must be housed in physically secured areas.
+
+### 5.14 Restricted Information
+
+- **Definition**: Restricted Information is a subset of Confidential Information that may cause serious harm if disclosed or used unauthorizedly, particularly containing personal or Sensitive Data.
+
+- **Marking**: Mark Restricted Information to denote its status when technically feasible. Applications or databases containing Restricted Information should display an initial banner upon access.
+
+- **Authorization**: 
+  - You may not remove Restricted Information from Trianz’s environment without authorization.
+  - Authorization is required to disclose Restricted Information to external parties. Consult with Legal and the Infosec & Data Privacy Assurance Team before any external disclosure.
+
+- **Examples of Restricted Information**:
+  - Personal information for employees, clients, business partners, or others.
+  - Sensitive Trianz business information, such as budgets, financial results, or strategic plans.
+
+- **Safeguards**:
+  - **Authentication**: Electronically stored Restricted Information must be accessible only after logging into Trianz’s network with specific authorization.
+  
+  - **Discussions**: Restricted Information can only be discussed in non-public places, ensuring no eavesdropping occurs.
+  
+  - **Copying/Printing/Faxing/Scanning**: 
+    - Do not scan, copy, or distribute Restricted Information unless absolutely necessary. Ensure that unauthorized individuals do not view the information.
+    - When faxing, use a cover sheet indicating the information is Trianz’s Restricted Information. Set fax machines to print a confirmation page after sending. Place copiers, fax machines, and scanners in physically secured areas and configure them to avoid storing Restricted Information.
+  
+  - **Encryption**: Encrypt Restricted Information when transmitting it (internally or externally) or when storing it on mobile devices or stationary devices like servers and databases.
+  
+  - **Mailing**: 
+    - Do not mail Restricted Information unless absolutely necessary. Use a service requiring a signature for receipt when sending it outside Trianz. 
+    - When mailing within Trianz, use a sealed security envelope marked "Restricted Information." If using electronic media, encrypt and password protect it.
+  
+  - **Meeting Rooms**: Share Restricted Information only in physically secured meeting rooms. Erase any written Restricted Information from whiteboards or presentation tools after the meeting.
+  
+  - **Need to Know**: Access, share, or include Restricted Information in documents, presentations, or other resources only when there is a specific business need to know.
+  
+  - **Network Segmentation**: Restricted Information must only be available in areas of Trianz’s network where there is a specific business need and must be segmented from the rest of the network using controls like firewalls and access control.
+  
+  - **Physical Security**: Systems containing Restricted Information or any stored Restricted Information must be housed in physically secured areas, accessible only to authorized individuals.
+
+### 6. People: Roles, Access Control, and Acceptable Use
+
+People are the best defense in information security but can also be the weakest link. Trianz grants access to its systems and data based on business roles and places limits on how information assets may be used to lower risks and protect both individuals and Trianz.
+
+#### 6.1 Roles
+
+- **Employees:**
+  - Human Resources conducts employee screening and background investigations.
+  - Employees handling Restricted Information may be required to undergo additional background screening and testing as permitted by law.
+  - Supervising managers may request access for their employees only to the systems and data necessary for business needs.
+
+- **External Parties:**
+  - Trianz grants access to approved external parties (contractors, vendors, service providers, business partners) with a demonstrated business need that cannot be met through other means.
+  - A sponsoring employee must be designated for any external party before access is granted.
+  - The sponsoring employee is responsible for supervising the external party and ensuring compliance with this Policy.
+  - Access requests must be limited to necessary resources, and the sponsoring employee must request termination of access when the business need ends.
+
+#### 6.2 Identity and Access Management
+
+- **Unique User Accounts:**
+  - Trianz assigns unique user accounts and passwords using a primary ID. Sharing accounts or passwords is prohibited.
+  - If unique accounts cannot be assigned, mediated access, audit logs, or other controls must be used for accountability.
+
+- **Add, Change, Terminate Access:**
+  - Access is restricted to those with a business need to know. Managers should direct requests for access changes to the Information Systems (IS) team.
+  - User accounts and access levels must be periodically reviewed by system and application administrators.
+  - Human Resources must notify the IS team immediately when an employee leaves, and the IS team will deactivate accounts promptly.
+  - Managers should consult Human Resources and the Infosec & Data Privacy Assurance Team regarding access for employees on extended leave.
+
+- **Authorization Levels and Least Privilege:**
+  - Authorization levels must ensure individuals receive only the privileges necessary for their assigned activities (least privilege access).
+  - Administrative privileges should not be granted unless there is a specific business need, and should be limited as much as possible.
+
+- **Role-Based Access Controls:**
+  - Role-based access control methods should be used to assign authorization levels based on business functions, supporting least privilege and simplifying access reviews.
+
+#### 6.3 Acceptable Use Policy
+
+- Trianz provides network resources and systems for business purposes. Incidental non-business use must be for personal purposes only.
+- For questions regarding acceptable use of Trianz’s resources, employees should consult their manager or contact the Infosec & Data Privacy Assurance Team for guidance.
+
+### 8.1 Use of Trianz Resources
+- Do not use Trianz’s resources for commercial purposes, personal gain, or any activities that may create a real or perceived conflict of interest with Trianz.
+- Do not use Trianz’s resources in a way that negatively impacts your job performance or impairs others' abilities to perform their jobs.
+- Do not use Trianz’s network or systems for activities that may be illegal under applicable laws. Trianz may report suspected illegal activities to authorities and assist in investigations.
+
+### 8.2 Prohibited Activities
+Trianz prohibits the use of its resources for the following activities:
+- Hacking, spoofing, or launching denial of service attacks.
+- Gaining or attempting to gain unauthorized access to others' networks or systems.
+- Sending fraudulent email messages.
+- Forwarding emails from personal email accounts to Trianz official email accounts without verifying the sender’s identity and authenticity.
+- Forwarding emails from Trianz official email accounts to personal email accounts without verifying the sender’s identity and authenticity.
+- Distributing or attempting to distribute malicious software (malware).
+- Spying or attempting to install spyware or unauthorized monitoring tools.
+- Committing criminal acts such as terrorism, fraud, or identity theft.
+- Downloading, storing, or distributing child pornography or other obscene materials.
+- Downloading, storing, or distributing materials in violation of copyright.
+- Creating undue security risks or negatively impacting Trianz’s network and systems.
+- Causing embarrassment, loss of reputation, or other harm to Trianz.
+- Uploading, downloading, or disseminating inappropriate or offensive messages or media.
+- Distributing joke, chain letter, commercial solicitations, or hoax emails (spamming).
+- Disrupting the workplace environment or invading the privacy of others.
+- Using encryption or other technologies to hide illegal or unethical activities.
+- Installing or distributing unlicensed or pirated software.
+
+### 8.3 Desktop, Laptop, and End-User Controls
+- Access Trianz’s network only using approved end-user devices that meet current minimum information security standards.
+- Standards may include protective controls such as anti-virus software, patching levels, and required software versions.
+- Trianz-owned machines may automatically receive upgrades; remote access may be denied on non-Trianz owned devices that do not meet standards.
+- Use your own Trianz-provided account(s) to access Trianz’s network unless specifically authorized to use a device-specific or administrative account.
+- Lock screens must activate after a maximum inactivity time of 15 minutes. If handling Restricted Information, lock your screen whenever it is unattended.
+
+### 8.4 Information Handling and Storage
+- Properly handle, store, and securely dispose of Trianz’s information according to Trianz’s Records Retention Schedule.
+- You are responsible for any Confidential or Restricted Information you access or store. Do not allow others to access this information unless they have a business need to know.
+- Store critical files on regularly maintained (backed up) servers or storage resources, not solely on end-user devices.
+- Physically secure any media containing Trianz information, including hard drives, CDs, disks, and removable drives.
+- Store media containing Confidential or Restricted Information in a locked area when not in use.
+- Shred or destroy paper containing Confidential or Restricted Information before disposal. Return all electronic media to IT for secure disposal when no longer needed.
+
+### 8.5 Internet Use: Email, Messaging, Social Media, and Cloud Computing
+- The internet provides various services essential for Trianz employees and contractors; however, some technologies may pose undue risks.
+
+### 9.1 General Internet Use
+- Limit web browsing and access to streaming media (videos, audio streams, recordings, webcasts) to business purposes or as permitted by this Policy.
+- Internet use must comply with this Policy.
+- Do not use peer-to-peer file sharing services due to risks to Trianz’s information assets.
+- Do not use internet-based remote access services to access Trianz’s network or systems. Use only Trianz-provided or authorized software for remote access.
+
+### 9.2 Email and Social Media
+- Do not disclose Confidential or Restricted Information to unauthorized parties on blogs or social media, or transmit it in unsecured emails or instant messages.
+- Do not post or send messages that represent or imply you speak for Trianz unless authorized.
+- Use professional judgment when drafting and sending communications, as messages may be forwarded outside your control.
+- Email signatures should be professional, appropriate for your business role, and not excessively long or complex.
+- Never open unexpected email attachments, click on links, or interact with unexpected email content, as these may contain malware.
+- Be cautious of emails that appear to come from known contacts, as senders can be spoofed.
+- Trianz may block certain attachments or emails based on risk.
+- Do not respond to emails requesting Confidential or Restricted Information unless you have verified the sender's origin and purpose.
+
+### 9.3 Cloud Computing
+- Trianz may use internet-based, outsourced services for computing and data storage based on business needs.
+- Before using any cloud computing services to manage Trianz’s Confidential or Restricted Information, obtain approval from Legal and the Infosec & Data Privacy Assurance Team.
+- This Policy applies to any document sharing or internet-based services involving Trianz Confidential or Restricted Information.
+
+### 9.4 Mobile Devices and Bring Your Own Device (BYOD) to Work
+- Mobile devices (laptops, smartphones, tablets) can enhance productivity but also pose risks to Trianz’s information assets.
+- Employees may use their own devices to connect to Trianz’s network as per the BYOD Policy, subject to this Policy and any additional Trianz policies.
+- You may need to install specific security controls on your device, such as device management software, access controls, encryption, and remote wiping.
+- Allow IT to review your device and remove Trianz data if your relationship with Trianz ends, you change devices, or in similar situations.
+- Provide Trianz access to your device when requested for legitimate business purposes, including security incidents or investigations.
+
+### 6. Mobile Device Security
+
+- If your mobile device is lost or stolen, or if other security controls are compromised, you must take appropriate actions to secure Confidential or Restricted Information.
+- All mobile devices that access Trianz email or contain Trianz information must be protected with a password or an approved authentication method.
+- Physically secure mobile devices used to access or store Trianz information. 
+- Do not leave laptops or other devices unattended unless they are locked or otherwise secured.
+- Do not leave mobile devices or bags containing them visible in a parked car or check them as baggage on airlines or public transportation.
+- Do not connect a mobile device containing Trianz information to any unsecured network without an up-to-date firewall or other security controls. Unsecured networks include:
+  - Home networks
+  - Hotel networks
+  - Open or pay wireless hotspots
+  - Convention networks
+  - Any other network not approved or controlled by Trianz.
+
+### 7. Remote Access
+
+- Remote access to Trianz’s network and systems may be granted for business needs.
+- Use two-factor authentication for remote access.
+- Configure remote access to limit access to only those assets and functions approved by the Infosec & Data Privacy Assurance Team.
+- Only use Trianz-provided means for remote access, such as VPN connections, dial-up modems, or the Trianz portal.
+- Do not install or set up any other remote connections, including remote desktop software, without authorization from the Infosec & Data Privacy Assurance Team.
+- Remote access connections must timeout after a maximum of one hour of inactivity.
+- Split tunneling or mechanisms that bridge unsecured networks with Trianz’s network are not permitted.
+
+### 8. External Network Connections
+
+- Extranet connections to external parties' networks must be reviewed and approved by the Infosec & Data Privacy Assurance Team before implementation.
+- A signed business agreement must accompany any extranet connection.
+- Limit connectivity to only those assets required for the specified functions and time period as contractually agreed.
+- Trianz monitors extranet connections and may deactivate them if unusual or inappropriate traffic is detected.
+
+### 9. Wireless Network Connections
+
+- Do not connect any wireless access points, routers, or similar devices to Trianz’s network without approval from the Infosec & Data Privacy Assurance Team.
+- Secure and maintain approved wireless network (WiFi) connections according to current Trianz technical and physical security standards.
+- Do not connect wireless access points (WAPs) directly to Trianz’s trusted network without going through a firewall or other protective controls.
+- Deactivate WAPs when not in use, including during non-business hours.
+- Only transmit, receive, or make available Restricted Information through WiFi connections using appropriate protective controls, including encryption.
+- If you have questions regarding WiFi security measures for handling Restricted Information, contact the Infosec & Data Privacy Assurance Team.
+- End-user devices accessing wireless networks must have personal firewalls installed and maintained according to current Trianz standards.
+- Deactivate your computer’s wireless networking interface when not in use.
+
+### 10. Information Security Objectives
+
+- Top Management will provide commitment and direction to identify Information Security Objectives at relevant functions and levels, with responsibilities assigned on how and when to achieve them.
+
+### 11. Information Assets
+
+- Protecting and managing Trianz’s Information Technology Environment involves key safeguards that must be supported by all employees to the extent applicable.
+  
+#### 11.1 Protecting Information Assets
+
+- Install and configure Trianz-owned computers according to current technical standards and procedures, including:
+  - Anti-virus software
+  - Other standard security controls
+  - Approved operating system versions and software patches.
+- Trianz supports preventive controls to avoid unauthorized activities or access to data based on risk levels.
+
+### 11. Detective Controls
+
+Detective controls are implemented to timely discover unauthorized activities or access to data, including continuous system monitoring and event management.
+
+#### 11.a End-User Computers and Access
+- End-user computers must request authentication from Trianz’s domain at startup and user login.
+- Network access may be denied if installed software versions do not match current standards.
+- Users must be properly authenticated to access Trianz’s network.
+- User accounts must require strong passwords.
+- User accounts will be deactivated after five failed login attempts. Reactivation may occur based on a timeout or manual reset, depending on risk and technical feasibility.
+- Secure remote access points via VPN or Secure Private Access require:
+  - Two-factor authentication or Single Sign-On (SSO).
+  - Encryption of authentication credentials during transmission across any network, whether internal or external.
+
+#### 11.b Passwords and User Credentials
+- Strong passwords must be selected and all user credentials protected, including passwords, tokens, badges, smart cards, or other identification means.
+- Password rules must be implemented to ensure strong passwords, as per the Password Policy.
+- Password rule enforcement should be automated to the extent technically feasible.
+
+##### Minimum Password Rules
+Passwords must:
+- Be at least 8 characters long (mandatory) and a user-specified number of characters between 0 and 14.
+- Include a mix of upper and lower case letters, numbers, and special characters (punctuation marks and symbols).
+- Not consist of dictionary words.
+- Not use obvious keyboard sequences or common terms (e.g., "qwerty," "12345678," "password").
+- Not include easily guessed personal information (e.g., names, birthdays, addresses).
+
+- Techniques for creating strong passwords include:
+  - Substituting numbers for words.
+  - Using the first letter of each word in a memorable sentence.
+
+- Passwords must be treated as Restricted Information.
+- Users may be required to change passwords periodically according to Trianz standards.
+- Users must change their password immediately and report if they believe it has been compromised.
+
+##### Password Protection
+Passwords must be protected by:
+- Not disclosing passwords to anyone, including IT personnel.
+- Not sharing passwords with others (including coworkers, managers, clients, or family).
+- Not writing down passwords or recording them insecurely.
+- Not using save password features for applications unless authorized by Trianz.
+- Not using the same password for different systems or accounts, except where automated single sign-on features are used.
+- Not reusing passwords.
+
+IT procedures and technical standards define additional steps to protect passwords for administrative or device-specific accounts.
+
+#### 11.c Perimeter Controls
+- Perimeter controls must secure Trianz’s network against external attacks.
+- Firewalls with Unified Threat Management (UTM) features must be configured according to current technical standards and procedures to separate Trianz’s trusted network from the internet or internet-facing environments.
+- Additional perimeter controls may include:
+  - Intrusion detection and prevention services.
+  - Data loss prevention software.
+  - Specific router or network configurations.
+  - Various forms of network monitoring based on risks.
+- Internet connections outside perimeter controls must not be created.
+
+#### 11.d Data and Network Segmentation
+- Technical controls, such as firewalls and access control lists, may be used to segment data or areas of the network according to risks.
+- Restricted Information must be segmented from the rest of Trianz’s network, to the extent technically feasible and reasonable.
+- Network segmentation plans must not be altered without approval from the Infosec & Data Privacy Assurance Team.
+
+#### 11.e Encryption
+- Trianz uses encryption to protect Confidential and Restricted Information based on risks.
+- Encryption may be applied to both stored data (data-at-rest) and transmitted data (data in-transit).
+- Encrypting personal information may reduce Trianz’s liability in the event of a data breach.
+- Only generally accepted encryption algorithms and products approved by the Infosec & Data Privacy Assurance Team may be used.
+- Encryption products and algorithms must be periodically reviewed for any known vulnerabilities.
+
+### 12.1 Encryption Technologies
+- Laws may restrict the export of certain encryption technologies. Seek guidance from Legal before exporting or making encryption technologies available to individuals outside the US.
+
+#### 12.1.1 Encryption Key Management
+- Encryption algorithms utilize keys to secure data. Proper key management is essential as these keys allow decryption of protected data.
+- Select encryption keys to maximize protection levels, treating them as Restricted Information.
+- Ensure keys are securely stored and backed up, and track access to them.
+- Keys must not be known or accessible to only one individual.
+- Change encryption keys periodically based on assessed risks.
+
+### 12.2 Data and Media Disposal
+- When Trianz retires or removes computing, network, or office equipment that may contain Confidential or Restricted Information, specific steps must be taken to render the media unreadable.
+- Simply deleting files or reformatting disks is insufficient to prevent data recovery.
+- Media must be either physically destroyed according to applicable waste disposal regulations or scrubbed using data wiping software that meets recognized data destruction standards, such as NIST Special Publication 800-88.
+
+### 12.3 Log Management and Retention
+- Trianz logs system and user activities on network and computing assets based on assessed risks.
+- Secure log data and files to prevent tampering and retain them according to Trianz’s Records Retention Schedule.
+- Regularly review logs, preferably using automated methods, to identify any anomalous activities that may indicate a security incident.
+
+### 12.4 Managing Information Assets
+- IT is responsible for managing IT operations and related activities at Trianz.
+- Only Trianz-supplied or approved software, hardware, and information systems may be installed or connected to Trianz’s network.
+- All changes to Trianz’s production IT environment must be approved and managed by the CISO to avoid unexpected business impacts.
+- Direct inquiries regarding IT operations to IS@trianz.com or itservicedesk@trianz.com.
+
+#### 12.4.1 Procurement
+- Only authorized IT personnel may procure information assets for use in or connection to Trianz’s network, regardless of whether they are purchased, open source, or free.
+- Seek guidance from the Infosec & Data Privacy Assurance Team early in the software development process to manage information security risks.
+- Authorization from Legal and the Infosec & Data Privacy Assurance Team is required before using cloud computing services to access, store, or manage Confidential or Restricted Information.
+
+#### 12.4.2 Asset Management
+- Track and document all information assets, including hardware and software, using Trianz’s asset management systems.
+- Inventory tracking must include operating system levels and all installed software versions to support vulnerability identification and mitigation.
+- Update the asset inventory as assets are removed from the business.
+- Assign a data owner for Confidential or Restricted Information to track its location, uses, and disclosures.
+- Properly dispose of all data and media to prevent breaches of Confidential or Restricted Information.
+
+#### 12.4.3 Authorized Environments and Authorities
+- Only authorized IT personnel may install and connect hardware or software in Trianz’s IT environment.
+- Do not convert end-user computers to servers or shared resources without IT assistance.
+- Limit administrative access to individuals with a business need to know, and distribute administrative access among multiple individuals to minimize risks.
+- The Head of IS Operations must approve any new or changed internet connections or internet-facing environments due to significant information security risks.
+
+#### 12.4.4 Change Management
+- IT maintains a change management process to minimize business impact or disruptions during changes in Trianz’s production IT environment.
+- Change requests must include an action plan.
+
+### 8.2 Application and Software Development
+
+1. **Change Management Process**: Implement and maintain a change management process to track identified problems, fixes, and releases during software development. This process must include:
+   - Assigned roles and responsibilities.
+   - Implementation milestones.
+   - Testing procedures.
+   - A rollback plan in case the change fails.
+   - Code archiving (versioning) tools for recovery and rebuilding of earlier versions.
+
+2. **Development Environment**: 
+   - Application and software development activities, including system testing, must occur in reasonably segmented environments to prevent undue impact on Trianz’s production IT environment.
+   - Maintain segregation of duties between development and operations.
+   - Developers may have limited access to production environments only for specific troubleshooting or support purposes, where personnel and expertise are limited.
+
+3. **Security Principles**: 
+   - Use security-by-design principles to identify and resolve potential information security risks early in the development process.
+   - Seek guidance from the Infosec & Data Privacy Assurance Team, critical vendors, industry experts, and best practices to avoid application-level security risks.
+   - Protect Restricted Information through encryption or other appropriate means.
+   - Employ defensive coding techniques, regular code reviews, and application-level scanning to identify and remediate information security issues before software release.
+
+### 8.3 Mobile Device Management & Mobile Application Management
+
+**Mobile Device Management (MDM) for Trianz Company Owned Devices**:
+1. All devices must be mandatorily enrolled for MDM.
+2. All information on the device is owned by Trianz.
+3. Trianz may remotely wipe all data on the device at its discretion or in response to incidents such as theft or compromise.
+
+**Mobile Application Management (MAM) for Bring Your Own Device (BYOD)**:
+1. All BYOD devices must be enrolled for MAM before accessing BYOD policy-permitted information or tools.
+2. Information managed by MAM is owned by Trianz; all other information is owned by the BYOD device owner.
+3. Trianz may remotely wipe only the MAM-managed data (e.g., Corporate Email, One Drive) on the device in response to incidents like theft or compromise.
+4. The MAM solution will not access users’ personal information or other applications and will not wipe any information other than MAM-managed applications data.
+
+### 9. Threat Intelligence
+
+Trianz is committed to employing effective methods to ensure the accuracy, completeness, and timeliness of the threat intelligence used. This process outlines the major steps involved in collecting and processing intelligence about threats at strategic, tactical, and operational levels. Refer to the Threat Intelligence Procedure for details.
+
+### 10. Physical Security, Monitoring, and Protection Against Physical and Environmental Threats
+
+**a) Physical (Environmental) Security**:
+- Trianz employs physical safeguards to prevent theft, intrusions, unauthorized use, or other abuses of its information assets. Compliance with Trianz’s current physical security policies and procedures is mandatory.
+- Ensure buildings are unobtrusive and provide minimal indication of their purpose or the presence of information processing activities.
+- Display of Confidential and Restricted Information must not be visible or audible to unauthorized individuals outside the organization.
+
+**b) Continuous Monitoring**:
+- Trianz ensures continuous monitoring through the installation of CCTV cameras to view, record, and monitor activities.
+
+### 11. Configuration Management
+- Trianz has established a Configuration Management Framework that includes software, hardware, services, and networks.
+- For all applicable configuration changes, templates are defined and implemented.
+- Logs shall be maintained for all configuration changes.
+- Configurations shall be monitored with a comprehensive set of system management tools.
+- Configuration settings shall be reviewed regularly to verify settings, evaluate password strengths, and assess activities performed.
+
+### 12. Information Deletion
+- The "Data Retention and Secure Disposal Policy" ensures that deletion methods (e.g., electronic overwriting or cryptographic erasure) comply with business requirements and relevant laws and regulations.
+- Results of deletion must be recorded as evidence.
+- Evidence of information deletion from suppliers must be obtained.
+- Refer to the Data Retention and Secure Disposal Policy and Procedure.
+
+### 13. Data Masking
+- Sensitive data must be encrypted at rest and in transit, complying with applicable legal, statutory, regulatory, and contractual requirements.
+- Various techniques such as pseudonymization, anonymization, and data obfuscation (data masking) are to be followed.
+- Refer to the Privacy By Design Procedure, Policy on the Usage of Cryptographic Controls, and Encryption Key Management Policy.
+
+### 14. Data Leakage Prevention
+- The policy ensures that users do not send sensitive or critical information outside the corporate network.
+- Data Loss Prevention (DLP) practices include detecting and preventing data breaches, exfiltration, or unwanted destruction of sensitive data.
+- DLP encompasses Network DLP, End Point DLP, Cloud DLP, and Storage DLP.
+- Please refer to the DLP Policy.
+
+### 15. Supplier Monitoring Activities
+- Trianz shall regularly monitor, review, evaluate, and manage changes in supplier information security practices and service delivery.
+- Audits of suppliers and sub-suppliers shall be conducted, in conjunction with the review of independent auditor's reports, if available.
+- Follow-up on issues identified during audits is required.
+- Please ensure compliance with the Supplier Security Policy.
+
+### 16. Web Filtering
+- Trianz ensures secure networking methods that include web filtering to protect systems from malware compromise and prevent access to unauthorized web resources.
+- This policy aims to eliminate security risks such as malware infection from accessing external websites with malicious content.
+- Please refer to the Web Filtering Policy.
+
+### 17. Secure Coding
+- Secure coding practices are integral to Application Security at Trianz.
+- All applications that process or store data owned by Trianz are subject to this policy.
+- This policy applies to all applications within Trianz’s production environment, as well as to administrators and users of these applications.
+- Please refer to the Secure SDLC Policy, Secure SDLC Procedure, and Dev SEC Ops Procedure.
+
+### 18. Incident Reporting and Response
+- The Infosec & Data Privacy Assurance Team maintains a security incident reporting and response process that ensures management notifications are made based on the seriousness of the incident.
+- The team investigates all reported or detected incidents and documents the outcomes, including any mitigation activities or remediation steps taken.
+
+#### 18.1 Incident Reporting
+- Immediately notify IS@trianz.com and/or log an incident ticket in the Concierto tool if you discover a security incident or suspect a breach in Trianz’s information security controls.
+- Trianz maintains various forms of monitoring and surveillance to detect security incidents, but you may be the first to become aware of a problem.
+
+### 18.1 Information Security Incident Management
+
+- Early detection and response can mitigate damages and minimize further risk to Trianz.
+- All Information Security Incidents must be managed according to the Information Security Incident Management Response Policy and Procedure.
+- The severity of the incident will be assessed, and the management response will be proportionate to the threat.
+- Treat all information regarding security incidents as Restricted Information. Do not share it internally or externally without specific authorization.
+
+#### Security Incident Examples
+Report any of the following security incidents:
+
+- Loss or suspected compromise of user credentials or physical access devices (e.g., passwords, tokens, keys, badges, smart cards).
+- Suspected malware infections (e.g., viruses, Trojans, spyware, worms) or anomalous reports from anti-virus software or personal firewalls.
+- Loss or theft of any device containing Trianz information (excluding Public Information), such as computers, laptops, tablets, smartphones, USB drives, or disks.
+- Suspected unauthorized entry (hacking) into Trianz’s network or systems.
+- Any breach or suspected breach of Confidential or Restricted Information.
+- Attempts to obtain passwords or other Confidential or Restricted Information through social engineering or phishing.
+- Any situation that appears to violate this Policy or create undue risks to Trianz’s information assets.
+
+#### Compromised Devices
+If you become aware of a compromised device:
+
+- Immediately deactivate (unplug) any network connections, but do not power down the equipment to preserve valuable information.
+- Notify IS@trianz.com and itservicedesk@trianz.com immediately.
+
+### 18.2 Event Management
+- The Infosec & Data Privacy Assurance Team defines and maintains a security incident response plan for managing information security incidents.
+- Report all suspected incidents as described in this Policy and defer to the incident response process.
+- Do not impede the incident response process or conduct your own investigation unless specifically requested or authorized by the Infosec & Data Privacy Assurance Team.
+
+### 18.3 Breach Notification
+- Trianz may be legally required to report security incidents that result in exposure or loss of certain information or affect specific services or infrastructure.
+- Breaches of Restricted Information, especially personal information, are most likely to carry these obligations.
+- The Infosec & Data Privacy Assurance Team’s incident response plan includes a review step for required breach notifications.
+- Coordinate all external notifications with Legal and the Infosec & Data Privacy Assurance Team. Do not make external notifications without prior guidance and authorization.
+
+### 19. Service Providers: Risks and Governance
+- The Infosec & Data Privacy Assurance Team maintains a service provider governance program to oversee service providers interacting with Trianz’s systems or Confidential or Restricted Information.
+- This program includes processes to track service providers, evaluate their capabilities, and periodically assess risks and compliance with this Policy.
+
+#### 19.1 Service Provider Approval Required
+- Obtain approval from Legal and the Infosec & Data Privacy Assurance Team before engaging a service provider that will access Trianz’s systems or Confidential or Restricted Information.
+
+#### 19.2 Contract Obligations
+- Service providers accessing Trianz’s systems or Confidential or Restricted Information must contractually agree to comply with applicable laws and this Policy or equivalent information security measures.
+- Trianz may require service providers to demonstrate compliance through independent audits or other forms of review or certification based on risks.
+
+### 20. Client Information: Managing Intake, Maintenance, and Client Requests
+- Trianz frequently creates, receives, and manages data on behalf of clients.
+- Each business unit, with guidance from the Infosec & Data Privacy Assurance Team, must develop, implement, and maintain appropriate processes and procedures to manage client information.
+
+### 20. Client Data Intake and Protection
+
+Business unit-specific client data intake and protection processes must include the following minimum requirements:
+
+1. Identify client data and any pertinent requirements prior to data intake or creation.
+2. Maintain an inventory of client data created or received.
+3. Implement and maintain appropriate information security measures, including proper data and media disposal when Trianz no longer has a business need to retain the client data or is no longer permitted to do so by client agreement.
+
+#### 20.1 Requirements Identification
+- Identify any pertinent client data requirements prior to data intake or creation according to your business unit's client data intake and protection process. Requirements may be contractual, the result of applicable law or regulations, or both.
+
+#### 20.2 Intake Management
+Business unit-specific client data intake processes and procedures must provide for secure data transfer. Maintain an inventory of client data that includes, at a minimum:
+- A description of the client data.
+- The location(s) where the data is stored.
+- Who is authorized to access the data (by category or role, if appropriate).
+- Whether the data is classified as Confidential or Restricted Information.
+- How long the data is to be retained (using criteria, if appropriate).
+- Any specific contractual or regulatory obligations or other identified data protection or management requirements.
+
+- Treat any client-provided personal information as Restricted Information. Engage clients in an ongoing dialogue to determine whether business objectives can be met without transferring personal information to Trianz.
+
+#### 20.3 Client Data Protection
+- Protect all client data Trianz creates or receives in accordance with this Policy and the data's information classification level, whether Confidential or Restricted Information, in addition to any specific client identified requirements.
+
+#### 20.4 Client Data and Media Disposal
+- Ensure that any client data, or media containing client data, is securely disposed of when it is no longer required for Trianz business purposes, or as required by client agreement. Update the applicable business unit client data inventory accordingly.
+
+### 21. Risk and Compliance Management
+Trianz supports an ongoing risk management action cycle to:
+- Enforce this policy.
+- Identify information security risks.
+- Develop procedures, safeguards, and controls.
+- Verify that safeguards and controls are in place and working properly.
+
+#### 21.1 Risk Assessment and Analysis
+- Trianz maintains a risk assessment program to identify information security risks across its IT environment, including application software, databases, operating systems, servers, and other equipment, such as network components.
+- The Infosec & Data Privacy Assurance Team coordinates risk assessment activities, which may include analyses, audits, reviews, scans, and penetration testing. Do not take any actions to avoid, impact, or otherwise impede risk assessments.
+- Only the Infosec & Data Privacy Assurance Team is authorized to coordinate risk assessments. Seek approval from Legal and the Information Security Coordinator prior to engaging in any risk assessment activities or disclosing any assessment reports outside Trianz.
+
+#### 21.2 Remediation and Mitigation Plans
+- The Infosec & Data Privacy Assurance Team maintains and oversees remediation and mitigation plans to address risk assessment findings according to risk levels.
+
+#### 21.3 Vulnerability and Penetration Tests
+- The Infosec & Data Privacy Assurance Team maintains a process to identify and track applicable vulnerabilities, scan devices for current patch status, and advise system administrators.
+- Schedule any necessary updates using standard change management processes and according to risk level. Make all Trianz-owned devices available to IT for timely patching and related activities.
+
+#### 21.4 Compliance Management
+- Trianz maintains compliance management processes to enforce this Policy. Some monitoring and enforcement processes may be automated.
+- If compliance management processes indicate that you may have acted contrary to this Policy, you may receive an automated notification or be contacted by the Information Security Coordinator to explain. In some cases, the Information Security Coordinator may contact your supervising manager.
+
+### 22. Effective Date
+- This Information Security Policy is effective from the date of notification.
+
+### 23. ISO Control Mapping(s)
+
+#### Category of Control: Organizational Control
+- **ISO 27001:2022 Control 5.1**: Policies for information security must be defined, approved by management, published, communicated to relevant personnel and interested parties, and acknowledged. These policies should be reviewed at planned intervals and whenever significant changes occur.
+
+#### Document Name as per ISO 27001:2022
+- **Document Name**: Information Security Policy
+
+### Document Control
+- **Owner**: CISO
+- **Release ID**: IS-POL-0005
+
+### Version History
+- **Version 0.00**: Initial draft (26-Feb-07) by Jyotessh G
+- **Version 0.01**: Review feedback incorporated (26-Feb-07) by Jyotessh G, reviewed by Nair
+- **Version 1.00**: Approved and baselined (26-Feb-07) by Balu Nair, approved by Zulfikar Deen
+- **Version 1.01**: Revised policies in accordance with the revised ISMS framework (30-Jul-08) by Bharateesha
+- **Version 2.00**: Baselined (29-Apr-09) by Balu Nair
+- **Version 2.01**: Formatted entire document (04-Jan-10) by Balu Nair
+- **Version 3.00**: Baselined (04-Jan-10) by Balu Nair
+- **Version 3.01**: Formatted the document, modified cover page (14-May-10) by Balu Nair
+- **Version 4.00**: Baselined (20-May-10) by Balu Nair
+- **Version 4.01**: Modified Release ID in cover page and header (06-May-11) by Srilakshmi
+- **Version 5.00**: Baselined (06-May-11) by Srilakshmi
+- **Version 6.00**: Modified policy format to standard template (21-May-12) by Srilakshmi
+- **Version 7.00**: Modified template format (08-Nov-12) by Balu Nair
+- **Version 8.00**: Included Information Security Statement and approved (19-May-15) by Sudharsana
+- **Version 8.01**: Inclusion of Cloud Services in scope (16-Oct-16) by Balu Nair
+- **Version 9.00**: Baselined (09-Dec-16) by Balu Nair
+- **Version 9.01**: No changes (16-Jan-19) by Joshy VM
+- **Version 10.00**: Addition of MDM Policy (15-Mar-19) by Balu Nair
+- **Version 11.0**: Approved for Release (31-May-19) by Balu Nair
+- **Version 11.1**: Reference to Data Protection and Cloud Policy (12-Nov-19) by Anitha
+- **Version 11.2**: Review (20-Nov-19) by Karthik
+- **Version 11.3**: Approved for release (19-Dec-19) by Karthik N
+- **Version 11.4**: Made generic for all Trianz entities (14-Apr-20) by Anitha
+- **Version 12.0**: Approved for Release (15-Apr-20) by Anitha
+- **Version 12.1**: Baselines modified with CISO/CIO (11-May-20) by Karthik N
+- **Version 13.0**: Approved and baselined (13-May-20) by Karthik N
+- **Version 14.0**: Approved and baselined (31-July-20) by Anitha
+- **Version 14.1**: Updated information classification (14-Jan-21) by Anitha
+
+# Section 12 – Risks and Compliance Management
+
+## 15.0 Document History
+- **Version 15.1**
+  - **Date:** 08-Nov-21
+  - **Author:** Karthik
+  - **Reviewer:** Karthik N
+  - **Approver:** Sivaramakrishnan N
+  - **Reason for Change:** Updated sections 2, 4, 5, and 7.3.
+
+- **Version 16.0**
+  - **Date:** 12-Aug-22
+  - **Author:** Sanjana
+  - **Reviewer:** Sivaramakrishnan N
+  - **Approver:** Karthik N
+  - **Reason for Change:** Reviewed with no changes.
+
+- **Version 16.1**
+  - **Date:** 12-May-23
+  - **Author:** Rama
+  - **Reviewer:** Vijaya
+  - **Approver:** Madhavan
+  - **Reason for Change:** Migrated to new template.
+
+- **Version 17.0**
+  - **Date:** 12-May-23
+  - **Author:** Beniyel S
+  - **Reviewer:** Balu N
+  - **Approver:** Srikanth M
+  - **Reason for Change:** Baselined.
+
+- **Version 17.1**
+  - **Date:** 19-Jan-24
+  - **Authors:** Balu, Beniyel, Srikanth
+  - **Reviewer:** Vijaya M
+  - **Approver:** Srikanth M
+  - **Reason for Change:** Policy updated – Migration from ISO 27001:2013 to ISO 27001:2022. Updated all sections and added sections on Web Filtering, Information Deletion, Configuration Management, Data Masking, Data Leakage Prevention, Threat Modeling, etc.
+
+- **Version 18.0**
+  - **Date:** 23-Feb-24
+
+- **Version 18.1**
+  - **Date:** 6-May-25
+  - **Author:** Balu Nair
+
+- **Version 19.0**
+  - **Date:** 14-May-25
+  - **Author:** Balu Nair
+  - **Reviewer:** Srikanth M
+  - **Approver:** Vijaya
+  - **Reason for Change:** Year Review, migrated to a new template.
+
+## Contact Information
+- **Name:** [Contact Name]
+- **Email:** infosec@trianz.com
+- **Phone:** [Contact Phone]
+
+## Copyright Notice
+The content in this document is copyrighted; any unauthorized use – in part or full – may violate copyright, trademark, and other laws. This document may not be modified, reproduced, publicly displayed, performed, distributed, or used for any public or commercial purposes. The Trianz name and its products are subject to trademark and copyright protections, regardless of how and where referenced.

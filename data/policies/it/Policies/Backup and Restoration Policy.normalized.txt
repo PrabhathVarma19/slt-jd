@@ -1,0 +1,184 @@
+# Backup and Restoration Policy
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public: ☐
+- Internal: ☒
+- Confidential: ☐
+- Restricted: ☐
+
+## Table of Contents
+1. Purpose
+2. Objective
+3. Scope
+4. Roles & Responsibilities
+5. Policy
+   - 5.1 Back up and Restoration Cycle
+   - 5.2 Data Back Up
+   - 5.3 Data Restoration
+   - 5.4 Validation and Testing
+   - 5.5 Archives
+   - 5.6 Disposal
+6. Measurement and Reporting
+7. Compliance
+8. Exceptions(s)
+9. ISO Control Mapping(s)
+
+## 1. Purpose
+The purpose of this policy is to identify and establish processes, procedures, and good working practices for the backup and timely recovery of Trianz’s and client’s information and data existing in both electronic and physical form within Trianz Managed Systems.
+
+## 2. Objective
+The objective of the policy is to ensure that optimum backup and proper restoration is provided to physical and logical systems operated by Trianz.
+
+## 3. Scope
+This policy applies to the backup of all important information and data, regardless of its form, including the recovery of IT systems and supporting infrastructure. It covers data available on premises and in the cloud environment, wherever applicable. The policy applies to all Trianz managed products and services.
+
+## 4. Roles & Responsibilities
+1. **Data Backup**
+   - **Roles:** IS Operations / Project team / Product team
+   - **Responsibilities:**
+     - Ensure that Trianz data is securely maintained and available for backup.
+     - Follow Trianz backup and restoration procedures during backup.
+
+2. **Data Encryption**
+   - **Roles:** IS Operations / Project team / Product team
+   - **Responsibilities:** 
+     - Ensure data is encrypted during backup, wherever applicable.
+
+3. **Data Restorations**
+   - **Roles:** Function Owner
+   - **Responsibilities:** 
+     - The IS/Project/Product Support team must restore sample data monthly from one of the backups taken during the month.
+
+4. **Audit & Compliance**
+   - **Roles:** InfoSec & Data Privacy Assurance
+   - **Responsibilities:** 
+     - Check data and restoration processes on a yearly basis.
+
+5. **Breach of Policy**
+   - **Roles:** HR
+   - **Responsibilities:** 
+     - HR will take necessary action in case of any breach of policy as per the disciplinary action mentioned in the HR Policy.
+
+## 5. Policy
+
+### 5.1 Back up and Restoration Cycle
+- The standard backup cycle is defined in the Backup and Restoration procedure as follows:
+  - Daily
+  - Weekly
+  - Monthly
+
+### 5.2 Data Back Up
+
+- IS Operations, delivery teams, and product teams are responsible for system support and data backup tasks. They must follow Trianz’s Disaster Recovery Procedures and Data Retention policies to ensure adequate backup and system recovery practices.
+  
+- All data must be systematically backed up, including updates necessary for system re-installation or configuration.
+
+- Backup files must be encrypted and appropriately labeled. Systems managing backed-up files should store dates and codes/markings for easy identification of the original data source and backup type.
+
+- All encryption keys must be securely stored, with clear procedures to ensure backup media can be promptly decrypted in the event of a disaster.
+
+- If the data to be backed up contains Personal Data, Personal Sensitive Data, or Personally Identifiable Information, it must be anonymized or erased according to legal and regulatory requirements.
+
+- A recording mechanism must be maintained to document all backup information, including function, data location, date, type of backup (e.g., Incremental, Full), and any failures or issues related to the backup job.
+
+- Copies of backup media must be removed from devices as soon as possible after a backup or restore is completed.
+
+- Access to the on-site backup location (either on-premises or cloud) must be restricted to authorized personnel only.
+
+- Data stored on-premises or in the cloud must be backed up based on a defined frequency.
+
+- Backup media must be protected in accordance with the Data Protection and Media Handling Policies.
+
+- Backup data/media that is no longer required must be clearly marked and recorded for secure disposal, considering environmental factors.
+
+### 5.3 Data Restoration
+
+- Function Owners must request data restoration by contacting the IS Operations Service Desk or Project/Product infrastructure management team, preferably by raising a service ticket through the IS Service Desk online facility. Only files the user is authorized to access will be restored.
+
+- The IS Operations Service Desk Team must verify the user's permission to view or obtain restored files. Restored content will be returned to the same source folder or area, requiring the requestor to have access to that location.
+
+- Function Owners requesting a restore must provide detailed information about the data, including:
+  - The reason for the restore.
+  - The names of the files and/or folders to be restored.
+  - The original location of the files and/or folders (guidance will be provided by the Service Desk).
+  - The date, day, or time of deletion/corruption or the nearest approximation.
+  - The last date, day, or time the user recalls the data being intact and successfully accessed.
+
+- All backup and recovery procedures must be documented and made available to Data Centre personnel responsible for data restores.
+
+- Requests from third-party software/hardware vendors for file or system restores must be made under the supervision of the Server Support Team via the IS Operations Service Desk.
+
+- Personnel accessing backup media for restoration must return any used media to a secure location when no longer required.
+
+- A log must be maintained to record the use of backup media whenever it is requested or used from secure storage.
+
+### 5.4 Validation and Testing
+
+- IS Operations/Project and Product infrastructure management teams are responsible for periodic testing of backup and recovery systems.
+
+**5.5 Archives**  
+- Data archival must be conducted in accordance with the Data Retention policy.
+
+**5.6 Disposal**  
+- Backup data and media must be disposed of in a secure manner.
+
+**6. Measurement and Reporting**  
+- The frequency of data backup must be measured and reported. The frequency can be:  
+  - Daily  
+  - Weekly  
+  - Monthly  
+  - The choice of frequency depends on the criticality and technical feasibility.  
+- The type of data backup can be:  
+  - Full  
+  - Differential  
+  - Incremental  
+  - The selection of backup type is based on project or function requirements.  
+- Data restoration must align with project requirements and technical feasibility.
+
+**7. Compliance**  
+- The data backups and restoration process must be audited as part of internal audits, following the audit calendar.
+
+**8. Exceptions(s)**  
+- Any exceptions to this policy require formal written approval from the Information Security Assurance Team.
+
+**9. ISO Control Mapping(s)**  
+- The following ISO 27001:2022 control applies:  
+  - **Category of Control:** Technological controls  
+  - **ISO 27001:2022 Control:** 8.13 Information backup  
+  - **Document Name as per ISO 27001:2022:** Backup and restoration policy  
+  - Backup copies of information, software, and systems must be maintained and regularly tested in accordance with the agreed topic-specific policy on backup.
+
+### 6.0 Approval and Review Process
+
+- **6.0**: On 02-Nov-2021, Pranesh and Siva submitted for approval. Approved and baselined by Sivaramakrishnan N.
+  
+- **6.1**: On 21-Dec-2021, Karthik N submitted for review. No changes were made.
+
+- **7.0**: On 13-Jan-2022, Karthik N submitted for approval. Approved and baselined by Sivaramakrishnan N.
+
+- **7.1**: On 12-Mar-2022, Sanjana and Karthik N submitted for review. The scope has been extended to products and services.
+
+- **8.0**: On 18-Mar-2022, Sanjana submitted for approval. Approved and baselined by Sivaramakrishnan N.
+
+- **8.1**: On 06-April-2023, Krutideepta and Pallavi Chakrabarty submitted for review. A new template change was proposed.
+
+- **9.0**: On 12-May-2023, Krutideepta submitted for approval. Approved and baselined by Srikanth M.
+
+- **9.1**: On 19-Feb-2024, Beniyel S and Vijaya R submitted for review. ISO Control Mapping has been added.
+
+- **10.0**: On 23-Feb-2024, Beniyel S and Vijaya R submitted for review. Approved and baselined by Srikanth M.
+
+- **10.1**: On 16-Apr-2025, Vijaya and Balu submitted for review. Migrated to a new template and yearly review.
+
+- **11.0**: On 14-May-2025, Vijaya and Balu submitted for approval. Approved and baselined by Srikanth M.
+
+### Contact Information
+
+- **Email**: infosec@trianz.com
+
+### Copyright Notice
+
+The content in this document is copyrighted; any unauthorized use – in part or full – may violate copyright, trademark, and other laws. This document may not be modified, reproduced, publicly displayed, performed, distributed, or used for any public or commercial purposes. The Trianz name and its products are subject to trademark and copyright protections, regardless of how and where referenced.

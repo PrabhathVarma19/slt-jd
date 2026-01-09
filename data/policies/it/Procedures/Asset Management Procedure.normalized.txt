@@ -1,0 +1,297 @@
+# ASSET MANAGEMENT PROCEDURE
+
+## Statement of Confidentiality
+The information contained in this document is internal to Trianz. It shall not be disclosed, duplicated, or used for any purpose other than that stated herein, in whole or in part, without the express written consent of Trianz.
+
+## Information Classification
+- Public
+- Internal
+- Confidential
+- Restricted
+
+## Table of Contents
+1. INTRODUCTION
+2. OBJECTIVES
+3. SCOPE
+4. ASSETS
+5. ASSET RISK ASSESSMENT
+6. ASSET MANAGEMENT PROCEDURE
+   - 6.1 Asset Identification
+   - 6.2 Asset Register/Asset Inventory
+   - 6.3 Asset Tracking
+   - 6.4 Asset Tagging
+   - 6.5 Asset Review
+   - 6.6 Secure Disposal
+   - 6.7 Acceptable Usage of Assets
+   - 6.8 Monitoring, Auditing, Compliance and Reconciliation of Asset Records
+7. ROLES AND RESPONSIBILITIES
+8. ACRONYMS/ABBREVIATIONS
+   - 8.1 Related Guidelines, Templates and Checklists
+9. MEASUREMENT
+10. ISO CONTROL MAPPING(S)
+
+## 1. Introduction
+The purpose of the Asset Management procedure is to establish a formal, structured, and precise process for classifying and managing assets in accordance with the Information Security Policy and Asset Management Policy.
+
+## 2. Objectives
+The Asset Management procedure aims to:
+- Establish a structured framework for managing information assets effectively.
+- Define roles and responsibilities for asset management.
+- Ensure accountability for asset identification, classification, and protection.
+- Ensure accountability for information assets across all business functions.
+- Ensure adequate resources for effective implementation and continuous improvement of asset management practices.
+- Maintain a comprehensive asset inventory, including hardware, infrastructure, equipment, and licenses.
+- Improve visibility into the actual cost of assets for better financial planning.
+- Ensure detailed asset insights to assess the Total Cost of Ownership (TCO) of IT services.
+
+## 3. Scope
+This procedure applies to:
+- All employees, contractors, part-time and temporary workers, and those employed by others to perform work, regardless of geographical location.
+- All assets available in all forms, including but not limited to physical and electronic forms.
+- All assets available on premises, including those with vendors, suppliers, partners, or on cloud.
+
+## 4. Assets
+Assets are used to deliver services within Trianz and include:
+- Computer systems
+- Cloud services
+- Network hardware
+- Software used to process data
+
+Some assets may also be configuration items (CIs) subject to configuration management, such as service monitoring applications or servers. Non-computerized systems holding information must be asset registered with relevant file identifications and storage locations.
+
+### Main Categories of Assets
+- Information: This includes databases and systems.
+
+### 5. Asset Risk Assessment
+- A risk assessment must be conducted for all assets of Trianz. Refer to the Risk and Opportunity Management Procedure for details.
+
+### 6. Asset Management Procedure
+
+#### 6.1 Asset Identification
+- Identify all assets related to the project, specifying the source (Client/Trianz).
+- Identify all assets related to the corporate function.
+
+#### 6.2 Asset Register/Asset Inventory
+- All assets must be documented in an asset register/asset inventory.
+- The inventory should include assets in the cloud-computing environment, identifying both cloud service customer data and cloud service derived data.
+- The Asset Register will be maintained by respective project managers/leads.
+- Data/Information owners must classify data and objects based on data type, value, sensitivity, and criticality to the organization.
+
+#### 6.3 Asset Tracking
+- All assets must be tracked using the asset management control document tool according to the following categories:
+  - **Asset Categories**: Desktop, laptop, HDD, network assets, printers, cloud assets, servers, storage, TV, projectors, RSA tokens, and critical documents/data.
+  - **Procurement Mode**: Rental, purchase, direct lease, etc.
+  - **Asset Status**: Active, damaged, e-waste, not working, end of life, theft, etc.
+  - **Asset Location**: Any location.
+  - **Vendor/Agency**: The vendor or agency associated with the asset.
+  - **Asset ID**: Unique identifier for the asset.
+  - **Serial Number**: Manufacturer's serial number.
+  - **Assigned To**: Individual or project the asset is assigned to.
+  - **Warranty/Insurance**: Details of warranty or insurance coverage.
+  - **Project Code**: Code associated with the project.
+  - **Asset Allocation Date**: Date the asset was allocated.
+- Organization assets assigned to individuals or projects/functions must be returned upon termination or transfer of the respective individual or group.
+
+#### 6.4 Asset Tagging
+- Physical assets must be tagged according to the Guidelines for Information Labeling & Handling. Other information assets will be tagged based on respective license/subscription details.
+
+#### 6.5 Asset Review
+- All assets will be reviewed quarterly, with email communication sent to each individual asset owner.
+- The purpose is to maintain asset records, including changes, updates, or deletions as required.
+- Modifications to asset data may be triggered by Incident Management, Problem Management, and Configuration Management.
+- The asset database will include all assets with status designations such as ordered, in storage, assigned, retired, or disposed of.
+- Asset owners must acknowledge and confirm the status of the assets they own.
+
+#### 6.6 Secure Disposal
+- Organization assets must be securely disposed of when no longer needed, including physical devices, hard copies, digital assets, and cloud service customer assets containing information.
+- Disposal of assets may categorize them as:
+  - Obsolete
+  - Unserviceable
+  - To be traded in
+  - To be sold
+  - Missing (stolen)
+  - To be disposed of by other means.
+- Refer to the Data Retention and Secure Disposal Policy for further details.
+
+#### 6.7 Acceptable Usage of Assets
+- All Trianz assets shall be used only for official purposes, and project managers should ensure compliance.
+
+### 6.8 Monitoring, Auditing, Compliance and Reconciliation of Asset Records
+
+- Personal assets are not permitted on Trianz premises and secure areas unless project needs and requirements are met with necessary approvals.
+- Compliance status for licensing and information security requirements is monitored.
+- Formal inventory audits of all physical assets are conducted.
+- Audits of the Asset Management System and audit reconciliation are performed.
+- Audits of logical assets, including installed software on workstations and IT configurations, are conducted as required by the organization.
+- Compliance with this procedure is mandatory; all project managers must ensure continuous compliance monitoring within their projects.
+- Internal Audit will periodically review compliance with this procedure. Any violations will result in corrective action by management.
+- An earlier review may be warranted under the following circumstances:
+  - Regulatory or statutory changes or developments.
+  - Results or effects of critical incidents.
+  - Any other relevant or compelling reason.
+
+### 7. Roles and Responsibilities
+
+Each role involved in this procedure has the following main responsibilities:
+
+- **CISO**
+  - Ensures the organization's asset management strategy aligns with security policies and regulatory requirements.
+  - Approves the acquisition or disposal of assets.
+
+- **Infosec Team**
+  - Ensures that the "Asset Management Policy" and "Asset Management Procedure" are communicated and understood within their respective organizational units, with CISO approval.
+  - Ensures that the "Information Asset Classification Policy" and "Information Asset Management Policy & Procedure" are communicated and understood within their project teams.
+
+- **Project Manager**
+  - Responsible for classifying all project assets, obtaining approvals, and implementing adequate user access controls.
+  - Designs the information system and ensures classification of the information processed by the systems.
+  - Maintains and updates the assets inventory.
+
+- **Asset Owner**
+  - Accountable for classifying information assets according to the organization's Information Asset Management Policy.
+  - Responsible for complying with the "Information Asset Management Policy" and "Information Asset Management Procedure."
+
+- **User**
+  - Responsible for protecting the assets entrusted to them.
+
+- **IS Senior Manager**
+  - Ensures capacity planning, acquisition, deployment, maintenance, and disposal of IT assets.
+  - Manages IT asset procurement, tracks financials, and optimizes cost efficiency.
+  - Ensures IT assets are protected against security incidents and properly managed during changes.
+  - Maintains an up-to-date asset inventory, generates reports, and ensures visibility of IT assets.
+
+- **IS Asset Manager**
+  - Responsible for tracking assets through their acquisition and distribution.
+
+### 8. Acronyms/Abbreviations
+
+- **ITAM**: IT Asset Management
+- **HAM**: Hardware Asset Management
+- **SAM**: Software Asset Management
+- **AMC**: Annual Maintenance Contract
+
+### 8.1 Related Guidelines, Templates and Checklists
+
+- Media Handling
+- Data Retention and Disposal Procedure
+- Acceptable Usage Policy
+
+### 9. Measurement
+
+- **New Asset Purchases**: Count the number of new purchases made of asset types.
+- **Assets in Stock**: Count the number of assets updated as "in stock," "reserved," or "deployed" from the status "in-transit" or "received."
+- **Assets Lost**: Count the number of change requests for 'lost/stolen' assets over the period.
+- **Assets Deployed**: Count the number of requests to deploy assets over the period.
+- **Assets Disposed**: Count the number of requests for asset disposal.
+
+### 10. ISO Control Mapping(s)
+
+- **Organizational Controls**:
+  - **5.9 Inventory of Information and Other Associated Assets**: An inventory of information and other associated assets, including owners, shall be developed and maintained. (Document Name: Asset Management Control Procedure)
+  - **5.10 Acceptable Use of Information and Other Associated Assets**: Control rules for the acceptable use and procedures for handling information and other associated assets shall be identified, documented, and implemented. (Document Name: Asset Management Procedure)
+  - **5.11 Return of Assets**: Personnel and other interested parties shall return all the organization's assets in their possession upon change or termination of their employment, contract, or agreement. (Document Name: Asset Management Procedure)
+
+### Document Control
+
+- **Owner**: CISO
+- **Release ID**: AMP-PROC-0129
+
+### Version History
+
+- **0.1**: 24th Oct 2019 - Initial Draft by Karthik N, reviewed by Phani Krishna.
+- **0.2**: 5th Nov 2019 - Review post changes incorporated by Karthik N, reviewed by Phani Krishna.
+- **1.0**: 20-Nov-19 - Approved for release to bluebook by Balu Nair, reviewed by Vivek Sambasivam.
+- **1.1**: 11-May-20 - Review of roles modified with CISO/CIO integrated by Karthik N, reviewed by Balu Nair.
+
+### Document Version History
+
+1. **Version 2.0**  
+   - Date: 15-May-20  
+   - Authors: Karthik N Phani, Krishna  
+   - Status: For Approval  
+   - Outcome: Approved and Baselined  
+
+2. **Version 2.1**  
+   - Date: 18th Jan 2021  
+   - Authors: Ankur Rastogi, Rakesh Vijendra  
+   - Status: Initial Version  
+   - Note: Asset Management Procedure updated in alignment with ISO 20000-1:2018 standard  
+
+3. **Version 3.0**  
+   - Date: 18th Jan 2021  
+   - Authors: Ankur Rastogi, Rakesh Vijendra, Vivek S.  
+   - Status: Baseline and Approval  
+   - Outcome: Baselined version  
+
+4. **Version 3.1**  
+   - Date: 22-Dec-2021  
+   - Authors: Balu Nair, Karthik N  
+   - Status: Yearly Review  
+   - Note: Corrected few areas & formatted to increase readability  
+
+5. **Version 4.0**  
+   - Date: 13-Jan-2022  
+   - Authors: Balu Nair, Siva N  
+   - Status: Baseline and Approval  
+   - Outcome: Baselined version  
+
+6. **Version 5.1**  
+   - Date: 14-Mar-2022  
+   - Authors: Kruti, Karthik N  
+   - Status: For Review  
+   - Note: The scope has been extended to products and services  
+
+7. **Version 6.0**  
+   - Date: 20-Mar-2022  
+   - Authors: Kruti, Siva N  
+   - Status: For Approval  
+   - Outcome: Approved and baselined  
+
+8. **Version 6.1**  
+   - Date: 07-Apr-2023  
+   - Authors: Shivateja Rama Madhavan, Karthik N, Srikanth M  
+   - Status: For Review  
+   - Note: Reviewed with no changes; Migrated to new template  
+
+9. **Version 7.0**  
+   - Date: 12-May-2023  
+   - Authors: Rama Madhavan, Vijaya, Srikanth M  
+   - Status: For Approval  
+   - Outcome: Approved and Baselined  
+
+10. **Version 7.1**  
+    - Date: 10-Jan-2024  
+    - Authors: Beniyel, Balu Nair, Vijaya R  
+    - Status: For Review  
+    - Note: Updated with ISO/IEC 27001:2022 standard requirement on “return of Assets during termination/transfer” in section 6.3. ISO Controls Mappings has been updated.  
+
+11. **Version 8.0**  
+    - Date: 23-Feb-2024  
+    - Authors: Beniyel, Balu Nair, Srikanth M, Vijaya R  
+    - Status: For Approval  
+    - Outcome: Approved & Baselined  
+
+12. **Version 8.1**  
+    - Date: 04-March-2025  
+    - Authors: Krutideepta Barik, Vijaya R, Balu Nair, Beniyel S  
+    - Status: For Yearly Review  
+    - Note: Objective, Scope, Asset Risk assessment, Asset Identification, Asset Register/Inventory, Asset Tagging section reviewed.
+
+**9.0 Document Update and Approval**  
+- The document has been updated and modified.  
+- Roles and responsibilities for the following positions have been modified:  
+  - CISO  
+  - Infosec Team  
+  - IS Senior Manager  
+  - Purchase Coordinator  
+- The document has been migrated to a new template.  
+- Approval status as of 14-May-2025: Approved and Baselined by Kruti, Balu Nair, Srikanth M, and Vijaya R.  
+
+**Contact Information**  
+- For inquiries, contact:  
+  - Email: infosec@trianz.com  
+
+**Copyright Notice**  
+- The content in this document is copyrighted. Unauthorized use, in part or full, may violate copyright, trademark, and other laws.  
+- This document may not be modified, reproduced, publicly displayed, performed, distributed, or used for any public or commercial purposes.  
+- The Trianz name and its products are subject to trademark and copyright protections, regardless of how and where referenced.
