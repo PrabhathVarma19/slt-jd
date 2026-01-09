@@ -6,6 +6,7 @@ import Button from '@/components/ui/button';
 import { BackToHome } from '@/components/ui/back-to-home';
 import { Spinner } from '@/components/ui/spinner';
 import { useToast } from '@/lib/hooks/useToast';
+import { authenticatedFetch } from '@/lib/api/fetch-utils';
 import {
   Card,
   CardHeader,
@@ -126,20 +127,16 @@ export default function AdminTicketsPage() {
       if (assignedFilter) params.append('assigned', assignedFilter);
       if (searchQuery.trim()) params.append('search', searchQuery.trim());
 
-      const res = await fetch(`/api/admin/tickets?${params.toString()}`);
-      if (!res.ok) {
-        if (res.status === 403) {
-          showToast('Access denied. Admin role required.', 'error');
-          router.push('/');
-          return;
-        }
-        throw new Error('Failed to fetch tickets');
-      }
-
-      const data = await res.json();
+      const data = await authenticatedFetch<{ tickets: Ticket[] }>(`/api/admin/tickets?${params.toString()}`);
       setTickets(data.tickets || []);
     } catch (error: any) {
       console.error('Error fetching tickets:', error);
+      // Handle 403 access denied
+      if (error.message?.includes('403') || error.message?.includes('Access denied')) {
+        showToast('Access denied. Admin role required.', 'error');
+        router.push('/');
+        return;
+      }
       showToast('Failed to load tickets', 'error');
     } finally {
       setLoading(false);
@@ -151,10 +148,12 @@ export default function AdminTicketsPage() {
       const params = new URLSearchParams();
       if (domainFilter) params.append('domain', domainFilter);
 
-      const res = await fetch(`/api/admin/engineers?${params.toString()}`);
-      if (res.ok) {
-        const data = await res.json();
+      try {
+        const data = await authenticatedFetch<{ engineers: Engineer[] }>(`/api/admin/engineers?${params.toString()}`);
         setEngineers(data.engineers || []);
+      } catch (error) {
+        // Engineers fetch is non-critical, fail silently
+        console.error('Error fetching engineers:', error);
       }
     } catch (error) {
       console.error('Error fetching engineers:', error);
@@ -164,15 +163,10 @@ export default function AdminTicketsPage() {
   const updateTicketStatus = async (ticketId: string, status: TicketStatus) => {
     try {
       setUpdating(ticketId);
-      const res = await fetch(`/api/admin/tickets/${ticketId}`, {
+      await authenticatedFetch(`/api/admin/tickets/${ticketId}`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status }),
       });
-
-      if (!res.ok) {
-        throw new Error('Failed to update ticket');
-      }
 
       showToast('Ticket status updated', 'success');
       fetchTickets();
@@ -195,19 +189,13 @@ export default function AdminTicketsPage() {
 
     try {
       setUpdating(ticketId);
-      const res = await fetch(`/api/admin/tickets/${ticketId}`, {
+      await authenticatedFetch(`/api/admin/tickets/${ticketId}`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           action: 'assign',
           engineerId: assignEngineerId,
         }),
       });
-
-      if (!res.ok) {
-        const errorData = await res.json().catch(() => ({ error: 'Failed to assign engineer' }));
-        throw new Error(errorData.error || 'Failed to assign engineer');
-      }
 
       showToast('Engineer assigned', 'success');
       setAssignEngineerId('');
@@ -226,17 +214,12 @@ export default function AdminTicketsPage() {
   const unassignEngineer = async (ticketId: string) => {
     try {
       setUpdating(ticketId);
-      const res = await fetch(`/api/admin/tickets/${ticketId}`, {
+      await authenticatedFetch(`/api/admin/tickets/${ticketId}`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           action: 'unassign',
         }),
       });
-
-      if (!res.ok) {
-        throw new Error('Failed to unassign engineer');
-      }
 
       showToast('Engineer unassigned', 'success');
       fetchTickets();

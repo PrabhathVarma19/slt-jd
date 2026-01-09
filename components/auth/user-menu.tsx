@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Avatar } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuItem, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { LogOut, User, Shield } from 'lucide-react';
+import { authenticatedFetch } from '@/lib/api/fetch-utils';
 
 export function UserMenu() {
   const router = useRouter();
@@ -21,46 +22,30 @@ export function UserMenu() {
       return;
     }
 
-    const fetchSession = async (retryCount = 0) => {
+    const fetchSession = async () => {
       try {
-        const res = await fetch('/api/auth/session', {
-          method: 'GET',
-          credentials: 'include',
+        const data = await authenticatedFetch<{
+          isAuthenticated?: boolean;
+          authenticated?: boolean;
+          user?: { email: string; name?: string; roles?: string[] };
+        }>('/api/auth/session', {
+          retries: 2,
           cache: 'no-store',
         });
 
-        // Check if response is OK before parsing JSON
-        if (!res.ok) {
-          // If 401, user is not authenticated - this is expected
-          if (res.status === 401) {
-            setUser(null);
-            setLoading(false);
-            return;
-          }
-          // For other errors, retry if we haven't exceeded retries
-          if (retryCount < 2) {
-            await new Promise((resolve) => setTimeout(resolve, 500 * (retryCount + 1)));
-            return fetchSession(retryCount + 1);
-          }
-          throw new Error(`Session check failed: ${res.status}`);
-        }
-
-        const data = await res.json();
-        
         if (data.isAuthenticated || data.authenticated) {
           setUser(data.user || null);
         } else {
           setUser(null);
         }
-      } catch (error) {
-        console.error('Session fetch error:', error);
-        // Retry on network errors
-        if (retryCount < 2) {
-          await new Promise((resolve) => setTimeout(resolve, 500 * (retryCount + 1)));
-          return fetchSession(retryCount + 1);
+      } catch (error: any) {
+        // 401 is expected for unauthenticated users
+        if (error.message?.includes('401') || error.message?.includes('Unauthorized')) {
+          setUser(null);
+        } else {
+          console.error('Session fetch error:', error);
+          setUser(null);
         }
-        // After retries, assume not logged in
-        setUser(null);
       } finally {
         setLoading(false);
       }
@@ -73,7 +58,7 @@ export function UserMenu() {
       // Small delay to ensure session cookie is set
       setTimeout(() => {
         setLoading(true);
-        fetchSession(0);
+        fetchSession();
       }, 200);
     };
 

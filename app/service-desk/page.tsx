@@ -9,6 +9,7 @@ import { Spinner } from '@/components/ui/spinner';
 import { useToast } from '@/lib/hooks/useToast';
 import { ViewToggle } from '@/components/service-desk/view-toggle';
 import { ChatInterface } from '@/components/service-desk/chat-interface';
+import { authenticatedFetch } from '@/lib/api/fetch-utils';
 
 type RequestType =
   | ''
@@ -135,10 +136,8 @@ export default function ServiceDeskPage() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await fetch('/api/profile');
-        if (res.ok) {
-          const data = await res.json();
-          const profile = data.user?.profile;
+        const data = await authenticatedFetch<{ user?: { profile?: any; email?: string } }>('/api/profile');
+        const profile = data.user?.profile;
           if (profile) {
             // Extract projects from rawPayloadJson if multiple, or use single projectCode
             let projects: Array<{ code: string; name: string }> = [];
@@ -219,23 +218,20 @@ export default function ServiceDeskPage() {
     setError(null);
 
     try {
-      const res = await fetch('/api/service-desk/it/classify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ details: form.details }),
-      });
-
-      const data = (await res.json()) as {
+      const data = await authenticatedFetch<{
         requestType?: string | null;
         system?: string | null;
         impact?: string | null;
         reason?: string | null;
         isSubscription?: boolean;
         error?: string;
-      };
+      }>('/api/service-desk/it/classify', {
+        method: 'POST',
+        body: JSON.stringify({ details: form.details }),
+      });
 
-      if (!res.ok || data.error) {
-        throw new Error(data.error || 'Failed to classify request');
+      if (data.error) {
+        throw new Error(data.error);
       }
 
       setForm((prev) => {
@@ -299,15 +295,13 @@ export default function ServiceDeskPage() {
     try {
       const payload: ItServiceFormState = { ...form };
 
-      const res = await fetch('/api/service-desk/it', {
+      const data = await authenticatedFetch<ApiResponse>('/api/service-desk/it', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
 
-      const data = (await res.json()) as ApiResponse;
-      if (!res.ok || data.error) {
-        throw new Error(data.error || 'Failed to submit IT request');
+      if (data.error) {
+        throw new Error(data.error);
       }
 
       setResult(data);
@@ -318,10 +312,8 @@ export default function ServiceDeskPage() {
       showToast('Request emailed to Service Desk. A copy was sent to you.', 'success');
 
       // On success, reset the form completely and show a confirmation modal
-      if (res.ok) {
-        setForm(initialFormState);
-        setShowSuccessModal(true);
-      }
+      setForm(initialFormState);
+      setShowSuccessModal(true);
     } catch (err: any) {
       setError(err.message || 'Failed to submit IT request.');
       setLastSubmitAt(

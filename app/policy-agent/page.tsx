@@ -9,6 +9,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { BackToHome } from '@/components/ui/back-to-home';
 import { ErrorBar } from '@/components/ui/error-bar';
 import { Spinner } from '@/components/ui/spinner';
+import { authenticatedFetch } from '@/lib/api/fetch-utils';
 
 type ChatRole = 'user' | 'assistant';
 
@@ -254,9 +255,8 @@ export default function PolicyAgentPage() {
     });
 
     try {
-      const res = await fetch('/api/policy-agent', {
+      const data = await authenticatedFetch<PolicyAgentResponse & { error?: string }>('/api/policy-agent', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           messages: [
             ...messages,
@@ -266,9 +266,9 @@ export default function PolicyAgentPage() {
           style: 'standard',
         }),
       });
-      const data: PolicyAgentResponse & { error?: string } = await res.json();
-      if (!res.ok || data.error) {
-        throw new Error(data.error || 'Failed to get answer');
+
+      if (data.error) {
+        throw new Error(data.error);
       }
 
       const answerText = data.answer || 'No answer generated.';
