@@ -19,7 +19,7 @@ export async function GET() {
     const isTestEmail = normalizedEmail && testEmails.includes(normalizedEmail);
 
     // Verify user still exists and is active
-    const { data: userData } = await supabaseServer
+    const { data: userData, error: userError } = await supabaseServer
       .from('User')
       .select(`
         id,
@@ -30,7 +30,16 @@ export async function GET() {
         )
       `)
       .eq('id', session.userId)
-      .single();
+      .maybeSingle();
+    
+    if (userError) {
+      console.error('Error fetching user in session check:', userError);
+      return NextResponse.json({ 
+        isAuthenticated: false,
+        authenticated: false,
+        error: 'Failed to fetch user data'
+      }, { status: 500 });
+    }
     
     const user = userData;
     const userProfile = Array.isArray(user?.profile) ? user.profile[0] : user?.profile;

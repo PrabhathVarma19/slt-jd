@@ -21,23 +21,49 @@ export function UserMenu() {
       return;
     }
 
-    const fetchSession = () => {
-      fetch('/api/auth/session')
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.isAuthenticated || data.authenticated) {
-            setUser(data.user);
-          } else {
-            setUser(null);
-          }
-        })
-        .catch(() => {
-          // Not logged in
-          setUser(null);
-        })
-        .finally(() => {
-          setLoading(false);
+    const fetchSession = async (retryCount = 0) => {
+      try {
+        const res = await fetch('/api/auth/session', {
+          method: 'GET',
+          credentials: 'include',
+          cache: 'no-store',
         });
+
+        // Check if response is OK before parsing JSON
+        if (!res.ok) {
+          // If 401, user is not authenticated - this is expected
+          if (res.status === 401) {
+            setUser(null);
+            setLoading(false);
+            return;
+          }
+          // For other errors, retry if we haven't exceeded retries
+          if (retryCount < 2) {
+            await new Promise((resolve) => setTimeout(resolve, 500 * (retryCount + 1)));
+            return fetchSession(retryCount + 1);
+          }
+          throw new Error(`Session check failed: ${res.status}`);
+        }
+
+        const data = await res.json();
+        
+        if (data.isAuthenticated || data.authenticated) {
+          setUser(data.user || null);
+        } else {
+          setUser(null);
+        }
+      } catch (error) {
+        console.error('Session fetch error:', error);
+        // Retry on network errors
+        if (retryCount < 2) {
+          await new Promise((resolve) => setTimeout(resolve, 500 * (retryCount + 1)));
+          return fetchSession(retryCount + 1);
+        }
+        // After retries, assume not logged in
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchSession();
@@ -47,8 +73,8 @@ export function UserMenu() {
       // Small delay to ensure session cookie is set
       setTimeout(() => {
         setLoading(true);
-        fetchSession();
-      }, 100);
+        fetchSession(0);
+      }, 200);
     };
 
     window.addEventListener('beacon:login-success', handleLoginSuccess);
