@@ -138,49 +138,48 @@ export default function ServiceDeskPage() {
       try {
         const data = await authenticatedFetch<{ user?: { profile?: any; email?: string } }>('/api/profile');
         const profile = data.user?.profile;
-          if (profile) {
-            // Extract projects from rawPayloadJson if multiple, or use single projectCode
-            let projects: Array<{ code: string; name: string }> = [];
-            if (profile.rawPayloadJson && Array.isArray(profile.rawPayloadJson) && profile.rawPayloadJson.length > 1) {
-              // Multiple projects
-              projects = profile.rawPayloadJson.map((p: any) => ({
-                code: p.ProjectCode || p.projectCode || '',
-                name: p.ProjectName || p.projectName || '',
-              }));
-            } else if (profile.projectCode) {
-              // Single project
-              projects = [{
-                code: profile.projectCode,
-                name: profile.projectName || '',
-              }];
-            }
-
-            setUserProjects(projects);
-
-            // Auto-select first project if only one
-            if (projects.length === 1) {
-              setForm((prev) => ({
-                ...prev,
-                projectCode: projects[0].code,
-                projectName: projects[0].name,
-              }));
-            }
-
-            setForm((prev) => ({
-              ...prev,
-              name: profile.empName || prev.name,
-              employeeId: profile.employeeId?.toString() || prev.employeeId,
-              email: data.user.email || prev.email,
-              grade: profile.gradeCode || prev.grade,
-              managerEmail: profile.supervisorEmail || prev.managerEmail,
+        if (profile) {
+          // Extract projects from rawPayloadJson if multiple, or use single projectCode
+          let projects: Array<{ code: string; name: string }> = [];
+          if (profile.rawPayloadJson && Array.isArray(profile.rawPayloadJson) && profile.rawPayloadJson.length > 1) {
+            // Multiple projects
+            projects = profile.rawPayloadJson.map((p: any) => ({
+              code: p.ProjectCode || p.projectCode || '',
+              name: p.ProjectName || p.projectName || '',
             }));
-          } else if (data.user?.email) {
-            // Even without profile, we have email from session
+          } else if (profile.projectCode) {
+            // Single project
+            projects = [{
+              code: profile.projectCode,
+              name: profile.projectName || '',
+            }];
+          }
+
+          setUserProjects(projects);
+
+          // Auto-select first project if only one
+          if (projects.length === 1) {
             setForm((prev) => ({
               ...prev,
-              email: data.user.email || prev.email,
+              projectCode: projects[0].code,
+              projectName: projects[0].name,
             }));
           }
+
+          setForm((prev) => ({
+            ...prev,
+            name: profile.empName || prev.name,
+            employeeId: profile.employeeId?.toString() || prev.employeeId,
+            email: data.user?.email || prev.email,
+            grade: profile.gradeCode || prev.grade,
+            managerEmail: profile.supervisorEmail || prev.managerEmail,
+          }));
+        } else if (data.user?.email) {
+          // Even without profile, we have email from session
+          setForm((prev) => ({
+            ...prev,
+            email: data.user?.email || prev.email,
+          }));
         }
       } catch (err) {
         console.error('Failed to fetch profile:', err);
