@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { RotateCcw, Search, Key, Unlock, Ticket } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { RotateCcw, Search, Key, Ticket } from 'lucide-react';
 import Button from '@/components/ui/button';
 import Textarea from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -14,13 +14,14 @@ interface ChatMessage {
   role: ChatRole;
   content: string;
   createdAt: string;
-  actionType?: 'password_reset' | 'account_unlock' | 'ticket_status' | 'kb_search' | 'create_request' | null;
+  actionType?: 'password_reset' | 'ticket_status' | 'kb_search' | 'create_request' | null;
   actionData?: any;
+  requiresConfirmation?: boolean;
 }
 
 interface ServiceDeskChatResponse {
   message: string;
-  actionType?: 'password_reset' | 'account_unlock' | 'ticket_status' | 'kb_search' | 'create_request' | null;
+  actionType?: 'password_reset' | 'ticket_status' | 'kb_search' | 'create_request' | null;
   actionData?: any;
   requiresConfirmation?: boolean;
   extractedData?: {
@@ -36,24 +37,10 @@ interface ServiceDeskChatResponse {
 const QUICK_ACTIONS = [
   'I need VPN access',
   'Reset my password',
-  'My account is locked',
   'Check ticket status',
   'I need a laptop',
   'Install software',
 ];
-
-type ProfileData = {
-  email?: string;
-  profile?: {
-    employeeId?: number;
-    empName?: string;
-    gradeCode?: string;
-    location?: string;
-    projectCode?: string;
-    projectName?: string;
-    supervisorEmail?: string;
-  } | null;
-};
 
 export function ChatInterface() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -61,7 +48,6 @@ export function ChatInterface() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [recentQuestions, setRecentQuestions] = useState<string[]>([]);
-  const [profile, setProfile] = useState<ProfileData | null>(null);
   const messagesRef = useRef<HTMLDivElement | null>(null);
   const viewportRef = useRef<HTMLElement | null>(null);
   const [isAtBottom, setIsAtBottom] = useState(true);
@@ -92,19 +78,6 @@ export function ChatInterface() {
   }, [messages]);
 
   useEffect(() => {
-    fetch('/api/profile')
-      .then((res) => res.json())
-      .then((data) => {
-        if (data?.user) {
-          setProfile({ email: data.user.email, profile: data.user.profile || null });
-        }
-      })
-      .catch(() => {
-        setProfile(null);
-      });
-  }, []);
-
-  useEffect(() => {
     const handleScroll = () => {
       if (messagesRef.current?.parentElement) {
         const viewport = messagesRef.current.parentElement;
@@ -131,6 +104,29 @@ export function ChatInterface() {
     }
   }, [error]);
 
+  useEffect(() => {
+    if (!isLoading) return;
+    const t = setTimeout(() => {
+      setIsLoading(false);
+      setError('Request timed out. Please try again.');
+    }, 25000);
+    return () => clearTimeout(t);
+  }, [isLoading]);
+
+  const fetchWithTimeout = async (
+    input: RequestInfo | URL,
+    init: RequestInit = {},
+    timeoutMs = 20000
+  ) => {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      return await fetch(input, { ...init, signal: controller.signal });
+    } finally {
+      clearTimeout(timer);
+    }
+  };
+
   const handleSend = async (messageOverride?: string) => {
     const raw = messageOverride ?? input;
     const trimmed = raw.trim();
@@ -156,7 +152,7 @@ export function ChatInterface() {
     });
 
     try {
-      const res = await fetch('/api/service-desk/chat', {
+      const res = await fetchWithTimeout('/api/service-desk/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -177,6 +173,7 @@ export function ChatInterface() {
         createdAt: new Date().toISOString(),
         actionType: data.actionType || null,
         actionData: data.actionData,
+        requiresConfirmation: data.requiresConfirmation,
       };
 
       setMessages((prev) => [...prev, assistantMessage]);
@@ -186,7 +183,11 @@ export function ChatInterface() {
         setTimeout(() => scrollToBottom('smooth'), 100);
       }
     } catch (err: any) {
-      setError(err.message || 'Failed to send message');
+      const message =
+        err?.name === 'AbortError'
+          ? 'Request timed out. Please try again.'
+          : err.message || 'Failed to send message';
+      setError(message);
     } finally {
       setIsLoading(false);
     }
@@ -207,148 +208,40 @@ export function ChatInterface() {
     setIsLoading(false);
   };
 
-  const handleSelfService = async (
-    action: 'password_reset' | 'account_unlock' | 'ticket_status' | 'kb_search' | 'create_request',
+  const handleConfirmAction = async (
+    action: 'password_reset' | 'ticket_status' | 'kb_search' | 'create_request',
     actionData?: any
   ) => {
     setIsLoading(true);
     setError(null);
 
     try {
-      if (action === 'password_reset' || action === 'account_unlock') {
-        const endpoint =
-          action === 'password_reset'
-            ? '/api/service-desk/self-service/password-reset'
-            : '/api/service-desk/self-service/unlock';
-
-        const res = await fetch(endpoint, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({}),
-        });
-
-        const data = await res.json();
-        if (!res.ok || data.error) {
-          throw new Error(data.error || 'Failed to perform action');
-        }
-
-        setMessages((prev) => [
-          ...prev,
-          {
-            role: 'assistant',
-            content: data.message || 'Action completed successfully.',
-            createdAt: new Date().toISOString(),
-            actionType: action,
-            actionData: data,
+      const res = await fetchWithTimeout('/api/service-desk/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          confirmAction: {
+            type: action,
+            data: actionData || {},
           },
-        ]);
-      } else if (action === 'ticket_status') {
-        const ticketNumber = actionData?.ticketNumber;
-        if (!ticketNumber) {
-          throw new Error('Ticket number is required.');
-        }
-        const res = await fetch(
-          `/api/service-desk/self-service/ticket-status?ticketNumber=${encodeURIComponent(ticketNumber)}`
-        );
-        const data = await res.json();
-        if (!res.ok || data.error) {
-          throw new Error(data.error || 'Failed to check ticket status');
-        }
+          history: messages.map((m) => ({ role: m.role, content: m.content })),
+        }),
+      });
 
-        setMessages((prev) => [
-          ...prev,
-          {
-            role: 'assistant',
-            content: data.message || 'Ticket status retrieved.',
-            createdAt: new Date().toISOString(),
-            actionType: action,
-            actionData: data,
-          },
-        ]);
-      } else if (action === 'kb_search') {
-        const query = actionData?.query;
-        if (!query) {
-          throw new Error('Query is required.');
-        }
-        const res = await fetch('/api/service-desk/kb/search', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ query }),
-        });
-        const data = await res.json();
-        if (!res.ok || data.error) {
-          throw new Error(data.error || 'Failed to search knowledge base');
-        }
+      const data: ServiceDeskChatResponse & { error?: string } = await res.json();
 
-        const resultLines = (data.results || []).map((result: any) => {
-          const section = result.section ? ` - ${result.section}` : '';
-          return `- ${result.title}${section}\n${result.snippet}`;
-        });
-        const content = [data.message, ...resultLines].filter(Boolean).join('\n\n');
-
-        setMessages((prev) => [
-          ...prev,
-          {
-            role: 'assistant',
-            content: content || 'No results found.',
-            createdAt: new Date().toISOString(),
-            actionType: action,
-            actionData: data,
-          },
-        ]);
-      } else if (action === 'create_request') {
-        if (!profile?.profile || !profile.email) {
-          throw new Error('Profile data is missing. Please refresh and try again.');
-        }
-        const {
-          requestType,
-          system,
-          impact,
-          reason,
-          details,
-        } = actionData || {};
-
-        const payload = {
-          name: profile.profile.empName || profile.email,
-          employeeId: profile.profile.employeeId,
-          email: profile.email,
-          grade: profile.profile.gradeCode,
-          location: profile.profile.location,
-          requestType: requestType || 'other',
-          system: system || 'General',
-          impact: impact || 'medium',
-          reason: reason || 'Not specified',
-          details: details || 'No additional details provided.',
-          projectCode: profile.profile.projectCode,
-          projectName: profile.profile.projectName,
-          managerEmail: profile.profile.supervisorEmail,
-        };
-
-        if (!payload.employeeId) {
-          throw new Error('Employee ID is missing from your profile.');
-        }
-
-        const res = await fetch('/api/service-desk/it', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
-        const data = await res.json();
-        if (!res.ok || data.error) {
-          throw new Error(data.error || 'Failed to submit request');
-        }
-
-        setMessages((prev) => [
-          ...prev,
-          {
-            role: 'assistant',
-            content: data.message || 'Request submitted successfully.',
-            createdAt: new Date().toISOString(),
-            actionType: action,
-            actionData: data,
-          },
-        ]);
+      if (!res.ok || data.error) {
+        throw new Error(data.error || 'Failed to perform action');
       }
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: 'assistant',
+          content: data.message || 'Action completed successfully.',
+          createdAt: new Date().toISOString(),
+        },
+      ]);
     } catch (err: any) {
       setError(err.message || 'Failed to perform action');
     } finally {
@@ -375,7 +268,7 @@ export function ChatInterface() {
                       Beacon
                     </span>
                     <p>
-                      I can help you with IT requests, password resets, account unlocks, ticket status, and more.
+                      I can help you with IT requests, password resets, ticket status, and more.
                       Just tell me what you need!
                     </p>
                   </div>
@@ -403,26 +296,15 @@ export function ChatInterface() {
                         {formatTime(msg.createdAt)}
                       </span>
                     )}
-                    {msg.actionType === 'password_reset' && msg.actionData?.requiresConfirmation && (
+                    {msg.actionType === 'password_reset' && msg.requiresConfirmation && (
                       <Button
                         size="sm"
                         variant="secondary"
                         className="mt-2"
-                        onClick={() => handleSelfService('password_reset')}
+                        onClick={() => handleConfirmAction('password_reset')}
                       >
                         <Key className="h-3 w-3 mr-1" />
                         Reset Password
-                      </Button>
-                    )}
-                    {msg.actionType === 'account_unlock' && msg.actionData?.requiresConfirmation && (
-                      <Button
-                        size="sm"
-                        variant="secondary"
-                        className="mt-2"
-                        onClick={() => handleSelfService('account_unlock')}
-                      >
-                        <Unlock className="h-3 w-3 mr-1" />
-                        Unlock Account
                       </Button>
                     )}
                     {msg.actionType === 'ticket_status' && msg.actionData?.ticketNumber && (
@@ -430,7 +312,7 @@ export function ChatInterface() {
                         size="sm"
                         variant="secondary"
                         className="mt-2"
-                        onClick={() => handleSelfService('ticket_status', msg.actionData)}
+                        onClick={() => handleConfirmAction('ticket_status', msg.actionData)}
                       >
                         <Ticket className="h-3 w-3 mr-1" />
                         Check Status
@@ -441,7 +323,7 @@ export function ChatInterface() {
                         size="sm"
                         variant="secondary"
                         className="mt-2"
-                        onClick={() => handleSelfService('kb_search', msg.actionData)}
+                        onClick={() => handleConfirmAction('kb_search', msg.actionData)}
                       >
                         <Search className="h-3 w-3 mr-1" />
                         Search KB
@@ -452,7 +334,7 @@ export function ChatInterface() {
                         size="sm"
                         variant="secondary"
                         className="mt-2"
-                        onClick={() => handleSelfService('create_request', msg.actionData)}
+                        onClick={() => handleConfirmAction('create_request', msg.actionData)}
                       >
                         Submit Request
                       </Button>

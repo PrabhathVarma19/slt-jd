@@ -79,6 +79,25 @@ Optional:
 - POLICY_SOURCE_DIR (default: data/policies)
 - NODE_TLS_REJECT_UNAUTHORIZED=0 (dev only for SSL issues)
 
+## Policy watcher (optional)
+
+Automatically convert new PDFs to TXT and normalize raw policy text as files are added.
+
+```bash
+npm run watch-policies
+```
+
+To scope the watcher to the IT folder:
+
+```bash
+$env:POLICY_SOURCE_DIR="data\policies\it"
+npm run watch-policies
+```
+
+Notes:
+- Requires `pdftotext` available on PATH.
+- Normalization requires `OPENAI_API_KEY`.
+
 ## Database notes
 
 - `scripts/setup-database-complete.sql` creates core tables (users, roles, tickets, approvals, events).

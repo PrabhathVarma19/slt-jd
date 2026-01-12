@@ -117,7 +117,7 @@ function requestTypeLabel(rt: RequestType): string {
 }
 
 export default function ServiceDeskPage() {
-  const [viewMode, setViewMode] = useState<'chat' | 'form'>('form'); // Default to form for safety
+  const [viewMode, setViewMode] = useState<'chat' | 'form'>('chat');
   const [form, setForm] = useState<ItServiceFormState>(initialFormState);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuggesting, setIsSuggesting] = useState(false);
