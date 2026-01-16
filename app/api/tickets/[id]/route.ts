@@ -184,15 +184,101 @@ export async function PATCH(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const ticketId = params.id;
-    const { comment } = await req.json();
+ const ticketId = params.id;
+  const { comment, action } = await req.json();
 
-    if (!comment || !comment.trim()) {
+  if (action) {
+    try {
+      const { data: ticket, error: ticketError } = await supabaseServer
+        .from('Ticket')
+        .select('*')
+        .eq('id', ticketId)
+        .single();
+
+      if (ticketError || !ticket) {
+        return NextResponse.json({ error: 'Ticket not found' }, { status: 404 });
+      }
+
+      const isRequester = ticket.requesterId === session.userId;
+      if (!isRequester) {
+        return NextResponse.json({ error: 'Access denied' }, { status: 403 });
+      }
+
+      if (action === 'acknowledge') {
+        if (ticket.status !== 'RESOLVED') {
+          return NextResponse.json(
+            { error: 'Only resolved tickets can be acknowledged' },
+            { status: 400 }
+          );
+        }
+
+        const { error: updateError } = await supabaseServer
+          .from('Ticket')
+          .update({
+            status: 'CLOSED',
+            closedAt: new Date().toISOString(),
+          })
+          .eq('id', ticketId);
+
+        if (updateError) {
+          throw new Error(updateError.message);
+        }
+
+        await createTicketEvent(ticketId, 'STATUS_CHANGED', session.userId, {
+          oldStatus: ticket.status,
+          newStatus: 'CLOSED',
+          requesterAction: 'acknowledged',
+        });
+
+        return NextResponse.json({ success: true });
+      }
+
+      if (action === 'reopen') {
+        if (!['RESOLVED', 'CLOSED'].includes(ticket.status)) {
+          return NextResponse.json(
+            { error: 'Only resolved or closed tickets can be reopened' },
+            { status: 400 }
+          );
+        }
+
+        const { error: updateError } = await supabaseServer
+          .from('Ticket')
+          .update({
+            status: 'OPEN',
+            resolvedAt: null,
+            closedAt: null,
+          })
+          .eq('id', ticketId);
+
+        if (updateError) {
+          throw new Error(updateError.message);
+        }
+
+        await createTicketEvent(ticketId, 'STATUS_CHANGED', session.userId, {
+          oldStatus: ticket.status,
+          newStatus: 'OPEN',
+          requesterAction: 'reopened',
+        });
+
+        return NextResponse.json({ success: true });
+      }
+
+      return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
+    } catch (dbError: any) {
+      console.error('Database error updating ticket:', dbError);
       return NextResponse.json(
-        { error: 'Comment is required' },
-        { status: 400 }
+        { error: 'Failed to update ticket' },
+        { status: 500 }
       );
     }
+  }
+
+  if (!comment || !comment.trim()) {
+    return NextResponse.json(
+      { error: 'Comment is required' },
+      { status: 400 }
+    );
+  }
 
     try {
       // Get ticket to verify access

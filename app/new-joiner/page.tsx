@@ -278,6 +278,11 @@ export default function NewJoinerBuddyPage() {
     setShowHrLink(false);
     setError(null);
     setIsLoading(false);
+    fetch('/api/ai/memory', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ agent: 'new-joiner', action: 'clear' }),
+    }).catch(() => undefined);
   };
 
   const uniqueSources = useMemo(() => {

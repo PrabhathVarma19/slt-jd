@@ -125,6 +125,17 @@ const ADMIN_TOOLS: Tool[] = [
   },
 ];
 
+const SUPER_ADMIN_TOOLS: Tool[] = [
+  {
+    title: 'Agent Logs',
+    description: 'Audit AI decisions, tools, and responses.',
+    href: '/admin/agent-logs',
+    bucket: 'Admin',
+    initials: 'AL',
+    accent: 'bg-slate-100 text-slate-700',
+  },
+];
+
 // Engineer tools - only shown to engineers
 const ENGINEER_TOOLS: Tool[] = [
   {
@@ -142,6 +153,7 @@ export default function Home() {
   const [isEngineer, setIsEngineer] = useState(false);
   const [isSupervisor, setIsSupervisor] = useState(false);
   const [isTravelAdmin, setIsTravelAdmin] = useState(false);
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
   const [userRoles, setUserRoles] = useState<string[]>([]);
 
   useEffect(() => {
@@ -171,6 +183,8 @@ export default function Home() {
           const travelAdminRoles = ['ADMIN_TRAVEL', 'SUPER_ADMIN'];
           const hasTravelAdminRole = roles.some((role: string) => travelAdminRoles.includes(role));
           setIsTravelAdmin(hasTravelAdminRole);
+          
+          setIsSuperAdmin(roles.includes('SUPER_ADMIN'));
           
           console.log('Session check:', { roles, hasAdminRole, hasEngineerRole, hasTravelAdminRole, data });
         } else {
@@ -658,6 +672,30 @@ export default function Home() {
               </Link>
             ))}
           </div>
+          {isSuperAdmin && (
+            <div className="grid gap-3 md:grid-cols-2">
+              {SUPER_ADMIN_TOOLS.map((tool) => (
+                <Link
+                  key={tool.title}
+                  href={tool.href}
+                  className="flex items-center justify-between gap-4 rounded-2xl bg-card px-4 py-3 shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-md border-2 border-slate-100"
+                >
+                  <div className="flex items-center gap-3">
+                    <div
+                      className={`flex h-9 w-9 items-center justify-center rounded-full text-xs font-semibold ${tool.accent}`}
+                    >
+                      {tool.initials}
+                    </div>
+                    <div className="space-y-0.5">
+                      <p className="text-sm font-semibold text-slate-900">{tool.title}</p>
+                      <p className="text-xs text-slate-600">{tool.description}</p>
+                    </div>
+                  </div>
+                  <ChevronRight className="h-4 w-4 text-slate-400" aria-hidden="true" />
+                </Link>
+              ))}
+            </div>
+          )}
         </section>
       )}
 

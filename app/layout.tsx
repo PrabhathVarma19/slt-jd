@@ -1,14 +1,14 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Inter } from 'next/font/google';
+import { Sora } from 'next/font/google';
 import { UserMenu } from '@/components/auth/user-menu';
 import './globals.css';
 
-const inter = Inter({ 
+const sora = Sora({ 
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-inter',
+  variable: '--font-sora',
 });
 
 export const metadata: Metadata = {
@@ -22,7 +22,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={sora.variable}>
       <body className="font-sans antialiased">
         <div className="min-h-screen bg-background">
           <header className="border-b border-gray-200 bg-background/95 backdrop-blur-sm sticky top-0 z-50">
@@ -45,7 +45,11 @@ export default function RootLayout({
               </div>
             </div>
           </header>
-          <main className="mx-auto w-full max-w-screen-2xl px-4 py-6 sm:px-6 lg:px-8">
+          <main className="relative mx-auto w-full max-w-screen-2xl px-4 py-6 sm:px-6 lg:px-8">
+            <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+              <div className="absolute -left-16 top-10 h-64 w-64 rounded-full bg-gradient-to-br from-blue-200 via-white to-transparent opacity-60 blur-3xl" />
+              <div className="absolute right-0 top-24 h-72 w-72 rounded-full bg-gradient-to-tr from-emerald-200 via-white to-transparent opacity-50 blur-3xl" />
+            </div>
             {children}
           </main>
         </div>

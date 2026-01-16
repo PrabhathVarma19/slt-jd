@@ -66,7 +66,51 @@ export async function GET(req: NextRequest) {
           IT: tickets.filter((t: any) => t.domain === 'IT').length,
           TRAVEL: tickets.filter((t: any) => t.domain === 'TRAVEL').length,
         },
+        byCategory: tickets.reduce((acc: Record<string, number>, t: any) => {
+          const category = (t.category || 'uncategorized').toString().toLowerCase();
+          acc[category] = (acc[category] || 0) + 1;
+          return acc;
+        }, {}),
+        volume: {
+          last7Days: 0,
+          last30Days: 0,
+        },
+        aging: {
+          over7Days: 0,
+          over14Days: 0,
+          over30Days: 0,
+        },
       };
+
+      const now = Date.now();
+      const dayMs = 24 * 60 * 60 * 1000;
+      const activeStatuses = new Set(['OPEN', 'IN_PROGRESS', 'WAITING_ON_REQUESTER', 'PENDING_APPROVAL']);
+
+      stats.volume.last7Days = tickets.filter((t: any) => {
+        if (!t.createdAt) return false;
+        const age = now - new Date(t.createdAt).getTime();
+        return age <= 7 * dayMs;
+      }).length;
+
+      stats.volume.last30Days = tickets.filter((t: any) => {
+        if (!t.createdAt) return false;
+        const age = now - new Date(t.createdAt).getTime();
+        return age <= 30 * dayMs;
+      }).length;
+
+      const activeTickets = tickets.filter((t: any) => activeStatuses.has(t.status));
+      stats.aging.over7Days = activeTickets.filter((t: any) => {
+        if (!t.createdAt) return false;
+        return now - new Date(t.createdAt).getTime() > 7 * dayMs;
+      }).length;
+      stats.aging.over14Days = activeTickets.filter((t: any) => {
+        if (!t.createdAt) return false;
+        return now - new Date(t.createdAt).getTime() > 14 * dayMs;
+      }).length;
+      stats.aging.over30Days = activeTickets.filter((t: any) => {
+        if (!t.createdAt) return false;
+        return now - new Date(t.createdAt).getTime() > 30 * dayMs;
+      }).length;
 
       // Calculate average resolution time (for resolved tickets)
       const resolvedTickets = tickets.filter(
@@ -99,14 +143,33 @@ export async function GET(req: NextRequest) {
 
       // Get pending approvals count
       let pendingApprovalsCount = 0;
+      let avgApprovalTimeHours = 0;
       if (ticketIds.length > 0) {
         const { data: approvals } = await supabaseServer
           .from('TicketApproval')
-          .select('id')
+          .select('id, requestedAt, decidedAt')
           .in('ticketId', ticketIds)
           .eq('state', 'PENDING');
 
         pendingApprovalsCount = (approvals || []).length;
+
+        const { data: decidedApprovals } = await supabaseServer
+          .from('TicketApproval')
+          .select('requestedAt, decidedAt')
+          .in('ticketId', ticketIds)
+          .not('decidedAt', 'is', null);
+
+        const approvalsWithTimes = (decidedApprovals || []).filter(
+          (a: any) => a.requestedAt && a.decidedAt
+        );
+        if (approvalsWithTimes.length > 0) {
+          const totalMs = approvalsWithTimes.reduce((sum: number, a: any) => {
+            const requested = new Date(a.requestedAt).getTime();
+            const decided = new Date(a.decidedAt).getTime();
+            return sum + (decided - requested);
+          }, 0);
+          avgApprovalTimeHours = Math.round(totalMs / approvalsWithTimes.length / (1000 * 60 * 60));
+        }
       }
 
       // Get engineer workload
@@ -197,6 +260,7 @@ export async function GET(req: NextRequest) {
         stats,
         metrics: {
           avgResolutionTimeHours: avgResolutionTime,
+          avgApprovalTimeHours,
           unassignedCount,
           pendingApprovalsCount,
           resolvedCount: stats.byStatus.RESOLVED,

@@ -206,6 +206,11 @@ export function ChatInterface() {
     setMessages([]);
     setError(null);
     setIsLoading(false);
+    fetch('/api/ai/memory', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ agent: 'service-desk', action: 'clear' }),
+    }).catch(() => undefined);
   };
 
   const handleConfirmAction = async (

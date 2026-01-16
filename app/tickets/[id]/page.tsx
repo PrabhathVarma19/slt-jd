@@ -141,6 +141,7 @@ export default function TicketDetailsPage() {
   const [loading, setLoading] = useState(true);
   const [noteText, setNoteText] = useState('');
   const [addingNote, setAddingNote] = useState(false);
+  const [actionLoading, setActionLoading] = useState<'acknowledge' | 'reopen' | null>(null);
 
   useEffect(() => {
     if (ticketId) {
@@ -193,6 +194,30 @@ export default function TicketDetailsPage() {
       alert(error.message || 'Failed to add comment');
     } finally {
       setAddingNote(false);
+    }
+  };
+
+  const handleRequesterAction = async (action: 'acknowledge' | 'reopen') => {
+    if (!ticket) return;
+    try {
+      setActionLoading(action);
+      const res = await fetch(`/api/tickets/${ticketId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Failed to update ticket');
+      }
+
+      await fetchTicket();
+    } catch (error: any) {
+      console.error('Error updating ticket:', error);
+      alert(error.message || 'Failed to update ticket');
+    } finally {
+      setActionLoading(null);
     }
   };
 
@@ -347,6 +372,64 @@ export default function TicketDetailsPage() {
                       </p>
                     </div>
                   </div>
+                </div>
+              )}
+              {ticket.isRequester && ticket.status === 'RESOLVED' && (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <Button
+                    onClick={() => handleRequesterAction('acknowledge')}
+                    disabled={actionLoading !== null}
+                  >
+                    {actionLoading === 'acknowledge' ? (
+                      <>
+                        <Spinner className="h-4 w-4 mr-2" />
+                        Closing...
+                      </>
+                    ) : (
+                      <>
+                        <CheckCircle className="h-4 w-4 mr-2" />
+                        Acknowledge & Close
+                      </>
+                    )}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => handleRequesterAction('reopen')}
+                    disabled={actionLoading !== null}
+                  >
+                    {actionLoading === 'reopen' ? (
+                      <>
+                        <Spinner className="h-4 w-4 mr-2" />
+                        Reopening...
+                      </>
+                    ) : (
+                      <>
+                        <ArrowRight className="h-4 w-4 mr-2" />
+                        Reopen Ticket
+                      </>
+                    )}
+                  </Button>
+                </div>
+              )}
+              {ticket.isRequester && ticket.status === 'CLOSED' && (
+                <div className="mt-4">
+                  <Button
+                    variant="outline"
+                    onClick={() => handleRequesterAction('reopen')}
+                    disabled={actionLoading !== null}
+                  >
+                    {actionLoading === 'reopen' ? (
+                      <>
+                        <Spinner className="h-4 w-4 mr-2" />
+                        Reopening...
+                      </>
+                    ) : (
+                      <>
+                        <ArrowRight className="h-4 w-4 mr-2" />
+                        Reopen Ticket
+                      </>
+                    )}
+                  </Button>
                 </div>
               )}
             </div>
@@ -657,4 +740,3 @@ export default function TicketDetailsPage() {
     </div>
   );
 }
-

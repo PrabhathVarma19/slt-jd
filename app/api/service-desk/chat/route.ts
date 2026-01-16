@@ -2,11 +2,47 @@ import { NextRequest, NextResponse } from 'next/server';
 import { requireAuth } from '@/lib/auth/require-auth';
 import { supabaseServer } from '@/lib/supabase/server';
 import { runServiceDeskAgent } from '@/lib/ai/agents/service-desk-agent';
+import { getAgentHistory, storeAgentMessages } from '@/lib/ai/agent-memory';
+import { createAgentLog } from '@/lib/ai/agent-logs';
 
 interface ChatMessage {
   role: 'user' | 'assistant';
   content: string;
 }
+
+const normalizeTicketNumber = (input?: string | null) => {
+  if (!input) return null;
+  const trimmed = input.trim().toUpperCase();
+  const fullMatch = trimmed.match(/^[A-Z]{2}-\d{6}$/);
+  if (fullMatch) return trimmed;
+
+  const prefixMatch = trimmed.match(/^(IT|TR)[-_ ]?(\d{1,6})$/);
+  if (prefixMatch) {
+    const prefix = prefixMatch[1];
+    const digits = prefixMatch[2].padStart(6, '0');
+    return `${prefix}-${digits}`;
+  }
+
+  const digitMatch = trimmed.match(/(\d{1,6})/);
+  if (digitMatch) {
+    return `IT-${digitMatch[1].padStart(6, '0')}`;
+  }
+
+  return null;
+};
+
+const buildRecentTicketsReply = (recentTickets: any[]) => {
+  if (!recentTickets || recentTickets.length === 0) return null;
+  const lines = recentTickets.map((ticket: any) => {
+    const title = ticket.title ? ` - ${ticket.title}` : '';
+    return `${ticket.ticketNumber} (${ticket.status})${title}`;
+  });
+  return (
+    `Here are your recent tickets:\n` +
+    `${lines.map((line) => `- ${line}`).join('\n')}\n\n` +
+    'Which ticket should I check? Please reply with the ticket number.'
+  );
+};
 
 export async function POST(req: NextRequest) {
   try {
@@ -34,11 +70,24 @@ export async function POST(req: NextRequest) {
         if (!res.ok || data.error) {
           return NextResponse.json({ error: data.error || 'Failed to reset password' }, { status: 500 });
         }
-        return NextResponse.json({ message: data.message || 'Password reset email sent.' });
+        const responseMessage = data.message || 'Password reset email sent.';
+        await storeAgentMessages(auth.userId, 'service-desk', [
+          { role: 'assistant', content: responseMessage },
+        ]);
+        await createAgentLog({
+          userId: auth.userId,
+          agent: 'service-desk',
+          input: 'confirm:password_reset',
+          intent: 'password_reset',
+          tool: 'password_reset',
+          response: responseMessage,
+          success: true,
+        });
+        return NextResponse.json({ message: responseMessage });
       }
 
       if (actionType === 'ticket_status') {
-        const ticketNumber = actionData.ticketNumber;
+        const ticketNumber = normalizeTicketNumber(actionData.ticketNumber);
         if (!ticketNumber) {
           return NextResponse.json({ error: 'Ticket number is required' }, { status: 400 });
         }
@@ -50,7 +99,21 @@ export async function POST(req: NextRequest) {
         if (!res.ok || data.error) {
           return NextResponse.json({ error: data.error || 'Failed to check ticket status' }, { status: 500 });
         }
-        return NextResponse.json({ message: data.message || 'Ticket status retrieved.' });
+        const responseMessage = data.message || 'Ticket status retrieved.';
+        await storeAgentMessages(auth.userId, 'service-desk', [
+          { role: 'assistant', content: responseMessage },
+        ]);
+        await createAgentLog({
+          userId: auth.userId,
+          agent: 'service-desk',
+          input: `confirm:ticket_status:${ticketNumber}`,
+          intent: 'ticket_status',
+          tool: 'check_ticket_status',
+          toolInput: { ticketNumber },
+          response: responseMessage,
+          success: true,
+        });
+        return NextResponse.json({ message: responseMessage });
       }
 
       if (actionType === 'kb_search') {
@@ -72,7 +135,21 @@ export async function POST(req: NextRequest) {
           return `- ${result.title}${section}\n${result.snippet}`;
         });
         const content = [data.message, ...resultLines].filter(Boolean).join('\n\n');
-        return NextResponse.json({ message: content || 'No results found.' });
+        const responseMessage = content || 'No results found.';
+        await storeAgentMessages(auth.userId, 'service-desk', [
+          { role: 'assistant', content: responseMessage },
+        ]);
+        await createAgentLog({
+          userId: auth.userId,
+          agent: 'service-desk',
+          input: `confirm:kb_search:${query}`,
+          intent: 'kb_search',
+          tool: 'kb_search',
+          toolInput: { query },
+          response: responseMessage,
+          success: true,
+        });
+        return NextResponse.json({ message: responseMessage });
       }
 
       if (actionType === 'create_request') {
@@ -116,7 +193,21 @@ export async function POST(req: NextRequest) {
         if (!res.ok || data.error) {
           return NextResponse.json({ error: data.error || 'Failed to submit request' }, { status: 500 });
         }
-        return NextResponse.json({ message: data.message || 'Request submitted successfully.' });
+        const responseMessage = data.message || 'Request submitted successfully.';
+        await storeAgentMessages(auth.userId, 'service-desk', [
+          { role: 'assistant', content: responseMessage },
+        ]);
+        await createAgentLog({
+          userId: auth.userId,
+          agent: 'service-desk',
+          input: 'confirm:create_request',
+          intent: 'create_request',
+          tool: 'create_ticket',
+          toolInput: actionData,
+          response: responseMessage,
+          success: true,
+        });
+        return NextResponse.json({ message: responseMessage });
       }
 
       return NextResponse.json({ error: 'Unsupported confirmation action' }, { status: 400 });
@@ -145,24 +236,63 @@ export async function POST(req: NextRequest) {
         console.error('Failed to load recent tickets:', recentError);
       }
 
-      if (recentTickets && recentTickets.length > 0) {
-        const lines = recentTickets.map((ticket: any) => {
-          const title = ticket.title ? ` - ${ticket.title}` : '';
-          return `${ticket.ticketNumber} (${ticket.status})${title}`;
-        });
+      const recentReply = buildRecentTicketsReply(recentTickets || []);
+      if (recentReply) {
         return NextResponse.json({
-          message:
-            `Here are your recent tickets:\n` +
-            `${lines.map((line) => `- ${line}`).join('\n')}\n\n` +
-            'Which ticket should I check? Please reply with the ticket number.',
+          message: recentReply,
           actionType: null,
         });
       }
     }
 
-    const decision = await runServiceDeskAgent(message, history as ChatMessage[]);
+    const storedHistory = await getAgentHistory(auth.userId, 'service-desk');
+    const effectiveHistory = storedHistory.length > 0 ? storedHistory : (history as ChatMessage[]);
+
+    const decision = await runServiceDeskAgent(message, effectiveHistory as ChatMessage[]);
     const actionType = decision.actionType === 'none' ? null : decision.actionType;
     const actionData = decision.actionData || undefined;
+
+    await createAgentLog({
+      userId: auth.userId,
+      agent: 'service-desk',
+      input: message,
+      intent: decision.actionType || 'none',
+      tool: actionType || 'none',
+      toolInput: actionData,
+      response: decision.response,
+      success: true,
+    });
+
+    if (actionType === 'ticket_status' && !actionData?.ticketNumber) {
+      const { data: recentTickets } = await supabaseServer
+        .from('Ticket')
+        .select('ticketNumber, title, status, createdAt')
+        .eq('requesterId', auth.userId)
+        .order('createdAt', { ascending: false })
+        .limit(5);
+      const recentReply = buildRecentTicketsReply(recentTickets || []);
+      if (recentReply) {
+        await createAgentLog({
+          userId: auth.userId,
+          agent: 'service-desk',
+          input: message,
+          intent: 'ticket_status',
+          tool: 'none',
+          response: recentReply,
+          success: true,
+        });
+
+        return NextResponse.json({
+          message: recentReply,
+          actionType: null,
+        });
+      }
+    }
+
+    await storeAgentMessages(auth.userId, 'service-desk', [
+      { role: 'user', content: message },
+      { role: 'assistant', content: decision.response },
+    ]);
 
     return NextResponse.json({
       message: decision.response,

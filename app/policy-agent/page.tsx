@@ -320,6 +320,11 @@ export default function PolicyAgentPage() {
     setFeedback(null);
     setError(null);
     setIsLoading(false);
+    fetch('/api/ai/memory', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ agent: 'policy-agent', action: 'clear' }),
+    }).catch(() => undefined);
   };
 
   const sourcesGrouped = useMemo(() => groupSources(sources || []), [sources]);

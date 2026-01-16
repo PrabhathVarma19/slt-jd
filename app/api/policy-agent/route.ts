@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import OpenAI from 'openai';
+import { runAgent } from '@/lib/ai/agent-runner';
+import { requireAuth } from '@/lib/auth/require-auth';
+import { getAgentHistory, storeAgentMessages } from '@/lib/ai/agent-memory';
+import { createAgentLog } from '@/lib/ai/agent-logs';
 import fs from 'fs';
 import path from 'path';
 
@@ -400,13 +403,21 @@ function extractRtoRules(text: string): { attendance?: string; hours?: string } 
 
 export async function POST(req: NextRequest) {
   try {
+    const auth = await requireAuth();
     const body = await req.json();
     const mode: 'default' | 'new_joiner' | 'expenses' =
       (body?.mode as 'default' | 'new_joiner' | 'expenses') || 'default';
     const style: 'standard' | 'how_to' =
       (body?.style as 'standard' | 'how_to') || 'standard';
+    const agentName =
+      mode === 'new_joiner'
+        ? 'new-joiner'
+        : mode === 'expenses'
+          ? 'expenses-coach'
+          : 'policy-agent';
+
     const rawMessages = Array.isArray(body?.messages) ? body.messages : [];
-    const history: { role: 'user' | 'assistant'; content: string }[] = rawMessages
+    const bodyHistory: { role: 'user' | 'assistant'; content: string }[] = rawMessages
       .filter(
         (m: any) =>
           m &&
@@ -414,6 +425,18 @@ export async function POST(req: NextRequest) {
           typeof m.content === 'string'
       )
       .map((m: any) => ({ role: m.role, content: m.content }));
+
+    const storedHistory = await getAgentHistory(auth.userId, agentName);
+    const currentUserMessage =
+      [...bodyHistory].reverse().find((m) => m.role === 'user') ||
+      (body?.question
+        ? { role: 'user' as const, content: body.question.toString() }
+        : null);
+
+    const history =
+      storedHistory.length > 0
+        ? [...storedHistory, ...(currentUserMessage ? [currentUserMessage] : [])]
+        : bodyHistory;
 
     const lastUser = [...history].reverse().find((m) => m.role === 'user');
     const prevUser =
@@ -431,29 +454,59 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'OPENAI_API_KEY not set' }, { status: 500 });
     }
 
+    // Build an "effective question" for retrieval and answering so that short / ambiguous
+    // follow-ups stay anchored to the previous topic.
+    let retrievalQuestion = question;
+    let effectiveQuestion = question;
+    const lower = question.toLowerCase();
+    const isVeryShort = question.split(/\s+/).filter(Boolean).length <= 6;
+    const hasPronoun =
+      /\b(it|they|them|that|this|there|those|these|how many|how much)\b/.test(lower);
+
+    if (prevUser && (isVeryShort || hasPronoun)) {
+      retrievalQuestion = `${prevUser.content}\nFollow-up question: ${question}`;
+      effectiveQuestion = retrievalQuestion;
+    }
+
+    if (!prevUser && (isVeryShort || hasPronoun)) {
+      const clarification =
+        'Which policy or topic are you asking about? For example: Return to Office, travel eligibility, leave, or expenses.';
+      await storeAgentMessages(auth.userId, agentName, [
+        { role: 'user', content: question },
+        { role: 'assistant', content: clarification },
+      ]);
+      await createAgentLog({
+        userId: auth.userId,
+        agent: agentName,
+        input: question,
+        intent: 'ask_followup',
+        tool: 'none',
+        response: clarification,
+        success: true,
+        metadata: { mode, style },
+      });
+      return NextResponse.json({ answer: clarification, keyRules: null, sources: [] });
+    }
+
     // Check for a pre-reviewed "golden" answer first for very common FAQs.
-    const golden = getGoldenAnswer(question, mode);
+    const golden = getGoldenAnswer(effectiveQuestion, mode);
     if (golden) {
       const keyRules = extractKeyRules(golden.answer);
+      await createAgentLog({
+        userId: auth.userId,
+        agent: agentName,
+        input: effectiveQuestion,
+        intent: 'policy_qa',
+        tool: 'kb_search',
+        response: golden.answer,
+        success: true,
+        metadata: { mode, style, source: 'golden' },
+      });
       return NextResponse.json({
         answer: golden.answer,
         keyRules,
         sources: golden.sources ?? [],
       });
-    }
-
-    // Build an "effective question" for retrieval so that short / ambiguous
-    // follow-ups stay anchored to the previous topic.
-    let retrievalQuestion = question;
-    if (prevUser) {
-      const lower = question.toLowerCase();
-      const isVeryShort = question.split(/\s+/).filter(Boolean).length <= 6;
-      const hasPronoun =
-        /\b(it|they|them|that|this|there|those|these|how many|how much)\b/.test(lower);
-
-      if (isVeryShort || hasPronoun) {
-        retrievalQuestion = `${prevUser.content}\nFollow-up question: ${question}`;
-      }
     }
 
     const chunks = getPolicyChunks();
@@ -513,7 +566,7 @@ export async function POST(req: NextRequest) {
       };
     });
 
-    const isRtoQuestion = /return to office|rto policy/i.test(question);
+    const isRtoQuestion = /return to office|rto policy/i.test(effectiveQuestion);
     let answer: string | null = null;
 
     if (isRtoQuestion) {
@@ -603,28 +656,27 @@ If you cannot find a clear answer, explicitly say you do not know and, if approp
       const userPrompt = `Conversation so far:
 ${historyText}
 
-New question: ${question}
+New question: ${effectiveQuestion}
 
 Context:
 ${context}
 
 Respond with a concise answer and include citations [n] for every factual statement.`;
 
-      const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-      const completion = await openai.chat.completions.create({
+      const contractPrompt = `${systemPrompt}\n\nReturn a JSON object with keys: intent, confidence, extracted, missing_fields, proposed_action, requires_confirmation, assistant_message. Set intent to \"none\" and proposed_action to null. Put the answer (with citations) in assistant_message.`;
+
+      const decision = await runAgent({
+        systemPrompt: contractPrompt,
+        message: userPrompt,
+        history,
         model: DEFAULT_MODEL,
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: userPrompt },
-        ],
-        temperature: 0,
       });
 
-      answer = completion.choices[0]?.message?.content || 'No answer generated.';
+      answer = decision.assistantMessage || 'No answer generated.';
     }
 
     let finalAnswer = answer;
-    const qLower = question.toLowerCase();
+    const qLower = effectiveQuestion.toLowerCase();
     const aLower = answer.toLowerCase();
 
     // If the user clearly asked for a numeric value but the answer contains no digits,
@@ -657,6 +709,21 @@ Respond with a concise answer and include citations [n] for every factual statem
     }
 
     const keyRules = extractKeyRules(finalAnswer);
+
+    await storeAgentMessages(auth.userId, agentName, [
+      { role: 'user', content: question },
+      { role: 'assistant', content: finalAnswer },
+    ]);
+    await createAgentLog({
+      userId: auth.userId,
+      agent: agentName,
+      input: question,
+      intent: 'policy_qa',
+      tool: 'kb_search',
+      response: finalAnswer,
+      success: true,
+      metadata: { mode, style },
+    });
 
     return NextResponse.json({ answer: finalAnswer, keyRules, sources });
   } catch (error: any) {

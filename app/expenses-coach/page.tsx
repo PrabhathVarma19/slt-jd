@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
+import { RotateCcw } from 'lucide-react';
 import Link from 'next/link';
 import Button from '@/components/ui/button';
 import Textarea from '@/components/ui/textarea';
@@ -71,6 +72,18 @@ export default function ExpensesCoachPage() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleResetConversation = () => {
+    setMessages([]);
+    setQuestion('');
+    setError(null);
+    setIsLoading(false);
+    fetch('/api/ai/memory', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ agent: 'expenses-coach', action: 'clear' }),
+    }).catch(() => undefined);
   };
 
   const lastUserQuestion =
@@ -181,9 +194,22 @@ export default function ExpensesCoachPage() {
                 Beacon will answer using Trianz policies only, with steps you can follow directly in
                 Fusion.
               </p>
-              <Button onClick={() => ask()} disabled={isLoading || !question.trim()} size="sm">
-                {isLoading ? 'Answering…' : 'Ask'}
-              </Button>
+              <div className="flex items-center gap-2">
+                {messages.length > 0 && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleResetConversation}
+                    disabled={isLoading}
+                  >
+                    <RotateCcw className="mr-1 h-3 w-3" />
+                    New chat
+                  </Button>
+                )}
+                <Button onClick={() => ask()} disabled={isLoading || !question.trim()} size="sm">
+                  {isLoading ? 'Answering…' : 'Ask'}
+                </Button>
+              </div>
             </div>
           </div>
         </div>

@@ -1,8 +1,8 @@
-import OpenAI from 'openai';
+import { AgentDecision, runAgent } from '@/lib/ai/agent-runner';
 
 export type AgentActionType = 'password_reset' | 'ticket_status' | 'kb_search' | 'create_request' | 'none';
 
-export type AgentDecision = {
+export type ServiceDeskDecision = {
   response: string;
   actionType: AgentActionType;
   actionData?: Record<string, any>;
@@ -16,78 +16,73 @@ You help users with:
 - Knowledge Base search
 - IT request creation
 
+Return a JSON object with:
+- intent: create_request | kb_search | check_status | password_reset | ask_followup | none
+- confidence: number between 0 and 1
+- extracted: { category, subcategory, system, impact, reason, title, description, ticketNumber }
+- missing_fields: array of required fields still needed
+- proposed_action: { tool, input } or null
+- requires_confirmation: true/false
+- assistant_message: user-facing message
+
 Rules:
-- If the user asks for ticket status but does not provide a ticket number, ask for it and set actionType to "none".
-- If the user mentions "account locked" or "locked out", offer a password reset (actionType "password_reset").
-- If the user asks a policy/how-to question, propose a KB search (actionType "kb_search") with query.
+- If the user asks for ticket status but no ticket number is provided, ask for it.
+  intent should be ask_followup, missing_fields should include "ticketNumber", proposed_action must be null.
+- If the user says "account locked" or "locked out", offer a password reset.
+- If the user asks a policy/how-to question, propose a KB search with query.
 - If the user describes an IT request, extract:
-  requestType: access|hardware|software|subscription|password|other
+  category: access|hardware|software|subscription|password|other
   system: short system/tool name
   impact: blocker|high|medium|low
   reason: short reason
+  description: include the free-text detail
 
-Output a JSON object with keys:
-response, actionType, actionData, requiresConfirmation.
+Tool names:
+- create_ticket
+- check_ticket_status
+- kb_search
+- password_reset
 
-Set requiresConfirmation true for any actionType except "none".
-If actionType is "create_request", include actionData with requestType, system, impact, reason, details.`;
-
-function normalizeDecision(parsed: any): AgentDecision | null {
-  if (!parsed || typeof parsed !== 'object') return null;
-  const actionType = (parsed.actionType || parsed.action_type || 'none') as AgentActionType;
-  const response = typeof parsed.response === 'string' ? parsed.response : '';
-  if (!response) return null;
-  return {
-    response,
-    actionType,
-    actionData: parsed.actionData || parsed.action_data || undefined,
-    requiresConfirmation: !!parsed.requiresConfirmation,
-  };
-}
+requires_confirmation must be true for create_ticket and password_reset.`;
 
 export async function runServiceDeskAgent(
   message: string,
   history: Array<{ role: 'user' | 'assistant'; content: string }>
-): Promise<AgentDecision> {
-  if (!process.env.OPENAI_API_KEY) {
-    return {
-      response: 'AI is not configured. Please contact IT support.',
-      actionType: 'none',
-      requiresConfirmation: false,
-    };
+): Promise<ServiceDeskDecision> {
+  const decision: AgentDecision = await runAgent({
+    systemPrompt,
+    message,
+    history,
+  });
+
+  const tool = decision.proposedAction?.tool;
+  const actionData = decision.proposedAction?.input || {};
+  let actionType: AgentActionType = 'none';
+
+  if (tool === 'create_ticket') actionType = 'create_request';
+  if (tool === 'check_ticket_status') actionType = 'ticket_status';
+  if (tool === 'kb_search') actionType = 'kb_search';
+  if (tool === 'password_reset') actionType = 'password_reset';
+
+  if (actionType === 'create_request') {
+    const extracted = decision.extracted || {};
+    actionData.requestType = extracted.category || actionData.requestType || 'other';
+    actionData.system = extracted.system || actionData.system || 'General';
+    actionData.impact = extracted.impact || actionData.impact || 'medium';
+    actionData.reason = extracted.reason || actionData.reason || 'Not specified';
+    actionData.details = extracted.description || actionData.details || message;
   }
 
-  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-  let decision: AgentDecision | null = null;
-  try {
-    const messages = [
-      { role: 'system' as const, content: systemPrompt },
-      ...history.slice(-10).map((m) => ({ role: m.role, content: m.content })),
-      { role: 'user' as const, content: message },
-    ];
-
-    const completion = await openai.chat.completions.create({
-      model: process.env.CHAT_MODEL || 'gpt-4o-mini',
-      messages,
-      temperature: 0.2,
-      response_format: { type: 'json_object' },
-    });
-
-    const content = completion.choices[0]?.message?.content || '';
-    const jsonText = content.trim().replace(/^```json\s*/i, '').replace(/```$/i, '');
-    const parsed = JSON.parse(jsonText);
-    decision = normalizeDecision(parsed);
-  } catch (error) {
-    console.error('Service Desk agent JSON parse failed:', error);
+  if (actionType === 'ticket_status' && !actionData.ticketNumber) {
+    actionData.ticketNumber = decision.extracted?.ticketNumber;
   }
 
-  if (!decision) {
-    return {
-      response: 'I ran into an issue processing that. Please try again.',
-      actionType: 'none',
-      requiresConfirmation: false,
-    };
-  }
+  const requiresConfirmation = actionType === 'create_request' || actionType === 'password_reset';
 
-  return decision;
+  return {
+    response: decision.assistantMessage,
+    actionType,
+    actionData: actionType === 'none' ? undefined : actionData,
+    requiresConfirmation,
+  };
 }
