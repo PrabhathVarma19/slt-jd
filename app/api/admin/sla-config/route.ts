@@ -9,6 +9,8 @@ const DEFAULTS = {
   LOW: 4320,
 };
 
+type Priority = keyof typeof DEFAULTS;
+
 export async function GET() {
   try {
     await requireSessionRole(['ADMIN_IT', 'SUPER_ADMIN']);
@@ -18,10 +20,13 @@ export async function GET() {
       return NextResponse.json({ config: DEFAULTS });
     }
 
-    const config = { ...DEFAULTS };
+    const config: Record<Priority, number> = { ...DEFAULTS };
     for (const row of data || []) {
       if (row.priority && typeof row.targetMinutes === 'number') {
-        config[row.priority] = row.targetMinutes;
+        const priority = row.priority as Priority;
+        if (priority in config) {
+          config[priority] = row.targetMinutes;
+        }
       }
     }
     return NextResponse.json({ config });
