@@ -316,7 +316,11 @@ export async function GET(req: NextRequest) {
 
     const ticketRowsForExport = filteredTickets.map((ticket) => {
       const requester = Array.isArray(ticket.requester) ? ticket.requester[0] : ticket.requester;
-      const requesterName = requester?.profile?.empName || requester?.email?.split('@')[0] || 'Unknown';
+      const requesterProfile = Array.isArray(requester?.profile)
+        ? requester?.profile[0]
+        : requester?.profile;
+      const requesterName =
+        requesterProfile?.empName || requester?.email?.split('@')[0] || 'Unknown';
       const requesterEmail = requester?.email || '';
       const assignment = assignmentMap.get(ticket.id);
       const ticketEvents = (eventMap.get(ticket.id) || []).sort(
