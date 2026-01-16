@@ -387,6 +387,9 @@ export default function AdminDashboardPage() {
     ? Math.max(1, ...analytics.trends.map((point) => Math.max(point.opened, point.resolved)))
     : 1;
   const labelStride = analytics ? Math.max(1, Math.ceil(analytics.trends.length / 12)) : 1;
+  const hasTrendData = analytics
+    ? analytics.trends.some((point) => point.opened > 0 || point.resolved > 0)
+    : false;
 
   return (
     <div className="space-y-6">
@@ -658,37 +661,51 @@ export default function AdminDashboardPage() {
                 <p className="text-sm text-gray-600">Daily opened vs resolved.</p>
               </CardHeader>
               <CardContent>
-                <div className="hide-scrollbar overflow-x-auto">
-                  <div className="min-w-[720px]">
+                {hasTrendData ? (
+                  <div className="w-full">
                     <div className="flex h-44 items-end gap-2">
-                      {analytics.trends.map((point, index) => (
-                        <div key={point.day} className="flex flex-1 flex-col items-center gap-1">
-                          <div className="flex w-full flex-1 items-end gap-1">
-                            <div
-                              className="w-1/2 rounded-t bg-blue-500/80"
-                              style={{ height: `${(point.opened / trendMax) * 100}%` }}
-                              title={`Opened: ${point.opened}`}
-                            />
-                            <div
-                              className="w-1/2 rounded-t bg-emerald-500/80"
-                              style={{ height: `${(point.resolved / trendMax) * 100}%` }}
-                              title={`Resolved: ${point.resolved}`}
-                            />
+                      {analytics.trends.map((point, index) => {
+                        const openedHeight =
+                          point.opened > 0
+                            ? Math.max(6, (point.opened / trendMax) * 100)
+                            : 0;
+                        const resolvedHeight =
+                          point.resolved > 0
+                            ? Math.max(6, (point.resolved / trendMax) * 100)
+                            : 0;
+                        return (
+                          <div key={point.day} className="flex flex-1 flex-col items-center gap-1">
+                            <div className="flex w-full flex-1 items-end gap-1">
+                              <div
+                                className="w-1/2 rounded-t bg-blue-500/80"
+                                style={{ height: `${openedHeight}%` }}
+                                title={`Opened: ${point.opened}`}
+                              />
+                              <div
+                                className="w-1/2 rounded-t bg-emerald-500/80"
+                                style={{ height: `${resolvedHeight}%` }}
+                                title={`Resolved: ${point.resolved}`}
+                              />
+                            </div>
+                            <span
+                              className={`text-[10px] ${
+                                index % labelStride === 0
+                                  ? 'text-gray-500'
+                                  : 'text-gray-400 opacity-0'
+                              }`}
+                            >
+                              {point.day.slice(5)}
+                            </span>
                           </div>
-                          <span
-                            className={`text-[10px] ${
-                              index % labelStride === 0
-                                ? 'text-gray-500'
-                                : 'text-gray-400 opacity-0'
-                            }`}
-                          >
-                            {point.day.slice(5)}
-                          </span>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   </div>
-                </div>
+                ) : (
+                  <div className="flex h-44 items-center justify-center text-sm text-gray-500">
+                    No ticket activity in this range yet.
+                  </div>
+                )}
                 <div className="mt-3 flex items-center gap-4 text-xs text-gray-500">
                   <span className="flex items-center gap-1">
                     <span className="h-2 w-2 rounded-full bg-blue-500/80" />

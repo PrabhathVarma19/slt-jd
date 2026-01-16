@@ -21,6 +21,10 @@ type AgentLog = {
   user?: {
     email?: string;
     profile?: { empName?: string };
+    roles?: Array<{
+      revokedAt?: string | null;
+      role?: { type?: string; name?: string } | null;
+    }>;
   } | null;
 };
 
@@ -29,12 +33,28 @@ export default function AgentLogsPage() {
   const [logs, setLogs] = useState<AgentLog[]>([]);
   const [loading, setLoading] = useState(true);
   const [agentFilter, setAgentFilter] = useState('');
+  const [emailFilter, setEmailFilter] = useState('');
+  const [intentFilter, setIntentFilter] = useState('');
+  const [toolFilter, setToolFilter] = useState('');
+  const [successFilter, setSuccessFilter] = useState('');
+  const [rangeFilter, setRangeFilter] = useState('30d');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
   const fetchLogs = async () => {
     try {
       setLoading(true);
       const params = new URLSearchParams();
       if (agentFilter) params.set('agent', agentFilter);
+      if (emailFilter) params.set('email', emailFilter);
+      if (intentFilter) params.set('intent', intentFilter);
+      if (toolFilter) params.set('tool', toolFilter);
+      if (successFilter) params.set('success', successFilter);
+      params.set('range', rangeFilter);
+      if (rangeFilter === 'custom') {
+        if (startDate) params.set('start', startDate);
+        if (endDate) params.set('end', endDate);
+      }
       const res = await fetch(`/api/admin/agent-logs?${params.toString()}`);
       if (!res.ok) {
         if (res.status === 401 || res.status === 403) {
@@ -54,7 +74,40 @@ export default function AgentLogsPage() {
 
   useEffect(() => {
     fetchLogs();
-  }, [agentFilter]);
+  }, [agentFilter, emailFilter, intentFilter, toolFilter, successFilter, rangeFilter, startDate, endDate]);
+
+  const isSuperAdmin = (log: AgentLog) =>
+    log.user?.roles?.some(
+      (role) => role.role?.type === 'SUPER_ADMIN' && role.revokedAt == null
+    );
+
+  const handleExport = () => {
+    if (!logs.length) return;
+    const header = ['Timestamp', 'User', 'Email', 'Agent', 'Intent', 'Tool', 'Success', 'Input', 'Response'];
+    const rows = logs.map((log) => {
+      const email = log.user?.email || '';
+      const userName =
+        log.user?.profile?.empName || (isSuperAdmin(log) ? 'Super Admin' : email) || 'Unknown';
+      return [
+        new Date(log.createdAt).toISOString(),
+        `"${userName.replace(/"/g, '""')}"`,
+        email,
+        log.agent,
+        log.intent,
+        log.tool,
+        log.success ? 'Yes' : 'No',
+        `"${log.input.replace(/"/g, '""')}"`,
+        `"${log.response.replace(/"/g, '""')}"`,
+      ];
+    });
+
+    const csv = [header.join(','), ...rows.map((row) => row.join(','))].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `agent-logs-${new Date().toISOString().slice(0, 10)}.csv`;
+    link.click();
+  };
 
   return (
     <div className="space-y-6">
@@ -84,8 +137,66 @@ export default function AgentLogsPage() {
             <option value="new-joiner">New Joiner</option>
             <option value="expenses-coach">Expenses Coach</option>
           </select>
+          <select
+            className="rounded-md border border-gray-200 bg-white px-3 py-2 text-sm"
+            value={rangeFilter}
+            onChange={(e) => setRangeFilter(e.target.value)}
+          >
+            <option value="7d">Last 7 days</option>
+            <option value="30d">Last 30 days</option>
+            <option value="custom">Custom</option>
+          </select>
+          {rangeFilter === 'custom' && (
+            <>
+              <input
+                type="date"
+                className="rounded-md border border-gray-200 bg-white px-3 py-2 text-sm"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
+              <input
+                type="date"
+                className="rounded-md border border-gray-200 bg-white px-3 py-2 text-sm"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+              />
+            </>
+          )}
+          <input
+            type="text"
+            className="rounded-md border border-gray-200 bg-white px-3 py-2 text-sm"
+            placeholder="Filter by email"
+            value={emailFilter}
+            onChange={(e) => setEmailFilter(e.target.value)}
+          />
+          <input
+            type="text"
+            className="rounded-md border border-gray-200 bg-white px-3 py-2 text-sm"
+            placeholder="Intent"
+            value={intentFilter}
+            onChange={(e) => setIntentFilter(e.target.value)}
+          />
+          <input
+            type="text"
+            className="rounded-md border border-gray-200 bg-white px-3 py-2 text-sm"
+            placeholder="Tool"
+            value={toolFilter}
+            onChange={(e) => setToolFilter(e.target.value)}
+          />
+          <select
+            className="rounded-md border border-gray-200 bg-white px-3 py-2 text-sm"
+            value={successFilter}
+            onChange={(e) => setSuccessFilter(e.target.value)}
+          >
+            <option value="">All outcomes</option>
+            <option value="true">Success</option>
+            <option value="false">Failed</option>
+          </select>
           <Button variant="outline" onClick={fetchLogs}>
             Refresh
+          </Button>
+          <Button variant="outline" onClick={handleExport} disabled={!logs.length}>
+            Export CSV
           </Button>
         </CardContent>
       </Card>
@@ -103,12 +214,18 @@ export default function AgentLogsPage() {
       ) : (
         <div className="space-y-4">
           {logs.map((log) => {
-            const userName = log.user?.profile?.empName || log.user?.email || 'Unknown';
+            const userName =
+              log.user?.profile?.empName ||
+              (isSuperAdmin(log) ? 'Super Admin' : log.user?.email) ||
+              'Unknown';
             return (
               <Card key={log.id}>
                 <CardHeader className="flex flex-row items-center justify-between gap-4">
                   <div>
                     <p className="text-sm font-semibold text-gray-900">{userName}</p>
+                    {log.user?.email && (
+                      <p className="text-xs text-gray-500">{log.user.email}</p>
+                    )}
                     <p className="text-xs text-gray-500">
                       {new Date(log.createdAt).toLocaleString()}
                     </p>
@@ -117,6 +234,16 @@ export default function AgentLogsPage() {
                     <Badge variant="outline">{log.agent}</Badge>
                     <Badge variant="secondary">{log.intent}</Badge>
                     <Badge variant="outline">{log.tool}</Badge>
+                    <Badge
+                      variant="outline"
+                      className={
+                        log.success
+                          ? 'border-emerald-200 bg-emerald-50 text-emerald-700'
+                          : 'border-rose-200 bg-rose-50 text-rose-700'
+                      }
+                    >
+                      {log.success ? 'Success' : 'Failed'}
+                    </Badge>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-3 text-sm text-gray-700">
