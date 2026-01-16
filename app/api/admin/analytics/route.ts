@@ -262,10 +262,11 @@ export async function GET(req: NextRequest) {
       const engineer = Array.isArray(assignment.engineer)
         ? assignment.engineer[0]
         : assignment.engineer;
+      const profile = Array.isArray(engineer?.profile) ? engineer?.profile[0] : engineer?.profile;
       assignmentMap.set(assignment.ticketId, {
         id: engineer?.id || '',
         email: engineer?.email || '',
-        name: engineer?.profile?.empName || engineer?.email?.split('@')[0] || 'Unassigned',
+        name: profile?.empName || engineer?.email?.split('@')[0] || 'Unassigned',
         assignedAt: assignment.assignedAt,
       });
     }
