@@ -438,7 +438,10 @@ export async function GET(req: NextRequest) {
 
     const recentActivity = recentEvents.map((event) => {
       const creator = Array.isArray(event.creator) ? event.creator[0] : event.creator;
-      const creatorName = creator?.profile?.empName || creator?.email?.split('@')[0] || 'User';
+      const creatorProfile = Array.isArray(creator?.profile)
+        ? creator?.profile[0]
+        : creator?.profile;
+      const creatorName = creatorProfile?.empName || creator?.email?.split('@')[0] || 'User';
       const ticket = Array.isArray(event.ticket) ? event.ticket[0] : event.ticket;
       return {
         id: event.id,
