@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { requireSessionRole } from '@/lib/auth/rbac';
 import { supabaseServer } from '@/lib/supabase/server';
 import { createTicketEvent } from '@/lib/tickets/ticket-utils';
+import { sendItNotification } from '@/lib/notifications/it-notifications';
 
 /**
  * GET /api/admin/tickets/[id]
@@ -202,12 +203,24 @@ export async function PATCH(
             oldStatus: ticket.status,
             newStatus: status,
           });
+          await sendItNotification({
+            ticketId,
+            actorId: auth.userId,
+            event: 'ticket_status_changed',
+            payload: { oldStatus: ticket.status, newStatus: status },
+          });
         }
 
         if (priority && priority !== ticket.priority) {
           await createTicketEvent(ticketId, 'PRIORITY_CHANGED', auth.userId, {
             oldPriority: ticket.priority,
             newPriority: priority,
+          });
+          await sendItNotification({
+            ticketId,
+            actorId: auth.userId,
+            event: 'ticket_priority_changed',
+            payload: { oldPriority: ticket.priority, newPriority: priority },
           });
         }
 
@@ -280,6 +293,11 @@ export async function PATCH(
 
           await createTicketEvent(ticketId, 'ASSIGNED', auth.userId, {
             engineerId,
+          });
+          await sendItNotification({
+            ticketId,
+            actorId: auth.userId,
+            event: 'ticket_assigned',
           });
         } else if (action === 'unassign') {
           await supabaseServer

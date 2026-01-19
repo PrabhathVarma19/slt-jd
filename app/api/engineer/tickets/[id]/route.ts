@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/auth/session';
 import { supabaseServer } from '@/lib/supabase/server';
 import { createTicketEvent } from '@/lib/tickets/ticket-utils';
+import { sendItNotification } from '@/lib/notifications/it-notifications';
 
 /**
  * GET /api/engineer/tickets/[id]
@@ -159,12 +160,24 @@ export async function PATCH(
           oldStatus: ticket.status,
           newStatus: status,
         });
+        await sendItNotification({
+          ticketId,
+          actorId: session.userId,
+          event: 'ticket_status_changed',
+          payload: { oldStatus: ticket.status, newStatus: status },
+        });
       }
 
       // Add note
       if (note && note.trim()) {
         await createTicketEvent(ticketId, 'NOTE_ADDED', session.userId, {
           note: note.trim(),
+        });
+        await sendItNotification({
+          ticketId,
+          actorId: session.userId,
+          event: 'ticket_note_added',
+          payload: { note: note.trim(), fromRequester: false },
         });
       }
 

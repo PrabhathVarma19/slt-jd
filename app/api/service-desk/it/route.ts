@@ -4,6 +4,7 @@ import OpenAI from 'openai';
 import { requireAuth } from '@/lib/auth/require-auth';
 import { createTicket } from '@/lib/tickets/ticket-utils';
 import { supabaseServer } from '@/lib/supabase/server';
+import { sendItNotification } from '@/lib/notifications/it-notifications';
 
 const REQUIRED_FIELDS = ['name', 'employeeId', 'email', 'requestType', 'details'] as const;
 
@@ -137,6 +138,7 @@ Respond with JSON only, no explanation.`;
 
     // Create ticket in database first
     let ticketNumber: string | null = null;
+    let ticketId: string | null = null;
     try {
       // Find user by email to get userId
       let userId = auth.userId;
@@ -184,6 +186,7 @@ Respond with JSON only, no explanation.`;
       );
 
       ticketNumber = ticket.ticketNumber;
+      ticketId = ticket.id;
     } catch (ticketError: any) {
       console.error('Failed to create ticket in database:', ticketError);
       // Continue with email even if ticket creation fails
@@ -286,6 +289,14 @@ Respond with JSON only, no explanation.`;
         },
         { status: 502 }
       );
+    }
+
+    if (ticketId) {
+      await sendItNotification({
+        ticketId,
+        actorId: auth.userId,
+        event: 'ticket_created',
+      });
     }
 
     return NextResponse.json({

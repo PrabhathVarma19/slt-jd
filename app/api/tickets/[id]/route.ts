@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/auth/session';
 import { supabaseServer } from '@/lib/supabase/server';
 import { createTicketEvent } from '@/lib/tickets/ticket-utils';
+import { sendItNotification } from '@/lib/notifications/it-notifications';
 
 /**
  * GET /api/tickets/[id]
@@ -229,6 +230,12 @@ export async function PATCH(
           newStatus: 'CLOSED',
           requesterAction: 'acknowledged',
         });
+        await sendItNotification({
+          ticketId,
+          actorId: session.userId,
+          event: 'ticket_status_changed',
+          payload: { oldStatus: ticket.status, newStatus: 'CLOSED' },
+        });
 
         return NextResponse.json({ success: true });
       }
@@ -258,6 +265,12 @@ export async function PATCH(
           oldStatus: ticket.status,
           newStatus: 'OPEN',
           requesterAction: 'reopened',
+        });
+        await sendItNotification({
+          ticketId,
+          actorId: session.userId,
+          event: 'ticket_reopened',
+          payload: { oldStatus: ticket.status, newStatus: 'OPEN' },
         });
 
         return NextResponse.json({ success: true });
@@ -317,6 +330,12 @@ export async function PATCH(
       await createTicketEvent(ticketId, 'NOTE_ADDED', session.userId, {
         note: comment.trim(),
         fromRequester: isRequester,
+      });
+      await sendItNotification({
+        ticketId,
+        actorId: session.userId,
+        event: 'ticket_note_added',
+        payload: { note: comment.trim(), fromRequester: isRequester },
       });
 
       return NextResponse.json({
