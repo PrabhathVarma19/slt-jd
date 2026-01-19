@@ -7,10 +7,10 @@ export async function GET() {
     const session = await getSession();
 
     if (!session) {
-      return NextResponse.json({ 
+      return NextResponse.json({
         isAuthenticated: false,
-        authenticated: false 
-      }, { status: 401 });
+        authenticated: false,
+      });
     }
 
     // Check if this is a test email - test emails should not have synced profile data
@@ -45,10 +45,10 @@ export async function GET() {
     const userProfile = Array.isArray(user?.profile) ? user.profile[0] : user?.profile;
 
     if (!user || user.status !== 'ACTIVE') {
-      return NextResponse.json({ 
+      return NextResponse.json({
         isAuthenticated: false,
-        authenticated: false 
-      }, { status: 401 });
+        authenticated: false,
+      });
     }
 
     // For test emails, don't return profile name (they shouldn't have synced data)
