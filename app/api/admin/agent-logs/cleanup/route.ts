@@ -7,22 +7,63 @@ export async function POST(req: NextRequest) {
     await requireSessionRole(['SUPER_ADMIN']);
     const { searchParams } = new URL(req.url);
     const daysParam = Number(searchParams.get('days') || 90);
+    const limitParam = Number(searchParams.get('limit') || 1000);
+    const requireArchive = searchParams.get('requireArchive') !== 'false';
     const days = Number.isFinite(daysParam) ? Math.min(Math.max(daysParam, 7), 365) : 90;
+    const limit = Number.isFinite(limitParam) ? Math.min(Math.max(limitParam, 1), 5000) : 1000;
     const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
 
-    const { error, count } = await supabaseServer
-      .from('AgentLog')
-      .delete({ count: 'exact' })
-      .lt('createdAt', cutoff);
+    let deleted = 0;
 
-    if (error) {
-      throw new Error(error.message);
+    if (requireArchive) {
+      const { data: archivedRows, error: archiveError } = await supabaseServer
+        .from('AgentLogArchive')
+        .select('sourceLogId')
+        .lt('createdAt', cutoff)
+        .limit(limit);
+
+      if (archiveError) {
+        throw new Error(archiveError.message);
+      }
+
+      const ids = (archivedRows || []).map((row) => row.sourceLogId);
+      if (ids.length > 0) {
+        const { error: deleteError, count } = await supabaseServer
+          .from('AgentLog')
+          .delete({ count: 'exact' })
+          .in('id', ids);
+        if (deleteError) {
+          throw new Error(deleteError.message);
+        }
+        deleted = count || 0;
+      }
+    } else {
+      const { data: candidates, error: candidateError } = await supabaseServer
+        .from('AgentLog')
+        .select('id')
+        .lt('createdAt', cutoff)
+        .limit(limit);
+      if (candidateError) {
+        throw new Error(candidateError.message);
+      }
+      const ids = (candidates || []).map((row) => row.id);
+      if (ids.length > 0) {
+        const { error: deleteError, count } = await supabaseServer
+          .from('AgentLog')
+          .delete({ count: 'exact' })
+          .in('id', ids);
+        if (deleteError) {
+          throw new Error(deleteError.message);
+        }
+        deleted = count || 0;
+      }
     }
 
     return NextResponse.json({
-      deleted: count || 0,
+      deleted,
       cutoff,
       days,
+      requireArchive,
     });
   } catch (error: any) {
     return NextResponse.json(

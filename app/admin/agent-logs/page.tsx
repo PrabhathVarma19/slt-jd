@@ -46,6 +46,9 @@ export default function AgentLogsPage() {
   const [limit] = useState(25);
   const [totalPages, setTotalPages] = useState(1);
   const [total, setTotal] = useState(0);
+  const [retentionDays, setRetentionDays] = useState(90);
+  const [rollupDays, setRollupDays] = useState(30);
+  const [retentionStatus, setRetentionStatus] = useState('');
 
   const fetchLogs = async () => {
     try {
@@ -220,6 +223,91 @@ export default function AgentLogsPage() {
           <Button variant="outline" onClick={handleExport} disabled={!logs.length}>
             Export CSV
           </Button>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className="flex flex-col gap-2">
+          <CardTitle className="text-lg">Retention tools</CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-wrap items-center gap-3 text-sm text-gray-600">
+          <div className="flex items-center gap-2">
+            <label className="text-sm text-gray-700">Days</label>
+            <input
+              type="number"
+              min={7}
+              max={365}
+              className="w-24 rounded-md border border-gray-200 bg-white px-2 py-1 text-sm"
+              value={retentionDays}
+              onChange={(e) => setRetentionDays(Number(e.target.value) || 90)}
+            />
+          </div>
+          <Button
+            variant="outline"
+            onClick={async () => {
+              setRetentionStatus('Archiving logs...');
+              const res = await fetch(
+                `/api/admin/agent-logs/archive?days=${retentionDays}`,
+                { method: 'POST' }
+              );
+              const data = await res.json();
+              setRetentionStatus(
+                res.ok
+                  ? `Archived ${data.archived} logs (cutoff ${data.cutoff.slice(0, 10)})`
+                  : data.error || 'Archive failed'
+              );
+            }}
+          >
+            Archive {retentionDays}d+
+          </Button>
+          <Button
+            variant="outline"
+            onClick={async () => {
+              setRetentionStatus('Purging logs...');
+              const res = await fetch(
+                `/api/admin/agent-logs/cleanup?days=${retentionDays}&requireArchive=true`,
+                { method: 'POST' }
+              );
+              const data = await res.json();
+              setRetentionStatus(
+                res.ok
+                  ? `Purged ${data.deleted} logs (cutoff ${data.cutoff.slice(0, 10)})`
+                  : data.error || 'Purge failed'
+              );
+            }}
+          >
+            Purge {retentionDays}d+
+          </Button>
+          <div className="flex items-center gap-2">
+            <label className="text-sm text-gray-700">Rollup days</label>
+            <input
+              type="number"
+              min={1}
+              max={365}
+              className="w-24 rounded-md border border-gray-200 bg-white px-2 py-1 text-sm"
+              value={rollupDays}
+              onChange={(e) => setRollupDays(Number(e.target.value) || 30)}
+            />
+          </div>
+          <Button
+            variant="outline"
+            onClick={async () => {
+              setRetentionStatus('Rolling up metrics...');
+              const res = await fetch(
+                `/api/admin/agent-logs/rollup?days=${rollupDays}`,
+                { method: 'POST' }
+              );
+              const data = await res.json();
+              setRetentionStatus(
+                res.ok
+                  ? `Rolled up ${data.rolledUp} rows (last ${data.days} days)`
+                  : data.error || 'Rollup failed'
+              );
+            }}
+          >
+            Roll up metrics
+          </Button>
+          {retentionStatus && <span className="text-xs text-gray-500">{retentionStatus}</span>}
         </CardContent>
       </Card>
 
