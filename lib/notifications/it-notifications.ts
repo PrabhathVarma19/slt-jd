@@ -127,13 +127,8 @@ export async function sendItNotification({
 
     switch (event) {
       case 'ticket_created': {
-        to = uniqueEmails([itDeskEmail, requesterEmail]);
-        subject = `[Beacon] ${ticketNumber} created`;
-        htmlBody = `<p>A new IT request has been created.</p>
-<p><strong>${ticketNumber}</strong> - ${ticketTitle}</p>
-<p>Requester: ${requesterName} (${requesterEmail})</p>`;
-        textBody = `A new IT request has been created.\n${ticketNumber} - ${ticketTitle}\nRequester: ${requesterName} (${requesterEmail})`;
-        break;
+        // Ticket creation is handled by the service-desk email (with requester CC).
+        return;
       }
       case 'ticket_assigned': {
         to = uniqueEmails([assigneeEmail]);
