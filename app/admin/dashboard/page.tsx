@@ -434,6 +434,8 @@ export default function AdminDashboardPage() {
   const mttrTrendMax = analytics
     ? Math.max(1, ...analytics.trendsMttr.map((point) => point.minutes))
     : 1;
+  const chartHeight = 176;
+  const compactChartHeight = 128;
   const labelStride = analytics ? Math.max(1, Math.ceil(analytics.trends.length / 12)) : 1;
   const hasTrendData = analytics
     ? analytics.trends.some((point) => point.opened > 0 || point.resolved > 0)
@@ -693,30 +695,30 @@ export default function AdminDashboardPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="flex h-32 items-end gap-2">
-                  {analytics.trendsMtta.map((point, index) => {
-                    const mttaHeight =
-                      point.minutes > 0
-                        ? Math.max(6, (point.minutes / mttaTrendMax) * 100)
-                        : 0;
-                    const mttrHeight =
-                      analytics.trendsMttr[index]?.minutes > 0
-                        ? Math.max(6, (analytics.trendsMttr[index].minutes / mttrTrendMax) * 100)
-                        : 0;
-                    return (
-                      <div key={point.day} className="flex flex-1 flex-col items-center gap-1">
-                        <div className="flex w-full flex-1 items-end gap-1">
-                          <div
-                            className="w-1/2 rounded-t bg-sky-500/80"
-                            style={{ height: `${mttaHeight}%` }}
-                            title={`MTTA: ${point.minutes}m`}
-                          />
-                          <div
-                            className="w-1/2 rounded-t bg-indigo-500/80"
-                            style={{ height: `${mttrHeight}%` }}
-                            title={`MTTR: ${analytics.trendsMttr[index]?.minutes || 0}m`}
-                          />
-                        </div>
+                  <div className="flex h-32 items-end gap-2">
+                    {analytics.trendsMtta.map((point, index) => {
+                      const mttaHeight =
+                        point.minutes > 0
+                          ? Math.max(6, (point.minutes / mttaTrendMax) * compactChartHeight)
+                          : 0;
+                      const mttrHeight =
+                        analytics.trendsMttr[index]?.minutes > 0
+                          ? Math.max(6, (analytics.trendsMttr[index].minutes / mttrTrendMax) * compactChartHeight)
+                          : 0;
+                      return (
+                        <div key={point.day} className="flex flex-1 flex-col items-center gap-1">
+                          <div className="flex w-full items-end gap-1" style={{ height: `${compactChartHeight}px` }}>
+                            <div
+                              className="w-1/2 rounded-t bg-sky-500/80"
+                              style={{ height: `${mttaHeight}px` }}
+                              title={`MTTA: ${point.minutes}m`}
+                            />
+                            <div
+                              className="w-1/2 rounded-t bg-indigo-500/80"
+                              style={{ height: `${mttrHeight}px` }}
+                              title={`MTTR: ${analytics.trendsMttr[index]?.minutes || 0}m`}
+                            />
+                          </div>
                         <span
                           className={`text-[10px] ${
                             index % labelStride === 0 ? 'text-gray-500' : 'text-gray-400 opacity-0'
@@ -749,19 +751,19 @@ export default function AdminDashboardPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="flex h-32 items-end gap-2">
-                  {analytics.trendsSlaBreaches.map((point, index) => {
-                    const height =
-                      point.breached > 0
-                        ? Math.max(6, (point.breached / slaTrendMax) * 100)
-                        : 0;
-                    return (
-                      <div key={point.day} className="flex flex-1 flex-col items-center gap-1">
-                        <div
-                          className="w-full rounded-t bg-rose-500/80"
-                          style={{ height: `${height}%` }}
-                          title={`Breached: ${point.breached}`}
-                        />
+                  <div className="flex h-32 items-end gap-2">
+                    {analytics.trendsSlaBreaches.map((point, index) => {
+                      const height =
+                        point.breached > 0
+                          ? Math.max(6, (point.breached / slaTrendMax) * compactChartHeight)
+                          : 0;
+                      return (
+                        <div key={point.day} className="flex flex-1 flex-col items-center gap-1">
+                          <div
+                            className="w-full rounded-t bg-rose-500/80"
+                            style={{ height: `${height}px` }}
+                            title={`Breached: ${point.breached}`}
+                          />
                         <span
                           className={`text-[10px] ${
                             index % labelStride === 0 ? 'text-gray-500' : 'text-gray-400 opacity-0'
@@ -854,30 +856,30 @@ export default function AdminDashboardPage() {
               <CardContent>
                 {hasTrendData ? (
                   <div className="w-full">
-                    <div className="flex h-44 items-end gap-2">
-                      {analytics.trends.map((point, index) => {
-                        const openedHeight =
-                          point.opened > 0
-                            ? Math.max(6, (point.opened / trendMax) * 100)
-                            : 0;
-                        const resolvedHeight =
-                          point.resolved > 0
-                            ? Math.max(6, (point.resolved / trendMax) * 100)
-                            : 0;
-                        return (
-                          <div key={point.day} className="flex flex-1 flex-col items-center gap-1">
-                            <div className="flex w-full flex-1 items-end gap-1">
-                              <div
-                                className="w-1/2 rounded-t bg-blue-500/80"
-                                style={{ height: `${openedHeight}%` }}
-                                title={`Opened: ${point.opened}`}
-                              />
-                              <div
-                                className="w-1/2 rounded-t bg-emerald-500/80"
-                                style={{ height: `${resolvedHeight}%` }}
-                                title={`Resolved: ${point.resolved}`}
-                              />
-                            </div>
+                      <div className="flex h-44 items-end gap-2">
+                        {analytics.trends.map((point, index) => {
+                          const openedHeight =
+                            point.opened > 0
+                              ? Math.max(6, (point.opened / trendMax) * chartHeight)
+                              : 0;
+                          const resolvedHeight =
+                            point.resolved > 0
+                              ? Math.max(6, (point.resolved / trendMax) * chartHeight)
+                              : 0;
+                          return (
+                            <div key={point.day} className="flex flex-1 flex-col items-center gap-1">
+                              <div className="flex w-full items-end gap-1" style={{ height: `${chartHeight}px` }}>
+                                <div
+                                  className="w-1/2 rounded-t bg-blue-500/80"
+                                  style={{ height: `${openedHeight}px` }}
+                                  title={`Opened: ${point.opened}`}
+                                />
+                                <div
+                                  className="w-1/2 rounded-t bg-emerald-500/80"
+                                  style={{ height: `${resolvedHeight}px` }}
+                                  title={`Resolved: ${point.resolved}`}
+                                />
+                              </div>
                             <span
                               className={`text-[10px] ${
                                 index % labelStride === 0
