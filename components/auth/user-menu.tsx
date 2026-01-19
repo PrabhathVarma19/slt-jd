@@ -15,8 +15,25 @@ export function UserMenu() {
   const [loading, setLoading] = useState(true);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const isRetryingRef = useRef(false);
+  const cachedUserRef = useRef<{ email: string; name?: string; roles?: string[] } | null>(null);
 
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const cached = window.localStorage.getItem('beacon:user');
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (parsed?.email) {
+            cachedUserRef.current = parsed;
+            setUser(parsed);
+            setLoading(false);
+          }
+        }
+      } catch (error) {
+        console.warn('Failed to read cached user:', error);
+      }
+    }
+
     // Don't fetch session on login page
     if (pathname === '/login') {
       setLoading(false);
@@ -25,6 +42,7 @@ export function UserMenu() {
 
     const fetchSession = async (): Promise<boolean> => {
       try {
+        setLoading(true);
         const data = await authenticatedFetch<{
           isAuthenticated?: boolean;
           authenticated?: boolean;
@@ -36,19 +54,27 @@ export function UserMenu() {
 
         if (data.isAuthenticated || data.authenticated) {
           setUser(data.user || null);
+          if (data.user) {
+            try {
+              window.localStorage.setItem('beacon:user', JSON.stringify(data.user));
+              cachedUserRef.current = data.user;
+            } catch (error) {
+              console.warn('Failed to cache user:', error);
+            }
+          }
           return true;
         } else {
-          setUser(null);
+          setUser(cachedUserRef.current);
           return false;
         }
       } catch (error: any) {
         // 401 is expected for unauthenticated users
         if (error.message?.includes('401') || error.message?.includes('Unauthorized')) {
-          setUser(null);
+          setUser(cachedUserRef.current);
           return false;
         } else {
           console.error('Session fetch error:', error);
-          setUser(null);
+          setUser(cachedUserRef.current);
           return false;
         }
       } finally {
@@ -70,6 +96,7 @@ export function UserMenu() {
     };
 
     fetchSession();
+    retrySession();
 
     // Listen for custom event when login succeeds (dispatched from login page)
     const handleLoginSuccess = () => {
@@ -107,6 +134,11 @@ export function UserMenu() {
       // Add fade-out animation
       await new Promise((resolve) => setTimeout(resolve, 200));
       await fetch('/api/auth/logout', { method: 'POST' });
+      try {
+        window.localStorage.removeItem('beacon:user');
+      } catch (error) {
+        console.warn('Failed to clear cached user:', error);
+      }
       router.push('/login');
       router.refresh();
     } catch (error) {
