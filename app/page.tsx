@@ -108,6 +108,14 @@ const ADMIN_TOOLS: Tool[] = [
     accent: 'bg-indigo-100 text-indigo-700',
   },
   {
+    title: 'Notification failures',
+    description: 'Review failed emails and retry notifications.',
+    href: '/admin/notifications',
+    bucket: 'Admin',
+    initials: 'NF',
+    accent: 'bg-rose-100 text-rose-700',
+  },
+  {
     title: 'Ticket Dashboard',
     description: 'View, assign, and manage IT and Travel tickets.',
     href: '/admin/tickets',

@@ -1,5 +1,6 @@
 import { supabaseServer } from '@/lib/supabase/server';
 import { sendMailViaGraph } from '@/lib/graph';
+import { logNotificationFailure } from '@/lib/notifications/notification-failures';
 
 export type ItNotificationEvent =
   | 'ticket_created'
@@ -189,12 +190,33 @@ export async function sendItNotification({
       return;
     }
 
-    await sendMailViaGraph({
-      to,
-      subject,
-      htmlBody,
-      textBody,
-    });
+    try {
+      await sendMailViaGraph({
+        to,
+        subject,
+        htmlBody,
+        textBody,
+      });
+    } catch (error: any) {
+      await logNotificationFailure({
+        channel: 'EMAIL',
+        domain: 'IT',
+        event,
+        ticketId,
+        actorId,
+        recipients: to,
+        subject,
+        htmlBody,
+        textBody,
+        errorMessage: error?.message || 'Failed to send email',
+        metadata: {
+          payload,
+          requesterEmail,
+          assigneeEmail,
+        },
+      });
+      throw error;
+    }
   } catch (error) {
     console.error('IT notification failed:', error);
   }
