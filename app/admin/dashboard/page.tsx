@@ -42,6 +42,10 @@ interface AnalyticsResponse {
   metrics: {
     avgMttaMinutes: number;
     avgMttrMinutes: number;
+    reopenRatePercent: number;
+    fcrRatePercent: number;
+    reopenCount: number;
+    fcrCount: number;
   };
   breakdowns: {
     byStatus: Record<Status, number>;
@@ -50,6 +54,18 @@ interface AnalyticsResponse {
     bySubcategory: Record<string, number>;
   };
   trends: Array<{ day: string; opened: number; resolved: number }>;
+  trendsSlaBreaches: Array<{ day: string; breached: number }>;
+  trendsMtta: Array<{ day: string; minutes: number }>;
+  trendsMttr: Array<{ day: string; minutes: number }>;
+  backlogAging: Record<string, number>;
+  topAgentFailures: Array<{
+    agent: string;
+    intent: string | null;
+    tool: string | null;
+    total: number;
+    failures: number;
+    failureRate: number;
+  }>;
   comparison: {
     total: { current: number; previous: number };
     resolved: { current: number; previous: number };
@@ -71,6 +87,13 @@ interface AnalyticsResponse {
     resolved: number;
     breached: number;
     avgResolutionMinutes: number;
+  }>;
+  engineerWorkload: Array<{
+    id: string;
+    name: string;
+    email: string;
+    open: number;
+    resolved: number;
   }>;
   tickets: Array<{
     id: string;
@@ -402,6 +425,15 @@ export default function AdminDashboardPage() {
   const trendMax = analytics
     ? Math.max(1, ...analytics.trends.map((point) => Math.max(point.opened, point.resolved)))
     : 1;
+  const slaTrendMax = analytics
+    ? Math.max(1, ...analytics.trendsSlaBreaches.map((point) => point.breached))
+    : 1;
+  const mttaTrendMax = analytics
+    ? Math.max(1, ...analytics.trendsMtta.map((point) => point.minutes))
+    : 1;
+  const mttrTrendMax = analytics
+    ? Math.max(1, ...analytics.trendsMttr.map((point) => point.minutes))
+    : 1;
   const labelStride = analytics ? Math.max(1, Math.ceil(analytics.trends.length / 12)) : 1;
   const hasTrendData = analytics
     ? analytics.trends.some((point) => point.opened > 0 || point.resolved > 0)
@@ -615,6 +647,149 @@ export default function AdminDashboardPage() {
                   </div>
                   <Gauge className="h-8 w-8 text-orange-600" />
                 </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <Card className="animate-in fade-in slide-in-from-bottom-2">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <RefreshCw className="h-4 w-4 text-rose-600" />
+                  Quality rates
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="flex items-center justify-between rounded-xl border border-gray-100 bg-white/70 p-3">
+                  <div>
+                    <p className="text-xs text-gray-500">Reopen rate</p>
+                    <p className="mt-1 text-xl font-semibold text-gray-900">
+                      {analytics.metrics.reopenRatePercent}%
+                    </p>
+                  </div>
+                  <span className="text-xs text-gray-500">
+                    {analytics.metrics.reopenCount} reopened
+                  </span>
+                </div>
+                <div className="flex items-center justify-between rounded-xl border border-gray-100 bg-white/70 p-3">
+                  <div>
+                    <p className="text-xs text-gray-500">First-contact resolution</p>
+                    <p className="mt-1 text-xl font-semibold text-gray-900">
+                      {analytics.metrics.fcrRatePercent}%
+                    </p>
+                  </div>
+                  <span className="text-xs text-gray-500">
+                    {analytics.metrics.fcrCount} closed
+                  </span>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="animate-in fade-in slide-in-from-bottom-2">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <Clock className="h-4 w-4 text-blue-600" />
+                  MTTA / MTTR trend
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex h-32 items-end gap-2">
+                  {analytics.trendsMtta.map((point, index) => {
+                    const mttaHeight =
+                      point.minutes > 0
+                        ? Math.max(6, (point.minutes / mttaTrendMax) * 100)
+                        : 0;
+                    const mttrHeight =
+                      analytics.trendsMttr[index]?.minutes > 0
+                        ? Math.max(6, (analytics.trendsMttr[index].minutes / mttrTrendMax) * 100)
+                        : 0;
+                    return (
+                      <div key={point.day} className="flex flex-1 flex-col items-center gap-1">
+                        <div className="flex w-full flex-1 items-end gap-1">
+                          <div
+                            className="w-1/2 rounded-t bg-sky-500/80"
+                            style={{ height: `${mttaHeight}%` }}
+                            title={`MTTA: ${point.minutes}m`}
+                          />
+                          <div
+                            className="w-1/2 rounded-t bg-indigo-500/80"
+                            style={{ height: `${mttrHeight}%` }}
+                            title={`MTTR: ${analytics.trendsMttr[index]?.minutes || 0}m`}
+                          />
+                        </div>
+                        <span
+                          className={`text-[10px] ${
+                            index % labelStride === 0 ? 'text-gray-500' : 'text-gray-400 opacity-0'
+                          }`}
+                        >
+                          {point.day.slice(5)}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="mt-3 flex items-center gap-4 text-xs text-gray-500">
+                  <span className="flex items-center gap-1">
+                    <span className="h-2 w-2 rounded-full bg-sky-500/80" />
+                    MTTA
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <span className="h-2 w-2 rounded-full bg-indigo-500/80" />
+                    MTTR
+                  </span>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="animate-in fade-in slide-in-from-bottom-2">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <AlertTriangle className="h-4 w-4 text-rose-600" />
+                  SLA breach trend
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex h-32 items-end gap-2">
+                  {analytics.trendsSlaBreaches.map((point, index) => {
+                    const height =
+                      point.breached > 0
+                        ? Math.max(6, (point.breached / slaTrendMax) * 100)
+                        : 0;
+                    return (
+                      <div key={point.day} className="flex flex-1 flex-col items-center gap-1">
+                        <div
+                          className="w-full rounded-t bg-rose-500/80"
+                          style={{ height: `${height}%` }}
+                          title={`Breached: ${point.breached}`}
+                        />
+                        <span
+                          className={`text-[10px] ${
+                            index % labelStride === 0 ? 'text-gray-500' : 'text-gray-400 opacity-0'
+                          }`}
+                        >
+                          {point.day.slice(5)}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="animate-in fade-in slide-in-from-bottom-2">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <Gauge className="h-4 w-4 text-amber-600" />
+                  Backlog aging
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                {Object.entries(analytics.backlogAging).map(([bucket, count]) => (
+                  <div key={bucket} className="flex items-center justify-between text-sm text-gray-700">
+                    <span className="text-xs text-gray-500">{bucket} days</span>
+                    <span className="font-semibold text-gray-900">{count}</span>
+                  </div>
+                ))}
               </CardContent>
             </Card>
           </div>
@@ -908,6 +1083,67 @@ export default function AdminDashboardPage() {
                         <p>{engineer.resolved} resolved</p>
                         <p>{formatDuration(engineer.avgResolutionMinutes)} avg</p>
                         <p className="text-rose-600">{engineer.breached} breached</p>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="grid gap-4 lg:grid-cols-2">
+            <Card className="animate-in fade-in slide-in-from-bottom-2">
+              <CardHeader>
+                <CardTitle className="text-lg">Top failing intents/tools</CardTitle>
+                <p className="text-sm text-gray-600">Based on agent rollups in range.</p>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {analytics.topAgentFailures.length === 0 ? (
+                  <p className="text-sm text-gray-500">No failures recorded.</p>
+                ) : (
+                  analytics.topAgentFailures.map((row) => (
+                    <div
+                      key={`${row.agent}-${row.intent}-${row.tool}`}
+                      className="flex items-center justify-between gap-3 rounded-xl border border-gray-100 bg-white/70 p-3"
+                    >
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">
+                          {row.agent} · {row.intent || 'unknown'} · {row.tool || 'unknown'}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          {row.failures} failures out of {row.total}
+                        </p>
+                      </div>
+                      <Badge variant="outline" className="bg-rose-50 text-rose-700">
+                        {row.failureRate}%
+                      </Badge>
+                    </div>
+                  ))
+                )}
+              </CardContent>
+            </Card>
+
+            <Card className="animate-in fade-in slide-in-from-bottom-2">
+              <CardHeader>
+                <CardTitle className="text-lg">Engineer workload</CardTitle>
+                <p className="text-sm text-gray-600">Open vs resolved in range.</p>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {analytics.engineerWorkload.length === 0 ? (
+                  <p className="text-sm text-gray-500">No assignments yet.</p>
+                ) : (
+                  analytics.engineerWorkload.map((engineer) => (
+                    <div
+                      key={engineer.id}
+                      className="flex items-center justify-between rounded-xl border border-gray-100 bg-white/70 p-3"
+                    >
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">{engineer.name}</p>
+                        <p className="text-xs text-gray-500">{engineer.email}</p>
+                      </div>
+                      <div className="text-right text-xs text-gray-600">
+                        <p>{engineer.open} open</p>
+                        <p>{engineer.resolved} resolved</p>
                       </div>
                     </div>
                   ))

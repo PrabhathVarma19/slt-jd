@@ -70,6 +70,13 @@ const minutesBetween = (start: string, end: string) => {
   return Math.max(0, Math.round((endMs - startMs) / 60000));
 };
 
+const daysBetween = (start: string, end: string) => {
+  const startMs = new Date(start).getTime();
+  const endMs = new Date(end).getTime();
+  if (Number.isNaN(startMs) || Number.isNaN(endMs)) return 0;
+  return Math.max(0, Math.floor((endMs - startMs) / (24 * 60 * 60 * 1000)));
+};
+
 const normalizeBreakdown = <T extends string>(keys: T[], counts: Record<string, number>) =>
   keys.reduce((acc, key) => {
     acc[key] = counts[key] || 0;
@@ -322,9 +329,23 @@ export async function GET(req: NextRequest) {
       HIGH: 0,
       URGENT: 0,
     };
+    const backlogAging: Record<string, number> = {
+      '0-2': 0,
+      '3-7': 0,
+      '8-14': 0,
+      '15+': 0,
+    };
     const engineerStats = new Map<
       string,
-      { name: string; email: string; assigned: number; resolved: number; breached: number; totalMinutes: number }
+      {
+        name: string;
+        email: string;
+        assigned: number;
+        resolved: number;
+        breached: number;
+        open: number;
+        totalMinutes: number;
+      }
     >();
 
     let totalAckMinutes = 0;
@@ -334,6 +355,11 @@ export async function GET(req: NextRequest) {
     let slaBreachedCount = 0;
     let slaOnTrackCount = 0;
     let unassignedCount = 0;
+    let reopenedCount = 0;
+    let fcrCount = 0;
+    const mttaByDay: Record<string, { total: number; count: number }> = {};
+    const mttrByDay: Record<string, { total: number; count: number }> = {};
+    const slaBreachesByDay: Record<string, number> = {};
 
     const ticketRowsForExport = filteredTickets.map((ticket) => {
       const requester = Array.isArray(ticket.requester) ? ticket.requester[0] : ticket.requester;
@@ -349,6 +375,10 @@ export async function GET(req: NextRequest) {
       );
 
       const ackCandidates: string[] = [];
+      const assignmentEvents = ticketEvents.filter(
+        (event) => event.type === 'ASSIGNED' && event.payload?.action !== 'unassigned'
+      );
+      const statusEvents = ticketEvents.filter((event) => event.type === 'STATUS_CHANGED');
       for (const event of ticketEvents) {
         if (event.type === 'STATUS_CHANGED' && event.payload?.newStatus === 'IN_PROGRESS') {
           ackCandidates.push(event.createdAt);
@@ -361,10 +391,15 @@ export async function GET(req: NextRequest) {
       if (ackAt) {
         totalAckMinutes += minutesBetween(ticket.createdAt, ackAt);
         ackCount += 1;
+        const ackDay = toDateKey(ticket.createdAt);
+        if (!mttaByDay[ackDay]) {
+          mttaByDay[ackDay] = { total: 0, count: 0 };
+        }
+        mttaByDay[ackDay].total += minutesBetween(ticket.createdAt, ackAt);
+        mttaByDay[ackDay].count += 1;
       }
 
       let waitingMinutes = 0;
-      const statusEvents = ticketEvents.filter((event) => event.type === 'STATUS_CHANGED');
       for (let index = 0; index < statusEvents.length; index += 1) {
         const event = statusEvents[index];
         if (event.payload?.newStatus === 'WAITING_ON_REQUESTER') {
@@ -390,6 +425,12 @@ export async function GET(req: NextRequest) {
       if (resolutionAt) {
         totalResolutionMinutes += effectiveMinutes;
         resolutionCount += 1;
+        const resolveDay = toDateKey(resolutionAt);
+        if (!mttrByDay[resolveDay]) {
+          mttrByDay[resolveDay] = { total: 0, count: 0 };
+        }
+        mttrByDay[resolveDay].total += effectiveMinutes;
+        mttrByDay[resolveDay].count += 1;
       }
 
       const slaTarget = slaTargets[ticket.priority as Priority] || DEFAULT_SLA_MINUTES.MEDIUM;
@@ -397,12 +438,27 @@ export async function GET(req: NextRequest) {
       if (isBreached) {
         slaBreachedCount += 1;
         prioritySlaBreaches[ticket.priority as Priority] += 1;
+        const breachDay = toDateKey(ticket.createdAt);
+        slaBreachesByDay[breachDay] = (slaBreachesByDay[breachDay] || 0) + 1;
       } else {
         slaOnTrackCount += 1;
       }
 
       if (!assignment) {
         unassignedCount += 1;
+      }
+
+      if (!resolutionAt) {
+        const ageDays = daysBetween(ticket.createdAt, now.toISOString());
+        if (ageDays <= 2) {
+          backlogAging['0-2'] += 1;
+        } else if (ageDays <= 7) {
+          backlogAging['3-7'] += 1;
+        } else if (ageDays <= 14) {
+          backlogAging['8-14'] += 1;
+        } else {
+          backlogAging['15+'] += 1;
+        }
       }
 
       statusCounts[ticket.status as Status] += 1;
@@ -419,17 +475,35 @@ export async function GET(req: NextRequest) {
           assigned: 0,
           resolved: 0,
           breached: 0,
+          open: 0,
           totalMinutes: 0,
         };
         current.assigned += 1;
         if (resolutionAt) {
           current.resolved += 1;
           current.totalMinutes += effectiveMinutes;
+        } else {
+          current.open += 1;
         }
         if (isBreached) {
           current.breached += 1;
         }
         engineerStats.set(assignment.id, current);
+      }
+
+      const reopened = statusEvents.some(
+        (event) =>
+          event.payload?.newStatus === 'OPEN' &&
+          ['RESOLVED', 'CLOSED'].includes(event.payload?.oldStatus)
+      );
+      if (reopened) {
+        reopenedCount += 1;
+      }
+      const waitingOnRequester = statusEvents.some(
+        (event) => event.payload?.newStatus === 'WAITING_ON_REQUESTER'
+      );
+      if (resolutionAt && !reopened && !waitingOnRequester && assignmentEvents.length <= 1) {
+        fcrCount += 1;
       }
 
       return {
@@ -458,6 +532,10 @@ export async function GET(req: NextRequest) {
     const avgMttaMinutes = ackCount > 0 ? Math.round(totalAckMinutes / ackCount) : 0;
     const avgMttrMinutes =
       resolutionCount > 0 ? Math.round(totalResolutionMinutes / resolutionCount) : 0;
+    const reopenRatePercent =
+      resolutionCount > 0 ? Math.round((reopenedCount / resolutionCount) * 100) : 0;
+    const fcrRatePercent =
+      resolutionCount > 0 ? Math.round((fcrCount / resolutionCount) * 100) : 0;
 
     const recentActivity = recentEvents.map((event) => {
       const creator = Array.isArray(event.creator) ? event.creator[0] : event.creator;
@@ -503,6 +581,21 @@ export async function GET(req: NextRequest) {
       day,
       opened: openedByDay[day] || 0,
       resolved: resolvedByDay[day] || 0,
+    }));
+
+    const slaBreachTrend = trendDays.map((day) => ({
+      day,
+      breached: slaBreachesByDay[day] || 0,
+    }));
+
+    const mttaTrend = trendDays.map((day) => ({
+      day,
+      minutes: mttaByDay[day] ? Math.round(mttaByDay[day].total / mttaByDay[day].count) : 0,
+    }));
+
+    const mttrTrend = trendDays.map((day) => ({
+      day,
+      minutes: mttrByDay[day] ? Math.round(mttrByDay[day].total / mttrByDay[day].count) : 0,
     }));
 
     const durationDays = Math.max(1, trendDays.length);
@@ -591,6 +684,56 @@ export async function GET(req: NextRequest) {
       },
     };
 
+    let topAgentFailures: Array<{
+      agent: string;
+      intent: string | null;
+      tool: string | null;
+      total: number;
+      failures: number;
+      failureRate: number;
+    }> = [];
+
+    const startDay = startIso.slice(0, 10);
+    const endDay = endIso.slice(0, 10);
+    const { data: rollups, error: rollupError } = await supabaseServer
+      .from('AgentLogMetricsDaily')
+      .select('day, agent, intent, tool, successCount, failureCount, totalCount')
+      .gte('day', startDay)
+      .lte('day', endDay);
+
+    if (rollupError) {
+      console.warn('Agent rollup fetch failed:', rollupError.message);
+    } else {
+      const aggregate = new Map<
+        string,
+        { agent: string; intent: string | null; tool: string | null; total: number; failures: number }
+      >();
+      for (const row of rollups || []) {
+        const key = `${row.agent}|${row.intent || ''}|${row.tool || ''}`;
+        const current = aggregate.get(key) || {
+          agent: row.agent,
+          intent: row.intent || null,
+          tool: row.tool || null,
+          total: 0,
+          failures: 0,
+        };
+        current.total += row.totalCount || 0;
+        current.failures += row.failureCount || 0;
+        aggregate.set(key, current);
+      }
+      topAgentFailures = Array.from(aggregate.values())
+        .map((row) => ({
+          agent: row.agent,
+          intent: row.intent,
+          tool: row.tool,
+          total: row.total,
+          failures: row.failures,
+          failureRate: row.total ? Math.round((row.failures / row.total) * 100) : 0,
+        }))
+        .sort((a, b) => b.failureRate - a.failureRate || b.failures - a.failures)
+        .slice(0, 6);
+    }
+
     return NextResponse.json({
       range: {
         start: startIso,
@@ -607,6 +750,10 @@ export async function GET(req: NextRequest) {
       metrics: {
         avgMttaMinutes,
         avgMttrMinutes,
+        reopenRatePercent,
+        fcrRatePercent,
+        reopenCount: reopenedCount,
+        fcrCount,
       },
       breakdowns: {
         byStatus: normalizeBreakdown(STATUS_ORDER, statusCounts),
@@ -615,6 +762,11 @@ export async function GET(req: NextRequest) {
         bySubcategory: subcategoryCounts,
       },
       trends,
+      trendsSlaBreaches: slaBreachTrend,
+      trendsMtta: mttaTrend,
+      trendsMttr: mttrTrend,
+      backlogAging,
+      topAgentFailures,
       comparison,
       sla: {
         byPriority: PRIORITY_ORDER.map((priority) => ({
@@ -638,6 +790,16 @@ export async function GET(req: NextRequest) {
         }))
         .sort((a, b) => b.resolved - a.resolved)
         .slice(0, 6),
+      engineerWorkload: Array.from(engineerStats.entries())
+        .map(([id, stats]) => ({
+          id,
+          name: stats.name,
+          email: stats.email,
+          open: stats.open,
+          resolved: stats.resolved,
+        }))
+        .sort((a, b) => b.open - a.open)
+        .slice(0, 8),
       tickets: ticketRowsForExport,
       slaConfig: slaTargets,
       recentActivity,
