@@ -484,6 +484,7 @@ export async function POST(req: NextRequest) {
         response: clarification,
         success: true,
         metadata: { mode, style },
+        actorRoles: auth.roles,
       });
       return NextResponse.json({ answer: clarification, keyRules: null, sources: [] });
     }
@@ -501,6 +502,7 @@ export async function POST(req: NextRequest) {
         response: golden.answer,
         success: true,
         metadata: { mode, style, source: 'golden' },
+        actorRoles: auth.roles,
       });
       return NextResponse.json({
         answer: golden.answer,
@@ -723,6 +725,7 @@ Respond with a concise answer and include citations [n] for every factual statem
       response: finalAnswer,
       success: true,
       metadata: { mode, style },
+      actorRoles: auth.roles,
     });
 
     return NextResponse.json({ answer: finalAnswer, keyRules, sources });

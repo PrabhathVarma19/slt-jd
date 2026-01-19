@@ -257,6 +257,7 @@ export async function GET(req: NextRequest) {
       }
 
       return NextResponse.json({
+        deprecated: true,
         stats,
         metrics: {
           avgResolutionTimeHours: avgResolutionTime,

@@ -18,6 +18,7 @@ type AgentLog = {
   response: string;
   success: boolean;
   createdAt: string;
+  metadata?: { actorRoles?: string[] } | null;
   user?: {
     email?: string;
     profile?: { empName?: string };
@@ -40,6 +41,11 @@ export default function AgentLogsPage() {
   const [rangeFilter, setRangeFilter] = useState('30d');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [page, setPage] = useState(1);
+  const [limit] = useState(25);
+  const [totalPages, setTotalPages] = useState(1);
+  const [total, setTotal] = useState(0);
 
   const fetchLogs = async () => {
     try {
@@ -50,7 +56,10 @@ export default function AgentLogsPage() {
       if (intentFilter) params.set('intent', intentFilter);
       if (toolFilter) params.set('tool', toolFilter);
       if (successFilter) params.set('success', successFilter);
+      if (searchTerm) params.set('q', searchTerm);
       params.set('range', rangeFilter);
+      params.set('page', page.toString());
+      params.set('limit', limit.toString());
       if (rangeFilter === 'custom') {
         if (startDate) params.set('start', startDate);
         if (endDate) params.set('end', endDate);
@@ -65,6 +74,8 @@ export default function AgentLogsPage() {
       }
       const data = await res.json();
       setLogs(data.logs || []);
+      setTotalPages(data.totalPages || 1);
+      setTotal(data.total || 0);
     } catch (error) {
       console.error('Failed to fetch agent logs:', error);
     } finally {
@@ -73,8 +84,12 @@ export default function AgentLogsPage() {
   };
 
   useEffect(() => {
+    setPage(1);
+  }, [agentFilter, emailFilter, intentFilter, toolFilter, successFilter, rangeFilter, startDate, endDate, searchTerm]);
+
+  useEffect(() => {
     fetchLogs();
-  }, [agentFilter, emailFilter, intentFilter, toolFilter, successFilter, rangeFilter, startDate, endDate]);
+  }, [agentFilter, emailFilter, intentFilter, toolFilter, successFilter, rangeFilter, startDate, endDate, searchTerm, page]);
 
   const isSuperAdmin = (log: AgentLog) =>
     log.user?.roles?.some(
@@ -183,6 +198,13 @@ export default function AgentLogsPage() {
             value={toolFilter}
             onChange={(e) => setToolFilter(e.target.value)}
           />
+          <input
+            type="text"
+            className="rounded-md border border-gray-200 bg-white px-3 py-2 text-sm"
+            placeholder="Search input/response"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
           <select
             className="rounded-md border border-gray-200 bg-white px-3 py-2 text-sm"
             value={successFilter}
@@ -201,6 +223,30 @@ export default function AgentLogsPage() {
         </CardContent>
       </Card>
 
+      <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-gray-600">
+        <span>
+          Showing page {page} of {Math.max(1, totalPages)} ({total} logs)
+        </span>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            disabled={page <= 1}
+            onClick={() => setPage((prev) => Math.max(1, prev - 1))}
+          >
+            Previous
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            disabled={page >= totalPages}
+            onClick={() => setPage((prev) => Math.min(totalPages, prev + 1))}
+          >
+            Next
+          </Button>
+        </div>
+      </div>
+
       {loading ? (
         <div className="flex min-h-[200px] items-center justify-center">
           <Spinner />
@@ -218,6 +264,7 @@ export default function AgentLogsPage() {
               log.user?.profile?.empName ||
               (isSuperAdmin(log) ? 'Super Admin' : log.user?.email) ||
               'Unknown';
+            const actorRoles = log.metadata?.actorRoles || [];
             return (
               <Card key={log.id}>
                 <CardHeader className="flex flex-row items-center justify-between gap-4">
@@ -234,6 +281,11 @@ export default function AgentLogsPage() {
                     <Badge variant="outline">{log.agent}</Badge>
                     <Badge variant="secondary">{log.intent}</Badge>
                     <Badge variant="outline">{log.tool}</Badge>
+                    {actorRoles.map((role) => (
+                      <Badge key={role} variant="outline">
+                        {role}
+                      </Badge>
+                    ))}
                     <Badge
                       variant="outline"
                       className={

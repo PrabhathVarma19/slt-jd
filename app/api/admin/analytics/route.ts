@@ -85,6 +85,13 @@ export async function GET(req: NextRequest) {
     const startParam = searchParams.get('start');
     const endParam = searchParams.get('end');
 
+    if (range === 'custom' && (!startParam || !endParam)) {
+      return NextResponse.json(
+        { error: 'Custom range requires start and end dates.' },
+        { status: 400 }
+      );
+    }
+
     const statusFilter = parseList(searchParams.get('status'));
     const priorityFilter = parseList(searchParams.get('priority'));
     const categoryFilter = parseList(searchParams.get('category'));
@@ -279,6 +286,20 @@ export async function GET(req: NextRequest) {
       eventMap.get(event.ticketId)?.push(event);
     }
 
+    const resolutionAtMap = new Map<string, string>();
+    for (const [ticketId, ticketEvents] of eventMap.entries()) {
+      const resolutionEvent = ticketEvents
+        .filter(
+          (event) =>
+            event.type === 'STATUS_CHANGED' &&
+            (event.payload?.newStatus === 'RESOLVED' || event.payload?.newStatus === 'CLOSED')
+        )
+        .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())[0];
+      if (resolutionEvent?.createdAt) {
+        resolutionAtMap.set(ticketId, resolutionEvent.createdAt);
+      }
+    }
+
     const statusCounts: Record<Status, number> = {
       OPEN: 0,
       IN_PROGRESS: 0,
@@ -360,11 +381,13 @@ export async function GET(req: NextRequest) {
         }
       }
 
-      const endTime = ticket.resolvedAt || ticket.closedAt || now.toISOString();
+      const resolutionAt =
+        resolutionAtMap.get(ticket.id) || ticket.resolvedAt || ticket.closedAt || null;
+      const endTime = resolutionAt || now.toISOString();
       const totalMinutes = minutesBetween(ticket.createdAt, endTime);
       const effectiveMinutes = Math.max(0, totalMinutes - waitingMinutes);
 
-      if (ticket.resolvedAt || ticket.closedAt) {
+      if (resolutionAt) {
         totalResolutionMinutes += effectiveMinutes;
         resolutionCount += 1;
       }
@@ -399,7 +422,7 @@ export async function GET(req: NextRequest) {
           totalMinutes: 0,
         };
         current.assigned += 1;
-        if (ticket.resolvedAt || ticket.closedAt) {
+        if (resolutionAt) {
           current.resolved += 1;
           current.totalMinutes += effectiveMinutes;
         }
@@ -418,7 +441,7 @@ export async function GET(req: NextRequest) {
         category: ticket.category || 'uncategorized',
         subcategory: ticket.subcategory || 'general',
         createdAt: ticket.createdAt,
-        resolvedAt: ticket.resolvedAt,
+        resolvedAt: resolutionAt || ticket.resolvedAt,
         closedAt: ticket.closedAt,
         projectCode: ticket.projectCode || '',
         projectName: ticket.projectName || '',
@@ -468,7 +491,8 @@ export async function GET(req: NextRequest) {
     for (const ticket of filteredTickets) {
       const createdKey = toDateKey(ticket.createdAt);
       openedByDay[createdKey] = (openedByDay[createdKey] || 0) + 1;
-      const resolvedAt = ticket.resolvedAt || ticket.closedAt;
+      const resolvedAt =
+        resolutionAtMap.get(ticket.id) || ticket.resolvedAt || ticket.closedAt || null;
       if (resolvedAt) {
         const resolvedKey = toDateKey(resolvedAt);
         resolvedByDay[resolvedKey] = (resolvedByDay[resolvedKey] || 0) + 1;
@@ -517,13 +541,37 @@ export async function GET(req: NextRequest) {
     const previousIdSet = await applyEngineerFilter(previousIds);
     const previousFiltered = (previousTickets || []).filter((ticket) => previousIdSet.has(ticket.id));
 
-    const previousResolved = previousFiltered.filter(
-      (ticket) => ticket.resolvedAt || ticket.closedAt
-    ).length;
+    let previousResolutionMap = new Map<string, string>();
+    if (previousFiltered.length > 0) {
+      const { data: previousEvents, error: previousEventsError } = await supabaseServer
+        .from('TicketEvent')
+        .select('ticketId, createdAt, payload')
+        .in('ticketId', previousFiltered.map((ticket) => ticket.id))
+        .eq('type', 'STATUS_CHANGED');
+      if (previousEventsError) {
+        throw new Error(previousEventsError.message);
+      }
+      for (const event of previousEvents || []) {
+        if (event.payload?.newStatus !== 'RESOLVED' && event.payload?.newStatus !== 'CLOSED') {
+          continue;
+        }
+        const existing = previousResolutionMap.get(event.ticketId);
+        if (!existing || new Date(event.createdAt) < new Date(existing)) {
+          previousResolutionMap.set(event.ticketId, event.createdAt);
+        }
+      }
+    }
+
+    const previousResolved = previousFiltered.filter((ticket) => {
+      return (
+        previousResolutionMap.has(ticket.id) || ticket.resolvedAt || ticket.closedAt
+      );
+    }).length;
 
     const previousBreached = previousFiltered.filter((ticket) => {
       const target = slaTargets[ticket.priority as Priority] || DEFAULT_SLA_MINUTES.MEDIUM;
-      const end = ticket.resolvedAt || ticket.closedAt || previousEnd;
+      const end =
+        previousResolutionMap.get(ticket.id) || ticket.resolvedAt || ticket.closedAt || previousEnd;
       const elapsed = minutesBetween(ticket.createdAt, end);
       return elapsed > target;
     }).length;

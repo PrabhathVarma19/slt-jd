@@ -82,6 +82,7 @@ export async function POST(req: NextRequest) {
           tool: 'password_reset',
           response: responseMessage,
           success: true,
+          actorRoles: auth.roles,
         });
         return NextResponse.json({ message: responseMessage });
       }
@@ -112,6 +113,7 @@ export async function POST(req: NextRequest) {
           toolInput: { ticketNumber },
           response: responseMessage,
           success: true,
+          actorRoles: auth.roles,
         });
         return NextResponse.json({ message: responseMessage });
       }
@@ -148,6 +150,7 @@ export async function POST(req: NextRequest) {
           toolInput: { query },
           response: responseMessage,
           success: true,
+          actorRoles: auth.roles,
         });
         return NextResponse.json({ message: responseMessage });
       }
@@ -206,6 +209,7 @@ export async function POST(req: NextRequest) {
           toolInput: actionData,
           response: responseMessage,
           success: true,
+          actorRoles: auth.roles,
         });
         return NextResponse.json({ message: responseMessage });
       }
@@ -261,6 +265,7 @@ export async function POST(req: NextRequest) {
       toolInput: actionData,
       response: decision.response,
       success: true,
+      actorRoles: auth.roles,
     });
 
     if (actionType === 'ticket_status' && !actionData?.ticketNumber) {
@@ -280,6 +285,7 @@ export async function POST(req: NextRequest) {
           tool: 'none',
           response: recentReply,
           success: true,
+          actorRoles: auth.roles,
         });
 
         return NextResponse.json({
