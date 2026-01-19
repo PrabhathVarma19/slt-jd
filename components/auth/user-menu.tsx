@@ -1,51 +1,75 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { Avatar } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuItem, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { LogOut, User, Shield } from 'lucide-react';
 
-// Helper function to get initial user from localStorage synchronously
-function getInitialUser() {
+type UserData = {
+  id: string;
+  email: string;
+  name?: string;
+  roles?: string[];
+};
+
+// Get user from localStorage synchronously for immediate display
+function getCachedUser(): UserData | null {
   if (typeof window === 'undefined') return null;
   try {
     const cached = window.localStorage.getItem('beacon:user');
     if (cached) {
       const parsed = JSON.parse(cached);
-      if (parsed?.email) {
+      if (parsed?.email && parsed?.id) {
         return parsed;
       }
     }
-  } catch (error) {
-    console.warn('Failed to read cached user:', error);
+  } catch {
+    // Ignore errors
   }
   return null;
+}
+
+// Save user to localStorage
+function saveUserToCache(user: UserData): void {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.setItem('beacon:user', JSON.stringify(user));
+  } catch {
+    // Ignore errors
+  }
+}
+
+// Clear user from localStorage
+function clearUserCache(): void {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.removeItem('beacon:user');
+  } catch {
+    // Ignore errors
+  }
 }
 
 export function UserMenu() {
   const router = useRouter();
   const pathname = usePathname();
-  // Initialize state from localStorage synchronously - ensures user is available on first render
-  const initialUser = getInitialUser();
-  const [user, setUser] = useState<{ id?: string; email: string; name?: string; roles?: string[] } | null>(initialUser);
-  const [loading, setLoading] = useState(!initialUser); // Only show loading if no initial user
+  
+  // Initialize from localStorage for immediate display
+  const cachedUser = getCachedUser();
+  const [user, setUser] = useState<UserData | null>(cachedUser);
+  const [loading, setLoading] = useState(!cachedUser);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const cachedUserRef = useRef<{ id?: string; email: string; name?: string; roles?: string[] } | null>(initialUser);
-  const inconsistentResponseCountRef = useRef(0);
 
-  // Fetch session function - shared across useEffects
-  const fetchSession = async (forceLoading = false): Promise<boolean> => {
-    // Don't fetch session on login page
+  // Fetch session from API and update state
+  const fetchSession = async (showLoading = false): Promise<void> => {
     if (pathname === '/login') {
       setLoading(false);
-      return false;
+      return;
     }
 
     try {
-      // Only show loading if we don't have cached user or if forced
-      if ((!cachedUserRef.current && !user) || forceLoading) {
+      if (showLoading) {
         setLoading(true);
       }
 
@@ -53,195 +77,117 @@ export function UserMenu() {
         credentials: 'include',
         cache: 'no-store',
       });
-      
+
       if (!res.ok) {
-        if (res.status >= 500) {
-          console.error('[USER_MENU] Session endpoint returned error:', res.status);
+        // If we have cached user, keep it; otherwise clear
+        if (!user) {
+          setUser(null);
+          clearUserCache();
         }
-        setUser(cachedUserRef.current);
-        return false;
+        return;
       }
 
-      const data = (await res.json()) as {
+      const data = await res.json() as {
         isAuthenticated?: boolean;
         authenticated?: boolean;
-        user?: { id: string; email: string; name?: string; roles?: string[] };
-        error?: string;
+        user?: UserData;
       };
 
       const isAuthenticated = data.isAuthenticated || data.authenticated;
-      const hasValidUser = data.user?.email && data.user?.id;
-
-      if (isAuthenticated && !hasValidUser) {
-        inconsistentResponseCountRef.current += 1;
-        console.error('[USER_MENU] Inconsistent session response detected:', {
-          authenticated: isAuthenticated,
-          hasUser: !!data.user,
-          hasEmail: !!data.user?.email,
-          hasId: !!data.user?.id,
-          error: data.error,
-          count: inconsistentResponseCountRef.current,
-        });
-
-        if (inconsistentResponseCountRef.current >= 3) {
-          console.warn('[USER_MENU] Multiple inconsistent responses detected. Clearing session.');
-          try {
-            await fetch('/api/auth/logout', { method: 'POST' });
-            window.localStorage.removeItem('beacon:user');
-            cachedUserRef.current = null;
-          } catch (error) {
-            console.error('[USER_MENU] Failed to clear session:', error);
-          }
-          setUser(null);
-          return false;
-        }
-
-        setUser(cachedUserRef.current);
-        return false;
-      }
-
-      inconsistentResponseCountRef.current = 0;
-
-      if (isAuthenticated && hasValidUser) {
-        setUser(data.user || null);
-        if (data.user) {
-          try {
-            window.localStorage.setItem('beacon:user', JSON.stringify(data.user));
-            cachedUserRef.current = data.user;
-          } catch (error) {
-            console.warn('Failed to cache user:', error);
-          }
-        }
-        return true;
+      
+      if (isAuthenticated && data.user?.email && data.user?.id) {
+        // Update state and cache
+        setUser(data.user);
+        saveUserToCache(data.user);
       } else {
-        if (!isAuthenticated) {
-          setUser(null);
-          cachedUserRef.current = null;
-          try {
-            window.localStorage.removeItem('beacon:user');
-          } catch (error) {
-            console.warn('Failed to clear cached user:', error);
-          }
-        }
-        return false;
+        // Not authenticated - clear everything
+        setUser(null);
+        clearUserCache();
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error('[USER_MENU] Session fetch error:', error);
-      setUser(cachedUserRef.current);
-      return false;
+      // On error, keep cached user if it exists
+      if (!user) {
+        setUser(null);
+        clearUserCache();
+      }
     } finally {
       setLoading(false);
     }
   };
 
-  // Set up login success event listener
+  // Initial load: fetch session on mount
+  useEffect(() => {
+    fetchSession();
+  }, []); // Only run once on mount
+
+  // Listen for login success event
   useEffect(() => {
     const handleLoginSuccess = (event: Event) => {
-      inconsistentResponseCountRef.current = 0;
-      
       const customEvent = event as CustomEvent;
-      const userData = customEvent.detail?.user;
+      const userData = customEvent.detail?.user as UserData | undefined;
       
-      if (userData && userData.email) {
-        const userWithId = {
-          id: userData.id,
-          email: userData.email,
-          name: userData.name,
-          roles: Array.isArray(userData.roles) ? userData.roles : [],
-        };
-        
-        setUser(userWithId);
-        cachedUserRef.current = userWithId;
+      if (userData?.email && userData?.id) {
+        // Update immediately from event data
+        setUser(userData);
+        saveUserToCache(userData);
         setLoading(false);
         
-        try {
-          window.localStorage.setItem('beacon:user', JSON.stringify(userWithId));
-        } catch (error) {
-          console.warn('Failed to cache user:', error);
-        }
-        
-        // Verify session in background
+        // Verify session in background after a short delay
         setTimeout(() => {
-          fetchSession(false).catch(() => {});
-        }, 500);
+          fetchSession(false);
+        }, 300);
       } else {
         // Fallback: check localStorage
-        const cached = window.localStorage.getItem('beacon:user');
+        const cached = getCachedUser();
         if (cached) {
-          try {
-            const parsed = JSON.parse(cached);
-            if (parsed?.email) {
-              setUser(parsed);
-              cachedUserRef.current = parsed;
-              setLoading(false);
-            }
-          } catch (error) {
-            console.warn('Failed to parse cached user:', error);
-          }
+          setUser(cached);
+          setLoading(false);
         }
-        
+        // Fetch session to verify
         setTimeout(() => {
-          fetchSession(true).catch(() => {});
+          fetchSession(true);
         }, 300);
       }
     };
 
     window.addEventListener('beacon:login-success', handleLoginSuccess);
-    
     return () => {
       window.removeEventListener('beacon:login-success', handleLoginSuccess);
     };
   }, []); // Only run once
 
-  // Fetch session when pathname changes
+  // Silent background check on pathname change (only if we have user)
   useEffect(() => {
     if (pathname === '/login') {
       setLoading(false);
       return;
     }
 
-    // CRITICAL FIX: Check localStorage FIRST before calling fetchSession
-    // This ensures Avatar shows immediately after login, even if event handler hasn't fired yet
-    if (typeof window !== 'undefined' && !user && !cachedUserRef.current) {
-      try {
-        const cached = window.localStorage.getItem('beacon:user');
-        if (cached) {
-          const parsed = JSON.parse(cached);
-          if (parsed?.email) {
-            cachedUserRef.current = parsed;
-            setUser(parsed);
-            setLoading(false);
-            // Verify session in background without blocking UI
-            fetchSession(false).catch(() => {});
-            return;
-          }
-        }
-      } catch (error) {
-        console.warn('Failed to read cached user in pathname effect:', error);
+    // If we have a user, verify silently in background
+    // If we don't have a user, fetch normally
+    if (user) {
+      fetchSession(false);
+    } else {
+      // Check localStorage first before fetching
+      const cached = getCachedUser();
+      if (cached) {
+        setUser(cached);
+        setLoading(false);
+        // Verify in background
+        fetchSession(false);
+      } else {
+        fetchSession(true);
       }
     }
-
-    // If we already have user, just verify session in background
-    if (cachedUserRef.current || user) {
-      fetchSession(false).catch(() => {});
-    } else {
-      // No user yet, fetch session normally
-      fetchSession();
-    }
-  }, [pathname, user]); // Include user in deps to avoid unnecessary runs
+  }, [pathname]); // Re-run when pathname changes
 
   const handleLogout = async () => {
     try {
       setIsLoggingOut(true);
-      await new Promise((resolve) => setTimeout(resolve, 200));
       await fetch('/api/auth/logout', { method: 'POST' });
-      try {
-        window.localStorage.removeItem('beacon:user');
-        cachedUserRef.current = null;
-        inconsistentResponseCountRef.current = 0;
-      } catch (error) {
-        console.warn('Failed to clear cached user:', error);
-      }
+      setUser(null);
+      clearUserCache();
       router.push('/login');
       router.refresh();
     } catch (error) {
@@ -250,16 +196,19 @@ export function UserMenu() {
     }
   };
 
+  // Hide on login page
   if (pathname === '/login') {
     return null;
   }
 
+  // Show loading spinner
   if (loading || isLoggingOut) {
     return (
       <div className="h-10 w-10 rounded-full bg-gray-200 animate-pulse" />
     );
   }
 
+  // Show sign in button if no user
   if (!user) {
     return (
       <a
@@ -281,7 +230,7 @@ export function UserMenu() {
     <div className="transition-all duration-300 ease-in-out">
       <DropdownMenu
         trigger={
-          <div className="transition-transform duration-200 hover:scale-110">
+          <div className="transition-transform duration-200 hover:scale-110 cursor-pointer">
             <Avatar email={user.email} name={user.name} size="md" />
           </div>
         }
