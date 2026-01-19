@@ -57,9 +57,21 @@ function LoginForm() {
       // Add smooth transition
       await new Promise((resolve) => setTimeout(resolve, 150));
       
-      // Dispatch custom event to notify UserMenu component
+      // Dispatch custom event with user data to notify UserMenu component
       if (typeof window !== 'undefined') {
-        window.dispatchEvent(new Event('beacon:login-success'));
+        const loginEvent = new CustomEvent('beacon:login-success', {
+          detail: {
+            user: data.user,
+          },
+        });
+        window.dispatchEvent(loginEvent);
+        
+        // Also store in localStorage immediately
+        try {
+          window.localStorage.setItem('beacon:user', JSON.stringify(data.user));
+        } catch (error) {
+          console.warn('Failed to cache user:', error);
+        }
       }
       
       // Redirect to intended page or home

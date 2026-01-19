@@ -13,10 +13,10 @@ export function UserMenu() {
   const [user, setUser] = useState<{ id?: string; email: string; name?: string; roles?: string[] } | null>(null);
   const [loading, setLoading] = useState(true);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const isRetryingRef = useRef(false);
   const cachedUserRef = useRef<{ id?: string; email: string; name?: string; roles?: string[] } | null>(null);
   const inconsistentResponseCountRef = useRef(0);
 
+  // Load cached user on mount
   useEffect(() => {
     if (typeof window !== 'undefined') {
       try {
@@ -33,90 +33,88 @@ export function UserMenu() {
         console.warn('Failed to read cached user:', error);
       }
     }
+  }, []);
 
+  // Fetch session function - shared across useEffects
+  const fetchSession = async (forceLoading = false): Promise<boolean> => {
     // Don't fetch session on login page
     if (pathname === '/login') {
       setLoading(false);
-      return;
+      return false;
     }
 
-    const fetchSession = async (): Promise<boolean> => {
-      try {
-        if (!cachedUserRef.current) {
-          setLoading(true);
+    try {
+      // Only show loading if we don't have cached user or if forced
+      if ((!cachedUserRef.current && !user) || forceLoading) {
+        setLoading(true);
+      }
+
+      const res = await fetch('/api/auth/session', {
+        credentials: 'include',
+        cache: 'no-store',
+      });
+      
+      if (!res.ok) {
+        if (res.status >= 500) {
+          console.error('[USER_MENU] Session endpoint returned error:', res.status);
         }
-        const res = await fetch('/api/auth/session', {
-          credentials: 'include',
-          cache: 'no-store',
+        setUser(cachedUserRef.current);
+        return false;
+      }
+
+      const data = (await res.json()) as {
+        isAuthenticated?: boolean;
+        authenticated?: boolean;
+        user?: { id: string; email: string; name?: string; roles?: string[] };
+        error?: string;
+      };
+
+      const isAuthenticated = data.isAuthenticated || data.authenticated;
+      const hasValidUser = data.user?.email && data.user?.id;
+
+      if (isAuthenticated && !hasValidUser) {
+        inconsistentResponseCountRef.current += 1;
+        console.error('[USER_MENU] Inconsistent session response detected:', {
+          authenticated: isAuthenticated,
+          hasUser: !!data.user,
+          hasEmail: !!data.user?.email,
+          hasId: !!data.user?.id,
+          error: data.error,
+          count: inconsistentResponseCountRef.current,
         });
-        
-        if (!res.ok) {
-          // If we get a 500 or other error, treat as unauthenticated
-          if (res.status >= 500) {
-            console.error('[USER_MENU] Session endpoint returned error:', res.status);
+
+        if (inconsistentResponseCountRef.current >= 3) {
+          console.warn('[USER_MENU] Multiple inconsistent responses detected. Clearing session.');
+          try {
+            await fetch('/api/auth/logout', { method: 'POST' });
+            window.localStorage.removeItem('beacon:user');
+            cachedUserRef.current = null;
+          } catch (error) {
+            console.error('[USER_MENU] Failed to clear session:', error);
           }
-          setUser(cachedUserRef.current);
+          setUser(null);
           return false;
         }
 
-        const data = (await res.json()) as {
-          isAuthenticated?: boolean;
-          authenticated?: boolean;
-          user?: { id: string; email: string; name?: string; roles?: string[] };
-          error?: string;
-        };
+        setUser(cachedUserRef.current);
+        return false;
+      }
 
-        // CRITICAL FIX: Handle inconsistent response where authenticated=true but user is missing
-        const isAuthenticated = data.isAuthenticated || data.authenticated;
-        const hasValidUser = data.user?.email && data.user?.id;
+      inconsistentResponseCountRef.current = 0;
 
-        if (isAuthenticated && !hasValidUser) {
-          // This is the problematic case - authenticated=true but no user object
-          inconsistentResponseCountRef.current += 1;
-          console.error('[USER_MENU] Inconsistent session response detected:', {
-            authenticated: isAuthenticated,
-            hasUser: !!data.user,
-            hasEmail: !!data.user?.email,
-            hasId: !!data.user?.id,
-            error: data.error,
-            count: inconsistentResponseCountRef.current,
-          });
-
-          // If this happens multiple times, clear the session and redirect to login
-          if (inconsistentResponseCountRef.current >= 3) {
-            console.warn('[USER_MENU] Multiple inconsistent responses detected. Clearing session.');
-            try {
-              await fetch('/api/auth/logout', { method: 'POST' });
-              window.localStorage.removeItem('beacon:user');
-              cachedUserRef.current = null;
-            } catch (error) {
-              console.error('[USER_MENU] Failed to clear session:', error);
-            }
-            setUser(null);
-            return false;
+      if (isAuthenticated && hasValidUser) {
+        setUser(data.user || null);
+        if (data.user) {
+          try {
+            window.localStorage.setItem('beacon:user', JSON.stringify(data.user));
+            cachedUserRef.current = data.user;
+          } catch (error) {
+            console.warn('Failed to cache user:', error);
           }
-
-          // Treat as unauthenticated but keep cached user for now
-          setUser(cachedUserRef.current);
-          return false;
         }
-
-        // Reset counter on successful consistent response
-        inconsistentResponseCountRef.current = 0;
-
-        if (isAuthenticated && hasValidUser) {
-          setUser(data.user || null);
-          if (data.user) {
-            try {
-              window.localStorage.setItem('beacon:user', JSON.stringify(data.user));
-              cachedUserRef.current = data.user;
-            } catch (error) {
-              console.warn('Failed to cache user:', error);
-            }
-          }
-          return true;
-        } else {
-          // Not authenticated - clear cache
+        return true;
+      } else {
+        if (!isAuthenticated) {
           setUser(null);
           cachedUserRef.current = null;
           try {
@@ -124,76 +122,94 @@ export function UserMenu() {
           } catch (error) {
             console.warn('Failed to clear cached user:', error);
           }
-          return false;
         }
-      } catch (error: any) {
-        // 401 is expected for unauthenticated users
-        if (error.message?.includes('401') || error.message?.includes('Unauthorized')) {
-          setUser(null);
-          cachedUserRef.current = null;
-          return false;
-        } else {
-          console.error('[USER_MENU] Session fetch error:', error);
-          setUser(cachedUserRef.current);
-          return false;
-        }
-      } finally {
-        setLoading(false);
+        return false;
       }
-    };
+    } catch (error: any) {
+      console.error('[USER_MENU] Session fetch error:', error);
+      setUser(cachedUserRef.current);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    const retrySession = async () => {
-      if (isRetryingRef.current) return;
-      isRetryingRef.current = true;
-      for (let attempt = 0; attempt < 5; attempt += 1) {
-        await new Promise((resolve) => setTimeout(resolve, 400));
-        const authenticated = await fetchSession();
-        if (authenticated) {
-          break;
-        }
-      }
-      isRetryingRef.current = false;
-    };
-
-    fetchSession();
-    retrySession();
-
-    // Listen for custom event when login succeeds (dispatched from login page)
-    const handleLoginSuccess = () => {
-      // Reset inconsistent response counter on login
+  // Set up login success event listener
+  useEffect(() => {
+    const handleLoginSuccess = (event: Event) => {
       inconsistentResponseCountRef.current = 0;
-      // Small delay to ensure session cookie is set
-      setTimeout(() => {
-        setLoading(true);
-        fetchSession();
-        retrySession();
-      }, 200);
-    };
-
-    const handleVisibility = () => {
-      if (document.visibilityState === 'visible') {
-        fetchSession();
+      
+      const customEvent = event as CustomEvent;
+      const userData = customEvent.detail?.user;
+      
+      if (userData && userData.email) {
+        const userWithId = {
+          id: userData.id,
+          email: userData.email,
+          name: userData.name,
+          roles: Array.isArray(userData.roles) ? userData.roles : [],
+        };
+        
+        setUser(userWithId);
+        cachedUserRef.current = userWithId;
+        setLoading(false);
+        
+        try {
+          window.localStorage.setItem('beacon:user', JSON.stringify(userWithId));
+        } catch (error) {
+          console.warn('Failed to cache user:', error);
+        }
+        
+        // Verify session in background
+        setTimeout(() => {
+          fetchSession(false).catch(() => {});
+        }, 500);
+      } else {
+        // Fallback: check localStorage
+        const cached = window.localStorage.getItem('beacon:user');
+        if (cached) {
+          try {
+            const parsed = JSON.parse(cached);
+            if (parsed?.email) {
+              setUser(parsed);
+              cachedUserRef.current = parsed;
+              setLoading(false);
+            }
+          } catch (error) {
+            console.warn('Failed to parse cached user:', error);
+          }
+        }
+        
+        setTimeout(() => {
+          fetchSession(true).catch(() => {});
+        }, 300);
       }
-    };
-
-    const handleFocus = () => {
-      fetchSession();
     };
 
     window.addEventListener('beacon:login-success', handleLoginSuccess);
-    window.addEventListener('focus', handleFocus);
-    document.addEventListener('visibilitychange', handleVisibility);
+    
     return () => {
       window.removeEventListener('beacon:login-success', handleLoginSuccess);
-      window.removeEventListener('focus', handleFocus);
-      document.removeEventListener('visibilitychange', handleVisibility);
     };
-  }, [pathname]);
+  }, []); // Only run once
+
+  // Fetch session when pathname changes
+  useEffect(() => {
+    if (pathname === '/login') {
+      setLoading(false);
+      return;
+    }
+
+    if (cachedUserRef.current) {
+      fetchSession(false).catch(() => {});
+    } else {
+      fetchSession();
+    }
+  }, [pathname]); // Re-run when pathname changes
 
   const handleLogout = async () => {
     try {
       setIsLoggingOut(true);
-      // Add fade-out animation
       await new Promise((resolve) => setTimeout(resolve, 200));
       await fetch('/api/auth/logout', { method: 'POST' });
       try {
@@ -211,7 +227,6 @@ export function UserMenu() {
     }
   };
 
-  // Hide user menu on login page
   if (pathname === '/login') {
     return null;
   }
@@ -237,7 +252,6 @@ export function UserMenu() {
     ['ADMIN_IT', 'ADMIN_TRAVEL', 'ADMIN_HR', 'SUPER_ADMIN'].includes(role)
   );
 
-  // Get user name from email or use email
   const displayName = user.name || user.email.split('@')[0].replace(/\./g, ' ');
 
   return (
