@@ -31,7 +31,19 @@ import {
 type TicketStatus = 'OPEN' | 'IN_PROGRESS' | 'WAITING_ON_REQUESTER' | 'RESOLVED' | 'CLOSED' | 'PENDING_APPROVAL';
 type TicketPriority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
 type TicketType = 'IT' | 'TRAVEL';
-type EventType = 'CREATED' | 'ASSIGNED' | 'STATUS_CHANGED' | 'PRIORITY_CHANGED' | 'NOTE_ADDED' | 'APPROVAL_REQUESTED' | 'APPROVED' | 'REJECTED';
+type EventType =
+  | 'CREATED'
+  | 'ASSIGNED'
+  | 'STATUS_CHANGED'
+  | 'PRIORITY_CHANGED'
+  | 'NOTE_ADDED'
+  | 'APPROVAL_REQUESTED'
+  | 'APPROVED'
+  | 'REJECTED'
+  | 'SLA_WARNING'
+  | 'SLA_BREACH'
+  | 'AUTO_CLOSE_REMINDER'
+  | 'AUTO_CLOSED';
 
 interface TicketEvent {
   id: string;
@@ -249,6 +261,14 @@ export default function TicketDetailsPage() {
         return <CheckCircle className="h-4 w-4 text-green-600" />;
       case 'REJECTED':
         return <XCircle className="h-4 w-4 text-red-600" />;
+      case 'SLA_WARNING':
+        return <Info className="h-4 w-4 text-yellow-600" />;
+      case 'SLA_BREACH':
+        return <AlertCircle className="h-4 w-4 text-red-600" />;
+      case 'AUTO_CLOSE_REMINDER':
+        return <Clock className="h-4 w-4 text-orange-600" />;
+      case 'AUTO_CLOSED':
+        return <XCircle className="h-4 w-4 text-gray-600" />;
       default:
         return <FileText className="h-4 w-4 text-gray-600" />;
     }
@@ -276,6 +296,14 @@ export default function TicketDetailsPage() {
         return `${creatorName} approved (${event.payload.level || 'approver'})`;
       case 'REJECTED':
         return `${creatorName} rejected (${event.payload.level || 'approver'})`;
+      case 'SLA_WARNING':
+        return `SLA warning sent`;
+      case 'SLA_BREACH':
+        return `SLA breach notification sent`;
+      case 'AUTO_CLOSE_REMINDER':
+        return `Reminder sent to requester (day ${event.payload.day})`;
+      case 'AUTO_CLOSED':
+        return `Ticket auto-closed after no response`;
       default:
         return `Event by ${creatorName}`;
     }

@@ -161,6 +161,7 @@ export default function AdminDashboardPage() {
   const [slaDraft, setSlaDraft] = useState<Record<Priority, number> | null>(null);
   const [savingSla, setSavingSla] = useState(false);
   const [autoClosing, setAutoClosing] = useState(false);
+  const [runningSlaJob, setRunningSlaJob] = useState(false);
   const [refreshToken, setRefreshToken] = useState(0);
   const [filters, setFilters] = useState({
     range: '30d',
@@ -356,6 +357,21 @@ export default function AdminDashboardPage() {
       alert(err.message || 'Auto-close failed');
     } finally {
       setAutoClosing(false);
+    }
+  };
+
+  const handleRunSlaJob = async () => {
+    try {
+      setRunningSlaJob(true);
+      const res = await fetch('/api/admin/notifications/run-sla', { method: 'POST' });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'SLA job failed');
+      }
+    } catch (err: any) {
+      alert(err.message || 'SLA job failed');
+    } finally {
+      setRunningSlaJob(false);
     }
   };
 
@@ -1014,7 +1030,22 @@ export default function AdminDashboardPage() {
                       Auto-closing...
                     </>
                   ) : (
-                    'Run Auto-Close (5 days)'
+                    'Run Auto-Close (7 days)'
+                  )}
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={handleRunSlaJob}
+                  disabled={runningSlaJob}
+                  className="w-full"
+                >
+                  {runningSlaJob ? (
+                    <>
+                      <Spinner className="mr-2 h-4 w-4" />
+                      Running SLA job...
+                    </>
+                  ) : (
+                    'Run SLA Notifications'
                   )}
                 </Button>
               </CardContent>

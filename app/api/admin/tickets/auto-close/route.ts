@@ -3,7 +3,7 @@ import { requireSessionRole } from '@/lib/auth/rbac';
 import { supabaseServer } from '@/lib/supabase/server';
 import { createTicketEvent } from '@/lib/tickets/ticket-utils';
 
-const AUTO_CLOSE_DAYS = 5;
+const AUTO_CLOSE_DAYS = 7;
 
 export async function POST(req: NextRequest) {
   try {

@@ -47,7 +47,19 @@ export async function generateTicketNumber(type: TicketType): Promise<string> {
  */
 export async function createTicketEvent(
   ticketId: string,
-  type: 'CREATED' | 'ASSIGNED' | 'STATUS_CHANGED' | 'PRIORITY_CHANGED' | 'NOTE_ADDED' | 'APPROVAL_REQUESTED' | 'APPROVED' | 'REJECTED',
+  type:
+    | 'CREATED'
+    | 'ASSIGNED'
+    | 'STATUS_CHANGED'
+    | 'PRIORITY_CHANGED'
+    | 'NOTE_ADDED'
+    | 'APPROVAL_REQUESTED'
+    | 'APPROVED'
+    | 'REJECTED'
+    | 'SLA_WARNING'
+    | 'SLA_BREACH'
+    | 'AUTO_CLOSE_REMINDER'
+    | 'AUTO_CLOSED',
   createdBy: string,
   payload?: any
 ): Promise<void> {
