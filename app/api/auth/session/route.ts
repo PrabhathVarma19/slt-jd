@@ -3,8 +3,11 @@ import { getSession } from '@/lib/auth/session';
 import { supabaseServer } from '@/lib/supabase/server';
 
 export async function GET() {
+  // Declare session outside try block so it's accessible in catch block
+  let session: { userId: string; email: string; roles: string[] } | null = null;
+  
   try {
-    const session = await getSession();
+    session = await getSession();
 
     if (!session) {
       return NextResponse.json({
@@ -37,11 +40,16 @@ export async function GET() {
         userId: session.userId,
         error: userError,
       });
-      return NextResponse.json({ 
-        isAuthenticated: false,
-        authenticated: false,
-        error: 'Failed to fetch user data'
-      }, { status: 500 });
+      return NextResponse.json({
+        isAuthenticated: true,
+        authenticated: true,
+        user: {
+          id: session.userId,
+          email: session.email,
+          name: null,
+          roles: session.roles || [],
+        },
+      });
     }
     
     const user = userData;
@@ -54,8 +62,14 @@ export async function GET() {
         status: user?.status,
       });
       return NextResponse.json({
-        isAuthenticated: false,
-        authenticated: false,
+        isAuthenticated: true,
+        authenticated: true,
+        user: {
+          id: session.userId,
+          email: session.email,
+          name: null,
+          roles: session.roles || [],
+        },
       });
     }
 
@@ -67,10 +81,15 @@ export async function GET() {
         hasEmail: !!user.email,
       });
       return NextResponse.json({
-        isAuthenticated: false,
-        authenticated: false,
-        error: 'User data incomplete'
-      }, { status: 500 });
+        isAuthenticated: true,
+        authenticated: true,
+        user: {
+          id: session.userId,
+          email: session.email,
+          name: null,
+          roles: session.roles || [],
+        },
+      });
     }
 
     // For test emails, don't return profile name (they shouldn't have synced data)
@@ -91,16 +110,22 @@ export async function GET() {
     };
 
     // Final validation before sending response
+    // If validation fails, fallback to cookie user (session exists, so user is authenticated)
     if (!responseData.user.id || !responseData.user.email) {
-      console.error('[SESSION] Response validation failed - user object incomplete:', {
+      console.error('[SESSION] Response validation failed - user object incomplete, falling back to cookie user:', {
         userId: session.userId,
         responseData,
       });
       return NextResponse.json({
-        isAuthenticated: false,
-        authenticated: false,
-        error: 'User data validation failed'
-      }, { status: 500 });
+        isAuthenticated: true,
+        authenticated: true,
+        user: {
+          id: session.userId,
+          email: session.email,
+          name: null,
+          roles: session.roles || [],
+        },
+      });
     }
 
     return NextResponse.json(responseData);
@@ -109,6 +134,23 @@ export async function GET() {
       error: error.message,
       stack: error.stack,
     });
+    
+    // If session cookie exists, return cookie user instead of failing
+    // This ensures UI can render even if DB lookup fails
+    if (session) {
+      return NextResponse.json({
+        isAuthenticated: true,
+        authenticated: true,
+        user: {
+          id: session.userId,
+          email: session.email,
+          name: null,
+          roles: session.roles || [],
+        },
+      });
+    }
+    
+    // No session exists, return unauthenticated
     return NextResponse.json(
       { 
         isAuthenticated: false,
@@ -119,4 +161,3 @@ export async function GET() {
     );
   }
 }
-
