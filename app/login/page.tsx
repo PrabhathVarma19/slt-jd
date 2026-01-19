@@ -25,14 +25,14 @@ function LoginForm() {
       .then((res) => res.json())
       .then((data) => {
         if (data.isAuthenticated || data.authenticated) {
-          // Already logged in, redirect to home or intended page
-          router.push(redirectTo);
+          // Already logged in, redirect with hard navigation
+          window.location.href = redirectTo;
         }
       })
       .catch(() => {
         // Not logged in, stay on login page
       });
-  }, [router, redirectTo]);
+  }, [redirectTo]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,26 +57,9 @@ function LoginForm() {
       // Add smooth transition
       await new Promise((resolve) => setTimeout(resolve, 150));
       
-      // Dispatch custom event with user data to notify UserMenu component
-      if (typeof window !== 'undefined') {
-        const loginEvent = new CustomEvent('beacon:login-success', {
-          detail: {
-            user: data.user,
-          },
-        });
-        window.dispatchEvent(loginEvent);
-        
-        // Also store in localStorage immediately
-        try {
-          window.localStorage.setItem('beacon:user', JSON.stringify(data.user));
-        } catch (error) {
-          console.warn('Failed to cache user:', error);
-        }
-      }
-      
-      // Redirect to intended page or home
-      router.push(redirectTo);
-      router.refresh(); // Refresh to update any server components that check auth
+      // Use hard navigation to force full page reload with session cookie
+      // This ensures the layout and all components render fresh with authentication
+      window.location.href = redirectTo;
     } catch (err: any) {
       setError(err.message || 'Login failed. Please check your credentials.');
     } finally {
