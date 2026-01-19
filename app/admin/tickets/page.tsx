@@ -181,6 +181,27 @@ export default function AdminTicketsPage() {
     }
   };
 
+  const updateTicketPriority = async (ticketId: string, priority: TicketPriority) => {
+    try {
+      setUpdating(ticketId);
+      await authenticatedFetch(`/api/admin/tickets/${ticketId}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ priority }),
+      });
+
+      showToast('Ticket priority updated', 'success');
+      fetchTickets();
+      if (selectedTicket?.id === ticketId) {
+        setSelectedTicket(null);
+      }
+    } catch (error: any) {
+      console.error('Error updating ticket priority:', error);
+      showToast('Failed to update priority', 'error');
+    } finally {
+      setUpdating(null);
+    }
+  };
+
   const assignEngineer = async (ticketId: string) => {
     if (!assignEngineerId) {
       showToast('Please select an engineer', 'error');
@@ -486,6 +507,19 @@ export default function AdminTicketsPage() {
                       <option value="RESOLVED">Resolved</option>
                       <option value="CLOSED">Closed</option>
                     </select>
+                    <select
+                      value={ticket.priority}
+                      onChange={(e) =>
+                        updateTicketPriority(ticket.id, e.target.value as TicketPriority)
+                      }
+                      className="w-full px-3 py-1.5 text-sm border rounded-md"
+                      disabled={updating === ticket.id}
+                    >
+                      <option value="LOW">Low</option>
+                      <option value="MEDIUM">Medium</option>
+                      <option value="HIGH">High</option>
+                      <option value="URGENT">Urgent</option>
+                    </select>
                   </div>
                 </div>
               </CardContent>
@@ -498,4 +532,3 @@ export default function AdminTicketsPage() {
     </div>
   );
 }
-

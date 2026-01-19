@@ -181,6 +181,10 @@ export async function PATCH(
         });
       }
 
+      if (Object.keys(updates).length === 0) {
+        return NextResponse.json({ ticket });
+      }
+
       // Update ticket
       const { data: updatedTicket, error: updateError } = await supabaseServer
         .from('Ticket')
