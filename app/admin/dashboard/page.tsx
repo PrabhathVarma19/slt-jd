@@ -695,40 +695,43 @@ export default function AdminDashboardPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                  <div className="flex h-32 items-end gap-2">
-                    {analytics.trendsMtta.map((point, index) => {
-                      const mttaHeight =
-                        point.minutes > 0
-                          ? Math.max(6, (point.minutes / mttaTrendMax) * compactChartHeight)
-                          : 0;
-                      const mttrHeight =
-                        analytics.trendsMttr[index]?.minutes > 0
-                          ? Math.max(6, (analytics.trendsMttr[index].minutes / mttrTrendMax) * compactChartHeight)
-                          : 0;
-                      return (
-                        <div key={point.day} className="flex flex-1 flex-col items-center gap-1">
-                          <div className="flex w-full items-end gap-1" style={{ height: `${compactChartHeight}px` }}>
-                            <div
-                              className="w-1/2 rounded-t bg-sky-500/80"
-                              style={{ height: `${mttaHeight}px` }}
-                              title={`MTTA: ${point.minutes}m`}
-                            />
-                            <div
-                              className="w-1/2 rounded-t bg-indigo-500/80"
-                              style={{ height: `${mttrHeight}px` }}
-                              title={`MTTR: ${analytics.trendsMttr[index]?.minutes || 0}m`}
-                            />
-                          </div>
-                        <span
-                          className={`text-[10px] whitespace-nowrap ${
-                            index % labelStride === 0 ? 'text-gray-500' : 'text-gray-400 opacity-0'
-                          }`}
-                        >
-                          {point.day.slice(5).replace('-', '/')}
-                        </span>
+                <div className="flex h-32 items-end gap-2">
+                  {analytics.trendsMtta.map((point, index) => {
+                    const mttaHeight =
+                      point.minutes > 0
+                        ? Math.max(6, (point.minutes / mttaTrendMax) * compactChartHeight)
+                        : 0;
+                    const mttrHeight =
+                      analytics.trendsMttr[index]?.minutes > 0
+                        ? Math.max(6, (analytics.trendsMttr[index].minutes / mttrTrendMax) * compactChartHeight)
+                        : 0;
+                    return (
+                      <div key={point.day} className="flex flex-1 flex-col items-center">
+                        <div className="flex w-full items-end gap-1" style={{ height: `${compactChartHeight}px` }}>
+                          <div
+                            className="w-1/2 rounded-t bg-sky-500/80"
+                            style={{ height: `${mttaHeight}px` }}
+                            title={`MTTA: ${point.minutes}m`}
+                          />
+                          <div
+                            className="w-1/2 rounded-t bg-indigo-500/80"
+                            style={{ height: `${mttrHeight}px` }}
+                            title={`MTTR: ${analytics.trendsMttr[index]?.minutes || 0}m`}
+                          />
+                        </div>
                       </div>
                     );
                   })}
+                </div>
+                <div
+                  className="mt-2 grid text-[10px] text-gray-500"
+                  style={{ gridTemplateColumns: `repeat(${analytics.trendsMtta.length}, minmax(0, 1fr))` }}
+                >
+                  {analytics.trendsMtta.map((point, index) => (
+                    <span key={point.day} className="whitespace-nowrap text-center">
+                      {index % labelStride === 0 ? point.day.slice(5).replace('-', '/') : ''}
+                    </span>
+                  ))}
                 </div>
                 <div className="mt-3 flex items-center gap-4 text-xs text-gray-500">
                   <span className="flex items-center gap-1">
@@ -751,31 +754,34 @@ export default function AdminDashboardPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                  <div className="flex h-32 items-end gap-2">
-                    {analytics.trendsSlaBreaches.map((point, index) => {
-                      const height =
-                        point.breached > 0
-                          ? Math.max(6, (point.breached / slaTrendMax) * compactChartHeight)
-                          : 0;
-                      return (
-                        <div key={point.day} className="flex flex-1 flex-col items-center gap-1">
-                          <div className="flex w-full items-end" style={{ height: `${compactChartHeight}px` }}>
-                            <div
-                              className="w-full rounded-t bg-rose-500/80"
-                              style={{ height: `${height}px` }}
-                              title={`Breached: ${point.breached}`}
-                            />
-                          </div>
-                          <span
-                            className={`text-[10px] whitespace-nowrap ${
-                              index % labelStride === 0 ? 'text-gray-500' : 'text-gray-400 opacity-0'
-                            }`}
-                          >
-                            {point.day.slice(5).replace('-', '/')}
-                          </span>
+                <div className="flex h-32 items-end gap-2">
+                  {analytics.trendsSlaBreaches.map((point) => {
+                    const height =
+                      point.breached > 0
+                        ? Math.max(6, (point.breached / slaTrendMax) * compactChartHeight)
+                        : 0;
+                    return (
+                      <div key={point.day} className="flex flex-1 flex-col items-center">
+                        <div className="flex w-full items-end" style={{ height: `${compactChartHeight}px` }}>
+                          <div
+                            className="w-full rounded-t bg-rose-500/80"
+                            style={{ height: `${height}px` }}
+                            title={`Breached: ${point.breached}`}
+                          />
                         </div>
+                      </div>
                     );
                   })}
+                </div>
+                <div
+                  className="mt-2 grid text-[10px] text-gray-500"
+                  style={{ gridTemplateColumns: `repeat(${analytics.trendsSlaBreaches.length}, minmax(0, 1fr))` }}
+                >
+                  {analytics.trendsSlaBreaches.map((point, index) => (
+                    <span key={point.day} className="whitespace-nowrap text-center">
+                      {index % labelStride === 0 ? point.day.slice(5).replace('-', '/') : ''}
+                    </span>
+                  ))}
                 </div>
               </CardContent>
             </Card>
@@ -857,43 +863,44 @@ export default function AdminDashboardPage() {
               </CardHeader>
               <CardContent>
                 {hasTrendData ? (
-                  <div className="w-full">
-                      <div className="flex h-44 items-end gap-2">
-                        {analytics.trends.map((point, index) => {
-                          const openedHeight =
-                            point.opened > 0
-                              ? Math.max(6, (point.opened / trendMax) * chartHeight)
-                              : 0;
-                          const resolvedHeight =
-                            point.resolved > 0
-                              ? Math.max(6, (point.resolved / trendMax) * chartHeight)
-                              : 0;
-                          return (
-                            <div key={point.day} className="flex flex-1 flex-col items-center gap-1">
-                              <div className="flex w-full items-end gap-1" style={{ height: `${chartHeight}px` }}>
-                                <div
-                                  className="w-1/2 rounded-t bg-blue-500/80"
-                                  style={{ height: `${openedHeight}px` }}
-                                  title={`Opened: ${point.opened}`}
-                                />
-                                <div
-                                  className="w-1/2 rounded-t bg-emerald-500/80"
-                                  style={{ height: `${resolvedHeight}px` }}
-                                  title={`Resolved: ${point.resolved}`}
-                                />
-                              </div>
-                              <span
-                                className={`text-[10px] whitespace-nowrap ${
-                                  index % labelStride === 0
-                                    ? 'text-gray-500'
-                                    : 'text-gray-400 opacity-0'
-                                }`}
-                              >
-                                {point.day.slice(5).replace('-', '/')}
-                              </span>
+                  <div className="w-full overflow-hidden">
+                    <div className="flex h-44 items-end gap-2">
+                      {analytics.trends.map((point) => {
+                        const openedHeight =
+                          point.opened > 0
+                            ? Math.max(6, (point.opened / trendMax) * chartHeight)
+                            : 0;
+                        const resolvedHeight =
+                          point.resolved > 0
+                            ? Math.max(6, (point.resolved / trendMax) * chartHeight)
+                            : 0;
+                        return (
+                          <div key={point.day} className="flex flex-1 flex-col items-center">
+                            <div className="flex w-full items-end gap-1" style={{ height: `${chartHeight}px` }}>
+                              <div
+                                className="w-1/2 rounded-t bg-blue-500/80"
+                                style={{ height: `${openedHeight}px` }}
+                                title={`Opened: ${point.opened}`}
+                              />
+                              <div
+                                className="w-1/2 rounded-t bg-emerald-500/80"
+                                style={{ height: `${resolvedHeight}px` }}
+                                title={`Resolved: ${point.resolved}`}
+                              />
                             </div>
-                          );
+                          </div>
+                        );
                       })}
+                    </div>
+                    <div
+                      className="mt-2 grid text-[10px] text-gray-500"
+                      style={{ gridTemplateColumns: `repeat(${analytics.trends.length}, minmax(0, 1fr))` }}
+                    >
+                      {analytics.trends.map((point, index) => (
+                        <span key={point.day} className="whitespace-nowrap text-center">
+                          {index % labelStride === 0 ? point.day.slice(5).replace('-', '/') : ''}
+                        </span>
+                      ))}
                     </div>
                   </div>
                 ) : (
