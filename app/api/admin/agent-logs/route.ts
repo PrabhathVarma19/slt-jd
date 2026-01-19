@@ -77,7 +77,36 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    let query = supabaseServer.from('AgentLog');
+    let query = supabaseServer
+      .from('AgentLog')
+      .select(
+        `
+        id,
+        agent,
+        input,
+        intent,
+        tool,
+        toolInput,
+        response,
+        success,
+        createdAt,
+        metadata,
+        user:User!AgentLog_userId_fkey(
+          email,
+          profile:UserProfile(empName),
+          roles:UserRole!UserRole_userId_fkey(
+            id,
+            revokedAt,
+            role:Role!UserRole_roleId_fkey(
+              id,
+              type,
+              name
+            )
+          )
+        )
+      `,
+        { count: 'exact' }
+      );
 
     if (agent) {
       query = query.eq('agent', agent);
@@ -110,34 +139,6 @@ export async function GET(req: NextRequest) {
     const from = (page - 1) * limit;
     const to = from + limit - 1;
     const { data, error, count } = await query
-      .select(
-        `
-        id,
-        agent,
-        input,
-        intent,
-        tool,
-        toolInput,
-        response,
-        success,
-        createdAt,
-        metadata,
-        user:User!AgentLog_userId_fkey(
-          email,
-          profile:UserProfile(empName),
-          roles:UserRole!UserRole_userId_fkey(
-            id,
-            revokedAt,
-            role:Role!UserRole_roleId_fkey(
-              id,
-              type,
-              name
-            )
-          )
-        )
-      `,
-        { count: 'exact' }
-      )
       .order('createdAt', { ascending: false })
       .range(from, to);
     if (error) {
