@@ -7,33 +7,33 @@ import { Avatar } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuItem, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { LogOut, User, Shield } from 'lucide-react';
 
+// Helper function to get initial user from localStorage synchronously
+function getInitialUser() {
+  if (typeof window === 'undefined') return null;
+  try {
+    const cached = window.localStorage.getItem('beacon:user');
+    if (cached) {
+      const parsed = JSON.parse(cached);
+      if (parsed?.email) {
+        return parsed;
+      }
+    }
+  } catch (error) {
+    console.warn('Failed to read cached user:', error);
+  }
+  return null;
+}
+
 export function UserMenu() {
   const router = useRouter();
   const pathname = usePathname();
-  const [user, setUser] = useState<{ id?: string; email: string; name?: string; roles?: string[] } | null>(null);
-  const [loading, setLoading] = useState(true);
+  // Initialize state from localStorage synchronously - ensures user is available on first render
+  const initialUser = getInitialUser();
+  const [user, setUser] = useState<{ id?: string; email: string; name?: string; roles?: string[] } | null>(initialUser);
+  const [loading, setLoading] = useState(!initialUser); // Only show loading if no initial user
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const cachedUserRef = useRef<{ id?: string; email: string; name?: string; roles?: string[] } | null>(null);
+  const cachedUserRef = useRef<{ id?: string; email: string; name?: string; roles?: string[] } | null>(initialUser);
   const inconsistentResponseCountRef = useRef(0);
-
-  // Load cached user on mount
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const cached = window.localStorage.getItem('beacon:user');
-        if (cached) {
-          const parsed = JSON.parse(cached);
-          if (parsed?.email) {
-            cachedUserRef.current = parsed;
-            setUser(parsed);
-            setLoading(false);
-          }
-        }
-      } catch (error) {
-        console.warn('Failed to read cached user:', error);
-      }
-    }
-  }, []);
 
   // Fetch session function - shared across useEffects
   const fetchSession = async (forceLoading = false): Promise<boolean> => {
@@ -200,12 +200,35 @@ export function UserMenu() {
       return;
     }
 
-    if (cachedUserRef.current) {
+    // CRITICAL FIX: Check localStorage FIRST before calling fetchSession
+    // This ensures Avatar shows immediately after login, even if event handler hasn't fired yet
+    if (typeof window !== 'undefined' && !user && !cachedUserRef.current) {
+      try {
+        const cached = window.localStorage.getItem('beacon:user');
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (parsed?.email) {
+            cachedUserRef.current = parsed;
+            setUser(parsed);
+            setLoading(false);
+            // Verify session in background without blocking UI
+            fetchSession(false).catch(() => {});
+            return;
+          }
+        }
+      } catch (error) {
+        console.warn('Failed to read cached user in pathname effect:', error);
+      }
+    }
+
+    // If we already have user, just verify session in background
+    if (cachedUserRef.current || user) {
       fetchSession(false).catch(() => {});
     } else {
+      // No user yet, fetch session normally
       fetchSession();
     }
-  }, [pathname]); // Re-run when pathname changes
+  }, [pathname, user]); // Include user in deps to avoid unnecessary runs
 
   const handleLogout = async () => {
     try {
