@@ -1,4 +1,4 @@
-import { supabaseServer } from '@/lib/supabase/server';
+﻿import { supabaseServer } from '@/lib/supabase/server';
 import { sendMailViaGraph } from '@/lib/graph';
 import { logNotificationFailure } from '@/lib/notifications/notification-failures';
 
@@ -127,11 +127,12 @@ export async function sendItNotification({
 
     switch (event) {
       case 'ticket_created': {
-        to = uniqueEmails([requesterEmail]);
+        to = uniqueEmails([itDeskEmail, requesterEmail]);
         subject = `[Beacon] ${ticketNumber} created`;
-        htmlBody = `<p>Your IT request has been created.</p>
-<p><strong>${ticketNumber}</strong> - ${ticketTitle}</p>`;
-        textBody = `Your IT request has been created.\n${ticketNumber} - ${ticketTitle}`;
+        htmlBody = `<p>A new IT request has been created.</p>
+<p><strong>${ticketNumber}</strong> - ${ticketTitle}</p>
+<p>Requester: ${requesterName} (${requesterEmail})</p>`;
+        textBody = `A new IT request has been created.\n${ticketNumber} - ${ticketTitle}\nRequester: ${requesterName} (${requesterEmail})`;
         break;
       }
       case 'ticket_assigned': {
@@ -221,3 +222,4 @@ export async function sendItNotification({
     console.error('IT notification failed:', error);
   }
 }
+
