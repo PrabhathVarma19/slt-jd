@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { Avatar } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuItem, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { LogOut, User, Shield } from 'lucide-react';
-import { authenticatedFetch } from '@/lib/api/fetch-utils';
 
 export function UserMenu() {
   const router = useRouter();
@@ -42,17 +41,20 @@ export function UserMenu() {
 
     const fetchSession = async (): Promise<boolean> => {
       try {
-        setLoading(true);
-        const data = await authenticatedFetch<{
+        if (!cachedUserRef.current) {
+          setLoading(true);
+        }
+        const res = await fetch('/api/auth/session', {
+          credentials: 'include',
+          cache: 'no-store',
+        });
+        const data = (await res.json()) as {
           isAuthenticated?: boolean;
           authenticated?: boolean;
           user?: { email: string; name?: string; roles?: string[] };
-        }>('/api/auth/session', {
-          retries: 2,
-          cache: 'no-store',
-        });
+        };
 
-        if (data.isAuthenticated || data.authenticated) {
+        if ((data.isAuthenticated || data.authenticated) && data.user?.email) {
           setUser(data.user || null);
           if (data.user) {
             try {
