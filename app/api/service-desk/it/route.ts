@@ -291,14 +291,6 @@ Respond with JSON only, no explanation.`;
       );
     }
 
-    if (ticketId) {
-      await sendItNotification({
-        ticketId,
-        actorId: auth.userId,
-        event: 'ticket_created',
-      });
-    }
-
     return NextResponse.json({
       status: 'queued',
       message: ticketNumber 
