@@ -720,11 +720,11 @@ export default function AdminDashboardPage() {
                             />
                           </div>
                         <span
-                          className={`text-[10px] ${
+                          className={`text-[10px] whitespace-nowrap ${
                             index % labelStride === 0 ? 'text-gray-500' : 'text-gray-400 opacity-0'
                           }`}
                         >
-                          {point.day.slice(5)}
+                          {point.day.slice(5).replace('-', '/')}
                         </span>
                       </div>
                     );
@@ -759,19 +759,21 @@ export default function AdminDashboardPage() {
                           : 0;
                       return (
                         <div key={point.day} className="flex flex-1 flex-col items-center gap-1">
-                          <div
-                            className="w-full rounded-t bg-rose-500/80"
-                            style={{ height: `${height}px` }}
-                            title={`Breached: ${point.breached}`}
-                          />
-                        <span
-                          className={`text-[10px] ${
-                            index % labelStride === 0 ? 'text-gray-500' : 'text-gray-400 opacity-0'
-                          }`}
-                        >
-                          {point.day.slice(5)}
-                        </span>
-                      </div>
+                          <div className="flex w-full items-end" style={{ height: `${compactChartHeight}px` }}>
+                            <div
+                              className="w-full rounded-t bg-rose-500/80"
+                              style={{ height: `${height}px` }}
+                              title={`Breached: ${point.breached}`}
+                            />
+                          </div>
+                          <span
+                            className={`text-[10px] whitespace-nowrap ${
+                              index % labelStride === 0 ? 'text-gray-500' : 'text-gray-400 opacity-0'
+                            }`}
+                          >
+                            {point.day.slice(5).replace('-', '/')}
+                          </span>
+                        </div>
                     );
                   })}
                 </div>
@@ -880,17 +882,17 @@ export default function AdminDashboardPage() {
                                   title={`Resolved: ${point.resolved}`}
                                 />
                               </div>
-                            <span
-                              className={`text-[10px] ${
-                                index % labelStride === 0
-                                  ? 'text-gray-500'
-                                  : 'text-gray-400 opacity-0'
-                              }`}
-                            >
-                              {point.day.slice(5)}
-                            </span>
-                          </div>
-                        );
+                              <span
+                                className={`text-[10px] whitespace-nowrap ${
+                                  index % labelStride === 0
+                                    ? 'text-gray-500'
+                                    : 'text-gray-400 opacity-0'
+                                }`}
+                              >
+                                {point.day.slice(5).replace('-', '/')}
+                              </span>
+                            </div>
+                          );
                       })}
                     </div>
                   </div>
