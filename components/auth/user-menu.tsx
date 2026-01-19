@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { Avatar } from '@/components/ui/avatar';
@@ -14,6 +14,7 @@ export function UserMenu() {
   const [user, setUser] = useState<{ email: string; name?: string; roles?: string[] } | null>(null);
   const [loading, setLoading] = useState(true);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const isRetryingRef = useRef(false);
 
   useEffect(() => {
     // Don't fetch session on login page
@@ -22,7 +23,7 @@ export function UserMenu() {
       return;
     }
 
-    const fetchSession = async () => {
+    const fetchSession = async (): Promise<boolean> => {
       try {
         const data = await authenticatedFetch<{
           isAuthenticated?: boolean;
@@ -35,20 +36,37 @@ export function UserMenu() {
 
         if (data.isAuthenticated || data.authenticated) {
           setUser(data.user || null);
+          return true;
         } else {
           setUser(null);
+          return false;
         }
       } catch (error: any) {
         // 401 is expected for unauthenticated users
         if (error.message?.includes('401') || error.message?.includes('Unauthorized')) {
           setUser(null);
+          return false;
         } else {
           console.error('Session fetch error:', error);
           setUser(null);
+          return false;
         }
       } finally {
         setLoading(false);
       }
+    };
+
+    const retrySession = async () => {
+      if (isRetryingRef.current) return;
+      isRetryingRef.current = true;
+      for (let attempt = 0; attempt < 5; attempt += 1) {
+        await new Promise((resolve) => setTimeout(resolve, 400));
+        const authenticated = await fetchSession();
+        if (authenticated) {
+          break;
+        }
+      }
+      isRetryingRef.current = false;
     };
 
     fetchSession();
@@ -59,12 +77,27 @@ export function UserMenu() {
       setTimeout(() => {
         setLoading(true);
         fetchSession();
+        retrySession();
       }, 200);
     };
 
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        fetchSession();
+      }
+    };
+
+    const handleFocus = () => {
+      fetchSession();
+    };
+
     window.addEventListener('beacon:login-success', handleLoginSuccess);
+    window.addEventListener('focus', handleFocus);
+    document.addEventListener('visibilitychange', handleVisibility);
     return () => {
       window.removeEventListener('beacon:login-success', handleLoginSuccess);
+      window.removeEventListener('focus', handleFocus);
+      document.removeEventListener('visibilitychange', handleVisibility);
     };
   }, [pathname]);
 
@@ -153,4 +186,3 @@ export function UserMenu() {
     </div>
   );
 }
-
