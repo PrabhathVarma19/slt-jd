@@ -10,11 +10,12 @@ import { LogOut, User, Shield } from 'lucide-react';
 export function UserMenu() {
   const router = useRouter();
   const pathname = usePathname();
-  const [user, setUser] = useState<{ email: string; name?: string; roles?: string[] } | null>(null);
+  const [user, setUser] = useState<{ id?: string; email: string; name?: string; roles?: string[] } | null>(null);
   const [loading, setLoading] = useState(true);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const isRetryingRef = useRef(false);
-  const cachedUserRef = useRef<{ email: string; name?: string; roles?: string[] } | null>(null);
+  const cachedUserRef = useRef<{ id?: string; email: string; name?: string; roles?: string[] } | null>(null);
+  const inconsistentResponseCountRef = useRef(0);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -48,13 +49,62 @@ export function UserMenu() {
           credentials: 'include',
           cache: 'no-store',
         });
+        
+        if (!res.ok) {
+          // If we get a 500 or other error, treat as unauthenticated
+          if (res.status >= 500) {
+            console.error('[USER_MENU] Session endpoint returned error:', res.status);
+          }
+          setUser(cachedUserRef.current);
+          return false;
+        }
+
         const data = (await res.json()) as {
           isAuthenticated?: boolean;
           authenticated?: boolean;
-          user?: { email: string; name?: string; roles?: string[] };
+          user?: { id: string; email: string; name?: string; roles?: string[] };
+          error?: string;
         };
 
-        if ((data.isAuthenticated || data.authenticated) && data.user?.email) {
+        // CRITICAL FIX: Handle inconsistent response where authenticated=true but user is missing
+        const isAuthenticated = data.isAuthenticated || data.authenticated;
+        const hasValidUser = data.user?.email && data.user?.id;
+
+        if (isAuthenticated && !hasValidUser) {
+          // This is the problematic case - authenticated=true but no user object
+          inconsistentResponseCountRef.current += 1;
+          console.error('[USER_MENU] Inconsistent session response detected:', {
+            authenticated: isAuthenticated,
+            hasUser: !!data.user,
+            hasEmail: !!data.user?.email,
+            hasId: !!data.user?.id,
+            error: data.error,
+            count: inconsistentResponseCountRef.current,
+          });
+
+          // If this happens multiple times, clear the session and redirect to login
+          if (inconsistentResponseCountRef.current >= 3) {
+            console.warn('[USER_MENU] Multiple inconsistent responses detected. Clearing session.');
+            try {
+              await fetch('/api/auth/logout', { method: 'POST' });
+              window.localStorage.removeItem('beacon:user');
+              cachedUserRef.current = null;
+            } catch (error) {
+              console.error('[USER_MENU] Failed to clear session:', error);
+            }
+            setUser(null);
+            return false;
+          }
+
+          // Treat as unauthenticated but keep cached user for now
+          setUser(cachedUserRef.current);
+          return false;
+        }
+
+        // Reset counter on successful consistent response
+        inconsistentResponseCountRef.current = 0;
+
+        if (isAuthenticated && hasValidUser) {
           setUser(data.user || null);
           if (data.user) {
             try {
@@ -66,16 +116,24 @@ export function UserMenu() {
           }
           return true;
         } else {
-          setUser(cachedUserRef.current);
+          // Not authenticated - clear cache
+          setUser(null);
+          cachedUserRef.current = null;
+          try {
+            window.localStorage.removeItem('beacon:user');
+          } catch (error) {
+            console.warn('Failed to clear cached user:', error);
+          }
           return false;
         }
       } catch (error: any) {
         // 401 is expected for unauthenticated users
         if (error.message?.includes('401') || error.message?.includes('Unauthorized')) {
-          setUser(cachedUserRef.current);
+          setUser(null);
+          cachedUserRef.current = null;
           return false;
         } else {
-          console.error('Session fetch error:', error);
+          console.error('[USER_MENU] Session fetch error:', error);
           setUser(cachedUserRef.current);
           return false;
         }
@@ -102,6 +160,8 @@ export function UserMenu() {
 
     // Listen for custom event when login succeeds (dispatched from login page)
     const handleLoginSuccess = () => {
+      // Reset inconsistent response counter on login
+      inconsistentResponseCountRef.current = 0;
       // Small delay to ensure session cookie is set
       setTimeout(() => {
         setLoading(true);
@@ -138,6 +198,8 @@ export function UserMenu() {
       await fetch('/api/auth/logout', { method: 'POST' });
       try {
         window.localStorage.removeItem('beacon:user');
+        cachedUserRef.current = null;
+        inconsistentResponseCountRef.current = 0;
       } catch (error) {
         console.warn('Failed to clear cached user:', error);
       }
