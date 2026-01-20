@@ -429,10 +429,10 @@ export default function AdminDashboardPage() {
     ? Math.max(1, ...analytics.trendsSlaBreaches.map((point) => point.breached))
     : 1;
   const mttaTrendMax = analytics
-    ? Math.max(1, ...analytics.trendsMtta.map((point) => point.minutes))
+    ? Math.max(1, ...analytics.trendsMtta.map((point) => Number(point.minutes || 0)))
     : 1;
   const mttrTrendMax = analytics
-    ? Math.max(1, ...analytics.trendsMttr.map((point) => point.minutes))
+    ? Math.max(1, ...analytics.trendsMttr.map((point) => Number(point.minutes || 0)))
     : 1;
   const chartHeight = 176;
   const compactChartHeight = 128;
@@ -444,6 +444,8 @@ export default function AdminDashboardPage() {
     ? analytics.trendsSlaBreaches.some((point) => point.breached > 0)
     : false;
   const labelStride = analytics ? Math.max(1, Math.ceil(analytics.trends.length / 12)) : 1;
+  const labelStrideWide = analytics ? Math.max(1, Math.ceil(analytics.trends.length / 10)) : 1;
+  const labelStrideCompact = analytics ? Math.max(1, Math.ceil(analytics.trends.length / 6)) : 1;
   const hasTrendData = analytics
     ? analytics.trends.some((point) => point.opened > 0 || point.resolved > 0)
     : false;
@@ -740,7 +742,7 @@ export default function AdminDashboardPage() {
                         <span
                           key={point.day}
                           className={`whitespace-nowrap text-center ${
-                            index % labelStride === 0 ? 'text-gray-500' : 'text-transparent'
+                            index % labelStrideCompact === 0 ? 'text-gray-500' : 'text-transparent'
                           }`}
                         >
                           {point.day.slice(5).replace('-', '/')}
@@ -803,7 +805,7 @@ export default function AdminDashboardPage() {
                         <span
                           key={point.day}
                           className={`whitespace-nowrap text-center ${
-                            index % labelStride === 0 ? 'text-gray-500' : 'text-transparent'
+                            index % labelStrideCompact === 0 ? 'text-gray-500' : 'text-transparent'
                           }`}
                         >
                           {point.day.slice(5).replace('-', '/')}
@@ -933,7 +935,7 @@ export default function AdminDashboardPage() {
                           <span
                             key={point.day}
                             className={`whitespace-nowrap text-center ${
-                              index % labelStride === 0 ? 'text-gray-500' : 'text-transparent'
+                              index % labelStrideWide === 0 ? 'text-gray-500' : 'text-transparent'
                             }`}
                           >
                             {point.day.slice(5).replace('-', '/')}
