@@ -19,7 +19,7 @@ You help users with:
 Return a JSON object with:
 - intent: create_request | kb_search | check_status | password_reset | ask_followup | none
 - confidence: number between 0 and 1
-- extracted: { category, subcategory, system, impact, reason, title, description, ticketNumber }
+- extracted: { category, subcategory, system, impact, reason, duration, title, description, ticketNumber }
 - missing_fields: array of required fields still needed
 - proposed_action: { tool, input } or null
 - requires_confirmation: true/false
@@ -36,6 +36,9 @@ Rules:
   impact: blocker|high|medium|low
   reason: short reason
   description: include the free-text detail
+- For software install, require system and reason before proposing create_ticket.
+- For subscription requests, require system, reason, and duration before proposing create_ticket.
+- For VPN access, require reason and duration before proposing create_ticket.
 
 Tool names:
 - create_ticket
@@ -44,6 +47,36 @@ Tool names:
 - password_reset
 
 requires_confirmation must be true for create_ticket and password_reset.`;
+
+const isBlank = (value?: string | null) => {
+  if (!value) return true;
+  const trimmed = value.trim();
+  return !trimmed || trimmed.toLowerCase() === 'not specified';
+};
+
+const normalizeText = (value?: string | null) => (value || '').trim().toLowerCase();
+
+const buildFollowup = (field: string, context: { category: string; wantsVpn: boolean }) => {
+  if (field === 'system') {
+    if (context.category === 'software' || context.category === 'subscription') {
+      return 'Which software or application do you need?';
+    }
+    if (context.wantsVpn) {
+      return 'Please confirm which VPN or remote access tool you need.';
+    }
+    return 'Which system or tool do you need access to?';
+  }
+  if (field === 'reason') {
+    return 'What is the reason or use case for this request?';
+  }
+  if (field === 'duration') {
+    if (context.wantsVpn) {
+      return 'How long do you need VPN access for?';
+    }
+    return 'What duration do you need for this access or subscription?';
+  }
+  return 'Could you share a bit more detail?';
+};
 
 export async function runServiceDeskAgent(
   message: string,
@@ -66,10 +99,39 @@ export async function runServiceDeskAgent(
 
   if (actionType === 'create_request') {
     const extracted = decision.extracted || {};
+    const category = normalizeText(extracted.category || actionData.requestType);
+    const system = extracted.system || actionData.system;
+    const reason = extracted.reason || actionData.reason;
+    const duration = extracted.duration || actionData.duration || actionData.durationType;
+    const wantsVpn =
+      normalizeText(system).includes('vpn') ||
+      normalizeText(extracted.subcategory).includes('vpn') ||
+      normalizeText(message).includes('vpn');
+
+    const requiresSystem = category === 'software' || category === 'subscription' || category === 'access' || wantsVpn;
+    const requiresReason = category === 'software' || category === 'subscription' || category === 'access' || wantsVpn;
+    const requiresDuration = category === 'subscription' || wantsVpn;
+
+    const missingRequired: string[] = [];
+    if (requiresSystem && isBlank(system)) missingRequired.push('system');
+    if (requiresReason && isBlank(reason)) missingRequired.push('reason');
+    if (requiresDuration && isBlank(duration as string | null)) missingRequired.push('duration');
+
+    if (missingRequired.length > 0) {
+      const followup = buildFollowup(missingRequired[0], { category, wantsVpn });
+      return {
+        response: followup,
+        actionType: 'none',
+        actionData: undefined,
+        requiresConfirmation: false,
+      };
+    }
+
     actionData.requestType = extracted.category || actionData.requestType || 'other';
-    actionData.system = extracted.system || actionData.system || 'General';
+    actionData.system = system || 'General';
     actionData.impact = extracted.impact || actionData.impact || 'medium';
-    actionData.reason = extracted.reason || actionData.reason || 'Not specified';
+    actionData.reason = reason || 'Not specified';
+    actionData.durationType = duration || actionData.durationType || '';
     actionData.details = extracted.description || actionData.details || message;
   }
 
