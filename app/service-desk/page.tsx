@@ -288,6 +288,8 @@ export default function ServiceDeskPage() {
     !!form.details.trim() &&
     !!form.requestType &&
     !!form.system.trim() &&
+    !!form.employeeId.trim() &&
+    !!form.email.trim() &&
     (!requiresReason || !!form.reason.trim()) &&
     (!requiresDuration ||
       (form.durationType === 'permanent' ||
@@ -302,6 +304,10 @@ export default function ServiceDeskPage() {
     setError(null);
 
     try {
+      if (!form.employeeId.trim() || !form.email.trim()) {
+        throw new Error('Your profile is missing employee details. Please contact IT support.');
+      }
+
       const payload: ItServiceFormState = { ...form };
 
       const data = await authenticatedFetch<ApiResponse>('/api/service-desk/it', {
