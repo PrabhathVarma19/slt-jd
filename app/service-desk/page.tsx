@@ -127,7 +127,6 @@ export default function ServiceDeskPage() {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [lastSubmitAt, setLastSubmitAt] = useState<string | null>(null);
   const [lastSubmitOutcome, setLastSubmitOutcome] = useState<'success' | 'error' | null>(null);
-  const [isEditingUserInfo, setIsEditingUserInfo] = useState(false);
   const [isLoadingProfile, setIsLoadingProfile] = useState(true);
   const [userProjects, setUserProjects] = useState<Array<{ code: string; name: string }>>([]);
   const { showToast, ToastContainer } = useToast();
@@ -286,9 +285,6 @@ export default function ServiceDeskPage() {
     form.requestType === 'software' || isSubscriptionRequest || isVpnRequest;
 
   const canSubmit =
-    !!form.name.trim() &&
-    !!form.employeeId.trim() &&
-    !!form.email.trim() &&
     !!form.details.trim() &&
     !!form.requestType &&
     !!form.system.trim() &&
@@ -360,73 +356,6 @@ export default function ServiceDeskPage() {
         <div className="grid gap-6 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
           {/* Left: form */}
           <div className="bg-card rounded-3xl shadow-sm p-6 space-y-6">
-          <div className="space-y-1">
-            <div className="flex items-center justify-between">
-              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                Requester
-              </p>
-              {!isEditingUserInfo && (form.name || form.email) && (
-                <button
-                  type="button"
-                  onClick={() => setIsEditingUserInfo(true)}
-                  className="text-xs text-blue-600 hover:text-blue-700 hover:underline"
-                >
-                  Edit
-                </button>
-              )}
-            </div>
-          <div className="grid gap-4 md:grid-cols-3">
-            <div className="space-y-1.5">
-              <label className="text-xs font-medium text-gray-700">
-                Name <span className="text-red-500">*</span>
-              </label>
-              <Input
-                value={form.name}
-                onChange={(e) => handleChange('name', e.target.value)}
-                placeholder="Name as per Govt ID"
-                disabled={!isEditingUserInfo && !!form.name}
-                className={!isEditingUserInfo && form.name ? 'bg-gray-50' : ''}
-              />
-            </div>
-            <div className="space-y-1.5">
-              <label className="text-xs font-medium text-gray-700">
-                Employee ID <span className="text-red-500">*</span>
-              </label>
-              <Input
-                value={form.employeeId}
-                onChange={(e) => handleChange('employeeId', e.target.value)}
-                placeholder="e.g., 12345"
-                disabled={!isEditingUserInfo && !!form.employeeId}
-                className={!isEditingUserInfo && form.employeeId ? 'bg-gray-50' : ''}
-              />
-            </div>
-            <div className="space-y-1.5">
-              <label className="text-xs font-medium text-gray-700">
-                Email <span className="text-red-500">*</span>
-              </label>
-              <Input
-                type="email"
-                value={form.email}
-                onChange={(e) => handleChange('email', e.target.value)}
-                placeholder="you@trianz.com"
-                disabled={!isEditingUserInfo && !!form.email}
-                className={!isEditingUserInfo && form.email ? 'bg-gray-50' : ''}
-              />
-              </div>
-            </div>
-            {isEditingUserInfo && (
-              <div className="col-span-3">
-                <button
-                  type="button"
-                  onClick={() => setIsEditingUserInfo(false)}
-                  className="text-xs text-gray-600 hover:text-gray-700 hover:underline"
-                >
-                  Cancel editing
-                </button>
-              </div>
-            )}
-          </div>
-
           <div className="space-y-1">
             <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
               Request details
