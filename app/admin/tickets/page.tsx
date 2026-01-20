@@ -102,7 +102,7 @@ export default function AdminTicketsPage() {
   const [assignedFilter, setAssignedFilter] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
-  const [assignEngineerId, setAssignEngineerId] = useState<string>('');
+  const [assignEngineerIds, setAssignEngineerIds] = useState<Record<string, string>>({});
 
   useEffect(() => {
     // Debounce search
@@ -203,7 +203,8 @@ export default function AdminTicketsPage() {
   };
 
   const assignEngineer = async (ticketId: string) => {
-    if (!assignEngineerId) {
+    const engineerId = assignEngineerIds[ticketId];
+    if (!engineerId) {
       showToast('Please select an engineer', 'error');
       return;
     }
@@ -214,12 +215,16 @@ export default function AdminTicketsPage() {
         method: 'PATCH',
         body: JSON.stringify({
           action: 'assign',
-          engineerId: assignEngineerId,
+          engineerId,
         }),
       });
 
       showToast('Engineer assigned', 'success');
-      setAssignEngineerId('');
+      setAssignEngineerIds((prev) => {
+        const next = { ...prev };
+        delete next[ticketId];
+        return next;
+      });
       fetchTickets();
       if (selectedTicket?.id === ticketId) {
         setSelectedTicket(null);
@@ -451,8 +456,13 @@ export default function AdminTicketsPage() {
                     {ticket.assignments.length === 0 && (
                       <div className="mb-2">
                         <select
-                          value={assignEngineerId}
-                          onChange={(e) => setAssignEngineerId(e.target.value)}
+                          value={assignEngineerIds[ticket.id] || ''}
+                          onChange={(e) =>
+                            setAssignEngineerIds((prev) => ({
+                              ...prev,
+                              [ticket.id]: e.target.value,
+                            }))
+                          }
                           className="w-full px-3 py-1.5 text-sm border rounded-md"
                           disabled={updating === ticket.id}
                         >
@@ -467,7 +477,7 @@ export default function AdminTicketsPage() {
                           size="sm"
                           className="w-full mt-1"
                           onClick={() => assignEngineer(ticket.id)}
-                          disabled={updating === ticket.id || !assignEngineerId}
+                          disabled={updating === ticket.id || !assignEngineerIds[ticket.id]}
                         >
                           {updating === ticket.id ? (
                             <Spinner className="w-4 h-4" />
