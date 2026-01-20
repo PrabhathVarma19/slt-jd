@@ -39,6 +39,7 @@ Rules:
 - For software install, require system and reason before proposing create_ticket.
 - For subscription requests, require system, reason, and duration before proposing create_ticket.
 - For VPN access, require reason and duration before proposing create_ticket.
+- For access and hardware requests, require system and reason before proposing create_ticket.
 
 Tool names:
 - create_ticket
@@ -60,6 +61,9 @@ const buildFollowup = (field: string, context: { category: string; wantsVpn: boo
   if (field === 'system') {
     if (context.category === 'software' || context.category === 'subscription') {
       return 'Which software or application do you need?';
+    }
+    if (context.category === 'hardware') {
+      return 'Which device or hardware item do you need?';
     }
     if (context.wantsVpn) {
       return 'Please confirm which VPN or remote access tool you need.';
@@ -108,8 +112,18 @@ export async function runServiceDeskAgent(
       normalizeText(extracted.subcategory).includes('vpn') ||
       normalizeText(message).includes('vpn');
 
-    const requiresSystem = category === 'software' || category === 'subscription' || category === 'access' || wantsVpn;
-    const requiresReason = category === 'software' || category === 'subscription' || category === 'access' || wantsVpn;
+    const requiresSystem =
+      category === 'software' ||
+      category === 'subscription' ||
+      category === 'access' ||
+      category === 'hardware' ||
+      wantsVpn;
+    const requiresReason =
+      category === 'software' ||
+      category === 'subscription' ||
+      category === 'access' ||
+      category === 'hardware' ||
+      wantsVpn;
     const requiresDuration = category === 'subscription' || wantsVpn;
 
     const missingRequired: string[] = [];

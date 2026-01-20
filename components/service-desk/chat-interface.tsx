@@ -334,7 +334,9 @@ export function ChatInterface() {
                         Search KB
                       </Button>
                     )}
-                    {msg.actionType === 'create_request' && msg.actionData && (
+                    {msg.actionType === 'create_request' &&
+                      msg.actionData &&
+                      msg.requiresConfirmation && (
                       <Button
                         size="sm"
                         variant="secondary"
