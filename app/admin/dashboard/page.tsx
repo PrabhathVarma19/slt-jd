@@ -708,13 +708,15 @@ export default function AdminDashboardPage() {
                   <>
                     <div className="flex h-32 items-end gap-2">
                       {analytics.trendsMtta.map((point, index) => {
+                        const mttaMinutes = Number(point.minutes || 0);
+                        const mttrMinutes = Number(analytics.trendsMttr[index]?.minutes || 0);
                         const mttaHeight =
-                          point.minutes > 0
-                            ? Math.max(6, (point.minutes / mttaTrendMax) * compactChartHeight)
+                          mttaMinutes > 0 && Number.isFinite(mttaMinutes)
+                            ? Math.max(6, (mttaMinutes / mttaTrendMax) * compactChartHeight)
                             : 0;
                         const mttrHeight =
-                          analytics.trendsMttr[index]?.minutes > 0
-                            ? Math.max(6, (analytics.trendsMttr[index].minutes / mttrTrendMax) * compactChartHeight)
+                          mttrMinutes > 0 && Number.isFinite(mttrMinutes)
+                            ? Math.max(6, (mttrMinutes / mttrTrendMax) * compactChartHeight)
                             : 0;
                         return (
                           <div key={point.day} className="flex flex-1 flex-col items-center">
@@ -780,9 +782,10 @@ export default function AdminDashboardPage() {
                   <>
                     <div className="flex h-32 items-end gap-2">
                       {analytics.trendsSlaBreaches.map((point) => {
+                        const breachCount = Number(point.breached || 0);
                         const height =
-                          point.breached > 0
-                            ? Math.max(6, (point.breached / slaTrendMax) * compactChartHeight)
+                          breachCount > 0 && Number.isFinite(breachCount)
+                            ? Math.max(6, (breachCount / slaTrendMax) * compactChartHeight)
                             : 0;
                         return (
                           <div key={point.day} className="flex flex-1 flex-col items-center">
