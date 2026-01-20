@@ -13,6 +13,36 @@ type RequiredField = (typeof REQUIRED_FIELDS)[number];
 const openaiApiKey = process.env.OPENAI_API_KEY;
 const openai = openaiApiKey ? new OpenAI({ apiKey: openaiApiKey }) : null;
 
+const parseDurationToDate = (input?: string | null) => {
+  if (!input) return null;
+  const trimmed = input.trim().toLowerCase();
+  if (!trimmed || trimmed === 'permanent' || trimmed === 'indefinite') return null;
+
+  const dateMatch = trimmed.match(/\d{4}-\d{2}-\d{2}/);
+  if (dateMatch) {
+    return dateMatch[0];
+  }
+
+  const durationMatch = trimmed.match(/(\d+)\s*(day|week|month|year)s?/);
+  if (!durationMatch) return null;
+  const amount = Number(durationMatch[1]);
+  if (!Number.isFinite(amount) || amount <= 0) return null;
+
+  const unit = durationMatch[2];
+  const now = new Date();
+  const target = new Date(now);
+  if (unit === 'day') {
+    target.setDate(target.getDate() + amount);
+  } else if (unit === 'week') {
+    target.setDate(target.getDate() + amount * 7);
+  } else if (unit === 'month') {
+    target.setMonth(target.getMonth() + amount);
+  } else if (unit === 'year') {
+    target.setFullYear(target.getFullYear() + amount);
+  }
+  return target.toISOString().slice(0, 10);
+};
+
 export async function POST(req: NextRequest) {
   const itDeskEmail = process.env.IT_SERVICEDESK_EMAIL;
 
@@ -67,6 +97,47 @@ export async function POST(req: NextRequest) {
       impact,
       details,
     } = body;
+
+    const normalizedSystem = (system || '').toString().trim().toLowerCase();
+    const normalizedRequestType = (requestType || '').toString().trim().toLowerCase();
+    const isVpnRequest =
+      normalizedRequestType === 'access' && normalizedSystem.includes('vpn');
+    const isSubscriptionRequest = normalizedRequestType === 'subscription' || !!body.isSubscription;
+    const requiresReason =
+      normalizedRequestType === 'software' || isSubscriptionRequest || isVpnRequest;
+    const requiresDuration = isSubscriptionRequest || isVpnRequest;
+    const requiresSystem =
+      normalizedRequestType === 'software' ||
+      normalizedRequestType === 'subscription' ||
+      normalizedRequestType === 'access';
+
+    const normalizedDurationType = (durationType || '').toString().trim();
+    const normalizedDurationUntil = (durationUntil || '').toString().trim();
+    const computedDurationUntil =
+      normalizedDurationUntil || parseDurationToDate(normalizedDurationType);
+
+    if (requiresSystem && !normalizedSystem) {
+      return NextResponse.json({ error: 'System or application is required.' }, { status: 400 });
+    }
+
+    if (requiresReason && (!reason || !reason.trim())) {
+      return NextResponse.json({ error: 'Reason / use case is required.' }, { status: 400 });
+    }
+
+    if (requiresDuration) {
+      if (!normalizedDurationType && !computedDurationUntil) {
+        return NextResponse.json({ error: 'Duration is required.' }, { status: 400 });
+      }
+      if (
+        normalizedDurationType.toLowerCase() === 'temporary' &&
+        !computedDurationUntil
+      ) {
+        return NextResponse.json(
+          { error: 'Requested until date is required for temporary access.' },
+          { status: 400 }
+        );
+      }
+    }
 
     // If the user has not filled many classification fields, let the AI suggest them
     const shouldClassify =
@@ -123,6 +194,13 @@ Respond with JSON only, no explanation.`;
         console.error('IT service AI classification failed; continuing with raw fields.', e);
       }
     }
+
+    const effectiveDurationType = requiresDuration
+      ? normalizedDurationType || (durationType ? String(durationType) : '')
+      : '';
+    const effectiveDurationUntil = requiresDuration
+      ? computedDurationUntil || normalizedDurationUntil || ''
+      : '';
 
     const requestTypeLabelMap: Record<string, string> = {
       access: 'System / application access',
@@ -181,6 +259,8 @@ Respond with JSON only, no explanation.`;
           domain: 'IT',
           projectCode: projectCode,
           projectName: projectName,
+          durationType: effectiveDurationType || undefined,
+          durationUntil: effectiveDurationUntil || null,
         },
         auth.userId
       );
@@ -216,9 +296,10 @@ Respond with JSON only, no explanation.`;
     htmlLines.push(`<li><strong>Type:</strong> ${requestLabel}</li>`);
     htmlLines.push(`<li><strong>Subcategory / system:</strong> ${systemLabel}</li>`);
     if (reason) htmlLines.push(`<li><strong>Reason / use case:</strong> ${reason}</li>`);
-    if (durationType) htmlLines.push(`<li><strong>Duration:</strong> ${durationType}</li>`);
-    if (durationUntil)
-      htmlLines.push(`<li><strong>Requested until:</strong> ${durationUntil}</li>`);
+    if (effectiveDurationType)
+      htmlLines.push(`<li><strong>Duration:</strong> ${effectiveDurationType}</li>`);
+    if (effectiveDurationUntil)
+      htmlLines.push(`<li><strong>Requested until:</strong> ${effectiveDurationUntil}</li>`);
     if (project) htmlLines.push(`<li><strong>Project / client:</strong> ${project}</li>`);
     if (impact) htmlLines.push(`<li><strong>Impact:</strong> ${impact}</li>`);
     if (managerEmail)
@@ -258,8 +339,8 @@ Respond with JSON only, no explanation.`;
     textLines.push(`Type: ${requestLabel}`);
     textLines.push(`Subcategory / system: ${systemLabel}`);
     if (reason) textLines.push(`Reason / use case: ${reason}`);
-    if (durationType) textLines.push(`Duration: ${durationType}`);
-    if (durationUntil) textLines.push(`Requested until: ${durationUntil}`);
+    if (effectiveDurationType) textLines.push(`Duration: ${effectiveDurationType}`);
+    if (effectiveDurationUntil) textLines.push(`Requested until: ${effectiveDurationUntil}`);
     if (projectCode) {
       textLines.push(`Project Code: ${projectCode}${projectName ? ` - ${projectName}` : ''}`);
     }

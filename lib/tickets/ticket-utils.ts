@@ -94,6 +94,8 @@ export interface CreateTicketInput {
   status?: TicketStatus; // Optional status, defaults to 'OPEN'
   projectCode?: string;
   projectName?: string;
+  durationType?: string;
+  durationUntil?: string | null;
 }
 
 export async function createTicket(
@@ -123,6 +125,8 @@ export async function createTicket(
         domain,
         projectCode: input.projectCode,
         projectName: input.projectName,
+        durationType: input.durationType || null,
+        durationUntil: input.durationUntil || null,
       })
       .select('id, ticketNumber')
       .single();

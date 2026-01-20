@@ -181,6 +181,8 @@ export async function POST(req: NextRequest) {
           system: actionData.system || 'General',
           impact: actionData.impact || 'medium',
           reason: actionData.reason || 'Not specified',
+          durationType: actionData.durationType || actionData.duration || '',
+          durationUntil: actionData.durationUntil || '',
           details: actionData.details || 'No additional details provided.',
           projectCode: profileData.projectCode || '',
           projectName: profileData.projectName || '',

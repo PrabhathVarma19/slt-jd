@@ -208,7 +208,10 @@ export default function ServiceDeskPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleChange = (field: keyof ItServiceFormState, value: string | RequestType | ImpactLevel | DurationType) => {
+  const handleChange = (
+    field: keyof ItServiceFormState,
+    value: string | RequestType | ImpactLevel | DurationType | boolean
+  ) => {
     setForm((prev) => ({ ...prev, [field]: value as any }));
   };
 
@@ -275,6 +278,13 @@ export default function ServiceDeskPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shouldAutoSuggest, form.details]);
 
+  const isVpnRequest =
+    form.requestType === 'access' && form.system.trim().toLowerCase().includes('vpn');
+  const isSubscriptionRequest = form.requestType === 'subscription' || form.isSubscription;
+  const requiresDuration = isSubscriptionRequest || isVpnRequest;
+  const requiresReason =
+    form.requestType === 'software' || isSubscriptionRequest || isVpnRequest;
+
   const canSubmit =
     !!form.name.trim() &&
     !!form.employeeId.trim() &&
@@ -282,6 +292,10 @@ export default function ServiceDeskPage() {
     !!form.details.trim() &&
     !!form.requestType &&
     !!form.system.trim() &&
+    (!requiresReason || !!form.reason.trim()) &&
+    (!requiresDuration ||
+      (form.durationType === 'permanent' ||
+        (form.durationType === 'temporary' && !!form.durationUntil.trim()))) &&
     (userProjects.length <= 1 || !!form.projectCode.trim()) && // Project required if multiple projects
     !isSubmitting;
 
@@ -485,7 +499,7 @@ export default function ServiceDeskPage() {
                 type="checkbox"
                 className="h-3 w-3 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                 checked={form.isSubscription}
-                onChange={(e) => handleChange('isSubscription', e.target.checked ? 'true' : 'false')}
+                onChange={(e) => handleChange('isSubscription', e.target.checked)}
                 disabled={isSubmitting}
               />
               <label htmlFor="isSubscription">
@@ -548,9 +562,21 @@ export default function ServiceDeskPage() {
             </div>
           </div>
 
+          <div className="space-y-1.5">
+            <label className="text-xs font-medium text-gray-700">
+              Reason / use case {requiresReason && <span className="text-red-500">*</span>}
+            </label>
+            <Textarea
+              rows={2}
+              value={form.reason}
+              onChange={(e) => handleChange('reason', e.target.value)}
+              placeholder="Why do you need this? (e.g., project requirement, client delivery, onboarding)"
+            />
+          </div>
+
           <div className="space-y-1">
             <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-              Impact &amp; duration
+              Impact {requiresDuration ? '& duration' : ''}
             </p>
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-1.5">
@@ -568,45 +594,51 @@ export default function ServiceDeskPage() {
               </select>
             </div>
 
-            <div className="space-y-1.5">
-              <label className="text-xs font-medium text-gray-700">Duration</label>
-              <div className="flex flex-wrap gap-2">
-                <button
-                  type="button"
-                  onClick={() => handleChange('durationType', 'permanent')}
-                  className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${
-                    form.durationType === 'permanent'
-                      ? 'border-blue-600 bg-blue-50 text-blue-700'
-                      : 'border-gray-200 bg-white text-gray-700 hover:border-blue-300'
-                  }`}
-                  disabled={isSubmitting}
-                >
-                  Permanent
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleChange('durationType', 'temporary')}
-                  className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${
-                    form.durationType === 'temporary'
-                      ? 'border-blue-600 bg-blue-50 text-blue-700'
-                      : 'border-gray-200 bg-white text-gray-700 hover:border-blue-300'
-                  }`}
-                  disabled={isSubmitting}
-                >
-                  Temporary
-                </button>
-              </div>
-              {form.durationType === 'temporary' && (
-                <div className="mt-2 space-y-1">
-                  <label className="text-xs font-medium text-gray-700">Requested until</label>
-                  <Input
-                    type="date"
-                    value={form.durationUntil}
-                    onChange={(e) => handleChange('durationUntil', e.target.value)}
-                  />
+            {requiresDuration && (
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-gray-700">
+                  Duration <span className="text-red-500">*</span>
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handleChange('durationType', 'permanent')}
+                    className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${
+                      form.durationType === 'permanent'
+                        ? 'border-blue-600 bg-blue-50 text-blue-700'
+                        : 'border-gray-200 bg-white text-gray-700 hover:border-blue-300'
+                    }`}
+                    disabled={isSubmitting}
+                  >
+                    Permanent
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleChange('durationType', 'temporary')}
+                    className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${
+                      form.durationType === 'temporary'
+                        ? 'border-blue-600 bg-blue-50 text-blue-700'
+                        : 'border-gray-200 bg-white text-gray-700 hover:border-blue-300'
+                    }`}
+                    disabled={isSubmitting}
+                  >
+                    Temporary
+                  </button>
                 </div>
-              )}
+                {form.durationType === 'temporary' && (
+                  <div className="mt-2 space-y-1">
+                    <label className="text-xs font-medium text-gray-700">
+                      Requested until <span className="text-red-500">*</span>
+                    </label>
+                    <Input
+                      type="date"
+                      value={form.durationUntil}
+                      onChange={(e) => handleChange('durationUntil', e.target.value)}
+                    />
+                  </div>
+                )}
               </div>
+            )}
             </div>
           </div>
 
