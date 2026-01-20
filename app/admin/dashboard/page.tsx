@@ -436,6 +436,13 @@ export default function AdminDashboardPage() {
     : 1;
   const chartHeight = 176;
   const compactChartHeight = 128;
+  const hasMttaTrendData = analytics
+    ? analytics.trendsMtta.some((point) => point.minutes > 0) ||
+      analytics.trendsMttr.some((point) => point.minutes > 0)
+    : false;
+  const hasSlaTrendData = analytics
+    ? analytics.trendsSlaBreaches.some((point) => point.breached > 0)
+    : false;
   const labelStride = analytics ? Math.max(1, Math.ceil(analytics.trends.length / 12)) : 1;
   const hasTrendData = analytics
     ? analytics.trends.some((point) => point.opened > 0 || point.resolved > 0)
@@ -695,44 +702,57 @@ export default function AdminDashboardPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="flex h-32 items-end gap-2">
-                  {analytics.trendsMtta.map((point, index) => {
-                    const mttaHeight =
-                      point.minutes > 0
-                        ? Math.max(6, (point.minutes / mttaTrendMax) * compactChartHeight)
-                        : 0;
-                    const mttrHeight =
-                      analytics.trendsMttr[index]?.minutes > 0
-                        ? Math.max(6, (analytics.trendsMttr[index].minutes / mttrTrendMax) * compactChartHeight)
-                        : 0;
-                    return (
-                      <div key={point.day} className="flex flex-1 flex-col items-center">
-                        <div className="flex w-full items-end gap-1" style={{ height: `${compactChartHeight}px` }}>
-                          <div
-                            className="w-1/2 rounded-t bg-sky-500/80"
-                            style={{ height: `${mttaHeight}px` }}
-                            title={`MTTA: ${point.minutes}m`}
-                          />
-                          <div
-                            className="w-1/2 rounded-t bg-indigo-500/80"
-                            style={{ height: `${mttrHeight}px` }}
-                            title={`MTTR: ${analytics.trendsMttr[index]?.minutes || 0}m`}
-                          />
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-                <div
-                  className="mt-2 grid text-[10px] text-gray-500"
-                  style={{ gridTemplateColumns: `repeat(${analytics.trendsMtta.length}, minmax(0, 1fr))` }}
-                >
-                  {analytics.trendsMtta.map((point, index) => (
-                    <span key={point.day} className="whitespace-nowrap text-center">
-                      {index % labelStride === 0 ? point.day.slice(5).replace('-', '/') : ''}
-                    </span>
-                  ))}
-                </div>
+                {hasMttaTrendData ? (
+                  <>
+                    <div className="flex h-32 items-end gap-2">
+                      {analytics.trendsMtta.map((point, index) => {
+                        const mttaHeight =
+                          point.minutes > 0
+                            ? Math.max(6, (point.minutes / mttaTrendMax) * compactChartHeight)
+                            : 0;
+                        const mttrHeight =
+                          analytics.trendsMttr[index]?.minutes > 0
+                            ? Math.max(6, (analytics.trendsMttr[index].minutes / mttrTrendMax) * compactChartHeight)
+                            : 0;
+                        return (
+                          <div key={point.day} className="flex flex-1 flex-col items-center">
+                            <div className="flex w-full items-end gap-1" style={{ height: `${compactChartHeight}px` }}>
+                              <div
+                                className="w-1/2 rounded-t bg-sky-500/80"
+                                style={{ height: `${mttaHeight}px` }}
+                                title={`MTTA: ${point.minutes}m`}
+                              />
+                              <div
+                                className="w-1/2 rounded-t bg-indigo-500/80"
+                                style={{ height: `${mttrHeight}px` }}
+                                title={`MTTR: ${analytics.trendsMttr[index]?.minutes || 0}m`}
+                              />
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <div
+                      className="mt-2 grid text-[10px] text-gray-500 tabular-nums leading-none"
+                      style={{ gridTemplateColumns: `repeat(${analytics.trendsMtta.length}, minmax(0, 1fr))` }}
+                    >
+                      {analytics.trendsMtta.map((point, index) => (
+                        <span
+                          key={point.day}
+                          className={`whitespace-nowrap text-center ${
+                            index % labelStride === 0 ? 'text-gray-500' : 'text-transparent'
+                          }`}
+                        >
+                          {point.day.slice(5).replace('-', '/')}
+                        </span>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <div className="flex h-32 items-center justify-center text-xs text-gray-500">
+                    No MTTA / MTTR events in this range yet.
+                  </div>
+                )}
                 <div className="mt-3 flex items-center gap-4 text-xs text-gray-500">
                   <span className="flex items-center gap-1">
                     <span className="h-2 w-2 rounded-full bg-sky-500/80" />
@@ -754,35 +774,48 @@ export default function AdminDashboardPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="flex h-32 items-end gap-2">
-                  {analytics.trendsSlaBreaches.map((point) => {
-                    const height =
-                      point.breached > 0
-                        ? Math.max(6, (point.breached / slaTrendMax) * compactChartHeight)
-                        : 0;
-                    return (
-                      <div key={point.day} className="flex flex-1 flex-col items-center">
-                        <div className="flex w-full items-end" style={{ height: `${compactChartHeight}px` }}>
-                          <div
-                            className="w-full rounded-t bg-rose-500/80"
-                            style={{ height: `${height}px` }}
-                            title={`Breached: ${point.breached}`}
-                          />
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-                <div
-                  className="mt-2 grid text-[10px] text-gray-500"
-                  style={{ gridTemplateColumns: `repeat(${analytics.trendsSlaBreaches.length}, minmax(0, 1fr))` }}
-                >
-                  {analytics.trendsSlaBreaches.map((point, index) => (
-                    <span key={point.day} className="whitespace-nowrap text-center">
-                      {index % labelStride === 0 ? point.day.slice(5).replace('-', '/') : ''}
-                    </span>
-                  ))}
-                </div>
+                {hasSlaTrendData ? (
+                  <>
+                    <div className="flex h-32 items-end gap-2">
+                      {analytics.trendsSlaBreaches.map((point) => {
+                        const height =
+                          point.breached > 0
+                            ? Math.max(6, (point.breached / slaTrendMax) * compactChartHeight)
+                            : 0;
+                        return (
+                          <div key={point.day} className="flex flex-1 flex-col items-center">
+                            <div className="flex w-full items-end" style={{ height: `${compactChartHeight}px` }}>
+                              <div
+                                className="w-full rounded-t bg-rose-500/80"
+                                style={{ height: `${height}px` }}
+                                title={`Breached: ${point.breached}`}
+                              />
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <div
+                      className="mt-2 grid text-[10px] text-gray-500 tabular-nums leading-none"
+                      style={{ gridTemplateColumns: `repeat(${analytics.trendsSlaBreaches.length}, minmax(0, 1fr))` }}
+                    >
+                      {analytics.trendsSlaBreaches.map((point, index) => (
+                        <span
+                          key={point.day}
+                          className={`whitespace-nowrap text-center ${
+                            index % labelStride === 0 ? 'text-gray-500' : 'text-transparent'
+                          }`}
+                        >
+                          {point.day.slice(5).replace('-', '/')}
+                        </span>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <div className="flex h-32 items-center justify-center text-xs text-gray-500">
+                    No SLA breaches in this range.
+                  </div>
+                )}
               </CardContent>
             </Card>
 
@@ -892,16 +925,21 @@ export default function AdminDashboardPage() {
                         );
                       })}
                     </div>
-                    <div
-                      className="mt-2 grid text-[10px] text-gray-500"
-                      style={{ gridTemplateColumns: `repeat(${analytics.trends.length}, minmax(0, 1fr))` }}
-                    >
-                      {analytics.trends.map((point, index) => (
-                        <span key={point.day} className="whitespace-nowrap text-center">
-                          {index % labelStride === 0 ? point.day.slice(5).replace('-', '/') : ''}
-                        </span>
-                      ))}
-                    </div>
+                      <div
+                        className="mt-2 grid text-[10px] text-gray-500 tabular-nums leading-none"
+                        style={{ gridTemplateColumns: `repeat(${analytics.trends.length}, minmax(0, 1fr))` }}
+                      >
+                        {analytics.trends.map((point, index) => (
+                          <span
+                            key={point.day}
+                            className={`whitespace-nowrap text-center ${
+                              index % labelStride === 0 ? 'text-gray-500' : 'text-transparent'
+                            }`}
+                          >
+                            {point.day.slice(5).replace('-', '/')}
+                          </span>
+                        ))}
+                      </div>
                   </div>
                 ) : (
                   <div className="flex h-44 items-center justify-center text-sm text-gray-500">
