@@ -203,6 +203,7 @@ export default function AdminDashboardPage() {
   const [showLeaderboardModal, setShowLeaderboardModal] = useState(false);
   const [showWorkloadModal, setShowWorkloadModal] = useState(false);
   const [showFailuresModal, setShowFailuresModal] = useState(false);
+  const [showCategoriesModal, setShowCategoriesModal] = useState(false);
   const [ticketModalFilters, setTicketModalFilters] = useState({
     range: '30d',
     start: '',
@@ -401,6 +402,14 @@ export default function AdminDashboardPage() {
   const leaderboardPreview = analytics ? analytics.leaderboard.slice(0, 6) : [];
   const workloadPreview = analytics ? analytics.engineerWorkload.slice(0, 6) : [];
   const failuresPreview = analytics ? analytics.topAgentFailures.slice(0, 6) : [];
+  const categoryPreview = analytics
+    ? Object.entries(analytics.breakdowns.byCategory)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 6)
+    : [];
+  const categoryList = analytics
+    ? Object.entries(analytics.breakdowns.byCategory).sort((a, b) => b[1] - a[1])
+    : [];
 
   const handleExport = () => {
     if (!analytics) return;
@@ -916,14 +925,16 @@ export default function AdminDashboardPage() {
               </CardContent>
             </Card>
             <Card className="animate-in fade-in slide-in-from-bottom-2">
-              <CardHeader>
+              <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle className="text-lg">Top categories</CardTitle>
+                {categoryList.length > categoryPreview.length && (
+                  <Button variant="outline" onClick={() => setShowCategoriesModal(true)}>
+                    View all
+                  </Button>
+                )}
               </CardHeader>
               <CardContent className="space-y-3">
-                {Object.entries(analytics.breakdowns.byCategory)
-                  .sort((a, b) => b[1] - a[1])
-                  .slice(0, 6)
-                  .map(([category, count]) => (
+                {categoryPreview.map(([category, count]) => (
                     <div key={category} className="flex items-center justify-between gap-3">
                       <Badge variant="outline" className="min-w-[140px] justify-center bg-white/70">
                         {category}
@@ -1707,6 +1718,50 @@ export default function AdminDashboardPage() {
                       <div className="text-right text-xs text-gray-600">
                         <p>{engineer.open} open</p>
                         <p>{engineer.resolved} resolved</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showCategoriesModal && analytics && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 px-4 py-6">
+          <div className="flex h-full w-full max-w-4xl flex-col overflow-hidden rounded-2xl bg-white shadow-xl">
+            <div className="flex items-center justify-between border-b border-gray-100 px-6 py-4">
+              <div>
+                <p className="text-sm text-gray-500">Categories</p>
+                <h2 className="text-lg font-semibold text-gray-900">All categories</h2>
+              </div>
+              <Button variant="outline" onClick={() => setShowCategoriesModal(false)}>
+                Close
+              </Button>
+            </div>
+            <div className="flex-1 overflow-auto px-6 py-4">
+              {categoryList.length === 0 ? (
+                <p className="text-sm text-gray-500">No categories found.</p>
+              ) : (
+                <div className="space-y-3">
+                  {categoryList.map(([category, count]) => (
+                    <div key={category} className="flex items-center justify-between gap-3">
+                      <Badge variant="outline" className="min-w-[160px] justify-center bg-white/70">
+                        {category}
+                      </Badge>
+                      <div className="flex flex-1 items-center gap-3">
+                        <div className="h-2 flex-1 rounded-full bg-gray-100">
+                          <div
+                            className="h-2 rounded-full bg-emerald-600"
+                            style={{
+                              width: analytics.summary.total
+                                ? `${(count / analytics.summary.total) * 100}%`
+                                : '0%',
+                            }}
+                          />
+                        </div>
+                        <span className="w-10 text-right text-sm font-semibold text-gray-900">{count}</span>
                       </div>
                     </div>
                   ))}
