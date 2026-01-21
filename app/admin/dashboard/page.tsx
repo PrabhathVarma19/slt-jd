@@ -438,8 +438,8 @@ export default function AdminDashboardPage() {
   const chartHeight = 176;
   const compactChartHeight = 128;
   const hasMttaTrendData = analytics
-    ? analytics.trendsMtta.some((point) => point.minutes > 0) ||
-      analytics.trendsMttr.some((point) => point.minutes > 0)
+    ? analytics.trendsMtta.some((point) => Number(point.minutes) > 0) ||
+      analytics.trendsMttr.some((point) => Number(point.minutes) > 0)
     : false;
   const hasSlaTrendData = analytics
     ? analytics.trendsSlaBreaches.some((point) => point.breached > 0)
@@ -624,7 +624,7 @@ export default function AdminDashboardPage() {
 
       {analytics && (
         <>
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <Card className="animate-in fade-in slide-in-from-bottom-2">
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
@@ -671,7 +671,79 @@ export default function AdminDashboardPage() {
             </Card>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-4">
+            <Card className="animate-in fade-in slide-in-from-bottom-2">
+              <CardHeader>
+                <CardTitle className="text-lg">Ticket flow</CardTitle>
+                <p className="text-sm text-gray-600">Daily opened vs resolved.</p>
+              </CardHeader>
+              <CardContent>
+                {hasTrendData ? (
+                  <div className="w-full overflow-hidden">
+                    <div className="flex h-44 items-end gap-2">
+                      {analytics.trends.map((point) => {
+                        const openedHeight =
+                          point.opened > 0
+                            ? Math.max(6, (point.opened / trendMax) * chartHeight)
+                            : 0;
+                        const resolvedHeight =
+                          point.resolved > 0
+                            ? Math.max(6, (point.resolved / trendMax) * chartHeight)
+                            : 0;
+                        return (
+                          <div key={point.day} className="flex flex-1 flex-col items-center">
+                            <div className="flex w-full items-end gap-1" style={{ height: `${chartHeight}px` }}>
+                              <div
+                                className="w-1/2 rounded-t bg-blue-500/80"
+                                style={{ height: `${openedHeight}px` }}
+                                title={`Opened: ${point.opened}`}
+                              />
+                              <div
+                                className="w-1/2 rounded-t bg-emerald-500/80"
+                                style={{ height: `${resolvedHeight}px` }}
+                                title={`Resolved: ${point.resolved}`}
+                              />
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <div
+                      className="mt-2 grid text-[10px] text-gray-500 tabular-nums leading-none"
+                      style={{ gridTemplateColumns: `repeat(${analytics.trends.length}, minmax(0, 1fr))` }}
+                    >
+                      {analytics.trends.map((point, index) => (
+                        <span
+                          key={point.day}
+                          className={`whitespace-nowrap text-center ${
+                            index % labelStrideWide === 0 ? 'text-gray-500' : 'text-transparent'
+                          }`}
+                        >
+                          {point.day.slice(5).replace('-', '/')}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex h-44 items-center justify-center text-sm text-gray-500">
+                    No ticket activity in this range yet.
+                  </div>
+                )}
+                <div className="mt-3 flex items-center gap-4 text-xs text-gray-500">
+                  <span className="flex items-center gap-1">
+                    <span className="h-2 w-2 rounded-full bg-blue-500/80" />
+                    Opened
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <span className="h-2 w-2 rounded-full bg-emerald-500/80" />
+                    Resolved
+                  </span>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2">
 
             <Card className="animate-in fade-in slide-in-from-bottom-2">
               <CardHeader>
@@ -801,78 +873,6 @@ export default function AdminDashboardPage() {
               </CardContent>
             </Card>
 
-          </div>
-
-          <div className="grid gap-4">
-            <Card className="animate-in fade-in slide-in-from-bottom-2">
-              <CardHeader>
-                <CardTitle className="text-lg">Ticket flow</CardTitle>
-                <p className="text-sm text-gray-600">Daily opened vs resolved.</p>
-              </CardHeader>
-              <CardContent>
-                {hasTrendData ? (
-                  <div className="w-full overflow-hidden">
-                    <div className="flex h-44 items-end gap-2">
-                      {analytics.trends.map((point) => {
-                        const openedHeight =
-                          point.opened > 0
-                            ? Math.max(6, (point.opened / trendMax) * chartHeight)
-                            : 0;
-                        const resolvedHeight =
-                          point.resolved > 0
-                            ? Math.max(6, (point.resolved / trendMax) * chartHeight)
-                            : 0;
-                        return (
-                          <div key={point.day} className="flex flex-1 flex-col items-center">
-                            <div className="flex w-full items-end gap-1" style={{ height: `${chartHeight}px` }}>
-                              <div
-                                className="w-1/2 rounded-t bg-blue-500/80"
-                                style={{ height: `${openedHeight}px` }}
-                                title={`Opened: ${point.opened}`}
-                              />
-                              <div
-                                className="w-1/2 rounded-t bg-emerald-500/80"
-                                style={{ height: `${resolvedHeight}px` }}
-                                title={`Resolved: ${point.resolved}`}
-                              />
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                      <div
-                        className="mt-2 grid text-[10px] text-gray-500 tabular-nums leading-none"
-                        style={{ gridTemplateColumns: `repeat(${analytics.trends.length}, minmax(0, 1fr))` }}
-                      >
-                        {analytics.trends.map((point, index) => (
-                          <span
-                            key={point.day}
-                            className={`whitespace-nowrap text-center ${
-                              index % labelStrideWide === 0 ? 'text-gray-500' : 'text-transparent'
-                            }`}
-                          >
-                            {point.day.slice(5).replace('-', '/')}
-                          </span>
-                        ))}
-                      </div>
-                  </div>
-                ) : (
-                  <div className="flex h-44 items-center justify-center text-sm text-gray-500">
-                    No ticket activity in this range yet.
-                  </div>
-                )}
-                <div className="mt-3 flex items-center gap-4 text-xs text-gray-500">
-                  <span className="flex items-center gap-1">
-                    <span className="h-2 w-2 rounded-full bg-blue-500/80" />
-                    Opened
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <span className="h-2 w-2 rounded-full bg-emerald-500/80" />
-                    Resolved
-                  </span>
-                </div>
-              </CardContent>
-            </Card>
           </div>
 
         </>
