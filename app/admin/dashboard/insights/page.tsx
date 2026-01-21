@@ -465,17 +465,17 @@ export default function AdminDashboardPage() {
               {analytics ? formatDate(analytics.range.end) : ''}
             </span>
           </div>
-          <h1 className="mt-2 text-3xl font-semibold text-gray-900">Service Desk Performance</h1>
+          <h1 className="mt-2 text-3xl font-semibold text-gray-900">Operational Insights</h1>
           <p className="mt-1 text-sm text-gray-600">
-            SLA health, request volume, and operational load for IT support.
+            Deep dives into quality, workload, and SLA drivers for IT support.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <div className="flex items-center rounded-full bg-slate-100 p-1">
-            <Button asChild size="sm" variant="secondary" className="rounded-full">
+            <Button asChild size="sm" variant="ghost" className="rounded-full">
               <Link href="/admin/dashboard">Overview</Link>
             </Button>
-            <Button asChild size="sm" variant="ghost" className="rounded-full">
+            <Button asChild size="sm" variant="secondary" className="rounded-full">
               <Link href="/admin/dashboard/insights">Insights</Link>
             </Button>
           </div>
@@ -626,256 +626,169 @@ export default function AdminDashboardPage() {
         <>
           <div className="grid gap-4 md:grid-cols-2">
             <Card className="animate-in fade-in slide-in-from-bottom-2">
-              <CardContent className="pt-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-gray-600">Total tickets</p>
-                    <p className="mt-1 text-2xl font-semibold text-gray-900">{analytics.summary.total}</p>
-                  </div>
-                  <BarChart3 className="h-8 w-8 text-blue-600" />
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="animate-in fade-in slide-in-from-bottom-2">
-              <CardContent className="pt-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-gray-600">Open backlog</p>
-                    <p className="mt-1 text-2xl font-semibold text-gray-900">{analytics.summary.backlog}</p>
-                  </div>
-                  <Users className="h-8 w-8 text-indigo-600" />
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="animate-in fade-in slide-in-from-bottom-2">
-              <CardContent className="pt-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-gray-600">SLA breached</p>
-                    <p className="mt-1 text-2xl font-semibold text-gray-900">{analytics.summary.slaBreached}</p>
-                  </div>
-                  <AlertTriangle className="h-8 w-8 text-red-600" />
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="animate-in fade-in slide-in-from-bottom-2">
-              <CardContent className="pt-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-gray-600">Unassigned</p>
-                    <p className="mt-1 text-2xl font-semibold text-gray-900">{analytics.summary.unassigned}</p>
-                  </div>
-                  <Gauge className="h-8 w-8 text-orange-600" />
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-
-            <Card className="animate-in fade-in slide-in-from-bottom-2">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
-                  <Clock className="h-4 w-4 text-blue-600" />
-                  MTTA / MTTR trend
+                  <RefreshCw className="h-4 w-4 text-rose-600" />
+                  Quality rates
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                {hasMttaTrendData ? (
-                  <>
-                    <div className="flex h-32 items-end gap-2">
-                      {analytics.trendsMtta.map((point, index) => {
-                        const mttaMinutes = Number(point.minutes || 0);
-                        const mttrMinutes = Number(analytics.trendsMttr[index]?.minutes || 0);
-                        const mttaHeight =
-                          mttaMinutes > 0 && Number.isFinite(mttaMinutes)
-                            ? Math.max(6, (mttaMinutes / mttaTrendMax) * compactChartHeight)
-                            : 0;
-                        const mttrHeight =
-                          mttrMinutes > 0 && Number.isFinite(mttrMinutes)
-                            ? Math.max(6, (mttrMinutes / mttrTrendMax) * compactChartHeight)
-                            : 0;
-                        return (
-                          <div key={point.day} className="flex flex-1 flex-col items-center">
-                            <div className="flex w-full items-end gap-1" style={{ height: `${compactChartHeight}px` }}>
-                              <div
-                                className="w-1/2 rounded-t bg-sky-500/80"
-                                style={{ height: `${mttaHeight}px` }}
-                                title={`MTTA: ${point.minutes}m`}
-                              />
-                              <div
-                                className="w-1/2 rounded-t bg-indigo-500/80"
-                                style={{ height: `${mttrHeight}px` }}
-                                title={`MTTR: ${analytics.trendsMttr[index]?.minutes || 0}m`}
-                              />
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                    <div
-                      className="mt-2 grid text-[10px] text-gray-500 tabular-nums leading-none"
-                      style={{ gridTemplateColumns: `repeat(${analytics.trendsMtta.length}, minmax(0, 1fr))` }}
-                    >
-                      {analytics.trendsMtta.map((point, index) => (
-                        <span
-                          key={point.day}
-                          className={`whitespace-nowrap text-center ${
-                            index % labelStrideCompact === 0 ? 'text-gray-500' : 'text-transparent'
-                          }`}
-                        >
-                          {point.day.slice(5).replace('-', '/')}
-                        </span>
-                      ))}
-                    </div>
-                  </>
-                ) : (
-                  <div className="flex h-32 items-center justify-center text-xs text-gray-500">
-                    No MTTA / MTTR events in this range yet.
+              <CardContent className="space-y-3">
+                <div className="flex items-center justify-between rounded-xl border border-gray-100 bg-white/70 p-3">
+                  <div>
+                    <p className="text-xs text-gray-500">Reopen rate</p>
+                    <p className="mt-1 text-xl font-semibold text-gray-900">
+                      {analytics.metrics.reopenRatePercent}%
+                    </p>
                   </div>
-                )}
-                <div className="mt-3 flex items-center gap-4 text-xs text-gray-500">
-                  <span className="flex items-center gap-1">
-                    <span className="h-2 w-2 rounded-full bg-sky-500/80" />
-                    MTTA
+                  <span className="text-xs text-gray-500">
+                    {analytics.metrics.reopenCount} reopened
                   </span>
-                  <span className="flex items-center gap-1">
-                    <span className="h-2 w-2 rounded-full bg-indigo-500/80" />
-                    MTTR
+                </div>
+                <div className="flex items-center justify-between rounded-xl border border-gray-100 bg-white/70 p-3">
+                  <div>
+                    <p className="text-xs text-gray-500">First-contact resolution</p>
+                    <p className="mt-1 text-xl font-semibold text-gray-900">
+                      {analytics.metrics.fcrRatePercent}%
+                    </p>
+                  </div>
+                  <span className="text-xs text-gray-500">
+                    {analytics.metrics.fcrCount} closed
                   </span>
                 </div>
               </CardContent>
             </Card>
 
+
             <Card className="animate-in fade-in slide-in-from-bottom-2">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
-                  <AlertTriangle className="h-4 w-4 text-rose-600" />
-                  SLA breach trend
+                  <Gauge className="h-4 w-4 text-amber-600" />
+                  Backlog aging
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                {hasSlaTrendData ? (
-                  <>
-                    <div className="flex h-32 items-end gap-2">
-                      {analytics.trendsSlaBreaches.map((point) => {
-                        const breachCount = Number(point.breached || 0);
-                        const height =
-                          breachCount > 0 && Number.isFinite(breachCount)
-                            ? Math.max(6, (breachCount / slaTrendMax) * compactChartHeight)
-                            : 0;
-                        return (
-                          <div key={point.day} className="flex flex-1 flex-col items-center">
-                            <div className="flex w-full items-end" style={{ height: `${compactChartHeight}px` }}>
-                              <div
-                                className="w-full rounded-t bg-rose-500/80"
-                                style={{ height: `${height}px` }}
-                                title={`Breached: ${point.breached}`}
-                              />
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                    <div
-                      className="mt-2 grid text-[10px] text-gray-500 tabular-nums leading-none"
-                      style={{ gridTemplateColumns: `repeat(${analytics.trendsSlaBreaches.length}, minmax(0, 1fr))` }}
-                    >
-                      {analytics.trendsSlaBreaches.map((point, index) => (
-                        <span
-                          key={point.day}
-                          className={`whitespace-nowrap text-center ${
-                            index % labelStrideCompact === 0 ? 'text-gray-500' : 'text-transparent'
-                          }`}
-                        >
-                          {point.day.slice(5).replace('-', '/')}
-                        </span>
-                      ))}
-                    </div>
-                  </>
-                ) : (
-                  <div className="flex h-32 items-center justify-center text-xs text-gray-500">
-                    No SLA breaches in this range.
+              <CardContent className="space-y-2">
+                {Object.entries(analytics.backlogAging).map(([bucket, count]) => (
+                  <div key={bucket} className="flex items-center justify-between text-sm text-gray-700">
+                    <span className="text-xs text-gray-500">{bucket} days</span>
+                    <span className="font-semibold text-gray-900">{count}</span>
                   </div>
-                )}
+                ))}
               </CardContent>
             </Card>
-
           </div>
 
           <div className="grid gap-4">
             <Card className="animate-in fade-in slide-in-from-bottom-2">
               <CardHeader>
-                <CardTitle className="text-lg">Ticket flow</CardTitle>
-                <p className="text-sm text-gray-600">Daily opened vs resolved.</p>
+                <CardTitle className="text-lg">Momentum</CardTitle>
+                <p className="text-sm text-gray-600">Current range vs previous period.</p>
               </CardHeader>
-              <CardContent>
-                {hasTrendData ? (
-                  <div className="w-full overflow-hidden">
-                    <div className="flex h-44 items-end gap-2">
-                      {analytics.trends.map((point) => {
-                        const openedHeight =
-                          point.opened > 0
-                            ? Math.max(6, (point.opened / trendMax) * chartHeight)
-                            : 0;
-                        const resolvedHeight =
-                          point.resolved > 0
-                            ? Math.max(6, (point.resolved / trendMax) * chartHeight)
-                            : 0;
-                        return (
-                          <div key={point.day} className="flex flex-1 flex-col items-center">
-                            <div className="flex w-full items-end gap-1" style={{ height: `${chartHeight}px` }}>
-                              <div
-                                className="w-1/2 rounded-t bg-blue-500/80"
-                                style={{ height: `${openedHeight}px` }}
-                                title={`Opened: ${point.opened}`}
-                              />
-                              <div
-                                className="w-1/2 rounded-t bg-emerald-500/80"
-                                style={{ height: `${resolvedHeight}px` }}
-                                title={`Resolved: ${point.resolved}`}
-                              />
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                      <div
-                        className="mt-2 grid text-[10px] text-gray-500 tabular-nums leading-none"
-                        style={{ gridTemplateColumns: `repeat(${analytics.trends.length}, minmax(0, 1fr))` }}
-                      >
-                        {analytics.trends.map((point, index) => (
-                          <span
-                            key={point.day}
-                            className={`whitespace-nowrap text-center ${
-                              index % labelStrideWide === 0 ? 'text-gray-500' : 'text-transparent'
-                            }`}
-                          >
-                            {point.day.slice(5).replace('-', '/')}
-                          </span>
-                        ))}
-                      </div>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between rounded-xl border border-gray-100 bg-white/70 p-4">
+                  <div>
+                    <p className="text-xs text-gray-500">Tickets created</p>
+                    <p className="mt-1 text-xl font-semibold text-gray-900">
+                      {analytics.comparison.total.current}
+                    </p>
                   </div>
-                ) : (
-                  <div className="flex h-44 items-center justify-center text-sm text-gray-500">
-                    No ticket activity in this range yet.
-                  </div>
-                )}
-                <div className="mt-3 flex items-center gap-4 text-xs text-gray-500">
-                  <span className="flex items-center gap-1">
-                    <span className="h-2 w-2 rounded-full bg-blue-500/80" />
-                    Opened
+                  <span className="text-sm font-semibold text-blue-600">
+                    {deltaLabel(
+                      analytics.comparison.total.current,
+                      analytics.comparison.total.previous
+                    )}
                   </span>
-                  <span className="flex items-center gap-1">
-                    <span className="h-2 w-2 rounded-full bg-emerald-500/80" />
-                    Resolved
+                </div>
+                <div className="flex items-center justify-between rounded-xl border border-gray-100 bg-white/70 p-4">
+                  <div>
+                    <p className="text-xs text-gray-500">Tickets resolved</p>
+                    <p className="mt-1 text-xl font-semibold text-gray-900">
+                      {analytics.comparison.resolved.current}
+                    </p>
+                  </div>
+                  <span className="text-sm font-semibold text-emerald-600">
+                    {deltaLabel(
+                      analytics.comparison.resolved.current,
+                      analytics.comparison.resolved.previous
+                    )}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between rounded-xl border border-gray-100 bg-white/70 p-4">
+                  <div>
+                    <p className="text-xs text-gray-500">SLA breaches</p>
+                    <p className="mt-1 text-xl font-semibold text-gray-900">
+                      {analytics.comparison.breached.current}
+                    </p>
+                  </div>
+                  <span className="text-sm font-semibold text-rose-600">
+                    {deltaLabel(
+                      analytics.comparison.breached.current,
+                      analytics.comparison.breached.previous
+                    )}
                   </span>
                 </div>
               </CardContent>
             </Card>
+
           </div>
 
-          {false && (
+          <div className="grid gap-4 lg:grid-cols-3">
+            <Card className="animate-in fade-in slide-in-from-bottom-2 lg:col-span-1">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <Clock className="h-4 w-4 text-blue-600" />
+                  MTTA / MTTR
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="rounded-xl border border-gray-100 bg-white/70 p-4">
+                  <p className="text-xs text-gray-500">Mean time to acknowledge</p>
+                  <p className="mt-2 text-2xl font-semibold text-gray-900">
+                    {formatDuration(analytics.metrics.avgMttaMinutes)}
+                  </p>
+                </div>
+                <div className="rounded-xl border border-gray-100 bg-white/70 p-4">
+                  <p className="text-xs text-gray-500">Mean time to resolve</p>
+                  <p className="mt-2 text-2xl font-semibold text-gray-900">
+                    {formatDuration(analytics.metrics.avgMttrMinutes)}
+                  </p>
+                </div>
+                <div className="text-xs text-gray-500">
+                  SLA clock pauses when tickets are waiting on requester.
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="animate-in fade-in slide-in-from-bottom-2 lg:col-span-2">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <CheckCircle className="h-4 w-4 text-green-600" />
+                  Tickets by status
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {Object.entries(analytics.breakdowns.byStatus).map(([status, count]) => (
+                  <div key={status} className="flex items-center justify-between gap-3">
+                    <Badge variant="outline" className="min-w-[140px] justify-center bg-white/70">
+                      {STATUS_LABELS[status as Status]}
+                    </Badge>
+                    <div className="flex flex-1 items-center gap-3">
+                      <div className="h-2 flex-1 rounded-full bg-gray-100">
+                        <div
+                          className="h-2 rounded-full bg-blue-600"
+                          style={{
+                            width: analytics.summary.total
+                              ? `${(count / analytics.summary.total) * 100}%`
+                              : '0%',
+                          }}
+                        />
+                      </div>
+                      <span className="w-10 text-right text-sm font-semibold text-gray-900">{count}</span>
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </div>
+
           <div className="grid gap-4 lg:grid-cols-2">
             <Card className="animate-in fade-in slide-in-from-bottom-2">
               <CardHeader>
@@ -1015,7 +928,7 @@ export default function AdminDashboardPage() {
                     >
                       <div>
                         <p className="text-sm font-medium text-gray-900">
-                          {row.agent} · {row.intent || 'unknown'} · {row.tool || 'unknown'}
+                          {row.agent} -+ {row.intent || 'unknown'} -+ {row.tool || 'unknown'}
                         </p>
                         <p className="text-xs text-gray-500">
                           {row.failures} failures out of {row.total}
@@ -1222,7 +1135,6 @@ export default function AdminDashboardPage() {
               )}
             </CardContent>
           </Card>
-          )}
         </>
       )}
     </div>
