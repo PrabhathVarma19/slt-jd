@@ -405,7 +405,7 @@ export default function AdminDashboardPage() {
   const categoryPreview = analytics
     ? Object.entries(analytics.breakdowns.byCategory)
         .sort((a, b) => b[1] - a[1])
-        .slice(0, 6)
+        .slice(0, 4)
     : [];
   const categoryList = analytics
     ? Object.entries(analytics.breakdowns.byCategory).sort((a, b) => b[1] - a[1])
