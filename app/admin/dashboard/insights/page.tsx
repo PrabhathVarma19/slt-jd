@@ -200,6 +200,9 @@ export default function AdminDashboardPage() {
   });
   const [showTicketModal, setShowTicketModal] = useState(false);
   const [showActivityModal, setShowActivityModal] = useState(false);
+  const [showLeaderboardModal, setShowLeaderboardModal] = useState(false);
+  const [showWorkloadModal, setShowWorkloadModal] = useState(false);
+  const [showFailuresModal, setShowFailuresModal] = useState(false);
   const [ticketModalFilters, setTicketModalFilters] = useState({
     range: '30d',
     start: '',
@@ -393,8 +396,11 @@ export default function AdminDashboardPage() {
     });
   }, [analytics, activityModalFilters]);
 
-  const ledgerPreview = analytics ? analytics.tickets.slice(0, 8) : [];
+  const ledgerPreview = analytics ? analytics.tickets.slice(0, 6) : [];
   const recentActivityPreview = analytics ? analytics.recentActivity.slice(0, 6) : [];
+  const leaderboardPreview = analytics ? analytics.leaderboard.slice(0, 6) : [];
+  const workloadPreview = analytics ? analytics.engineerWorkload.slice(0, 6) : [];
+  const failuresPreview = analytics ? analytics.topAgentFailures.slice(0, 6) : [];
 
   const handleExport = () => {
     if (!analytics) return;
@@ -721,7 +727,7 @@ export default function AdminDashboardPage() {
 
       {analytics && (
         <>
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-4 lg:grid-cols-3">
             <Card className="animate-in fade-in slide-in-from-bottom-2">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
@@ -755,7 +761,6 @@ export default function AdminDashboardPage() {
               </CardContent>
             </Card>
 
-
             <Card className="animate-in fade-in slide-in-from-bottom-2">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
@@ -772,9 +777,6 @@ export default function AdminDashboardPage() {
                 ))}
               </CardContent>
             </Card>
-          </div>
-
-          <div className="grid gap-4">
             <Card className="animate-in fade-in slide-in-from-bottom-2">
               <CardHeader>
                 <CardTitle className="text-lg">Momentum</CardTitle>
@@ -825,7 +827,6 @@ export default function AdminDashboardPage() {
                 </div>
               </CardContent>
             </Card>
-
           </div>
 
           <div className="grid gap-4 lg:grid-cols-3">
@@ -979,15 +980,22 @@ export default function AdminDashboardPage() {
             </Card>
 
             <Card className="animate-in fade-in slide-in-from-bottom-2">
-              <CardHeader>
-                <CardTitle className="text-lg">Engineer leaderboard</CardTitle>
-                <p className="text-sm text-gray-600">Top performers in this range.</p>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <div>
+                  <CardTitle className="text-lg">Engineer leaderboard</CardTitle>
+                  <p className="text-sm text-gray-600">Top performers in this range.</p>
+                </div>
+                {analytics.leaderboard.length > leaderboardPreview.length && (
+                  <Button variant="outline" onClick={() => setShowLeaderboardModal(true)}>
+                    View all
+                  </Button>
+                )}
               </CardHeader>
               <CardContent className="space-y-3">
                 {analytics.leaderboard.length === 0 ? (
                   <p className="text-sm text-gray-500">No assignments yet.</p>
                 ) : (
-                  analytics.leaderboard.map((engineer) => (
+                  leaderboardPreview.map((engineer) => (
                     <div
                       key={engineer.id}
                       className="flex items-center justify-between rounded-xl border border-gray-100 bg-white/70 p-3"
@@ -1010,22 +1018,29 @@ export default function AdminDashboardPage() {
 
           <div className="grid gap-4 lg:grid-cols-2">
             <Card className="animate-in fade-in slide-in-from-bottom-2">
-              <CardHeader>
-                <CardTitle className="text-lg">Top failing intents/tools</CardTitle>
-                <p className="text-sm text-gray-600">Based on agent rollups in range.</p>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <div>
+                  <CardTitle className="text-lg">Top failing intents/tools</CardTitle>
+                  <p className="text-sm text-gray-600">Based on agent rollups in range.</p>
+                </div>
+                {analytics.topAgentFailures.length > failuresPreview.length && (
+                  <Button variant="outline" onClick={() => setShowFailuresModal(true)}>
+                    View all
+                  </Button>
+                )}
               </CardHeader>
               <CardContent className="space-y-3">
                 {analytics.topAgentFailures.length === 0 ? (
                   <p className="text-sm text-gray-500">No failures recorded.</p>
                 ) : (
-                  analytics.topAgentFailures.map((row) => (
+                  failuresPreview.map((row) => (
                     <div
                       key={`${row.agent}-${row.intent}-${row.tool}`}
                       className="flex items-center justify-between gap-3 rounded-xl border border-gray-100 bg-white/70 p-3"
                     >
                       <div>
                         <p className="text-sm font-medium text-gray-900">
-                          {row.agent} -+ {row.intent || 'unknown'} -+ {row.tool || 'unknown'}
+                          {row.agent} · {row.intent || 'unknown'} · {row.tool || 'unknown'}
                         </p>
                         <p className="text-xs text-gray-500">
                           {row.failures} failures out of {row.total}
@@ -1041,15 +1056,22 @@ export default function AdminDashboardPage() {
             </Card>
 
             <Card className="animate-in fade-in slide-in-from-bottom-2">
-              <CardHeader>
-                <CardTitle className="text-lg">Engineer workload</CardTitle>
-                <p className="text-sm text-gray-600">Open vs resolved in range.</p>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <div>
+                  <CardTitle className="text-lg">Engineer workload</CardTitle>
+                  <p className="text-sm text-gray-600">Open vs resolved in range.</p>
+                </div>
+                {analytics.engineerWorkload.length > workloadPreview.length && (
+                  <Button variant="outline" onClick={() => setShowWorkloadModal(true)}>
+                    View all
+                  </Button>
+                )}
               </CardHeader>
               <CardContent className="space-y-3">
                 {analytics.engineerWorkload.length === 0 ? (
                   <p className="text-sm text-gray-500">No assignments yet.</p>
                 ) : (
-                  analytics.engineerWorkload.map((engineer) => (
+                  workloadPreview.map((engineer) => (
                     <div
                       key={engineer.id}
                       className="flex items-center justify-between rounded-xl border border-gray-100 bg-white/70 p-3"
@@ -1565,6 +1587,127 @@ export default function AdminDashboardPage() {
                         </p>
                       </div>
                       <span className="text-xs text-gray-400">{formatDate(activity.createdAt)}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showLeaderboardModal && analytics && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 px-4 py-6">
+          <div className="flex h-full w-full max-w-4xl flex-col overflow-hidden rounded-2xl bg-white shadow-xl">
+            <div className="flex items-center justify-between border-b border-gray-100 px-6 py-4">
+              <div>
+                <p className="text-sm text-gray-500">Engineer leaderboard</p>
+                <h2 className="text-lg font-semibold text-gray-900">All performers</h2>
+              </div>
+              <Button variant="outline" onClick={() => setShowLeaderboardModal(false)}>
+                Close
+              </Button>
+            </div>
+            <div className="flex-1 overflow-auto px-6 py-4">
+              {analytics.leaderboard.length === 0 ? (
+                <p className="text-sm text-gray-500">No assignments yet.</p>
+              ) : (
+                <div className="space-y-3">
+                  {analytics.leaderboard.map((engineer) => (
+                    <div
+                      key={engineer.id}
+                      className="flex items-center justify-between rounded-xl border border-gray-100 bg-white/70 p-3"
+                    >
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">{engineer.name}</p>
+                        <p className="text-xs text-gray-500">{engineer.email}</p>
+                      </div>
+                      <div className="text-right text-xs text-gray-600">
+                        <p>{engineer.resolved} resolved</p>
+                        <p>{formatDuration(engineer.avgResolutionMinutes)} avg</p>
+                        <p className="text-rose-600">{engineer.breached} breached</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showFailuresModal && analytics && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 px-4 py-6">
+          <div className="flex h-full w-full max-w-4xl flex-col overflow-hidden rounded-2xl bg-white shadow-xl">
+            <div className="flex items-center justify-between border-b border-gray-100 px-6 py-4">
+              <div>
+                <p className="text-sm text-gray-500">Agent reliability</p>
+                <h2 className="text-lg font-semibold text-gray-900">All failures</h2>
+              </div>
+              <Button variant="outline" onClick={() => setShowFailuresModal(false)}>
+                Close
+              </Button>
+            </div>
+            <div className="flex-1 overflow-auto px-6 py-4">
+              {analytics.topAgentFailures.length === 0 ? (
+                <p className="text-sm text-gray-500">No failures recorded.</p>
+              ) : (
+                <div className="space-y-3">
+                  {analytics.topAgentFailures.map((row) => (
+                    <div
+                      key={`${row.agent}-${row.intent}-${row.tool}`}
+                      className="flex items-center justify-between gap-3 rounded-xl border border-gray-100 bg-white/70 p-3"
+                    >
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">
+                          {row.agent} · {row.intent || 'unknown'} · {row.tool || 'unknown'}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          {row.failures} failures out of {row.total}
+                        </p>
+                      </div>
+                      <Badge variant="outline" className="bg-rose-50 text-rose-700">
+                        {row.failureRate}%
+                      </Badge>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showWorkloadModal && analytics && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 px-4 py-6">
+          <div className="flex h-full w-full max-w-4xl flex-col overflow-hidden rounded-2xl bg-white shadow-xl">
+            <div className="flex items-center justify-between border-b border-gray-100 px-6 py-4">
+              <div>
+                <p className="text-sm text-gray-500">Engineer workload</p>
+                <h2 className="text-lg font-semibold text-gray-900">Open vs resolved</h2>
+              </div>
+              <Button variant="outline" onClick={() => setShowWorkloadModal(false)}>
+                Close
+              </Button>
+            </div>
+            <div className="flex-1 overflow-auto px-6 py-4">
+              {analytics.engineerWorkload.length === 0 ? (
+                <p className="text-sm text-gray-500">No assignments yet.</p>
+              ) : (
+                <div className="space-y-3">
+                  {analytics.engineerWorkload.map((engineer) => (
+                    <div
+                      key={engineer.id}
+                      className="flex items-center justify-between rounded-xl border border-gray-100 bg-white/70 p-3"
+                    >
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">{engineer.name}</p>
+                        <p className="text-xs text-gray-500">{engineer.email}</p>
+                      </div>
+                      <div className="text-right text-xs text-gray-600">
+                        <p>{engineer.open} open</p>
+                        <p>{engineer.resolved} resolved</p>
+                      </div>
                     </div>
                   ))}
                 </div>
