@@ -198,6 +198,26 @@ export default function AdminDashboardPage() {
     engineerId: '',
     projectCode: '',
   });
+  const [showTicketModal, setShowTicketModal] = useState(false);
+  const [showActivityModal, setShowActivityModal] = useState(false);
+  const [ticketModalFilters, setTicketModalFilters] = useState({
+    range: '30d',
+    start: '',
+    end: '',
+    status: '',
+    priority: '',
+    category: '',
+    subcategory: '',
+    engineerId: '',
+    projectCode: '',
+  });
+  const [activityModalFilters, setActivityModalFilters] = useState({
+    range: '30d',
+    start: '',
+    end: '',
+    type: '',
+    user: '',
+  });
 
   useEffect(() => {
     const fetchEngineers = async () => {
@@ -298,6 +318,83 @@ export default function AdminDashboardPage() {
     const subcategories = analytics ? Object.keys(analytics.breakdowns.bySubcategory) : [];
     return subcategories.sort();
   }, [analytics]);
+  const activityTypeOptions = useMemo(() => {
+    const types = analytics ? analytics.recentActivity.map((item) => item.type) : [];
+    return Array.from(new Set(types)).sort();
+  }, [analytics]);
+  const activityUserOptions = useMemo(() => {
+    const users = analytics
+      ? analytics.recentActivity.map((item) => item.creatorName || item.creatorEmail)
+      : [];
+    return Array.from(new Set(users.filter(Boolean))).sort();
+  }, [analytics]);
+  const engineerEmailById = useMemo(() => {
+    const map = new Map<string, string>();
+    engineers.forEach((engineer) => {
+      if (engineer.id && engineer.email) {
+        map.set(engineer.id, engineer.email.toLowerCase());
+      }
+    });
+    return map;
+  }, [engineers]);
+
+  const resolveRange = (range: string, start: string, end: string) => {
+    const now = new Date();
+    const endDate = range === 'custom' && end ? new Date(end) : now;
+    const startDate =
+      range === 'custom' && start
+        ? new Date(start)
+        : new Date(now.getTime() - (range === '7d' ? 7 : 30) * 24 * 60 * 60 * 1000);
+    endDate.setHours(23, 59, 59, 999);
+    startDate.setHours(0, 0, 0, 0);
+    return { startDate, endDate };
+  };
+
+  const filteredLedgerTickets = useMemo(() => {
+    if (!analytics) return [];
+    const { range, start, end, status, priority, category, subcategory, engineerId, projectCode } =
+      ticketModalFilters;
+    const { startDate, endDate } = resolveRange(range, start, end);
+    const engineerEmail = engineerId ? engineerEmailById.get(engineerId) : '';
+    return analytics.tickets.filter((ticket) => {
+      const createdAt = new Date(ticket.createdAt);
+      if (createdAt < startDate || createdAt > endDate) return false;
+      if (status && ticket.status !== status) return false;
+      if (priority && ticket.priority !== priority) return false;
+      if (category && ticket.category !== category) return false;
+      if (subcategory && ticket.subcategory !== subcategory) return false;
+      if (projectCode && !ticket.projectCode?.toLowerCase().includes(projectCode.toLowerCase()))
+        return false;
+      if (
+        engineerEmail &&
+        ticket.assigneeEmail &&
+        ticket.assigneeEmail.toLowerCase() !== engineerEmail
+      )
+        return false;
+      return true;
+    });
+  }, [analytics, engineerEmailById, ticketModalFilters]);
+
+  const filteredActivity = useMemo(() => {
+    if (!analytics) return [];
+    const { range, start, end, type, user } = activityModalFilters;
+    const { startDate, endDate } = resolveRange(range, start, end);
+    return analytics.recentActivity.filter((activity) => {
+      const createdAt = new Date(activity.createdAt);
+      if (createdAt < startDate || createdAt > endDate) return false;
+      if (type && activity.type !== type) return false;
+      if (user) {
+        const target = user.toLowerCase();
+        const name = (activity.creatorName || '').toLowerCase();
+        const email = (activity.creatorEmail || '').toLowerCase();
+        if (!name.includes(target) && !email.includes(target)) return false;
+      }
+      return true;
+    });
+  }, [analytics, activityModalFilters]);
+
+  const ledgerPreview = analytics ? analytics.tickets.slice(0, 8) : [];
+  const recentActivityPreview = analytics ? analytics.recentActivity.slice(0, 6) : [];
 
   const handleExport = () => {
     if (!analytics) return;
@@ -979,10 +1076,15 @@ export default function AdminDashboardPage() {
                   <CardTitle className="text-lg">Ticket ledger</CardTitle>
                   <p className="text-sm text-gray-600">Current view of IT tickets and SLA health.</p>
                 </div>
-                <Button variant="outline" onClick={handleExport}>
-                  <Download className="mr-2 h-4 w-4" />
-                  Export CSV
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Button variant="outline" onClick={() => setShowTicketModal(true)}>
+                    View all
+                  </Button>
+                  <Button variant="outline" onClick={handleExport}>
+                    <Download className="mr-2 h-4 w-4" />
+                    Export CSV
+                  </Button>
+                </div>
               </CardHeader>
               <CardContent>
                 <div className="overflow-x-auto">
@@ -998,7 +1100,7 @@ export default function AdminDashboardPage() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
-                      {analytics.tickets.slice(0, 12).map((ticket) => (
+                      {ledgerPreview.map((ticket) => (
                         <tr key={ticket.id} className="hover:bg-white/70">
                           <td className="py-3 pr-4">
                             <p className="font-semibold text-gray-900">{ticket.ticketNumber}</p>
@@ -1109,15 +1211,18 @@ export default function AdminDashboardPage() {
           </div>
 
           <Card className="animate-in fade-in slide-in-from-bottom-2">
-            <CardHeader>
+            <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="text-lg">Recent activity</CardTitle>
+              <Button variant="outline" onClick={() => setShowActivityModal(true)}>
+                View all
+              </Button>
             </CardHeader>
             <CardContent>
-              {analytics.recentActivity.length === 0 ? (
+              {recentActivityPreview.length === 0 ? (
                 <p className="text-sm text-gray-500">No recent activity.</p>
               ) : (
                 <div className="space-y-3">
-                  {analytics.recentActivity.map((activity) => (
+                  {recentActivityPreview.map((activity) => (
                     <div key={activity.id} className="flex items-start justify-between gap-3">
                       <div>
                         <p className="text-sm font-medium text-gray-900">
@@ -1136,6 +1241,337 @@ export default function AdminDashboardPage() {
             </CardContent>
           </Card>
         </>
+      )}
+
+      {showTicketModal && analytics && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 px-4 py-6">
+          <div className="flex h-full w-full max-w-6xl flex-col overflow-hidden rounded-2xl bg-white shadow-xl">
+            <div className="flex items-center justify-between border-b border-gray-100 px-6 py-4">
+              <div>
+                <p className="text-sm text-gray-500">Ticket ledger</p>
+                <h2 className="text-lg font-semibold text-gray-900">All tickets</h2>
+              </div>
+              <Button variant="outline" onClick={() => setShowTicketModal(false)}>
+                Close
+              </Button>
+            </div>
+            <div className="border-b border-gray-100 px-6 py-4">
+              <div className="grid gap-3 md:grid-cols-3 lg:grid-cols-4">
+                <label className="space-y-1 text-sm text-gray-600">
+                  Date range
+                  <select
+                    className="w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900"
+                    value={ticketModalFilters.range}
+                    onChange={(e) =>
+                      setTicketModalFilters({ ...ticketModalFilters, range: e.target.value })
+                    }
+                  >
+                    <option value="7d">Last 7 days</option>
+                    <option value="30d">Last 30 days</option>
+                    <option value="custom">Custom</option>
+                  </select>
+                </label>
+                {ticketModalFilters.range === 'custom' && (
+                  <>
+                    <label className="space-y-1 text-sm text-gray-600">
+                      Start date
+                      <input
+                        type="date"
+                        className="w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900"
+                        value={ticketModalFilters.start}
+                        onChange={(e) =>
+                          setTicketModalFilters({ ...ticketModalFilters, start: e.target.value })
+                        }
+                      />
+                    </label>
+                    <label className="space-y-1 text-sm text-gray-600">
+                      End date
+                      <input
+                        type="date"
+                        className="w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900"
+                        value={ticketModalFilters.end}
+                        onChange={(e) =>
+                          setTicketModalFilters({ ...ticketModalFilters, end: e.target.value })
+                        }
+                      />
+                    </label>
+                  </>
+                )}
+                <label className="space-y-1 text-sm text-gray-600">
+                  Status
+                  <select
+                    className="w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900"
+                    value={ticketModalFilters.status}
+                    onChange={(e) =>
+                      setTicketModalFilters({ ...ticketModalFilters, status: e.target.value })
+                    }
+                  >
+                    <option value="">All statuses</option>
+                    {Object.entries(STATUS_LABELS).map(([value, label]) => (
+                      <option key={value} value={value}>
+                        {label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="space-y-1 text-sm text-gray-600">
+                  Priority
+                  <select
+                    className="w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900"
+                    value={ticketModalFilters.priority}
+                    onChange={(e) =>
+                      setTicketModalFilters({ ...ticketModalFilters, priority: e.target.value })
+                    }
+                  >
+                    <option value="">All priorities</option>
+                    {Object.entries(PRIORITY_LABELS).map(([value, label]) => (
+                      <option key={value} value={value}>
+                        {label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="space-y-1 text-sm text-gray-600">
+                  Category
+                  <select
+                    className="w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900"
+                    value={ticketModalFilters.category}
+                    onChange={(e) =>
+                      setTicketModalFilters({ ...ticketModalFilters, category: e.target.value })
+                    }
+                  >
+                    <option value="">All categories</option>
+                    {categoryOptions.map((category) => (
+                      <option key={category} value={category}>
+                        {category}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="space-y-1 text-sm text-gray-600">
+                  Subcategory
+                  <select
+                    className="w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900"
+                    value={ticketModalFilters.subcategory}
+                    onChange={(e) =>
+                      setTicketModalFilters({ ...ticketModalFilters, subcategory: e.target.value })
+                    }
+                  >
+                    <option value="">All subcategories</option>
+                    {subcategoryOptions.map((subcategory) => (
+                      <option key={subcategory} value={subcategory}>
+                        {subcategory}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="space-y-1 text-sm text-gray-600">
+                  Engineer
+                  <select
+                    className="w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900"
+                    value={ticketModalFilters.engineerId}
+                    onChange={(e) =>
+                      setTicketModalFilters({ ...ticketModalFilters, engineerId: e.target.value })
+                    }
+                  >
+                    <option value="">All engineers</option>
+                    {engineers.map((engineer) => (
+                      <option key={engineer.id} value={engineer.id}>
+                        {engineer.name || engineer.email}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="space-y-1 text-sm text-gray-600">
+                  Project code
+                  <input
+                    type="text"
+                    className="w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900"
+                    value={ticketModalFilters.projectCode}
+                    onChange={(e) =>
+                      setTicketModalFilters({ ...ticketModalFilters, projectCode: e.target.value })
+                    }
+                    placeholder="IT-Project-01"
+                  />
+                </label>
+              </div>
+            </div>
+            <div className="flex-1 overflow-auto px-6 py-4">
+              <div className="mb-3 text-sm text-gray-500">
+                Showing {filteredLedgerTickets.length} tickets
+              </div>
+              <div className="overflow-x-auto">
+                <table className="min-w-full text-left text-sm">
+                  <thead className="text-xs uppercase text-gray-500">
+                    <tr>
+                      <th className="py-2 pr-4">Ticket</th>
+                      <th className="py-2 pr-4">Status</th>
+                      <th className="py-2 pr-4">Priority</th>
+                      <th className="py-2 pr-4">Requester</th>
+                      <th className="py-2 pr-4">Assignee</th>
+                      <th className="py-2 pr-4">SLA</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {filteredLedgerTickets.map((ticket) => (
+                      <tr key={ticket.id} className="hover:bg-white/70">
+                        <td className="py-3 pr-4">
+                          <p className="font-semibold text-gray-900">{ticket.ticketNumber}</p>
+                          <p className="text-xs text-gray-500">{ticket.title}</p>
+                        </td>
+                        <td className="py-3 pr-4 text-sm text-gray-700">
+                          {STATUS_LABELS[ticket.status]}
+                        </td>
+                        <td className="py-3 pr-4 text-sm text-gray-700">
+                          {PRIORITY_LABELS[ticket.priority]}
+                        </td>
+                        <td className="py-3 pr-4 text-sm text-gray-700">
+                          {ticket.requesterName}
+                          <p className="text-xs text-gray-400">{ticket.requesterEmail}</p>
+                        </td>
+                        <td className="py-3 pr-4 text-sm text-gray-700">{ticket.assigneeName}</td>
+                        <td className="py-3 pr-4 text-sm">
+                          <span
+                            className={`rounded-full px-2 py-1 text-xs font-medium ${
+                              ticket.slaBreached
+                                ? 'bg-red-100 text-red-700'
+                                : 'bg-green-100 text-green-700'
+                            }`}
+                          >
+                            {formatDuration(ticket.slaElapsedMinutes)} /{' '}
+                            {formatDuration(ticket.slaTargetMinutes)}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showActivityModal && analytics && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 px-4 py-6">
+          <div className="flex h-full w-full max-w-5xl flex-col overflow-hidden rounded-2xl bg-white shadow-xl">
+            <div className="flex items-center justify-between border-b border-gray-100 px-6 py-4">
+              <div>
+                <p className="text-sm text-gray-500">Recent activity</p>
+                <h2 className="text-lg font-semibold text-gray-900">All activity</h2>
+              </div>
+              <Button variant="outline" onClick={() => setShowActivityModal(false)}>
+                Close
+              </Button>
+            </div>
+            <div className="border-b border-gray-100 px-6 py-4">
+              <div className="grid gap-3 md:grid-cols-3">
+                <label className="space-y-1 text-sm text-gray-600">
+                  Date range
+                  <select
+                    className="w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900"
+                    value={activityModalFilters.range}
+                    onChange={(e) =>
+                      setActivityModalFilters({ ...activityModalFilters, range: e.target.value })
+                    }
+                  >
+                    <option value="7d">Last 7 days</option>
+                    <option value="30d">Last 30 days</option>
+                    <option value="custom">Custom</option>
+                  </select>
+                </label>
+                {activityModalFilters.range === 'custom' && (
+                  <>
+                    <label className="space-y-1 text-sm text-gray-600">
+                      Start date
+                      <input
+                        type="date"
+                        className="w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900"
+                        value={activityModalFilters.start}
+                        onChange={(e) =>
+                          setActivityModalFilters({ ...activityModalFilters, start: e.target.value })
+                        }
+                      />
+                    </label>
+                    <label className="space-y-1 text-sm text-gray-600">
+                      End date
+                      <input
+                        type="date"
+                        className="w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900"
+                        value={activityModalFilters.end}
+                        onChange={(e) =>
+                          setActivityModalFilters({ ...activityModalFilters, end: e.target.value })
+                        }
+                      />
+                    </label>
+                  </>
+                )}
+                <label className="space-y-1 text-sm text-gray-600">
+                  Activity type
+                  <select
+                    className="w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900"
+                    value={activityModalFilters.type}
+                    onChange={(e) =>
+                      setActivityModalFilters({ ...activityModalFilters, type: e.target.value })
+                    }
+                  >
+                    <option value="">All types</option>
+                    {activityTypeOptions.map((type) => (
+                      <option key={type} value={type}>
+                        {type}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="space-y-1 text-sm text-gray-600">
+                  User
+                  <select
+                    className="w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900"
+                    value={activityModalFilters.user}
+                    onChange={(e) =>
+                      setActivityModalFilters({ ...activityModalFilters, user: e.target.value })
+                    }
+                  >
+                    <option value="">All users</option>
+                    {activityUserOptions.map((user) => (
+                      <option key={user} value={user}>
+                        {user}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+            </div>
+            <div className="flex-1 overflow-auto px-6 py-4">
+              <div className="mb-3 text-sm text-gray-500">
+                Showing {filteredActivity.length} activities
+              </div>
+              {filteredActivity.length === 0 ? (
+                <p className="text-sm text-gray-500">No activity in this range.</p>
+              ) : (
+                <div className="space-y-3">
+                  {filteredActivity.map((activity) => (
+                    <div
+                      key={activity.id}
+                      className="flex items-start justify-between gap-4 rounded-xl border border-gray-100 bg-white/70 p-3"
+                    >
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">
+                          {activity.ticketNumber}{' '}
+                          {activity.ticketTitle ? `- ${activity.ticketTitle}` : ''}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          {activity.type} · {activity.creatorName || activity.creatorEmail}
+                        </p>
+                      </div>
+                      <span className="text-xs text-gray-400">{formatDate(activity.createdAt)}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
