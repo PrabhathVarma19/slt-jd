@@ -89,7 +89,6 @@ export async function generatePptx(slides: Slide[], filename: string): Promise<A
         bullet: {
           type: 'number',
           code: '1.',
-          color: TRIANZ_COLORS.primary,
         },
         lineSpacing: 28,
       });
