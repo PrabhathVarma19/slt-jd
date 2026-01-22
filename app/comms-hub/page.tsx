@@ -116,6 +116,7 @@ export default function CommsHubPage() {
   const [agentOutput, setAgentOutput] = useState<CommsAgentResponse | null>(null);
   const [agentLoading, setAgentLoading] = useState(false);
   const [agentError, setAgentError] = useState<string | null>(null);
+  const [activePanel, setActivePanel] = useState<'agent' | 'builder'>('agent');
 
   const toggleSection = (section: string) => {
     setSections((prev) =>
@@ -232,7 +233,8 @@ export default function CommsHubPage() {
           <p className="text-sm text-gray-600">
             Paste your updates, pick mode and audience, and get HTML + text outputs ready to send.
           </p>
-        </div>
+          </div>
+        )}
       </div>
 
       <div className="space-y-6">
@@ -244,7 +246,24 @@ export default function CommsHubPage() {
             ← Back to Home
           </Link>
         </div>
-        <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm space-y-6">
+        <div className="flex flex-wrap items-center gap-2">
+          <Button
+            variant={activePanel === 'agent' ? 'primary' : 'secondary'}
+            size="sm"
+            onClick={() => setActivePanel('agent')}
+          >
+            Comms Agent
+          </Button>
+          <Button
+            variant={activePanel === 'builder' ? 'primary' : 'secondary'}
+            size="sm"
+            onClick={() => setActivePanel('builder')}
+          >
+            Comms Builder
+          </Button>
+        </div>
+        {activePanel === 'agent' && (
+          <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm space-y-6">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div>
               <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Comms Agent</p>
@@ -416,8 +435,10 @@ export default function CommsHubPage() {
               )}
             </div>
           )}
-        </div>
-        <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm space-y-6">
+          </div>
+        )}
+        {activePanel === 'builder' && (
+          <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm space-y-6">
           {error && (
             <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
               {error}
