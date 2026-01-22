@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { Avatar } from '@/components/ui/avatar';
@@ -61,6 +62,7 @@ export function UserMenu() {
   const [user, setUser] = useState<UserData | null>(cachedUser);
   const [loading, setLoading] = useState(!cachedUser);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [portalReady, setPortalReady] = useState(false);
 
   // Fetch session from API and update state
   const fetchSession = async (showLoading = false): Promise<void> => {
@@ -121,6 +123,10 @@ export function UserMenu() {
   useEffect(() => {
     fetchSession();
   }, []); // Only run once on mount
+
+  useEffect(() => {
+    setPortalReady(true);
+  }, []);
 
   // Listen for login success event
   useEffect(() => {
@@ -211,16 +217,18 @@ export function UserMenu() {
     );
   }
 
-  if (isLoggingOut) {
-    return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40">
-        <div className="flex items-center gap-2 rounded-xl bg-white px-4 py-3 text-sm text-gray-700 shadow-lg">
-          <Spinner className="h-4 w-4" />
-          Signing out...
-        </div>
-      </div>
-    );
-  }
+  const logoutOverlay =
+    isLoggingOut && portalReady
+      ? createPortal(
+          <div className="fixed inset-0 z-[999] flex items-center justify-center bg-slate-900/40">
+            <div className="flex items-center gap-2 rounded-xl bg-white px-4 py-3 text-sm text-gray-700 shadow-lg">
+              <Spinner className="h-4 w-4" />
+              Signing out...
+            </div>
+          </div>,
+          document.body
+        )
+      : null;
 
   // Show sign in button if no user
   if (!user) {
@@ -242,6 +250,7 @@ export function UserMenu() {
 
   return (
     <div className="transition-all duration-300 ease-in-out">
+      {logoutOverlay}
       <DropdownMenu
         trigger={
           <div className="transition-transform duration-200 hover:scale-110 cursor-pointer">
