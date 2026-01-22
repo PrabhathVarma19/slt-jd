@@ -620,6 +620,62 @@ ${headerInstruction}
           result.text_body = stripHeadingsFromText(result.text_body);
           result.html_body = stripHeadingsFromHtml(result.html_body);
         }
+        if (include_links === false) {
+          const stripLinksFromText = (value: string) => {
+            if (!value) return value;
+            const lines = value.split(/\r?\n/);
+            const filtered = lines.filter((line) => {
+              const trimmed = line.trim();
+              if (!trimmed) return true;
+              if (/^links?\s*\/?\s*resources?\b[:\-]*/i.test(trimmed)) return false;
+              return !/https?:\/\//i.test(trimmed);
+            });
+            return filtered.join('\n');
+          };
+          const stripLinksFromHtml = (value: string) => {
+            if (!value) return value;
+            let cleaned = value;
+            cleaned = cleaned.replace(/<a\s+[^>]*>.*?<\/a>/gi, '');
+            cleaned = cleaned.replace(/<p><strong>Links\s*\/\s*Resources<\/strong><\/p>\s*<ul>[\s\S]*?<\/ul>/gi, '');
+            cleaned = cleaned.replace(/<ul>\s*<\/ul>/gi, '');
+            return cleaned;
+          };
+          const stripLinksFromBody = (value: string) => {
+            if (!value) return value;
+            return value
+              .split(/\r?\n/)
+              .filter((line) => !/https?:\/\//i.test(line))
+              .join('\n');
+          };
+
+          result.sections = result.sections.map((s: any) => ({
+            ...s,
+            body: stripLinksFromBody(s.body || ''),
+          }));
+          result.text_body = stripLinksFromText(result.text_body);
+          result.html_body = stripLinksFromHtml(result.html_body);
+        }
+        if (include_deltas === false) {
+          const deltaLine = /^(new|ongoing|resolved|unchanged|no\s+change|delta|changes?)\b[:\-]/i;
+          const stripDeltaLines = (value: string) => {
+            if (!value) return value;
+            return value
+              .split(/\r?\n/)
+              .filter((line) => !deltaLine.test(line.trim()))
+              .join('\n');
+          };
+          const stripDeltaFromHtml = (value: string) => {
+            if (!value) return value;
+            return value.replace(/<(p|li)>\s*(new|ongoing|resolved|unchanged|no\s+change|delta|changes?)\b[^<]*<\/(p|li)>/gi, '');
+          };
+
+          result.sections = result.sections.map((s: any) => ({
+            ...s,
+            body: stripDeltaLines(s.body || ''),
+          }));
+          result.text_body = stripDeltaLines(result.text_body);
+          result.html_body = stripDeltaFromHtml(result.html_body);
+        }
         if (links && include_links !== false) {
           const linkLines = links.split('\n').map((l: string) => l.trim()).filter(Boolean);
           if (linkLines.length > 0) {
