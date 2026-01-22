@@ -120,6 +120,98 @@ export function generateHtmlPreview(slides: Slide[], filename: string): string {
     .slide-content-slide {
       counter-reset: slide-counter;
     }
+    .slide-quote {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .slide-quote::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 50px;
+      background: ${TRIANZ_COLORS.primary};
+    }
+    .quote-content {
+      max-width: 800px;
+    }
+    .quote-text {
+      font-size: 32px;
+      color: ${TRIANZ_COLORS.heading};
+      font-style: italic;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+    .quote-attribution {
+      font-size: 20px;
+      color: ${TRIANZ_COLORS.secondaryGrey};
+      text-align: right;
+    }
+    .two-column-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 1.5rem;
+    }
+    .column ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    .column li {
+      font-size: 16px;
+      color: ${TRIANZ_COLORS.body};
+      margin-bottom: 0.75rem;
+      padding-left: 1.5rem;
+      position: relative;
+      line-height: 1.5;
+    }
+    .column li::before {
+      content: counter(column-counter) '.';
+      counter-increment: column-counter;
+      position: absolute;
+      left: 0;
+      color: ${TRIANZ_COLORS.primary};
+      font-weight: bold;
+    }
+    .left-column {
+      counter-reset: column-counter;
+    }
+    .right-column {
+      counter-reset: column-counter;
+    }
+    .slide-section-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: ${TRIANZ_COLORS.secondary};
+    }
+    .slide-section-divider::before {
+      display: none;
+    }
+    .section-title {
+      font-size: 44px;
+      color: ${TRIANZ_COLORS.background};
+      font-weight: bold;
+      text-align: center;
+    }
+    .slide-title.highlight-title {
+      font-size: 48px;
+      text-align: center;
+      color: ${TRIANZ_COLORS.primary};
+    }
+    .slide-title::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 100px;
+      background: ${TRIANZ_COLORS.primary};
+    }
     .controls {
       display: flex;
       justify-content: space-between;
@@ -155,10 +247,62 @@ export function generateHtmlPreview(slides: Slide[], filename: string): string {
   <div class="slide-container">
     ${allSlides.map((slide, index) => {
       const isTitleSlide = index === 0;
-      const slideClass = isTitleSlide ? 'slide slide-title-slide' : 'slide slide-content-slide';
+      const slideType = slide.type || (isTitleSlide ? 'title' : 'content');
+      const slideClass = `slide slide-${slideType} ${index === 0 ? 'active' : ''}`;
+      
+      // Render based on slide type
+      if (slideType === 'quote') {
+        return `
+          <div class="${slideClass}" data-slide-index="${index}">
+            <div class="quote-content">
+              <div class="quote-text">"${escapeHtml(slide.quote || slide.title)}"</div>
+              ${slide.attribution ? `<div class="quote-attribution">— ${escapeHtml(slide.attribution)}</div>` : ''}
+            </div>
+          </div>
+        `;
+      }
+      
+      if (slideType === 'two-column') {
+        const leftCount = slide.leftContent?.length || 0;
+        return `
+          <div class="${slideClass}" data-slide-index="${index}">
+            ${slide.title ? `<h1>${escapeHtml(slide.title)}</h1>` : ''}
+            <div class="two-column-content">
+              <div class="column left-column">
+                <ul>
+                  ${(slide.leftContent || []).map(item => `<li>${escapeHtml(item)}</li>`).join('')}
+                </ul>
+              </div>
+              <div class="column right-column" style="counter-reset: column-counter ${leftCount};">
+                <ul>
+                  ${(slide.rightContent || []).map(item => `<li>${escapeHtml(item)}</li>`).join('')}
+                </ul>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+      
+      if (slideType === 'section-divider') {
+        return `
+          <div class="${slideClass}" data-slide-index="${index}">
+            <h1 class="section-title">${escapeHtml(slide.title)}</h1>
+          </div>
+        `;
+      }
+      
+      if (slideType === 'title' && slide.highlight) {
+        return `
+          <div class="${slideClass}" data-slide-index="${index}">
+            <h1 class="highlight-title">${escapeHtml(slide.title)}</h1>
+          </div>
+        `;
+      }
+      
+      // Default content slide
       return `
-        <div class="${slideClass} ${index === 0 ? 'active' : ''}" data-slide-index="${index}">
-          <h1>${escapeHtml(slide.title)}</h1>
+        <div class="${slideClass}" data-slide-index="${index}">
+          ${slide.title ? `<h1>${escapeHtml(slide.title)}</h1>` : ''}
           ${slide.content && slide.content.length > 0 ? `
             <ul>
               ${slide.content.map(item => `<li>${escapeHtml(item)}</li>`).join('')}

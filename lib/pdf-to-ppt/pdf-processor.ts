@@ -1,14 +1,91 @@
 import { Slide } from '@/types/pdf-to-ppt';
 
 export async function extractTextFromPdf(pdfBuffer: Buffer): Promise<string> {
+  // #region agent log
+  fetch('http://127.0.0.1:7243/ingest/7f74fb16-5e81-4704-9c2c-1a3dd73f3bf3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'pdf-processor.ts:3',message:'extractTextFromPdf entry',data:{bufferSize:pdfBuffer.length,bufferStart:Array.from(pdfBuffer.slice(0,20)).map(b=>b.toString(16).padStart(2,'0')).join(' '),isValidPdfHeader:pdfBuffer.slice(0,4).toString()==='%PDF'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+  // #endregion
   try {
     // Dynamic import to avoid build-time issues with pdf-parse test files
+    // #region agent log
+    fetch('http://127.0.0.1:7243/ingest/7f74fb16-5e81-4704-9c2c-1a3dd73f3bf3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'pdf-processor.ts:6',message:'Before dynamic import',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'F'})}).catch(()=>{});
+    // #endregion
     const pdfParse = (await import('pdf-parse')).default;
+    // #region agent log
+    fetch('http://127.0.0.1:7243/ingest/7f74fb16-5e81-4704-9c2c-1a3dd73f3bf3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'pdf-processor.ts:7',message:'After dynamic import',data:{pdfParseExists:!!pdfParse},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'F'})}).catch(()=>{});
+    // #endregion
+    // #region agent log
+    fetch('http://127.0.0.1:7243/ingest/7f74fb16-5e81-4704-9c2c-1a3dd73f3bf3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'pdf-processor.ts:8',message:'Before pdfParse call',data:{bufferSize:pdfBuffer.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+    // #endregion
     const data = await pdfParse(pdfBuffer);
+    // #region agent log
+    fetch('http://127.0.0.1:7243/ingest/7f74fb16-5e81-4704-9c2c-1a3dd73f3bf3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'pdf-processor.ts:9',message:'After pdfParse call',data:{textLength:data?.text?.length||0,hasText:!!data?.text,textPreview:data?.text?.substring(0,100)||''},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
+    // #endregion
     return data.text || '';
-  } catch (error) {
-    throw new Error('Failed to extract text from PDF. Please ensure the file is a valid PDF.');
+  } catch (error: any) {
+    // #region agent log
+    fetch('http://127.0.0.1:7243/ingest/7f74fb16-5e81-4704-9c2c-1a3dd73f3bf3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'pdf-processor.ts:10',message:'Error caught',data:{errorMessage:error?.message||'unknown',errorName:error?.name||'unknown',errorStack:error?.stack?.substring(0,200)||'',isEncrypted:error?.message?.toLowerCase().includes('password')||error?.message?.toLowerCase().includes('encrypted')||false,isTestFileError:error?.message?.includes('test')||error?.message?.includes('ENOENT')||false},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B,C'})}).catch(()=>{});
+    // #endregion
+    
+    // Handle pdf-parse internal test file access errors
+    // pdf-parse sometimes tries to access test files during initialization
+    if (error?.message?.includes('ENOENT') && error?.message?.includes('test')) {
+      // Retry: re-import and parse (sometimes works after module initialization completes)
+      try {
+        const pdfParse = (await import('pdf-parse')).default;
+        const data = await pdfParse(pdfBuffer);
+        // #region agent log
+        fetch('http://127.0.0.1:7243/ingest/7f74fb16-5e81-4704-9c2c-1a3dd73f3bf3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'pdf-processor.ts:34',message:'Retry successful after test file error',data:{textLength:data?.text?.length||0},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'F'})}).catch(()=>{});
+        // #endregion
+        return data.text || '';
+      } catch (retryError: any) {
+        // If retry also fails, provide helpful error message
+        throw new Error(`PDF parsing failed due to library initialization issue. Please try uploading the file again, or ensure the PDF is not corrupted. Original error: ${retryError.message || error.message}`);
+      }
+    }
+    
+    // Handle other errors
+    const errorMsg = error?.message || 'Unknown error';
+    if (errorMsg.toLowerCase().includes('password') || errorMsg.toLowerCase().includes('encrypted')) {
+      throw new Error('PDF is password-protected or encrypted. Please provide an unencrypted PDF.');
+    }
+    
+    throw new Error(`Failed to extract text from PDF: ${errorMsg}. Please ensure the file is a valid, unencrypted PDF.`);
   }
+}
+
+// Helper functions for content analysis
+function isQuote(text: string): boolean {
+  return (text.startsWith('"') && text.endsWith('"')) || 
+         (text.startsWith("'") && text.endsWith("'")) ||
+         text.match(/^["'].*["']$/);
+}
+
+function isSectionHeader(text: string): boolean {
+  const trimmed = text.trim();
+  return trimmed.length < 60 && (
+    trimmed.endsWith(':') ||
+    trimmed === trimmed.toUpperCase() ||
+    /^(Chapter|Section|Part|Module)\s+\d+/i.test(trimmed)
+  );
+}
+
+function extractQuote(text: string): { quote: string; attribution?: string } | null {
+  const quoteMatch = text.match(/["']([^"']+)["']\s*(?:[-–—]\s*(.+))?/);
+  if (quoteMatch) {
+    return {
+      quote: quoteMatch[1],
+      attribution: quoteMatch[2]?.trim()
+    };
+  }
+  return null;
+}
+
+function splitIntoColumns(items: string[]): { left: string[]; right: string[] } {
+  const mid = Math.ceil(items.length / 2);
+  return {
+    left: items.slice(0, mid),
+    right: items.slice(mid)
+  };
 }
 
 export function splitTextIntoSlides(text: string, filename: string): Slide[] {
@@ -32,33 +109,83 @@ export function splitTextIntoSlides(text: string, filename: string): Slide[] {
     // Fallback: split by single newlines if no paragraphs found
     const lines = cleanedText.split('\n').filter(line => line.trim().length > 0);
     if (lines.length > 0) {
-      // Create slides from lines, grouping them
-      const linesPerSlide = Math.max(3, Math.ceil(lines.length / 10)); // Aim for ~10 slides
-      for (let i = 0; i < lines.length; i += linesPerSlide) {
-        const slideLines = lines.slice(i, i + linesPerSlide);
-        const title = slideLines[0]?.trim() || `Slide ${slides.length + 1}`;
-        const content = slideLines.slice(1).map(line => line.trim()).filter(Boolean);
-        slides.push({ title, content: content.length > 0 ? content : [slideLines[0]?.trim() || ''] });
-      }
+      createSlidesFromLines(lines, slides, filename);
     }
   } else {
-    // Process sections into slides
+    // Process sections intelligently
     for (let i = 0; i < sections.length; i++) {
       const section = sections[i].trim();
       const lines = section.split('\n').map(line => line.trim()).filter(Boolean);
       
       if (lines.length === 0) continue;
 
-      // First line as title, rest as content
-      const title = lines[0];
-      const content = lines.slice(1);
+      const firstLine = lines[0];
+      const restLines = lines.slice(1);
 
-      // If content is empty, use the title line as content
-      if (content.length === 0) {
-        slides.push({ title, content: [title] });
-      } else {
-        slides.push({ title, content });
+      // Detect quote slides
+      if (isQuote(firstLine) || (restLines.length === 0 && isQuote(section))) {
+        const quoteData = extractQuote(section) || { quote: firstLine };
+        slides.push({
+          title: '',
+          content: [],
+          type: 'quote',
+          quote: quoteData.quote,
+          attribution: quoteData.attribution
+        });
+        continue;
       }
+
+      // Detect section dividers (short headers)
+      if (isSectionHeader(firstLine) && restLines.length === 0) {
+        slides.push({
+          title: firstLine.replace(/:$/, ''),
+          content: [],
+          type: 'section-divider'
+        });
+        continue;
+      }
+
+      // Title-only slides for very short sections or important headers
+      if (restLines.length === 0 && firstLine.length < 80) {
+        slides.push({
+          title: firstLine,
+          content: [],
+          type: 'title',
+          highlight: firstLine.length < 40
+        });
+        continue;
+      }
+
+      // Two-column layout for longer lists (6+ items)
+      if (restLines.length >= 6 && restLines.every(line => line.length < 100)) {
+        const columns = splitIntoColumns(restLines);
+        slides.push({
+          title: firstLine,
+          content: restLines,
+          type: 'two-column',
+          leftContent: columns.left,
+          rightContent: columns.right
+        });
+        continue;
+      }
+
+      // Highlight slides for important content (short title, medium content)
+      if (firstLine.length < 50 && restLines.length >= 2 && restLines.length <= 5) {
+        slides.push({
+          title: firstLine,
+          content: restLines,
+          type: 'highlight',
+          highlight: true
+        });
+        continue;
+      }
+
+      // Standard content slide
+      slides.push({
+        title: firstLine,
+        content: restLines.length > 0 ? restLines : [firstLine],
+        type: 'content'
+      });
     }
   }
 
@@ -67,6 +194,7 @@ export function splitTextIntoSlides(text: string, filename: string): Slide[] {
     slides.push({
       title: filename.replace(/\.pdf$/i, ''),
       content: [cleanedText.substring(0, 500)],
+      type: 'content'
     });
   }
 
@@ -76,6 +204,63 @@ export function splitTextIntoSlides(text: string, filename: string): Slide[] {
   }
 
   return slides;
+}
+
+function createSlidesFromLines(lines: string[], slides: Slide[], filename: string) {
+  // Group lines intelligently
+  let currentGroup: string[] = [];
+  
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    
+    // Start new group on section headers or after 5 lines
+    if (isSectionHeader(line) || (currentGroup.length >= 5 && line.length < 60)) {
+      if (currentGroup.length > 0) {
+        addGroupAsSlide(currentGroup, slides);
+        currentGroup = [];
+      }
+      if (isSectionHeader(line)) {
+        slides.push({
+          title: line.replace(/:$/, ''),
+          content: [],
+          type: 'section-divider'
+        });
+        continue;
+      }
+    }
+    
+    currentGroup.push(line);
+  }
+  
+  // Add remaining group
+  if (currentGroup.length > 0) {
+    addGroupAsSlide(currentGroup, slides);
+  }
+}
+
+function addGroupAsSlide(group: string[], slides: Slide[]) {
+  if (group.length === 0) return;
+  
+  const title = group[0];
+  const content = group.slice(1);
+  
+  // Two-column for longer groups
+  if (group.length >= 6) {
+    const columns = splitIntoColumns(group.slice(1));
+    slides.push({
+      title,
+      content: group.slice(1),
+      type: 'two-column',
+      leftContent: columns.left,
+      rightContent: columns.right
+    });
+  } else {
+    slides.push({
+      title,
+      content: content.length > 0 ? content : [title],
+      type: 'content'
+    });
+  }
 }
 
 export async function processPdf(pdfBuffer: Buffer, filename: string): Promise<Slide[]> {
