@@ -12,9 +12,10 @@ const TRIANZ_COLORS = {
 };
 
 export function generateHtmlPreview(slides: Slide[], filename: string): string {
-  const titleSlide = {
+  const titleSlide: Slide = {
     title: filename.replace(/\.pdf$/i, ''),
     content: [],
+    type: 'title',
   };
 
   const allSlides = [titleSlide, ...slides];

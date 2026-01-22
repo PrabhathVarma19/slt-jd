@@ -6,9 +6,15 @@ import { generateHtmlPreview } from '@/lib/pdf-to-ppt/html-generator';
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
 export async function POST(req: NextRequest) {
+  // #region agent log
+  fetch('http://127.0.0.1:7243/ingest/7f74fb16-5e81-4704-9c2c-1a3dd73f3bf3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'route.ts:8',message:'POST handler entry',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+  // #endregion
   try {
     const formData = await req.formData();
     const file = formData.get('file') as File;
+    // #region agent log
+    fetch('http://127.0.0.1:7243/ingest/7f74fb16-5e81-4704-9c2c-1a3dd73f3bf3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'route.ts:11',message:'File received',data:{fileName:file?.name||'none',fileSize:file?.size||0,fileType:file?.type||'none'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+    // #endregion
 
     if (!file) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 });
@@ -33,11 +39,20 @@ export async function POST(req: NextRequest) {
     // Convert File to Buffer
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
+    // #region agent log
+    fetch('http://127.0.0.1:7243/ingest/7f74fb16-5e81-4704-9c2c-1a3dd73f3bf3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'route.ts:35',message:'Buffer created',data:{bufferSize:buffer.length,arrayBufferSize:arrayBuffer.byteLength,firstBytes:Array.from(buffer.slice(0,20)).map(b=>b.toString(16).padStart(2,'0')).join(' '),isPdfHeader:buffer.slice(0,4).toString()==='%PDF'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+    // #endregion
 
     // Process PDF
-    const slides = await processPdf(buffer, file.name);
+    // #region agent log
+    fetch('http://127.0.0.1:7243/ingest/7f74fb16-5e81-4704-9c2c-1a3dd73f3bf3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'route.ts:38',message:'Before processPdf call',data:{bufferSize:buffer.length,fileName:file.name},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+    // #endregion
+    const slides = await processPdf(buffer, file.name, true); // Use AI by default
 
     // Generate PPTX
+    // #region agent log
+    fetch('http://127.0.0.1:7243/ingest/7f74fb16-5e81-4704-9c2c-1a3dd73f3bf3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'route.ts:41',message:'Before generatePptx call',data:{slidesCount:slides?.length||0},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+    // #endregion
     const pptxBuffer = await generatePptx(slides, file.name);
 
     // Generate HTML preview
@@ -45,6 +60,9 @@ export async function POST(req: NextRequest) {
 
     // Convert ArrayBuffer to base64 for JSON response
     const pptxBase64 = Buffer.from(pptxBuffer).toString('base64');
+    // #region agent log
+    fetch('http://127.0.0.1:7243/ingest/7f74fb16-5e81-4704-9c2c-1a3dd73f3bf3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'route.ts:49',message:'Success response',data:{slidesCount:slides.length,pptxBufferSize:pptxBuffer.byteLength},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+    // #endregion
 
     return NextResponse.json({
       slides,
@@ -53,6 +71,9 @@ export async function POST(req: NextRequest) {
       filename: file.name.replace(/\.pdf$/i, '.pptx'),
     });
   } catch (error: any) {
+    // #region agent log
+    fetch('http://127.0.0.1:7243/ingest/7f74fb16-5e81-4704-9c2c-1a3dd73f3bf3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'route.ts:56',message:'Error caught in handler',data:{errorMessage:error?.message||'unknown',errorName:error?.name||'unknown',errorStack:error?.stack?.substring(0,500)||''},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
+    // #endregion
     console.error('PDF to PPT conversion error:', error);
     console.error('Error stack:', error.stack);
     return NextResponse.json(

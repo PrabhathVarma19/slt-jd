@@ -1,4 +1,8 @@
 import { Slide } from '@/types/pdf-to-ppt';
+import OpenAI from 'openai';
+
+const openaiApiKey = process.env.OPENAI_API_KEY;
+const openai = openaiApiKey ? new OpenAI({ apiKey: openaiApiKey }) : null;
 
 export async function extractTextFromPdf(pdfBuffer: Buffer): Promise<string> {
   // #region agent log
@@ -263,7 +267,121 @@ function addGroupAsSlide(group: string[], slides: Slide[]) {
   }
 }
 
-export async function processPdf(pdfBuffer: Buffer, filename: string): Promise<Slide[]> {
+// AI-powered slide generation
+async function processPdfWithAI(text: string, filename: string): Promise<Slide[]> {
+  if (!openai) {
+    throw new Error('OpenAI not configured');
+  }
+
+  const systemPrompt = `You are an expert presentation designer who creates professional, well-structured PowerPoint presentations from PDF content.
+
+Your goal is to understand the content deeply and create a proper presentation deck (like Gamma presentations) - not just a summary, but a well-organized, engaging deck that tells a story.
+
+Guidelines:
+1. Understand the content's meaning, context, and purpose
+2. Create professional slide titles that capture key insights
+3. Organize content logically with clear sections
+4. Use varied slide types appropriately:
+   - "title": Title slides or important headers (use highlight: true for emphasis)
+   - "content": Standard content slides with bullet points
+   - "quote": Inspirational or important quotes
+   - "two-column": When you have lists of 6+ items
+   - "highlight": Important content that needs emphasis
+   - "section-divider": Section headers to break up the presentation
+5. Write content that flows naturally - not just extracted text, but rewritten for clarity and impact
+6. Create 10-30 slides depending on content length
+7. Make each slide focused and scannable
+
+Return a JSON object with a "slides" array. Each slide should have:
+- title: string (professional, concise title)
+- content: string[] (array of bullet points or content lines)
+- type: "title" | "content" | "quote" | "two-column" | "highlight" | "section-divider"
+- quote?: string (if type is "quote")
+- attribution?: string (if type is "quote")
+- leftContent?: string[] (if type is "two-column")
+- rightContent?: string[] (if type is "two-column")
+- highlight?: boolean (if type is "highlight" or "title")
+
+Example response format:
+{
+  "slides": [
+    {
+      "title": "Introduction",
+      "content": ["Key point 1", "Key point 2"],
+      "type": "content"
+    },
+    {
+      "title": "Key Insights",
+      "content": [],
+      "type": "section-divider"
+    }
+  ]
+}`;
+
+  const userPrompt = `Create a professional presentation deck from this PDF content:
+
+${text.substring(0, 12000)}${text.length > 12000 ? '\n\n[... content truncated for length ...]' : ''}
+
+Filename: ${filename}
+
+Analyze the content, understand its structure and meaning, then create a well-organized presentation deck with appropriate slide types and professional titles. Write content that flows naturally and tells a story, not just extracted text.`;
+
+  try {
+    const completion = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: userPrompt },
+      ],
+      response_format: { type: 'json_object' },
+      temperature: 0.7,
+      max_tokens: 4000,
+    });
+
+    const content = completion.choices[0]?.message?.content;
+    if (content) {
+      const parsed = JSON.parse(content);
+      const slides = parsed.slides || [];
+      
+      // Validate and normalize slides
+      return slides
+        .filter((slide: any) => slide.title || slide.content?.length > 0)
+        .map((slide: any) => ({
+          title: slide.title || 'Untitled',
+          content: slide.content || [],
+          type: slide.type || 'content',
+          quote: slide.quote,
+          attribution: slide.attribution,
+          leftContent: slide.leftContent,
+          rightContent: slide.rightContent,
+          highlight: slide.highlight || false,
+        }))
+        .slice(0, 50); // Limit to 50 slides max
+    }
+  } catch (error) {
+    console.error('AI slide generation error:', error);
+    throw error;
+  }
+
+  return [];
+}
+
+export async function processPdf(pdfBuffer: Buffer, filename: string, useAI: boolean = true): Promise<Slide[]> {
   const text = await extractTextFromPdf(pdfBuffer);
+  
+  // Try AI-powered processing first if enabled and API key available
+  if (useAI && openai && text.length > 100) {
+    try {
+      const aiSlides = await processPdfWithAI(text, filename);
+      if (aiSlides && aiSlides.length > 0) {
+        return aiSlides;
+      }
+    } catch (error) {
+      console.error('AI processing failed, falling back to pattern-based:', error);
+      // Fall through to pattern-based processing
+    }
+  }
+  
+  // Fallback to pattern-based processing
   return splitTextIntoSlides(text, filename);
 }
