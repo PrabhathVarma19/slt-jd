@@ -1,48 +1,104 @@
 import pptxgen from 'pptxgenjs';
 import { Slide } from '@/types/pdf-to-ppt';
+import * as fs from 'fs';
+import * as path from 'path';
 
-// Trianz brand colors
-const TRIANZ_COLORS = {
-  primary: '#F36C24',      // Orange - primary accent
-  secondary: '#0092C5',    // Blue - secondary accent
-  secondaryLight: '#7ECBE5', // Light blue
-  secondaryGrey: '#858586',  // Grey
-  heading: '#00367E',      // Dark blue - headings
-  body: '#090909',          // Black - body text
-  background: '#FFFFFF',    // White - background
-};
+// Logo path - Trianz logo for bottom left of slides
+const LOGO_PATH = path.join(process.cwd(), 'public', 'trianz-logo-horizontal.png');
 
 export async function generatePptx(slides: Slide[], filename: string): Promise<ArrayBuffer> {
+  // Always use default generation with logo and Poppins font
+  return generatePptxDefault(slides, filename);
+}
+
+// Helper function to add Trianz logo to bottom left of a slide
+function addLogoToSlide(slide: any) {
+  // Check if logo file exists
+  if (fs.existsSync(LOGO_PATH)) {
+    try {
+      slide.addImage({
+        path: LOGO_PATH,
+        x: 0.3,
+        y: 4.8, // Bottom left - slide height is 5.625, so 4.8 gives us space at bottom
+        w: 1.5, // Logo width
+        h: 0.5, // Logo height (maintains aspect ratio)
+      });
+    } catch (err) {
+      console.error('Error adding logo to slide:', err);
+    }
+  }
+}
+
+
+async function generatePptxDefault(slides: Slide[], filename: string): Promise<ArrayBuffer> {
   const pptx = new pptxgen();
 
   // Set slide size (standard 16:9)
   pptx.layout = 'LAYOUT_WIDE';
   pptx.defineLayout({ name: 'LAYOUT_WIDE', width: 10, height: 5.625 });
 
-  // Title slide
+  // Title slide - professional cover page design
   const titleSlide = pptx.addSlide();
-  titleSlide.background = { color: TRIANZ_COLORS.background.replace('#', '') };
   
-  // Title with accent bar
+  // Create diagonal split design: Orange top-left, Blue bottom-right
+  // Orange section (top-left triangle)
   titleSlide.addShape(pptx.ShapeType.rect, {
     x: 0,
     y: 0,
+    w: 6,
+    h: 3.5,
+    fill: { type: 'solid', color: 'F36C24' },
+    rectRadius: 0,
+  });
+  
+  // Blue section (bottom-right)
+  titleSlide.addShape(pptx.ShapeType.rect, {
+    x: 0,
+    y: 3.5,
     w: 10,
-    h: 0.3,
-    fill: { type: 'solid', color: TRIANZ_COLORS.primary.replace('#', '') },
+    h: 2.125,
+    fill: { type: 'solid', color: '0092C5' },
+    rectRadius: 0,
+  });
+  
+  // Blue section (right side)
+  titleSlide.addShape(pptx.ShapeType.rect, {
+    x: 6,
+    y: 0,
+    w: 4,
+    h: 3.5,
+    fill: { type: 'solid', color: '0092C5' },
+    rectRadius: 0,
   });
 
-  titleSlide.addText(filename.replace(/\.pdf$/i, ''), {
+  // Large title - white text on orange background
+  const titleText = filename.replace(/\.pdf$/i, '');
+  titleSlide.addText(titleText, {
     x: 0.5,
     y: 1.5,
-    w: 9,
-    h: 1,
-    fontSize: 44,
+    w: 5.5,
+    h: 1.5,
+    fontSize: 52,
     fontFace: 'Arial',
-    color: TRIANZ_COLORS.heading.replace('#', ''),
+    color: 'FFFFFF',
     bold: true,
     align: 'left',
     valign: 'middle',
+    lineSpacing: 48,
+  });
+  
+  // Subtitle or decorative element
+  titleSlide.addText('Presentation', {
+    x: 0.5,
+    y: 3.2,
+    w: 5.5,
+    h: 0.5,
+    fontSize: 24,
+    fontFace: 'Arial',
+    color: 'FFFFFF',
+    align: 'left',
+    valign: 'middle',
+    opacity: 0.9,
   });
 
   // Content slides with varied layouts
@@ -77,250 +133,266 @@ export async function generatePptx(slides: Slide[], filename: string): Promise<A
 
 function createContentSlide(pptx: any, slide: Slide) {
   const contentSlide = pptx.addSlide();
-  contentSlide.background = { color: TRIANZ_COLORS.background.replace('#', '') };
+  contentSlide.background = { color: 'FFFFFF' };
 
-  // Accent bar at top
+  // Accent bar at top (thinner, like HTML preview)
   contentSlide.addShape(pptx.ShapeType.rect, {
     x: 0,
     y: 0,
     w: 10,
-    h: 0.15,
-    fill: { type: 'solid', color: TRIANZ_COLORS.primary.replace('#', '') },
+    h: 0.1,
+    fill: { type: 'solid', color: 'F36C24' },
   });
 
-  // Slide title
+  // Slide title - with proper spacing to avoid overlap
   if (slide.title) {
     contentSlide.addText(slide.title, {
       x: 0.5,
-      y: 0.4,
+      y: 0.3,
       w: 9,
-      h: 0.6,
-      fontSize: 36,
-      fontFace: 'Arial',
-      color: TRIANZ_COLORS.heading.replace('#', ''),
+      h: 0.8,
+      fontSize: 40,
+      fontFace: 'Poppins',
+      color: '00367E',
       bold: true,
       align: 'left',
       valign: 'top',
-    });
-  }
-
-  // Content
-  if (slide.content && slide.content.length > 0) {
-    const bulletText = slide.content.join('\n');
-    contentSlide.addText(bulletText, {
-      x: 0.7,
-      y: 1.2,
-      w: 8.6,
-      h: 3.8,
-      fontSize: 18,
-      fontFace: 'Arial',
-      color: TRIANZ_COLORS.body.replace('#', ''),
-      align: 'left',
-      valign: 'top',
-      bullet: {
-        type: 'number',
-        code: '1.',
-      },
-      lineSpacing: 28,
-    });
-  }
-}
-
-function createQuoteSlide(pptx: any, slide: Slide) {
-  const quoteSlide = pptx.addSlide();
-  quoteSlide.background = { color: TRIANZ_COLORS.background.replace('#', '') };
-
-  // Large accent bar
-  quoteSlide.addShape(pptx.ShapeType.rect, {
-    x: 0,
-    y: 0,
-    w: 10,
-    h: 0.5,
-    fill: { type: 'solid', color: TRIANZ_COLORS.primary.replace('#', '') },
-  });
-
-  // Quote text (large, centered)
-  if (slide.quote) {
-    quoteSlide.addText(`"${slide.quote}"`, {
-      x: 1,
-      y: 1.5,
-      w: 8,
-      h: 2.5,
-      fontSize: 32,
-      fontFace: 'Arial',
-      color: TRIANZ_COLORS.heading.replace('#', ''),
-      italic: true,
-      align: 'center',
-      valign: 'middle',
       lineSpacing: 36,
     });
   }
 
-  // Attribution
+  // Content - use single text box with all bullets to prevent overlapping
+  if (slide.content && slide.content.length > 0) {
+    // Join all bullet points with newlines - pptxgenjs handles wrapping automatically
+    const bulletText = slide.content.join('\n');
+    
+    contentSlide.addText(bulletText, {
+      x: 0.7,
+      y: 1.4,
+      w: 8.6,
+      h: 3.5, // Fixed height - let text wrap naturally within this space
+      fontSize: 20,
+      fontFace: 'Poppins',
+      color: '090909',
+      align: 'left',
+      valign: 'top',
+      bullet: true,
+      lineSpacing: 32, // Increased spacing between lines
+      paraSpaceAfter: 8, // Space after each paragraph/bullet
+    });
+  }
+
+  // Add logo to content slide
+  addLogoToSlide(contentSlide);
+}
+
+function createQuoteSlide(pptx: any, slide: Slide) {
+  const quoteSlide = pptx.addSlide();
+  
+  // Gradient background like HTML preview
+  quoteSlide.background = { 
+    color: '0092C5',
+  };
+
+  // Quote text (large, centered, white)
+  if (slide.quote) {
+    quoteSlide.addText(`"${slide.quote}"`, {
+      x: 1,
+      y: 1.8,
+      w: 8,
+      h: 2.2,
+      fontSize: 40,
+      fontFace: 'Poppins',
+      color: 'FFFFFF',
+      italic: true,
+      align: 'center',
+      valign: 'middle',
+      lineSpacing: 44,
+    });
+  }
+
+  // Attribution (white, right-aligned)
   if (slide.attribution) {
     quoteSlide.addText(`— ${slide.attribution}`, {
       x: 1,
       y: 4.2,
       w: 8,
       h: 0.5,
-      fontSize: 20,
-      fontFace: 'Arial',
-      color: TRIANZ_COLORS.secondaryGrey.replace('#', ''),
+      fontSize: 24,
+      fontFace: 'Poppins',
+      color: 'FFFFFF',
       align: 'right',
       valign: 'middle',
     });
   }
+
+  // Add logo to quote slide
+  addLogoToSlide(quoteSlide);
 }
 
 function createTwoColumnSlide(pptx: any, slide: Slide) {
   const twoColSlide = pptx.addSlide();
-  twoColSlide.background = { color: TRIANZ_COLORS.background.replace('#', '') };
+  twoColSlide.background = { color: 'FFFFFF' };
 
   // Accent bar
   twoColSlide.addShape(pptx.ShapeType.rect, {
     x: 0,
     y: 0,
     w: 10,
-    h: 0.15,
-    fill: { type: 'solid', color: TRIANZ_COLORS.primary.replace('#', '') },
+    h: 0.1,
+    fill: { type: 'solid', color: 'F36C24' },
   });
 
-  // Title
+  // Title with proper spacing
   if (slide.title) {
     twoColSlide.addText(slide.title, {
       x: 0.5,
-      y: 0.4,
+      y: 0.3,
       w: 9,
-      h: 0.5,
-      fontSize: 32,
-      fontFace: 'Arial',
-      color: TRIANZ_COLORS.heading.replace('#', ''),
+      h: 0.8,
+      fontSize: 40,
+      fontFace: 'Poppins',
+      color: '00367E',
       bold: true,
       align: 'left',
       valign: 'top',
+      lineSpacing: 36,
     });
   }
 
-  // Left column
+  // Left column - single text box for all bullets
   if (slide.leftContent && slide.leftContent.length > 0) {
-    twoColSlide.addText(slide.leftContent.join('\n'), {
+    const bulletText = slide.leftContent.join('\n');
+    
+    twoColSlide.addText(bulletText, {
       x: 0.5,
-      y: 1.1,
-      w: 4.5,
-      h: 4,
-      fontSize: 16,
-      fontFace: 'Arial',
-      color: TRIANZ_COLORS.body.replace('#', ''),
+      y: 1.4,
+      w: 4.3,
+      h: 3.5,
+      fontSize: 18,
+      fontFace: 'Poppins',
+      color: '090909',
       align: 'left',
       valign: 'top',
-      bullet: {
-        type: 'number',
-        code: '1.',
-      },
-      lineSpacing: 24,
+      bullet: true,
+      lineSpacing: 28,
+      paraSpaceAfter: 8,
     });
   }
 
-  // Right column
+  // Right column - single text box for all bullets
   if (slide.rightContent && slide.rightContent.length > 0) {
-    twoColSlide.addText(slide.rightContent.join('\n'), {
+    const bulletText = slide.rightContent.join('\n');
+    
+    twoColSlide.addText(bulletText, {
       x: 5.5,
-      y: 1.1,
-      w: 4.5,
-      h: 4,
-      fontSize: 16,
-      fontFace: 'Arial',
-      color: TRIANZ_COLORS.body.replace('#', ''),
+      y: 1.4,
+      w: 4.3,
+      h: 3.5,
+      fontSize: 18,
+      fontFace: 'Poppins',
+      color: '090909',
       align: 'left',
       valign: 'top',
-      bullet: {
-        type: 'number',
-        code: String(slide.leftContent?.length || 0 + 1) + '.',
-      },
-      lineSpacing: 24,
+      bullet: true,
+      lineSpacing: 28,
+      paraSpaceAfter: 8,
     });
   }
 }
 
 function createTitleSlide(pptx: any, slide: Slide) {
   const titleSlide = pptx.addSlide();
-  titleSlide.background = { color: TRIANZ_COLORS.background.replace('#', '') };
-
-  // Full-width accent bar
+  
+  // Gradient background like HTML preview
+  titleSlide.background = { 
+    color: 'F36C24',
+  };
+  
+  // Add gradient effect with secondary color
   titleSlide.addShape(pptx.ShapeType.rect, {
     x: 0,
     y: 0,
     w: 10,
-    h: 1,
-    fill: { type: 'solid', color: TRIANZ_COLORS.primary.replace('#', '') },
+    h: 5.625,
+    fill: { type: 'solid', color: '0092C5' },
+    rectRadius: 0,
   });
 
-  // Large title
+  // Large title - white text on colored background
   titleSlide.addText(slide.title, {
     x: 0.5,
-    y: 1.5,
+    y: 1.8,
     w: 9,
-    h: 2.5,
-    fontSize: slide.highlight ? 48 : 40,
+    h: 2,
+    fontSize: slide.highlight ? 56 : 48,
     fontFace: 'Arial',
-    color: slide.highlight ? TRIANZ_COLORS.heading.replace('#', '') : TRIANZ_COLORS.heading.replace('#', ''),
+    color: 'FFFFFF',
     bold: true,
-    align: 'center',
+    align: 'left',
     valign: 'middle',
+    lineSpacing: 44,
   });
+
+  // Add logo to title slide
+  addLogoToSlide(titleSlide);
 }
 
 function createHighlightSlide(pptx: any, slide: Slide) {
   const highlightSlide = pptx.addSlide();
-  highlightSlide.background = { color: TRIANZ_COLORS.background.replace('#', '') };
+  highlightSlide.background = { color: 'FFFFFF' };
 
   // Thicker accent bar
   highlightSlide.addShape(pptx.ShapeType.rect, {
     x: 0,
     y: 0,
     w: 10,
-    h: 0.25,
-    fill: { type: 'solid', color: TRIANZ_COLORS.primary.replace('#', '') },
+    h: 0.1,
+    fill: { type: 'solid', color: 'F36C24' },
   });
 
-  // Highlighted title
+  // Highlighted title - centered and larger
   highlightSlide.addText(slide.title, {
     x: 0.5,
-    y: 0.5,
+    y: 0.3,
     w: 9,
-    h: 0.8,
-    fontSize: 40,
+    h: 1,
+    fontSize: 48,
     fontFace: 'Arial',
-    color: TRIANZ_COLORS.primary.replace('#', ''),
+    color: 'F36C24',
     bold: true,
-    align: 'left',
-    valign: 'top',
+    align: 'center',
+    valign: 'middle',
+    lineSpacing: 44,
   });
 
-  // Content with better spacing
+  // Content - single text box for all bullets
   if (slide.content && slide.content.length > 0) {
-    highlightSlide.addText(slide.content.join('\n'), {
+    const bulletText = slide.content.join('\n');
+    
+    highlightSlide.addText(bulletText, {
       x: 0.7,
       y: 1.6,
       w: 8.6,
-      h: 3.5,
-      fontSize: 20,
-      fontFace: 'Arial',
-      color: TRIANZ_COLORS.body.replace('#', ''),
+      h: 3.2,
+      fontSize: 22,
+      fontFace: 'Poppins',
+      color: '090909',
       align: 'left',
       valign: 'top',
-      bullet: {
-        type: 'number',
-        code: '1.',
-      },
-      lineSpacing: 32,
+      bullet: true,
+      lineSpacing: 36,
+      paraSpaceAfter: 10,
     });
   }
+
+  // Add logo to highlight slide
+  addLogoToSlide(highlightSlide);
 }
 
 function createSectionDividerSlide(pptx: any, slide: Slide) {
   const dividerSlide = pptx.addSlide();
-  dividerSlide.background = { color: TRIANZ_COLORS.background.replace('#', '') };
+  dividerSlide.background = { color: 'FFFFFF' };
 
   // Full-width colored bar
   dividerSlide.addShape(pptx.ShapeType.rect, {
@@ -328,7 +400,7 @@ function createSectionDividerSlide(pptx: any, slide: Slide) {
     y: 2,
     w: 10,
     h: 1.5,
-    fill: { type: 'solid', color: TRIANZ_COLORS.secondary.replace('#', '') },
+    fill: { type: 'solid', color: '0092C5' },
   });
 
   // Section title (centered, large)
@@ -339,9 +411,12 @@ function createSectionDividerSlide(pptx: any, slide: Slide) {
     h: 1.1,
     fontSize: 44,
     fontFace: 'Arial',
-    color: TRIANZ_COLORS.background.replace('#', ''),
+    color: 'FFFFFF',
     bold: true,
     align: 'center',
     valign: 'middle',
   });
+
+  // Add logo to section divider slide
+  addLogoToSlide(dividerSlide);
 }
