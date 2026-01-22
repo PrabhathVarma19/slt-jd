@@ -240,8 +240,14 @@ export default function PdfToPptPage() {
                 max="50"
                 value={numSlidesInput}
                 onChange={(e) => {
+                  const value = e.target.value;
                   // Allow free typing - just update the input value
-                  setNumSlidesInput(e.target.value);
+                  setNumSlidesInput(value);
+                  // Also update numSlides if valid, but don't reset if invalid
+                  const numValue = parseInt(value, 10);
+                  if (!isNaN(numValue) && numValue >= 5 && numValue <= 50) {
+                    setNumSlides(numValue);
+                  }
                 }}
                 onBlur={(e) => {
                   const inputValue = e.target.value.trim();
@@ -254,9 +260,10 @@ export default function PdfToPptPage() {
                   
                   const value = parseInt(inputValue, 10);
                   if (isNaN(value) || value < 5 || value > 50) {
-                    // Reset to default if invalid
-                    setNumSlidesInput('20');
-                    setNumSlides(20);
+                    // Clamp to valid range instead of resetting
+                    const clampedValue = Math.min(Math.max(value || 20, 5), 50);
+                    setNumSlidesInput(clampedValue.toString());
+                    setNumSlides(clampedValue);
                   } else {
                     // Update both states with validated value
                     setNumSlidesInput(value.toString());
