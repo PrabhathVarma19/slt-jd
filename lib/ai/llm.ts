@@ -580,6 +580,17 @@ ${headerInstruction}
           html_body: parsed.html_body || '',
           text_body: parsed.text_body || '',
         };
+        if (sectionTitles.length > 0 && result.sections.length > 0) {
+          const allowedTitles = new Set(sectionTitles.map((title) => title.toLowerCase()));
+          const hasHeadings = result.sections.some((section: any) => section.heading && section.heading.trim());
+          if (hasHeadings) {
+            result.sections = result.sections.filter((section: any) =>
+              allowedTitles.has((section.heading || '').trim().toLowerCase())
+            );
+          } else {
+            result.sections = result.sections.slice(0, sectionTitles.length);
+          }
+        }
         if (include_section_headers === false) {
           const stripHeading = (value: string) => {
             if (!value) return value;
@@ -619,6 +630,7 @@ ${headerInstruction}
           }));
           result.text_body = stripHeadingsFromText(result.text_body);
           result.html_body = stripHeadingsFromHtml(result.html_body);
+          result.summary = stripHeadingsFromText(result.summary);
         }
         if (include_links === false) {
           const stripLinksFromText = (value: string) => {
@@ -654,6 +666,7 @@ ${headerInstruction}
           }));
           result.text_body = stripLinksFromText(result.text_body);
           result.html_body = stripLinksFromHtml(result.html_body);
+          result.summary = stripLinksFromText(result.summary);
         }
         if (include_deltas === false) {
           const deltaLine = /^(new|ongoing|resolved|unchanged|no\s+change|delta|changes?)\b[:\-]/i;
@@ -675,6 +688,7 @@ ${headerInstruction}
           }));
           result.text_body = stripDeltaLines(result.text_body);
           result.html_body = stripDeltaFromHtml(result.html_body);
+          result.summary = stripDeltaLines(result.summary);
         }
         if (links && include_links !== false) {
           const linkLines = links.split('\n').map((l: string) => l.trim()).filter(Boolean);
