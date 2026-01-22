@@ -767,7 +767,6 @@ export default function CommsHubPage() {
             </div>
           )}
         </div>
-        )}
       </div>
     </div>
   );
