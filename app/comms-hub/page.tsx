@@ -233,8 +233,7 @@ export default function CommsHubPage() {
           <p className="text-sm text-gray-600">
             Paste your updates, pick mode and audience, and get HTML + text outputs ready to send.
           </p>
-          </div>
-        )}
+        </div>
       </div>
 
       <div className="space-y-6">
