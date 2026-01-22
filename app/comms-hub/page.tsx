@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Button from '@/components/ui/button';
 import Input from '@/components/ui/input';
@@ -117,6 +117,27 @@ export default function CommsHubPage() {
   const [agentLoading, setAgentLoading] = useState(false);
   const [agentError, setAgentError] = useState<string | null>(null);
   const [activePanel, setActivePanel] = useState<'agent' | 'builder'>('agent');
+  const [displayName, setDisplayName] = useState<string | null>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    const loadUser = async () => {
+      try {
+        const response = await fetch('/api/auth/session');
+        if (!response.ok) return;
+        const data = await response.json();
+        if (!isMounted) return;
+        const name = data?.user?.name || data?.user?.profile?.empName;
+        setDisplayName(name || null);
+      } catch (err) {
+        console.error('Failed to load session user:', err);
+      }
+    };
+    loadUser();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const toggleSection = (section: string) => {
     setSections((prev) =>
@@ -219,8 +240,15 @@ export default function CommsHubPage() {
     }
   };
 
+  const resolveSignature = (body: string) => {
+    if (!displayName) return body;
+    return body.replace(/\[Your Name\]/gi, displayName);
+  };
+
   const openInOutlookDraft = (subject: string, body: string) => {
-    const mailto = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const mailto = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
+      resolveSignature(body)
+    )}`;
     window.location.href = mailto;
   };
 
@@ -420,7 +448,9 @@ export default function CommsHubPage() {
               </div>
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Draft</p>
-                <pre className="whitespace-pre-wrap text-sm text-gray-900">{agentOutput.body}</pre>
+                <pre className="whitespace-pre-wrap text-sm text-gray-900">
+                  {resolveSignature(agentOutput.body)}
+                </pre>
               </div>
               {agentOutput.followUpQuestions.length > 0 && (
                 <div>
@@ -737,6 +767,7 @@ export default function CommsHubPage() {
             </div>
           )}
         </div>
+        )}
       </div>
     </div>
   );
