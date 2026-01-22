@@ -17,8 +17,8 @@ async function getPdfParse(): Promise<any> {
   for (let i = 0; i < MAX_IMPORT_ATTEMPTS; i++) {
     try {
       // Dynamic import to avoid build-time issues with pdf-parse test files
-      const module = await import('pdf-parse');
-      pdfParseModule = module.default || module;
+      const importedModule = await import('pdf-parse');
+      pdfParseModule = importedModule.default || importedModule;
       return pdfParseModule;
     } catch (importError: any) {
       const errorMsg = importError?.message || '';
