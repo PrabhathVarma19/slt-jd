@@ -519,6 +519,14 @@ Do not add trailing colons to headings. Only include sections you can meaningful
           ? ['Top Updates', 'AI/Tech Highlights', 'Company News', 'Risks & Actions', 'Upcoming Dates', 'Resources & Links']
           : ['Context', "What's changing", "Who is impacted", 'When', 'Actions required', 'Contacts'];
 
+  const sectionTitles = (sections && sections.length > 0 ? sections : defaultSections).map((title) =>
+    title.trim()
+  );
+  const headerInstruction =
+    include_section_headers === false
+      ? '- Do not include section headers in section bodies or in the text/HTML output.'
+      : '- Include section headers in the output.';
+
   const userPrompt = `Mode: ${modeLabel}
 Audience: ${audienceLabel}
 Formality: ${formalityLabel}
@@ -544,7 +552,8 @@ Instructions:
 - Produce a concise subject line.
 - Write a short exec-ready summary (2-3 sentences).
 - Populate the sections with crisp bullets/paragraphs. If you cannot populate a section, omit it rather than leaving it blank.
-- Return both HTML (basic tags, no inline CSS) and plain text variants. Include links/resources when provided and allowed. Include section headers unless told not to.
+- Return both HTML (basic tags, no inline CSS) and plain text variants. Include links/resources when provided and allowed.
+${headerInstruction}
 - Keep tone aligned to the audience and formality.
 - If include deltas is Yes, call out new vs ongoing vs resolved items where possible.`;
 
@@ -572,7 +581,44 @@ Instructions:
           text_body: parsed.text_body || '',
         };
         if (include_section_headers === false) {
-          result.sections = result.sections.map((s: any) => ({ heading: '', body: s.body || '' }));
+          const stripHeading = (value: string) => {
+            if (!value) return value;
+            let cleaned = value;
+            for (const title of sectionTitles) {
+              const escaped = title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+              const linePattern = new RegExp(`^\\s*${escaped}\\s*[:\\-–]*\\s*`, 'i');
+              cleaned = cleaned.replace(linePattern, '');
+            }
+            return cleaned;
+          };
+          const stripHeadingsFromText = (value: string) => {
+            if (!value) return value;
+            const lines = value.split(/\r?\n/);
+            const filtered = lines.filter((line) => {
+              const trimmed = line.trim().replace(/[:\\-–]+$/, '');
+              return !sectionTitles.some(
+                (title) => title.toLowerCase() === trimmed.toLowerCase()
+              );
+            });
+            return filtered.join('\n');
+          };
+          const stripHeadingsFromHtml = (value: string) => {
+            if (!value) return value;
+            let cleaned = value;
+            for (const title of sectionTitles) {
+              const escaped = title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+              const headingPattern = new RegExp(`<[^>]+>\\s*${escaped}\\s*<\\/[^>]+>\\s*`, 'gi');
+              cleaned = cleaned.replace(headingPattern, '');
+            }
+            return cleaned;
+          };
+
+          result.sections = result.sections.map((s: any) => ({
+            heading: '',
+            body: stripHeading(s.body || ''),
+          }));
+          result.text_body = stripHeadingsFromText(result.text_body);
+          result.html_body = stripHeadingsFromHtml(result.html_body);
         }
         if (links && include_links !== false) {
           const linkLines = links.split('\n').map((l: string) => l.trim()).filter(Boolean);
