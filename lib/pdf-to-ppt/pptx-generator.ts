@@ -19,9 +19,9 @@ function addLogoToSlide(slide: any) {
       slide.addImage({
         path: LOGO_PATH,
         x: 0.2,
-        y: 5.1, // Bottom left - slide height is 5.625, logo height 0.5, so 5.1 positions it at bottom
-        w: 1.5, // Logo width
-        h: 0.5, // Logo height (maintains aspect ratio)
+        y: 7.0, // Logo position as requested - note: slide height is 5.625, so this may be clipped
+        w: 0.9375, // Logo width: 50% reduction (1.5 -> 0.75) then 25% increase (0.75 * 1.25 = 0.9375)
+        h: 0.25, // Logo height: 50% reduction (0.5 -> 0.25)
       });
     } catch (err) {
       console.error('Error adding logo to slide:', err);
@@ -55,20 +55,6 @@ async function generatePptxDefault(slides: Slide[], filename: string): Promise<A
     align: 'left',
     valign: 'middle',
     lineSpacing: 48,
-  });
-  
-  // Subtitle or decorative element
-  titleSlide.addText('Presentation', {
-    x: 0.5,
-    y: 3.8,
-    w: 9,
-    h: 0.5,
-    fontSize: 24,
-    fontFace: 'Poppins',
-    color: '666666',
-    align: 'left',
-    valign: 'middle',
-    opacity: 0.9,
   });
 
   // Add logo to title slide

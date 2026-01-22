@@ -12,8 +12,11 @@ export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
     const file = formData.get('file') as File;
+    const numSlidesParam = formData.get('numSlides') as string | null;
+    const numSlides = numSlidesParam ? parseInt(numSlidesParam, 10) : undefined;
+    const template = (formData.get('template') as string) || 'trianz';
     // #region agent log
-    fetch('http://127.0.0.1:7243/ingest/7f74fb16-5e81-4704-9c2c-1a3dd73f3bf3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'route.ts:11',message:'File received',data:{fileName:file?.name||'none',fileSize:file?.size||0,fileType:file?.type||'none'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+    fetch('http://127.0.0.1:7243/ingest/7f74fb16-5e81-4704-9c2c-1a3dd73f3bf3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'route.ts:11',message:'File received',data:{fileName:file?.name||'none',fileSize:file?.size||0,fileType:file?.type||'none',numSlides},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
     // #endregion
 
     if (!file) {
@@ -47,7 +50,7 @@ export async function POST(req: NextRequest) {
     // #region agent log
     fetch('http://127.0.0.1:7243/ingest/7f74fb16-5e81-4704-9c2c-1a3dd73f3bf3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'route.ts:38',message:'Before processPdf call',data:{bufferSize:buffer.length,fileName:file.name},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
     // #endregion
-    const slides = await processPdf(buffer, file.name, true); // Use AI by default
+    const slides = await processPdf(buffer, file.name, true, numSlides); // Use AI by default
 
     // Generate PPTX
     // #region agent log
@@ -69,6 +72,7 @@ export async function POST(req: NextRequest) {
       pptxBase64,
       htmlPreview,
       filename: file.name.replace(/\.pdf$/i, '.pptx'),
+      totalSlides: slides.length + 1, // Include title slide
     });
   } catch (error: any) {
     // #region agent log

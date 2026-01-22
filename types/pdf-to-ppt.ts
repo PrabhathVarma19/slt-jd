@@ -1,5 +1,7 @@
 export type SlideType = 'title' | 'content' | 'quote' | 'two-column' | 'highlight' | 'section-divider';
 
+export type TemplateType = 'trianz' | 'professional' | 'modern' | 'creative' | 'executive';
+
 export interface Slide {
   title: string;
   content: string[];

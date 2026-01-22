@@ -15,6 +15,9 @@ export default function PdfToPptPage() {
   const [htmlPreview, setHtmlPreview] = useState<string | null>(null);
   const [pptxBase64, setPptxBase64] = useState<string | null>(null);
   const [pptxFilename, setPptxFilename] = useState<string>('');
+  const [numSlides, setNumSlides] = useState<number>(20);
+  const [numSlidesInput, setNumSlidesInput] = useState<string>('20');
+  const [totalSlides, setTotalSlides] = useState<number>(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
 
@@ -70,12 +73,29 @@ export default function PdfToPptPage() {
       return;
     }
 
+    // Validate and normalize numSlides before submitting
+    let validatedNumSlides = numSlides;
+    const inputValue = parseInt(numSlidesInput, 10);
+    if (!isNaN(inputValue) && inputValue >= 5 && inputValue <= 50) {
+      validatedNumSlides = inputValue;
+      setNumSlides(inputValue);
+      setNumSlidesInput(inputValue.toString());
+    } else {
+      // Use default if invalid
+      validatedNumSlides = 20;
+      setNumSlides(20);
+      setNumSlidesInput('20');
+    }
+
     setIsLoading(true);
     setError(null);
 
     try {
       const formData = new FormData();
       formData.append('file', file);
+      if (validatedNumSlides && validatedNumSlides >= 5 && validatedNumSlides <= 50) {
+        formData.append('numSlides', validatedNumSlides.toString());
+      }
 
       const response = await fetch('/api/pdf-to-ppt', {
         method: 'POST',
@@ -92,6 +112,7 @@ export default function PdfToPptPage() {
       setHtmlPreview(data.htmlPreview || null);
       setPptxBase64(data.pptxBase64 || null);
       setPptxFilename(data.filename || 'presentation.pptx');
+      setTotalSlides(data.totalSlides || data.slides.length + 1);
     } catch (err: any) {
       setError(err.message || 'Failed to convert PDF to PowerPoint');
     } finally {
@@ -129,7 +150,7 @@ export default function PdfToPptPage() {
           <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Beacon · PDF to PPT</p>
           <h1 className="text-2xl font-semibold text-gray-900 mt-1">Convert PDF to PowerPoint</h1>
           <p className="text-sm text-gray-600">
-            Upload a PDF file to generate a PowerPoint presentation with Trianz branding.
+            Upload a PDF file to generate a PowerPoint presentation using your custom template.
           </p>
         </div>
       </div>
@@ -208,6 +229,54 @@ export default function PdfToPptPage() {
               )}
             </div>
 
+            <div className="space-y-2">
+              <label htmlFor="numSlides" className="block text-sm font-medium text-gray-700">
+                Number of Slides (optional)
+              </label>
+              <input
+                id="numSlides"
+                type="number"
+                min="5"
+                max="50"
+                value={numSlidesInput}
+                onChange={(e) => {
+                  // Allow free typing - just update the input value
+                  setNumSlidesInput(e.target.value);
+                }}
+                onBlur={(e) => {
+                  const inputValue = e.target.value.trim();
+                  if (inputValue === '') {
+                    // Reset to default if empty
+                    setNumSlidesInput('20');
+                    setNumSlides(20);
+                    return;
+                  }
+                  
+                  const value = parseInt(inputValue, 10);
+                  if (isNaN(value) || value < 5 || value > 50) {
+                    // Reset to default if invalid
+                    setNumSlidesInput('20');
+                    setNumSlides(20);
+                  } else {
+                    // Update both states with validated value
+                    setNumSlidesInput(value.toString());
+                    setNumSlides(value);
+                  }
+                }}
+                onKeyDown={(e) => {
+                  // Allow Enter key to trigger blur validation
+                  if (e.key === 'Enter') {
+                    e.currentTarget.blur();
+                  }
+                }}
+                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                placeholder="20"
+              />
+              <p className="text-xs text-gray-500">
+                Specify the desired number of slides (5-50). Default is 20 for automatic generation.
+              </p>
+            </div>
+
             <Button
               onClick={handleGenerate}
               disabled={!file || isLoading}
@@ -230,7 +299,7 @@ export default function PdfToPptPage() {
             <CardHeader className="space-y-1">
               <CardTitle className="text-xl">Preview</CardTitle>
               <CardDescription>
-                {slides.length} slide{slides.length !== 1 ? 's' : ''} generated
+                {totalSlides || slides.length + 1} slide{(totalSlides || slides.length + 1) !== 1 ? 's' : ''} generated
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
