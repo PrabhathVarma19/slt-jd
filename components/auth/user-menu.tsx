@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { Avatar } from '@/components/ui/avatar';
+import { Spinner } from '@/components/ui/spinner';
 import { DropdownMenu, DropdownMenuItem, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { LogOut, User, Shield } from 'lucide-react';
 
@@ -204,7 +205,9 @@ export function UserMenu() {
   // Show loading spinner
   if (loading || isLoggingOut) {
     return (
-      <div className="h-10 w-10 rounded-full bg-gray-200 animate-pulse" />
+      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-200">
+        <Spinner className="h-4 w-4" />
+      </div>
     );
   }
 
@@ -259,8 +262,17 @@ export function UserMenu() {
             className="text-red-600 hover:bg-red-50"
           >
             <div className="flex items-center gap-2">
-              <LogOut className="h-4 w-4" />
-              <span>Sign Out</span>
+              {isLoggingOut ? (
+                <>
+                  <Spinner className="h-4 w-4" />
+                  <span>Signing out...</span>
+                </>
+              ) : (
+                <>
+                  <LogOut className="h-4 w-4" />
+                  <span>Sign Out</span>
+                </>
+              )}
             </div>
           </DropdownMenuItem>
         </div>

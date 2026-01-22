@@ -186,6 +186,7 @@ export default function AdminDashboardPage() {
   const [savingSla, setSavingSla] = useState(false);
   const [autoClosing, setAutoClosing] = useState(false);
   const [runningSlaJob, setRunningSlaJob] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [refreshToken, setRefreshToken] = useState(0);
   const [filters, setFilters] = useState({
     range: '30d',
@@ -237,7 +238,12 @@ export default function AdminDashboardPage() {
   useEffect(() => {
     const fetchAnalytics = async () => {
       try {
-        setLoading(true);
+        const isInitialLoad = !analytics;
+        if (isInitialLoad) {
+          setLoading(true);
+        } else {
+          setIsRefreshing(true);
+        }
         setError(null);
         const params = new URLSearchParams();
         params.set('range', filters.range);
@@ -271,6 +277,7 @@ export default function AdminDashboardPage() {
         setError(err.message || 'Failed to load analytics');
       } finally {
         setLoading(false);
+        setIsRefreshing(false);
       }
     };
 
@@ -479,9 +486,13 @@ export default function AdminDashboardPage() {
               <Link href="/admin/dashboard/insights">Insights</Link>
             </Button>
           </div>
-          <Button variant="outline" onClick={() => setRefreshToken((value) => value + 1)}>
+          <Button
+            variant="outline"
+            onClick={() => setRefreshToken((value) => value + 1)}
+            disabled={isRefreshing}
+          >
             <RefreshCw className="mr-2 h-4 w-4" />
-            Refresh
+            {isRefreshing ? 'Updating...' : 'Refresh'}
           </Button>
           <BackToHome />
         </div>
@@ -496,9 +507,13 @@ export default function AdminDashboardPage() {
           <p className="text-sm text-gray-600">
             Adjust the date range and slice by priority, status, or owner.
           </p>
+          {isRefreshing && (
+            <p className="text-xs text-blue-600">Updating analytics…</p>
+          )}
         </CardHeader>
         <CardContent>
-          <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
+          <fieldset disabled={isRefreshing} className={isRefreshing ? 'opacity-60' : ''}>
+            <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
             <label className="space-y-1 text-sm text-gray-600">
               Date range
               <select
@@ -618,7 +633,8 @@ export default function AdminDashboardPage() {
                 placeholder="IT-Project-01"
               />
             </label>
-          </div>
+            </div>
+          </fieldset>
         </CardContent>
       </Card>
 

@@ -7,6 +7,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { ErrorBar } from '@/components/ui/error-bar';
+import { Spinner } from '@/components/ui/spinner';
 
 function LoginForm() {
   const router = useRouter();
@@ -132,7 +133,14 @@ function LoginForm() {
                 className="w-full rounded-full"
                 disabled={isLoading || !email || !password}
               >
-                {isLoading ? 'Signing in...' : 'Sign in'}
+                {isLoading ? (
+                  <>
+                    <Spinner className="mr-2 h-4 w-4" />
+                    Signing in...
+                  </>
+                ) : (
+                  'Sign in'
+                )}
               </Button>
             </form>
 
