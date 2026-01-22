@@ -203,10 +203,21 @@ export function UserMenu() {
   }
 
   // Show loading spinner
-  if (loading || isLoggingOut) {
+  if (loading) {
     return (
       <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-200">
         <Spinner className="h-4 w-4" />
+      </div>
+    );
+  }
+
+  if (isLoggingOut) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40">
+        <div className="flex items-center gap-2 rounded-xl bg-white px-4 py-3 text-sm text-gray-700 shadow-lg">
+          <Spinner className="h-4 w-4" />
+          Signing out...
+        </div>
       </div>
     );
   }
