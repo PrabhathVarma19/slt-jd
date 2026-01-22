@@ -6,60 +6,99 @@ const openai = openaiApiKey ? new OpenAI({ apiKey: openaiApiKey }) : null;
 
 // Cache pdf-parse module to avoid repeated imports and test file access issues
 let pdfParseModule: any = null;
-let importAttempts = 0;
-const MAX_IMPORT_ATTEMPTS = 3;
 
 async function getPdfParse(): Promise<any> {
   if (pdfParseModule) {
     return pdfParseModule;
   }
 
-  for (let i = 0; i < MAX_IMPORT_ATTEMPTS; i++) {
-    try {
-      // Dynamic import to avoid build-time issues with pdf-parse test files
-      const importedModule = await import('pdf-parse');
-      pdfParseModule = importedModule.default || importedModule;
-      return pdfParseModule;
-    } catch (importError: any) {
-      const errorMsg = importError?.message || '';
-      const isTestFileError = errorMsg.includes('ENOENT') && 
-                             (errorMsg.includes('test') || errorMsg.includes('05-versions-space.pdf'));
-      
-      if (isTestFileError && i < MAX_IMPORT_ATTEMPTS - 1) {
-        // Wait longer on each retry
-        await new Promise(resolve => setTimeout(resolve, 100 * (i + 1)));
-        continue;
+  try {
+    // Dynamic import to avoid build-time issues with pdf-parse test files
+    // The pdf-parse library has debug code that tries to access test files
+    // when module.parent is falsy (which happens in serverless/production)
+    // We catch and ignore those errors during import
+    const importedModule = await import('pdf-parse');
+    pdfParseModule = importedModule.default || importedModule;
+    return pdfParseModule;
+  } catch (importError: any) {
+    // If import fails, it might be due to test file access during module load
+    // Try to continue anyway - the actual parsing might still work
+    const errorMsg = importError?.message || '';
+    if (errorMsg.includes('ENOENT') && errorMsg.includes('test')) {
+      // Try to get the module anyway - sometimes it loads despite the error
+      try {
+        const importedModule = await import('pdf-parse');
+        pdfParseModule = importedModule.default || importedModule;
+        return pdfParseModule;
+      } catch {
+        // If it still fails, throw the original error
+        throw importError;
       }
-      
-      // If it's not a test file error or we've exhausted retries, throw
-      throw importError;
     }
+    throw importError;
   }
-  
-  throw new Error('Failed to initialize PDF parser after multiple attempts');
 }
 
 export async function extractTextFromPdf(pdfBuffer: Buffer): Promise<string> {
+  // Validate PDF buffer first
+  if (!pdfBuffer || pdfBuffer.length === 0) {
+    throw new Error('Invalid PDF buffer: buffer is empty');
+  }
+  
+  // Check if it's a valid PDF by checking the header
+  const pdfHeader = pdfBuffer.slice(0, 4).toString();
+  if (pdfHeader !== '%PDF') {
+    throw new Error('Invalid PDF file: file does not start with PDF header');
+  }
+
   try {
     const pdfParse = await getPdfParse();
     const data = await pdfParse(pdfBuffer);
-    return data.text || '';
+    
+    if (!data || !data.text) {
+      throw new Error('PDF parsing returned empty text');
+    }
+    
+    return data.text;
   } catch (error: any) {
-    // Handle pdf-parse internal test file access errors
     const errorMsg = error?.message || '';
+    
+    // Handle pdf-parse test file access errors
+    // The library tries to access test files during initialization in production
+    // We need to suppress these errors and retry
     const isTestFileError = errorMsg.includes('ENOENT') && 
-                           (errorMsg.includes('test') || errorMsg.includes('05-versions-space.pdf'));
+                           (errorMsg.includes('test') || 
+                            errorMsg.includes('05-versions-space.pdf') ||
+                            errorMsg.includes('./test/data'));
     
     if (isTestFileError) {
-      // Clear cache and retry once more
+      // Clear module cache and retry - sometimes the second attempt works
       pdfParseModule = null;
       try {
-        await new Promise(resolve => setTimeout(resolve, 300));
+        // Wait a bit for any async operations to complete
+        await new Promise(resolve => setTimeout(resolve, 200));
+        
         const pdfParse = await getPdfParse();
         const data = await pdfParse(pdfBuffer);
-        return data.text || '';
+        
+        if (!data || !data.text) {
+          throw new Error('PDF parsing returned empty text on retry');
+        }
+        
+        return data.text;
       } catch (retryError: any) {
-        throw new Error(`PDF parsing failed due to library initialization issue. Please try uploading the file again, or ensure the PDF is not corrupted. Original error: ${retryError.message || error.message}`);
+        const retryErrorMsg = retryError?.message || '';
+        const isStillTestFileError = retryErrorMsg.includes('ENOENT') && 
+                                    (retryErrorMsg.includes('test') || 
+                                     retryErrorMsg.includes('05-versions-space.pdf'));
+        
+        if (isStillTestFileError) {
+          // The library is fundamentally broken due to test file access
+          // This happens in serverless environments where module.parent is undefined
+          throw new Error('PDF parsing failed due to library initialization issue in production environment. Please try uploading the file again.');
+        }
+        
+        throw retryError;
       }
     }
     

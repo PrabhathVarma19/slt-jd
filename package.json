@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "postinstall": "node -e \"const fs=require('fs');const p='node_modules/pdf-parse/index.js';let c=fs.readFileSync(p,'utf8');c=c.replace(/let isDebugMode = !module.parent;/g,'let isDebugMode = false;');fs.writeFileSync(p,c);\"",
     "ingest-policies": "node scripts/ingest-policies.js",
     "normalize-policies": "node scripts/normalize-policies.js",
     "watch-policies": "node scripts/watch-policies.js"
