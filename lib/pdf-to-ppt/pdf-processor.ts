@@ -1,8 +1,9 @@
-import pdfParse from 'pdf-parse';
 import { Slide } from '@/types/pdf-to-ppt';
 
 export async function extractTextFromPdf(pdfBuffer: Buffer): Promise<string> {
   try {
+    // Dynamic import to avoid build-time issues with pdf-parse test files
+    const pdfParse = (await import('pdf-parse')).default;
     const data = await pdfParse(pdfBuffer);
     return data.text || '';
   } catch (error) {
