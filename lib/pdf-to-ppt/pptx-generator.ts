@@ -21,7 +21,7 @@ export async function generatePptx(slides: Slide[], filename: string): Promise<A
 
   // Title slide
   const titleSlide = pptx.addSlide();
-  titleSlide.background = { color: TRIANZ_COLORS.background };
+  titleSlide.background = { color: TRIANZ_COLORS.background.replace('#', '') };
   
   // Title with accent bar
   titleSlide.addShape(pptx.ShapeType.rect, {
@@ -29,7 +29,7 @@ export async function generatePptx(slides: Slide[], filename: string): Promise<A
     y: 0,
     w: 10,
     h: 0.3,
-    fill: { color: TRIANZ_COLORS.primary },
+    fill: { type: 'solid', color: TRIANZ_COLORS.primary.replace('#', '') },
   });
 
   titleSlide.addText(filename.replace(/\.pdf$/i, ''), {
@@ -39,7 +39,7 @@ export async function generatePptx(slides: Slide[], filename: string): Promise<A
     h: 1,
     fontSize: 44,
     fontFace: 'Arial',
-    color: TRIANZ_COLORS.heading,
+    color: TRIANZ_COLORS.heading.replace('#', ''),
     bold: true,
     align: 'left',
     valign: 'middle',
@@ -48,7 +48,7 @@ export async function generatePptx(slides: Slide[], filename: string): Promise<A
   // Content slides
   slides.forEach((slide, index) => {
     const contentSlide = pptx.addSlide();
-    contentSlide.background = { color: TRIANZ_COLORS.background };
+    contentSlide.background = { color: TRIANZ_COLORS.background.replace('#', '') };
 
     // Accent bar at top
     contentSlide.addShape(pptx.ShapeType.rect, {
@@ -56,7 +56,7 @@ export async function generatePptx(slides: Slide[], filename: string): Promise<A
       y: 0,
       w: 10,
       h: 0.15,
-      fill: { color: TRIANZ_COLORS.primary },
+      fill: { type: 'solid', color: TRIANZ_COLORS.primary.replace('#', '') },
     });
 
     // Slide title
@@ -65,10 +65,10 @@ export async function generatePptx(slides: Slide[], filename: string): Promise<A
       y: 0.4,
       w: 9,
       h: 0.6,
-      fontSize: 36,
-      fontFace: 'Arial',
-      color: TRIANZ_COLORS.heading,
-      bold: true,
+    fontSize: 36,
+    fontFace: 'Arial',
+    color: TRIANZ_COLORS.heading.replace('#', ''),
+    bold: true,
       align: 'left',
       valign: 'top',
     });
@@ -83,7 +83,7 @@ export async function generatePptx(slides: Slide[], filename: string): Promise<A
         h: 3.8,
         fontSize: 18,
         fontFace: 'Arial',
-        color: TRIANZ_COLORS.body,
+        color: TRIANZ_COLORS.body.replace('#', ''),
         align: 'left',
         valign: 'top',
         bullet: {
