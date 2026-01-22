@@ -88,6 +88,14 @@ const TOOLS: Tool[] = [
     initials: 'EX',
     accent: 'bg-teal-100 text-teal-700',
   },
+  {
+    title: 'PDF to PowerPoint',
+    description: 'Convert PDF files to PowerPoint presentations with Trianz branding.',
+    href: '/pdf-to-ppt',
+    bucket: 'Outputs',
+    initials: 'PP',
+    accent: 'bg-orange-100 text-orange-700',
+  },
 ];
 
 const BUCKET_LABELS: Record<ToolBucket, string> = {
