@@ -80,7 +80,7 @@ const getDefaultSections = (mode: CommsMode, template: CommsTemplate) => {
   if (template === 'change_notice') {
     return mode === 'newsletter' ? defaultChangeNoticeNewsletter : defaultChangeNoticeTeam;
   }
-   if (template === 'awareness') {
+  if (template === 'awareness') {
     return mode === 'newsletter' ? defaultAwarenessNewsletter : defaultAwarenessTeam;
   }
   return mode === 'newsletter' ? defaultNewsletterSections : defaultTeamSections;
