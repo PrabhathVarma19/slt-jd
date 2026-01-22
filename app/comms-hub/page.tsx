@@ -688,15 +688,22 @@ export default function CommsHubPage() {
                     <p className="text-sm uppercase tracking-wide text-blue-700 font-semibold">Subject</p>
                     <p className="text-base font-semibold text-gray-900">{output.subject || 'Untitled'}</p>
                   </div>
-                  <div className="flex gap-2">
-                    <Button variant="secondary" size="sm" onClick={() => copyToClipboard(output.html_body)}>
-                      Copy HTML
-                    </Button>
-                    <Button variant="secondary" size="sm" onClick={() => copyToClipboard(output.text_body)}>
-                      Copy Text
-                    </Button>
-                  </div>
+                <div className="flex gap-2">
+                  <Button variant="secondary" size="sm" onClick={() => copyToClipboard(output.html_body)}>
+                    Copy HTML
+                  </Button>
+                  <Button variant="secondary" size="sm" onClick={() => copyToClipboard(output.text_body)}>
+                    Copy Text
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => openInOutlookDraft(output.subject || 'Beacon Update', output.text_body)}
+                  >
+                    Open in Outlook
+                  </Button>
                 </div>
+              </div>
 
                 <div className="space-y-2">
                   <p className="text-sm uppercase tracking-wide text-blue-700 font-semibold">Summary</p>
