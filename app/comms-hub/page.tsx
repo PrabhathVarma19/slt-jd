@@ -6,6 +6,8 @@ import Button from '@/components/ui/button';
 import Input from '@/components/ui/input';
 import Textarea from '@/components/ui/textarea';
 import { CommsMode, CommsAudience, Formality, CommsTemplate } from '@/types/comms';
+import { CommsAgentMode, CommsAgentAudience, CommsAgentTone, CommsAgentResponse } from '@/types/comms-agent';
+import { Spinner } from '@/components/ui/spinner';
 
 interface GeneratedOutput {
   subject: string;
@@ -101,6 +103,19 @@ export default function CommsHubPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [output, setOutput] = useState<GeneratedOutput | null>(null);
+  const [agentMode, setAgentMode] = useState<CommsAgentMode>('incident_update');
+  const [agentAudience, setAgentAudience] = useState<CommsAgentAudience>('org');
+  const [agentTone, setAgentTone] = useState<CommsAgentTone>('neutral');
+  const [ticketId, setTicketId] = useState('');
+  const [incidentTitle, setIncidentTitle] = useState('');
+  const [impact, setImpact] = useState('');
+  const [eta, setEta] = useState('');
+  const [context, setContext] = useState('');
+  const [emailContent, setEmailContent] = useState('');
+  const [desiredOutcome, setDesiredOutcome] = useState('');
+  const [agentOutput, setAgentOutput] = useState<CommsAgentResponse | null>(null);
+  const [agentLoading, setAgentLoading] = useState(false);
+  const [agentError, setAgentError] = useState<string | null>(null);
 
   const toggleSection = (section: string) => {
     setSections((prev) =>
@@ -160,6 +175,54 @@ export default function CommsHubPage() {
     }
   };
 
+  const handleAgentSubmit = async () => {
+    setAgentError(null);
+    setAgentOutput(null);
+    if (agentMode === 'incident_update' && !incidentTitle.trim() && !context.trim()) {
+      setAgentError('Add at least an incident title or context.');
+      return;
+    }
+    if (agentMode === 'reply_assistant' && !emailContent.trim()) {
+      setAgentError('Paste the email content first.');
+      return;
+    }
+    setAgentLoading(true);
+    try {
+      const response = await fetch('/api/comms-hub/agent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          mode: agentMode,
+          tone: agentTone,
+          audience: agentMode === 'incident_update' ? agentAudience : undefined,
+          ticketId: ticketId || undefined,
+          title: incidentTitle || undefined,
+          impact: impact || undefined,
+          eta: eta || undefined,
+          context: context || undefined,
+          emailContent: emailContent || undefined,
+          desiredOutcome: desiredOutcome || undefined,
+        }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Failed to generate comms');
+      }
+      const data = await response.json();
+      setAgentOutput(data);
+    } catch (err: any) {
+      setAgentError(err.message || 'Failed to generate comms');
+    } finally {
+      setAgentLoading(false);
+    }
+  };
+
+  const openInOutlookDraft = (subject: string, body: string) => {
+    const mailto = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailto;
+  };
+
   return (
     <div className="space-y-8">
       <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
@@ -180,6 +243,179 @@ export default function CommsHubPage() {
           >
             ← Back to Home
           </Link>
+        </div>
+        <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm space-y-6">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Comms Agent</p>
+              <h2 className="text-lg font-semibold text-gray-900">Incident updates & reply assistant</h2>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button
+                variant={agentMode === 'incident_update' ? 'primary' : 'secondary'}
+                size="sm"
+                onClick={() => setAgentMode('incident_update')}
+              >
+                Incident update
+              </Button>
+              <Button
+                variant={agentMode === 'reply_assistant' ? 'primary' : 'secondary'}
+                size="sm"
+                onClick={() => setAgentMode('reply_assistant')}
+              >
+                Reply assistant
+              </Button>
+            </div>
+          </div>
+
+          {agentError && (
+            <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+              {agentError}
+            </div>
+          )}
+
+          {agentMode === 'incident_update' ? (
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">Ticket ID (optional)</label>
+                <Input
+                  value={ticketId}
+                  onChange={(e) => setTicketId(e.target.value)}
+                  placeholder="UUID from ticket"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">Audience</label>
+                <div className="flex flex-wrap gap-2">
+                  {(['org', 'team', 'exec'] as CommsAgentAudience[]).map((value) => (
+                    <Button
+                      key={value}
+                      variant={agentAudience === value ? 'primary' : 'secondary'}
+                      size="sm"
+                      onClick={() => setAgentAudience(value)}
+                    >
+                      {value.toUpperCase()}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+              <div className="space-y-2 md:col-span-2">
+                <label className="text-sm font-medium text-gray-700">Incident title</label>
+                <Input
+                  value={incidentTitle}
+                  onChange={(e) => setIncidentTitle(e.target.value)}
+                  placeholder="Short summary of the incident"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">Impact</label>
+                <Input
+                  value={impact}
+                  onChange={(e) => setImpact(e.target.value)}
+                  placeholder="Who/what is impacted"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">ETA / Next update</label>
+                <Input
+                  value={eta}
+                  onChange={(e) => setEta(e.target.value)}
+                  placeholder="Example: Next update in 30 mins"
+                />
+              </div>
+              <div className="space-y-2 md:col-span-2">
+                <label className="text-sm font-medium text-gray-700">Additional context</label>
+                <Textarea
+                  value={context}
+                  onChange={(e) => setContext(e.target.value)}
+                  placeholder="What happened, workaround, or details to include"
+                  rows={4}
+                />
+              </div>
+            </div>
+          ) : (
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="space-y-2 md:col-span-2">
+                <label className="text-sm font-medium text-gray-700">Email content</label>
+                <Textarea
+                  value={emailContent}
+                  onChange={(e) => setEmailContent(e.target.value)}
+                  placeholder="Paste the email you received"
+                  rows={6}
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">Desired outcome</label>
+                <Input
+                  value={desiredOutcome}
+                  onChange={(e) => setDesiredOutcome(e.target.value)}
+                  placeholder="What should the reply achieve?"
+                />
+              </div>
+            </div>
+          )}
+
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-sm text-gray-600">Tone</span>
+            {(['neutral', 'formal', 'casual', 'executive'] as CommsAgentTone[]).map((value) => (
+              <Button
+                key={value}
+                variant={agentTone === value ? 'primary' : 'secondary'}
+                size="sm"
+                onClick={() => setAgentTone(value)}
+              >
+                {value}
+              </Button>
+            ))}
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+            <Button onClick={handleAgentSubmit} disabled={agentLoading}>
+              {agentLoading ? (
+                <>
+                  <Spinner className="mr-2 h-4 w-4" />
+                  Generating...
+                </>
+              ) : (
+                'Generate draft'
+              )}
+            </Button>
+            {agentOutput && (
+              <Button
+                variant="secondary"
+                onClick={() => openInOutlookDraft(agentOutput.subject, agentOutput.body)}
+              >
+                Open in Outlook
+              </Button>
+            )}
+          </div>
+
+          {agentOutput && (
+            <div className="grid gap-4 rounded-lg border border-gray-200 bg-slate-50 p-4">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Subject</p>
+                <p className="text-sm text-gray-900">{agentOutput.subject}</p>
+              </div>
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Summary</p>
+                <p className="text-sm text-gray-900">{agentOutput.summary}</p>
+              </div>
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Draft</p>
+                <pre className="whitespace-pre-wrap text-sm text-gray-900">{agentOutput.body}</pre>
+              </div>
+              {agentOutput.followUpQuestions.length > 0 && (
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Follow-up questions</p>
+                  <ul className="list-disc space-y-1 pl-5 text-sm text-gray-900">
+                    {agentOutput.followUpQuestions.map((question) => (
+                      <li key={question}>{question}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
         </div>
         <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm space-y-6">
           {error && (

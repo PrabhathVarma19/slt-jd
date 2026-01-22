@@ -2,6 +2,7 @@ import OpenAI from 'openai';
 import Anthropic from '@anthropic-ai/sdk';
 import { JDSections, Tone, Seniority, AutocompleteRequest } from '@/types/jd';
 import { CommsRequest, CommsSections, CommsTemplate } from '@/types/comms';
+import { CommsAgentRequest, CommsAgentResponse } from '@/types/comms-agent';
 import { WeeklyBriefRequest, WeeklyBrief } from '@/types/weekly';
 
 const openaiApiKey = process.env.OPENAI_API_KEY;
@@ -654,6 +655,117 @@ Instructions:
   }
 
   throw new Error('No AI provider available. Please set OPENAI_API_KEY or ANTHROPIC_API_KEY.');
+}
+
+export async function generateCommsAgentOutput(
+  request: CommsAgentRequest
+): Promise<CommsAgentResponse> {
+  const {
+    mode,
+    tone,
+    audience,
+    ticketId,
+    title,
+    impact,
+    eta,
+    context,
+    emailContent,
+    desiredOutcome,
+  } = request;
+
+  const systemPrompt = `You are a communications assistant for an enterprise IT org.
+You draft clear, concise internal messages.
+Always return valid JSON with: subject, summary, body, followUpQuestions (array).
+If required details are missing, ask focused follow-up questions in followUpQuestions.`;
+
+  const modeLabel =
+    mode === 'incident_update' ? 'Incident update' : 'Reply assistant';
+  const audienceLabel =
+    audience === 'exec' ? 'Executive' : audience === 'org' ? 'Org-wide' : 'Team';
+  const toneLabel =
+    tone === 'executive' ? 'Executive' : tone === 'formal' ? 'Formal' : tone === 'casual' ? 'Casual' : 'Neutral';
+
+  const userPrompt = `Mode: ${modeLabel}
+Tone: ${toneLabel}
+Audience: ${audienceLabel}
+Ticket ID: ${ticketId || 'None'}
+Title: ${title || 'None'}
+Impact: ${impact || 'None'}
+ETA: ${eta || 'None'}
+Context: ${context || 'None'}
+Email content: ${emailContent || 'None'}
+Desired outcome: ${desiredOutcome || 'None'}
+
+Instructions:
+- If mode is Incident update: draft a status update with a subject + body.
+- If mode is Reply assistant: draft a reply with subject + body.
+- Keep the summary to 2-3 sentences.
+- Ask follow-up questions only when needed (missing key fields).`;
+
+  if (openai) {
+    try {
+      const completion = await openai.chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt },
+        ],
+        response_format: { type: 'json_object' },
+        temperature: 0.4,
+      });
+
+      const content = completion.choices[0]?.message?.content;
+      if (content) {
+        const parsed = JSON.parse(content);
+        return {
+          subject: parsed.subject || '',
+          summary: parsed.summary || '',
+          body: parsed.body || '',
+          followUpQuestions: Array.isArray(parsed.followUpQuestions) ? parsed.followUpQuestions : [],
+        };
+      }
+    } catch (error) {
+      console.error('OpenAI comms agent error:', error);
+    }
+  }
+
+  if (anthropic) {
+    try {
+      const message = await anthropic.messages.create({
+        model: 'claude-3-haiku-20240307',
+        max_tokens: 800,
+        system: systemPrompt,
+        messages: [
+          {
+            role: 'user',
+            content: userPrompt + '\n\nRespond with valid JSON only.',
+          },
+        ],
+      });
+
+      const content = message.content[0];
+      if (content.type === 'text') {
+        const text = content.text.trim();
+        const jsonText = text.replace(/^```json\n?/i, '').replace(/\n?```$/i, '');
+        const parsed = JSON.parse(jsonText);
+        return {
+          subject: parsed.subject || '',
+          summary: parsed.summary || '',
+          body: parsed.body || '',
+          followUpQuestions: Array.isArray(parsed.followUpQuestions) ? parsed.followUpQuestions : [],
+        };
+      }
+    } catch (error) {
+      console.error('Anthropic comms agent error:', error);
+    }
+  }
+
+  return {
+    subject: '',
+    summary: '',
+    body: '',
+    followUpQuestions: ['Provide more context so I can draft a response.'],
+  };
 }
 
 export async function generateWeeklyBriefDraft(request: WeeklyBriefRequest): Promise<WeeklyBrief> {
