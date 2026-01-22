@@ -186,6 +186,9 @@ export default function AdminDashboardPage() {
   const [savingSla, setSavingSla] = useState(false);
   const [autoClosing, setAutoClosing] = useState(false);
   const [runningSlaJob, setRunningSlaJob] = useState(false);
+  const [runningAgentRollup, setRunningAgentRollup] = useState(false);
+  const [runningAgentCleanup, setRunningAgentCleanup] = useState(false);
+  const [runningDashboardRollup, setRunningDashboardRollup] = useState(false);
   const [refreshToken, setRefreshToken] = useState(0);
   const [filters, setFilters] = useState({
     range: '30d',
@@ -508,6 +511,51 @@ export default function AdminDashboardPage() {
       alert(err.message || 'SLA job failed');
     } finally {
       setRunningSlaJob(false);
+    }
+  };
+
+  const handleAgentRollup = async () => {
+    try {
+      setRunningAgentRollup(true);
+      const res = await fetch('/api/admin/agent-logs/rollup?days=30', { method: 'POST' });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Agent rollup failed');
+      }
+    } catch (err: any) {
+      alert(err.message || 'Agent rollup failed');
+    } finally {
+      setRunningAgentRollup(false);
+    }
+  };
+
+  const handleAgentCleanup = async () => {
+    try {
+      setRunningAgentCleanup(true);
+      const res = await fetch('/api/admin/agent-logs/cleanup?days=90', { method: 'POST' });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Agent cleanup failed');
+      }
+    } catch (err: any) {
+      alert(err.message || 'Agent cleanup failed');
+    } finally {
+      setRunningAgentCleanup(false);
+    }
+  };
+
+  const handleDashboardRollup = async () => {
+    try {
+      setRunningDashboardRollup(true);
+      const res = await fetch('/api/admin/analytics/rollup?days=30', { method: 'POST' });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Dashboard rollup failed');
+      }
+    } catch (err: any) {
+      alert(err.message || 'Dashboard rollup failed');
+    } finally {
+      setRunningDashboardRollup(false);
     }
   };
 
@@ -1242,6 +1290,47 @@ export default function AdminDashboardPage() {
               </CardContent>
             </Card>
           </div>
+
+          <Card className="animate-in fade-in slide-in-from-bottom-2">
+            <CardHeader>
+              <CardTitle className="text-lg">Maintenance jobs</CardTitle>
+              <p className="text-sm text-gray-600">
+                Manual rollups until scheduled jobs run on the server.
+              </p>
+            </CardHeader>
+            <CardContent className="grid gap-3 md:grid-cols-3">
+              <Button onClick={handleDashboardRollup} disabled={runningDashboardRollup}>
+                {runningDashboardRollup ? (
+                  <>
+                    <Spinner className="mr-2 h-4 w-4" />
+                    Rolling up dashboards...
+                  </>
+                ) : (
+                  'Run Dashboard Rollup (30 days)'
+                )}
+              </Button>
+              <Button onClick={handleAgentRollup} disabled={runningAgentRollup} variant="outline">
+                {runningAgentRollup ? (
+                  <>
+                    <Spinner className="mr-2 h-4 w-4" />
+                    Rolling up agents...
+                  </>
+                ) : (
+                  'Run Agent Rollup (30 days)'
+                )}
+              </Button>
+              <Button onClick={handleAgentCleanup} disabled={runningAgentCleanup} variant="outline">
+                {runningAgentCleanup ? (
+                  <>
+                    <Spinner className="mr-2 h-4 w-4" />
+                    Cleaning up logs...
+                  </>
+                ) : (
+                  'Run Agent Cleanup (90 days)'
+                )}
+              </Button>
+            </CardContent>
+          </Card>
 
           <Card className="animate-in fade-in slide-in-from-bottom-2">
             <CardHeader className="flex flex-row items-center justify-between">
