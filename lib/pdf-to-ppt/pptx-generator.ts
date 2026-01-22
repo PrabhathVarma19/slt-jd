@@ -18,8 +18,8 @@ function addLogoToSlide(slide: any) {
     try {
       slide.addImage({
         path: LOGO_PATH,
-        x: 0.3,
-        y: 4.8, // Bottom left - slide height is 5.625, so 4.8 gives us space at bottom
+        x: 0.2,
+        y: 5.1, // Bottom left - slide height is 5.625, logo height 0.5, so 5.1 positions it at bottom
         w: 1.5, // Logo width
         h: 0.5, // Logo height (maintains aspect ratio)
       });
@@ -37,50 +37,20 @@ async function generatePptxDefault(slides: Slide[], filename: string): Promise<A
   pptx.layout = 'LAYOUT_WIDE';
   pptx.defineLayout({ name: 'LAYOUT_WIDE', width: 10, height: 5.625 });
 
-  // Title slide - professional cover page design
+  // Title slide - white background
   const titleSlide = pptx.addSlide();
-  
-  // Create diagonal split design: Orange top-left, Blue bottom-right
-  // Orange section (top-left triangle)
-  titleSlide.addShape(pptx.ShapeType.rect, {
-    x: 0,
-    y: 0,
-    w: 6,
-    h: 3.5,
-    fill: { type: 'solid', color: 'F36C24' },
-    rectRadius: 0,
-  });
-  
-  // Blue section (bottom-right)
-  titleSlide.addShape(pptx.ShapeType.rect, {
-    x: 0,
-    y: 3.5,
-    w: 10,
-    h: 2.125,
-    fill: { type: 'solid', color: '0092C5' },
-    rectRadius: 0,
-  });
-  
-  // Blue section (right side)
-  titleSlide.addShape(pptx.ShapeType.rect, {
-    x: 6,
-    y: 0,
-    w: 4,
-    h: 3.5,
-    fill: { type: 'solid', color: '0092C5' },
-    rectRadius: 0,
-  });
+  titleSlide.background = { color: 'FFFFFF' };
 
-  // Large title - white text on orange background
+  // Large title - dark text on white background
   const titleText = filename.replace(/\.pdf$/i, '');
   titleSlide.addText(titleText, {
     x: 0.5,
-    y: 1.5,
-    w: 5.5,
+    y: 2,
+    w: 9,
     h: 1.5,
     fontSize: 52,
-    fontFace: 'Arial',
-    color: 'FFFFFF',
+    fontFace: 'Poppins',
+    color: '00367E',
     bold: true,
     align: 'left',
     valign: 'middle',
@@ -90,16 +60,19 @@ async function generatePptxDefault(slides: Slide[], filename: string): Promise<A
   // Subtitle or decorative element
   titleSlide.addText('Presentation', {
     x: 0.5,
-    y: 3.2,
-    w: 5.5,
+    y: 3.8,
+    w: 9,
     h: 0.5,
     fontSize: 24,
-    fontFace: 'Arial',
-    color: 'FFFFFF',
+    fontFace: 'Poppins',
+    color: '666666',
     align: 'left',
     valign: 'middle',
     opacity: 0.9,
   });
+
+  // Add logo to title slide
+  addLogoToSlide(titleSlide);
 
   // Content slides with varied layouts
   slides.forEach((slide, index) => {
@@ -326,7 +299,7 @@ function createTitleSlide(pptx: any, slide: Slide) {
     w: 9,
     h: 2,
     fontSize: slide.highlight ? 56 : 48,
-    fontFace: 'Arial',
+    fontFace: 'Poppins',
     color: 'FFFFFF',
     bold: true,
     align: 'left',
@@ -358,7 +331,7 @@ function createHighlightSlide(pptx: any, slide: Slide) {
     w: 9,
     h: 1,
     fontSize: 48,
-    fontFace: 'Arial',
+    fontFace: 'Poppins',
     color: 'F36C24',
     bold: true,
     align: 'center',
@@ -410,7 +383,7 @@ function createSectionDividerSlide(pptx: any, slide: Slide) {
     w: 9,
     h: 1.1,
     fontSize: 44,
-    fontFace: 'Arial',
+    fontFace: 'Poppins',
     color: 'FFFFFF',
     bold: true,
     align: 'center',

@@ -61,7 +61,7 @@ export async function extractTextFromPdf(pdfBuffer: Buffer): Promise<string> {
 function isQuote(text: string): boolean {
   return (text.startsWith('"') && text.endsWith('"')) || 
          (text.startsWith("'") && text.endsWith("'")) ||
-         text.match(/^["'].*["']$/);
+         /^["'].*["']$/.test(text);
 }
 
 function isSectionHeader(text: string): boolean {
@@ -268,33 +268,36 @@ function addGroupAsSlide(group: string[], slides: Slide[]) {
 }
 
 // AI-powered slide generation
-async function processPdfWithAI(text: string, filename: string): Promise<Slide[]> {
+async function processPdfWithAI(text: string, filename: string, numSlides?: number): Promise<Slide[]> {
   if (!openai) {
     throw new Error('OpenAI not configured');
   }
 
   const systemPrompt = `You are an expert presentation designer who creates professional, well-structured PowerPoint presentations from PDF content.
 
-Your goal is to understand the content deeply and create a proper presentation deck (like Gamma presentations) - not just a summary, but a well-organized, engaging deck that tells a story.
+Your goal is to understand the content deeply and create a proper presentation deck (like Gamma presentations) - not just a summary, but a well-organized, engaging deck that tells a story with rich, narrative-driven content.
+
+CRITICAL: Create slides with SUBSTANTIAL content - not just bullet points. Each slide should tell part of a story with detailed explanations, context, and insights. Think like Gamma presentations: rich, narrative-driven content that flows naturally.
 
 Guidelines:
-1. Understand the content's meaning, context, and purpose
+1. Understand the content's meaning, context, and purpose deeply
 2. Create professional slide titles that capture key insights
-3. Organize content logically with clear sections
+3. Organize content logically with clear sections that build a narrative
 4. Use varied slide types appropriately:
    - "title": Title slides or important headers (use highlight: true for emphasis)
-   - "content": Standard content slides with bullet points
+   - "content": Rich content slides with detailed bullet points (3-6 substantial points per slide, each 1-2 sentences explaining concepts, not just keywords)
    - "quote": Inspirational or important quotes
    - "two-column": When you have lists of 6+ items
    - "highlight": Important content that needs emphasis
    - "section-divider": Section headers to break up the presentation
-5. Write content that flows naturally - not just extracted text, but rewritten for clarity and impact
-6. Create 10-30 slides depending on content length
-7. Make each slide focused and scannable
+5. Write content that flows naturally - not just extracted text, but rewritten for clarity and impact. Each bullet point should be a complete thought (1-2 sentences), not just a keyword or phrase.
+6. ${numSlides ? `CRITICAL REQUIREMENT: You MUST generate EXACTLY ${numSlides} slides. This is non-negotiable. Count your slides carefully before responding. The JSON response must contain exactly ${numSlides} slides in the "slides" array. Do not generate ${numSlides + 1} or ${numSlides - 1} slides - it must be exactly ${numSlides}.` : 'Create 15-35 slides depending on content length'} - ensure adequate coverage
+7. Make each slide substantial - avoid slides with only 1-2 short bullet points. Aim for 3-6 detailed points per content slide.
+8. Transform raw information into engaging narrative - explain concepts, provide context, and connect ideas.
 
 Return a JSON object with a "slides" array. Each slide should have:
 - title: string (professional, concise title)
-- content: string[] (array of bullet points or content lines)
+- content: string[] (array of detailed bullet points - each should be 1-2 sentences explaining concepts, not just keywords)
 - type: "title" | "content" | "quote" | "two-column" | "highlight" | "section-divider"
 - quote?: string (if type is "quote")
 - attribution?: string (if type is "quote")
@@ -306,8 +309,12 @@ Example response format:
 {
   "slides": [
     {
-      "title": "Introduction",
-      "content": ["Key point 1", "Key point 2"],
+      "title": "Introduction to Key Concepts",
+      "content": [
+        "This presentation explores the fundamental principles that drive modern business transformation, focusing on how organizations adapt to changing market conditions.",
+        "We will examine three core areas: strategic planning, operational efficiency, and customer engagement, each critical to long-term success.",
+        "The insights presented here are based on extensive research and real-world case studies from leading organizations."
+      ],
       "type": "content"
     },
     {
@@ -323,8 +330,18 @@ Example response format:
 ${text.substring(0, 12000)}${text.length > 12000 ? '\n\n[... content truncated for length ...]' : ''}
 
 Filename: ${filename}
+${numSlides ? `\n\n🚨 ABSOLUTE REQUIREMENT: Generate content distributed across EXACTLY ${numSlides} slides. Read the PDF content, understand it, then create ${numSlides} slides with meaningful content. The JSON must have exactly ${numSlides} slides in the array.` : ''}
 
-Analyze the content, understand its structure and meaning, then create a well-organized presentation deck with appropriate slide types and professional titles. Write content that flows naturally and tells a story, not just extracted text.`;
+Analyze the content deeply, understand its structure and meaning, then create a well-organized presentation deck with appropriate slide types and professional titles. 
+
+IMPORTANT: Write rich, narrative-driven content like Gamma presentations:
+- Each content slide should have 3-6 substantial bullet points
+- Each bullet point should be 1-2 complete sentences explaining concepts, not just keywords
+- Transform raw information into engaging narrative with context and explanations
+- Ensure slides tell a story and flow naturally from one to the next
+- Avoid slides with minimal content - make each slide substantial and informative
+
+Write content that flows naturally and tells a story, not just extracted text or simple bullet points.`;
 
   try {
     const completion = await openai.chat.completions.create({
@@ -335,7 +352,7 @@ Analyze the content, understand its structure and meaning, then create a well-or
       ],
       response_format: { type: 'json_object' },
       temperature: 0.7,
-      max_tokens: 4000,
+      max_tokens: numSlides ? Math.min(4000, numSlides * 150) : 4000,
     });
 
     const content = completion.choices[0]?.message?.content;
@@ -344,7 +361,7 @@ Analyze the content, understand its structure and meaning, then create a well-or
       const slides = parsed.slides || [];
       
       // Validate and normalize slides
-      return slides
+      const normalizedSlides = slides
         .filter((slide: any) => slide.title || slide.content?.length > 0)
         .map((slide: any) => ({
           title: slide.title || 'Untitled',
@@ -355,8 +372,50 @@ Analyze the content, understand its structure and meaning, then create a well-or
           leftContent: slide.leftContent,
           rightContent: slide.rightContent,
           highlight: slide.highlight || false,
-        }))
-        .slice(0, 50); // Limit to 50 slides max
+        }));
+      
+      // Strictly enforce slide count if specified - redistribute content intelligently
+      if (numSlides) {
+        console.log(`[PDF Processor] Requested ${numSlides} slides, AI generated ${normalizedSlides.length} slides`);
+        
+        // Collect all content from all slides
+        const allContentItems: string[] = [];
+        const allTitles: string[] = [];
+        
+        normalizedSlides.forEach((slide: any) => {
+          if (slide.content && slide.content.length > 0) {
+            allContentItems.push(...slide.content);
+            allTitles.push(slide.title);
+          } else if (slide.type === 'section-divider' || slide.type === 'title') {
+            // Keep section dividers and title slides
+            allTitles.push(slide.title);
+          }
+        });
+        
+        // Redistribute content into exactly numSlides slides
+        const targetSlides: Slide[] = [];
+        const itemsPerSlide = Math.ceil(allContentItems.length / numSlides);
+        
+        let contentIndex = 0;
+        for (let i = 0; i < numSlides; i++) {
+          const slideContent = allContentItems.slice(contentIndex, contentIndex + itemsPerSlide);
+          contentIndex += itemsPerSlide;
+          
+          // Use original title if available, otherwise generate one
+          const slideTitle = allTitles[i] || allTitles[Math.floor(i * (allTitles.length / numSlides))] || `Slide ${i + 1}`;
+          
+          targetSlides.push({
+            title: slideTitle,
+            content: slideContent,
+            type: 'content',
+          });
+        }
+        
+        console.log(`[PDF Processor] Redistributed content into exactly ${targetSlides.length} slides`);
+        return targetSlides;
+      }
+      
+      return normalizedSlides.slice(0, 50);
     }
   } catch (error) {
     console.error('AI slide generation error:', error);
@@ -366,13 +425,13 @@ Analyze the content, understand its structure and meaning, then create a well-or
   return [];
 }
 
-export async function processPdf(pdfBuffer: Buffer, filename: string, useAI: boolean = true): Promise<Slide[]> {
+export async function processPdf(pdfBuffer: Buffer, filename: string, useAI: boolean = true, numSlides?: number): Promise<Slide[]> {
   const text = await extractTextFromPdf(pdfBuffer);
   
   // Try AI-powered processing first if enabled and API key available
   if (useAI && openai && text.length > 100) {
     try {
-      const aiSlides = await processPdfWithAI(text, filename);
+      const aiSlides = await processPdfWithAI(text, filename, numSlides);
       if (aiSlides && aiSlides.length > 0) {
         return aiSlides;
       }
