@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "node -e \"const fs=require('fs');const p='node_modules/pdf-parse/index.js';let c=fs.readFileSync(p,'utf8');c=c.replace(/let isDebugMode = !module.parent;/g,'let isDebugMode = false;');fs.writeFileSync(p,c);\"",
+    "postinstall": "node -e \"try{const fs=require('fs'),path=require('path');const p=path.join(process.cwd(),'node_modules','pdf-parse','index.js');if(fs.existsSync(p)){let c=fs.readFileSync(p,'utf8');if(c.includes('let isDebugMode = !module.parent;')){c=c.replace(/let isDebugMode = !module.parent;/g,'let isDebugMode = false;');fs.writeFileSync(p,c);console.log('Patched pdf-parse to disable debug mode');}}else{console.log('pdf-parse not found, skipping patch');}}catch(e){console.error('Postinstall patch failed:',e.message);}\"",
     "ingest-policies": "node scripts/ingest-policies.js",
     "normalize-policies": "node scripts/normalize-policies.js",
     "watch-policies": "node scripts/watch-policies.js"
@@ -39,6 +39,7 @@
     "openai": "^4.28.0",
     "pdf-lib": "^1.17.1",
     "pdf-parse": "^1.1.1",
+    "pdf-parse-debugging-disabled": "^1.1.1",
     "pg": "^8.16.3",
     "pptx-automizer": "^0.8.1",
     "pptxgenjs": "^4.0.1",

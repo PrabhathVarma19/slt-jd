@@ -1,5 +1,6 @@
 import { Slide } from '@/types/pdf-to-ppt';
 import OpenAI from 'openai';
+import * as path from 'path';
 
 const openaiApiKey = process.env.OPENAI_API_KEY;
 const openai = openaiApiKey ? new OpenAI({ apiKey: openaiApiKey }) : null;
@@ -12,27 +13,34 @@ async function getPdfParse(): Promise<any> {
     return pdfParseModule;
   }
 
+  // Try pdf-parse-debugging-disabled first (has debug mode disabled)
+  // This package is identical to pdf-parse but with debug mode hardcoded to false
   try {
-    // Dynamic import to avoid build-time issues with pdf-parse test files
-    // The pdf-parse library has debug code that tries to access test files
-    // when module.parent is falsy (which happens in serverless/production)
-    // We catch and ignore those errors during import
+    const disabledModule = await import('pdf-parse-debugging-disabled');
+    pdfParseModule = disabledModule.default || disabledModule;
+    if (pdfParseModule) {
+      return pdfParseModule;
+    }
+  } catch {
+    // Fall through to regular pdf-parse if disabled version isn't available
+  }
+
+  // Fallback to regular pdf-parse with error handling
+  try {
     const importedModule = await import('pdf-parse');
     pdfParseModule = importedModule.default || importedModule;
     return pdfParseModule;
   } catch (importError: any) {
-    // If import fails, it might be due to test file access during module load
-    // Try to continue anyway - the actual parsing might still work
     const errorMsg = importError?.message || '';
     if (errorMsg.includes('ENOENT') && errorMsg.includes('test')) {
-      // Try to get the module anyway - sometimes it loads despite the error
+      // Retry after a delay
+      await new Promise(resolve => setTimeout(resolve, 200));
       try {
         const importedModule = await import('pdf-parse');
         pdfParseModule = importedModule.default || importedModule;
         return pdfParseModule;
       } catch {
-        // If it still fails, throw the original error
-        throw importError;
+        throw new Error(`PDF parsing library failed to initialize: ${errorMsg}`);
       }
     }
     throw importError;
