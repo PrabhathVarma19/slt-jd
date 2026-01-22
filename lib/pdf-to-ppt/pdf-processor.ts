@@ -5,41 +5,38 @@ const openaiApiKey = process.env.OPENAI_API_KEY;
 const openai = openaiApiKey ? new OpenAI({ apiKey: openaiApiKey }) : null;
 
 export async function extractTextFromPdf(pdfBuffer: Buffer): Promise<string> {
-  // #region agent log
-  fetch('http://127.0.0.1:7243/ingest/7f74fb16-5e81-4704-9c2c-1a3dd73f3bf3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'pdf-processor.ts:3',message:'extractTextFromPdf entry',data:{bufferSize:pdfBuffer.length,bufferStart:Array.from(pdfBuffer.slice(0,20)).map(b=>b.toString(16).padStart(2,'0')).join(' '),isValidPdfHeader:pdfBuffer.slice(0,4).toString()==='%PDF'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-  // #endregion
+  let pdfParse: any;
+  
   try {
     // Dynamic import to avoid build-time issues with pdf-parse test files
-    // #region agent log
-    fetch('http://127.0.0.1:7243/ingest/7f74fb16-5e81-4704-9c2c-1a3dd73f3bf3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'pdf-processor.ts:6',message:'Before dynamic import',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'F'})}).catch(()=>{});
-    // #endregion
-    const pdfParse = (await import('pdf-parse')).default;
-    // #region agent log
-    fetch('http://127.0.0.1:7243/ingest/7f74fb16-5e81-4704-9c2c-1a3dd73f3bf3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'pdf-processor.ts:7',message:'After dynamic import',data:{pdfParseExists:!!pdfParse},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'F'})}).catch(()=>{});
-    // #endregion
-    // #region agent log
-    fetch('http://127.0.0.1:7243/ingest/7f74fb16-5e81-4704-9c2c-1a3dd73f3bf3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'pdf-processor.ts:8',message:'Before pdfParse call',data:{bufferSize:pdfBuffer.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-    // #endregion
+    // Wrap import in try-catch to handle initialization errors
+    try {
+      pdfParse = (await import('pdf-parse')).default;
+    } catch (importError: any) {
+      // If import fails due to test file access, wait a bit and retry
+      if (importError?.message?.includes('ENOENT') || importError?.message?.includes('test')) {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        pdfParse = (await import('pdf-parse')).default;
+      } else {
+        throw importError;
+      }
+    }
+    
     const data = await pdfParse(pdfBuffer);
-    // #region agent log
-    fetch('http://127.0.0.1:7243/ingest/7f74fb16-5e81-4704-9c2c-1a3dd73f3bf3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'pdf-processor.ts:9',message:'After pdfParse call',data:{textLength:data?.text?.length||0,hasText:!!data?.text,textPreview:data?.text?.substring(0,100)||''},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
-    // #endregion
     return data.text || '';
   } catch (error: any) {
-    // #region agent log
-    fetch('http://127.0.0.1:7243/ingest/7f74fb16-5e81-4704-9c2c-1a3dd73f3bf3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'pdf-processor.ts:10',message:'Error caught',data:{errorMessage:error?.message||'unknown',errorName:error?.name||'unknown',errorStack:error?.stack?.substring(0,200)||'',isEncrypted:error?.message?.toLowerCase().includes('password')||error?.message?.toLowerCase().includes('encrypted')||false,isTestFileError:error?.message?.includes('test')||error?.message?.includes('ENOENT')||false},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B,C'})}).catch(()=>{});
-    // #endregion
-    
     // Handle pdf-parse internal test file access errors
-    // pdf-parse sometimes tries to access test files during initialization
-    if (error?.message?.includes('ENOENT') && error?.message?.includes('test')) {
+    // pdf-parse sometimes tries to access test files during initialization or parsing
+    const errorMsg = error?.message || '';
+    const isTestFileError = errorMsg.includes('ENOENT') && 
+                           (errorMsg.includes('test') || errorMsg.includes('05-versions-space.pdf'));
+    
+    if (isTestFileError) {
       // Retry: re-import and parse (sometimes works after module initialization completes)
       try {
-        const pdfParse = (await import('pdf-parse')).default;
+        await new Promise(resolve => setTimeout(resolve, 200));
+        pdfParse = (await import('pdf-parse')).default;
         const data = await pdfParse(pdfBuffer);
-        // #region agent log
-        fetch('http://127.0.0.1:7243/ingest/7f74fb16-5e81-4704-9c2c-1a3dd73f3bf3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'pdf-processor.ts:34',message:'Retry successful after test file error',data:{textLength:data?.text?.length||0},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'F'})}).catch(()=>{});
-        // #endregion
         return data.text || '';
       } catch (retryError: any) {
         // If retry also fails, provide helpful error message
@@ -48,7 +45,6 @@ export async function extractTextFromPdf(pdfBuffer: Buffer): Promise<string> {
     }
     
     // Handle other errors
-    const errorMsg = error?.message || 'Unknown error';
     if (errorMsg.toLowerCase().includes('password') || errorMsg.toLowerCase().includes('encrypted')) {
       throw new Error('PDF is password-protected or encrypted. Please provide an unencrypted PDF.');
     }
