@@ -81,11 +81,12 @@ async function getPdfParse(): Promise<any> {
 async function extractTextWithPdfJs(pdfBuffer: Buffer): Promise<string> {
   try {
     // Use legacy build for Node.js/serverless environments
-    const pdfjsLib = await import('pdfjs-dist/legacy/build/pdf');
+    const pdfjsLib = await import('pdfjs-dist');
     
-    // Disable workers for serverless - set to null
+    // Set worker source using data URI (works in serverless)
     if (typeof window === 'undefined') {
-      pdfjsLib.GlobalWorkerOptions.workerSrc = null as any;
+      const workerCode = Buffer.from('self.onmessage=function(){};').toString('base64');
+      pdfjsLib.GlobalWorkerOptions.workerSrc = `data:application/javascript;base64,${workerCode}`;
     }
     
     const uint8Array = new Uint8Array(pdfBuffer);
