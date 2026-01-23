@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import Button from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
@@ -15,11 +15,13 @@ export default function PdfToPptPage() {
   const [htmlPreview, setHtmlPreview] = useState<string | null>(null);
   const [pptxBase64, setPptxBase64] = useState<string | null>(null);
   const [pptxFilename, setPptxFilename] = useState<string>('');
-  const [numSlides, setNumSlides] = useState<number>(20);
-  const [numSlidesInput, setNumSlidesInput] = useState<string>('20');
+  const [numSlides, setNumSlides] = useState<number>(10);
+  const [numSlidesInput, setNumSlidesInput] = useState<string>('10');
   const [totalSlides, setTotalSlides] = useState<number>(0);
+  const [extractionMode, setExtractionMode] = useState<'extract' | 'ai'>('ai');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<number>(0);
 
   const handleFileSelect = (selectedFile: File) => {
     // Validate file type
@@ -28,9 +30,9 @@ export default function PdfToPptPage() {
       return;
     }
 
-    // Validate file size (10MB)
-    if (selectedFile.size > 10 * 1024 * 1024) {
-      setError('File size exceeds 10MB limit. Please upload a smaller file.');
+    // Validate file size (25MB)
+    if (selectedFile.size > 25 * 1024 * 1024) {
+      setError('File size exceeds 25MB limit. Please upload a smaller file.');
       return;
     }
 
@@ -67,6 +69,110 @@ export default function PdfToPptPage() {
     }
   };
 
+  // Split file into chunks
+  const chunkFile = useCallback((file: File, chunkSize: number = 4 * 1024 * 1024): Blob[] => {
+    const chunks: Blob[] = [];
+    let start = 0;
+    
+    while (start < file.size) {
+      const end = Math.min(start + chunkSize, file.size);
+      chunks.push(file.slice(start, end));
+      start = end;
+    }
+    
+    return chunks;
+  }, []);
+
+  // Upload file using chunked upload
+  const uploadChunked = useCallback(async (file: File, numSlides: number, extractionMode: 'extract' | 'ai', progressCallback: (progress: number) => void): Promise<any> => {
+    const chunks = chunkFile(file);
+    const sessionId = crypto.randomUUID();
+    
+    for (let i = 0; i < chunks.length; i++) {
+      const formData = new FormData();
+      formData.append('chunk', chunks[i]);
+      formData.append('sessionId', sessionId);
+      formData.append('chunkIndex', i.toString());
+      formData.append('totalChunks', chunks.length.toString());
+      formData.append('filename', file.name);
+      formData.append('extractionMode', extractionMode);
+      if (numSlides) {
+        formData.append('numSlides', numSlides.toString());
+      }
+      
+      const response = await fetch('/api/pdf-to-ppt/chunk', {
+        method: 'POST',
+        body: formData,
+      });
+
+      // Check response status before parsing JSON
+      if (!response.ok) {
+        let errorMessage = 'Chunk upload failed';
+        const contentType = response.headers.get('content-type');
+        
+        if (contentType?.includes('application/json')) {
+          const errorData = await response.json();
+          errorMessage = errorData.error || errorMessage;
+        } else {
+          const errorText = await response.text();
+          errorMessage = errorText || errorMessage;
+        }
+        
+        throw new Error(errorMessage);
+      }
+      
+      const data = await response.json();
+      
+      // If this was the final chunk, return the result
+      if (data.slides) {
+        return data;
+      }
+      
+      // Update progress
+      progressCallback(((i + 1) / chunks.length) * 100);
+    }
+    
+    throw new Error('Upload completed but no result received');
+  }, [chunkFile]);
+
+  // Upload file directly (for files <4MB)
+  const uploadDirect = useCallback(async (file: File, numSlides: number): Promise<any> => {
+    const formData = new FormData();
+    formData.append('file', file);
+    if (numSlides && numSlides >= 5 && numSlides <= 25) {
+      formData.append('numSlides', numSlides.toString());
+    }
+
+    const response = await fetch('/api/pdf-to-ppt', {
+      method: 'POST',
+      body: formData,
+    });
+
+    // Check response status before parsing JSON
+    if (!response.ok) {
+      let errorMessage = 'Failed to convert PDF to PowerPoint';
+      const contentType = response.headers.get('content-type');
+      
+      if (contentType?.includes('application/json')) {
+        const errorData = await response.json();
+        errorMessage = errorData.error || errorMessage;
+      } else {
+        // Handle plain text errors (413, etc.)
+        const errorText = await response.text();
+        if (response.status === 413 || errorText.includes('payload too large') || errorText.includes('Content Too Large')) {
+          errorMessage = 'File is too large. Please try again - the system will automatically use chunked upload for large files.';
+        } else {
+          errorMessage = errorText || errorMessage;
+        }
+      }
+      
+      throw new Error(errorMessage);
+    }
+
+    const data = await response.json();
+    return data;
+  }, []);
+
   const handleGenerate = async () => {
     if (!file) {
       setError('Please select a PDF file first.');
@@ -76,45 +182,37 @@ export default function PdfToPptPage() {
     // Validate and normalize numSlides before submitting
     let validatedNumSlides = numSlides;
     const inputValue = parseInt(numSlidesInput, 10);
-    if (!isNaN(inputValue) && inputValue >= 5 && inputValue <= 50) {
+    if (!isNaN(inputValue) && inputValue >= 5 && inputValue <= 25) {
       validatedNumSlides = inputValue;
       setNumSlides(inputValue);
       setNumSlidesInput(inputValue.toString());
     } else {
       // Use default if invalid
-      validatedNumSlides = 20;
-      setNumSlides(20);
-      setNumSlidesInput('20');
+      validatedNumSlides = 10;
+      setNumSlides(10);
+      setNumSlidesInput('10');
     }
 
     setIsLoading(true);
     setError(null);
+    setUploadProgress(0);
 
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-      if (validatedNumSlides && validatedNumSlides >= 5 && validatedNumSlides <= 50) {
-        formData.append('numSlides', validatedNumSlides.toString());
-      }
-
-      const response = await fetch('/api/pdf-to-ppt', {
-        method: 'POST',
-        body: formData,
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to convert PDF to PowerPoint');
-      }
+      // Use chunked upload for files >4MB (Vercel limit is 4.5MB)
+      const CHUNK_THRESHOLD = 4 * 1024 * 1024; // 4MB
+      const data = file.size > CHUNK_THRESHOLD
+        ? await uploadChunked(file, validatedNumSlides, extractionMode, setUploadProgress)
+        : await uploadDirect(file, validatedNumSlides, extractionMode);
 
       setSlides(data.slides || []);
       setHtmlPreview(data.htmlPreview || null);
       setPptxBase64(data.pptxBase64 || null);
       setPptxFilename(data.filename || 'presentation.pptx');
       setTotalSlides(data.totalSlides || data.slides.length + 1);
+      setUploadProgress(100);
     } catch (err: any) {
       setError(err.message || 'Failed to convert PDF to PowerPoint');
+      setUploadProgress(0);
     } finally {
       setIsLoading(false);
     }
@@ -168,7 +266,7 @@ export default function PdfToPptPage() {
         <Card className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
           <CardHeader className="space-y-1">
             <CardTitle className="text-xl">Upload PDF</CardTitle>
-            <CardDescription>Select a PDF file (max 10MB) to convert to PowerPoint</CardDescription>
+            <CardDescription>Select a PDF file (max 25MB) to convert to PowerPoint</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             {error && (
@@ -230,6 +328,41 @@ export default function PdfToPptPage() {
             </div>
 
             <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">
+                Content Extraction Mode
+              </label>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setExtractionMode('extract')}
+                  className={`flex-1 rounded-md border px-4 py-2 text-sm font-medium transition ${
+                    extractionMode === 'extract'
+                      ? 'border-blue-500 bg-blue-50 text-blue-700'
+                      : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
+                  }`}
+                >
+                  Extract as is
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setExtractionMode('ai')}
+                  className={`flex-1 rounded-md border px-4 py-2 text-sm font-medium transition ${
+                    extractionMode === 'ai'
+                      ? 'border-blue-500 bg-blue-50 text-blue-700'
+                      : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
+                  }`}
+                >
+                  AI Based
+                </button>
+              </div>
+              <p className="text-xs text-gray-500">
+                {extractionMode === 'extract' 
+                  ? 'Extract content directly from PDF without AI processing'
+                  : 'Use AI to generate narrative, story-driven slides'}
+              </p>
+            </div>
+
+            <div className="space-y-2">
               <label htmlFor="numSlides" className="block text-sm font-medium text-gray-700">
                 Number of Slides (optional)
               </label>
@@ -237,7 +370,7 @@ export default function PdfToPptPage() {
                 id="numSlides"
                 type="number"
                 min="5"
-                max="50"
+                max="25"
                 value={numSlidesInput}
                 onChange={(e) => {
                   const value = e.target.value;
@@ -245,7 +378,7 @@ export default function PdfToPptPage() {
                   setNumSlidesInput(value);
                   // Also update numSlides if valid, but don't reset if invalid
                   const numValue = parseInt(value, 10);
-                  if (!isNaN(numValue) && numValue >= 5 && numValue <= 50) {
+                  if (!isNaN(numValue) && numValue >= 5 && numValue <= 25) {
                     setNumSlides(numValue);
                   }
                 }}
@@ -253,15 +386,15 @@ export default function PdfToPptPage() {
                   const inputValue = e.target.value.trim();
                   if (inputValue === '') {
                     // Reset to default if empty
-                    setNumSlidesInput('20');
-                    setNumSlides(20);
+                    setNumSlidesInput('10');
+                    setNumSlides(10);
                     return;
                   }
                   
                   const value = parseInt(inputValue, 10);
-                  if (isNaN(value) || value < 5 || value > 50) {
+                  if (isNaN(value) || value < 5 || value > 25) {
                     // Clamp to valid range instead of resetting
-                    const clampedValue = Math.min(Math.max(value || 20, 5), 50);
+                    const clampedValue = Math.min(Math.max(value || 10, 5), 25);
                     setNumSlidesInput(clampedValue.toString());
                     setNumSlides(clampedValue);
                   } else {
@@ -277,12 +410,21 @@ export default function PdfToPptPage() {
                   }
                 }}
                 className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                placeholder="20"
+                placeholder="10"
               />
               <p className="text-xs text-gray-500">
-                Specify the desired number of slides (5-50). Default is 20 for automatic generation.
+                Specify the desired number of slides (5-25). Default is 10 for automatic generation.
               </p>
             </div>
+
+            {isLoading && uploadProgress > 0 && uploadProgress < 100 && (
+              <div className="w-full bg-gray-200 rounded-full h-2.5">
+                <div
+                  className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
+                  style={{ width: `${uploadProgress}%` }}
+                />
+              </div>
+            )}
 
             <Button
               onClick={handleGenerate}
@@ -292,7 +434,9 @@ export default function PdfToPptPage() {
               {isLoading ? (
                 <>
                   <Spinner className="mr-2 h-4 w-4" />
-                  Generating PowerPoint...
+                  {uploadProgress > 0 && uploadProgress < 100
+                    ? `Uploading... ${Math.round(uploadProgress)}%`
+                    : 'Generating PowerPoint...'}
                 </>
               ) : (
                 'Generate PowerPoint'

@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { processPdf } from '@/lib/pdf-to-ppt/pdf-processor';
+import { processPdf, extractTitleFromPdf } from '@/lib/pdf-to-ppt/pdf-processor';
 import { generatePptx } from '@/lib/pdf-to-ppt/pptx-generator';
 import { generateHtmlPreview } from '@/lib/pdf-to-ppt/html-generator';
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const MAX_FILE_SIZE = 25 * 1024 * 1024; // 25MB
+
+// Required for Next.js App Router
+export const dynamic = 'force-dynamic';
+export const maxDuration = 300; // Vercel Pro plan limit
 
 export async function POST(req: NextRequest) {
   // #region agent log
@@ -14,6 +18,8 @@ export async function POST(req: NextRequest) {
     const file = formData.get('file') as File;
     const numSlidesParam = formData.get('numSlides') as string | null;
     const numSlides = numSlidesParam ? parseInt(numSlidesParam, 10) : undefined;
+    const extractionModeParam = formData.get('extractionMode') as string | null;
+    const extractionMode = (extractionModeParam === 'extract' || extractionModeParam === 'ai') ? extractionModeParam : 'ai';
     const template = (formData.get('template') as string) || 'trianz';
     // #region agent log
     fetch('http://127.0.0.1:7243/ingest/7f74fb16-5e81-4704-9c2c-1a3dd73f3bf3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'route.ts:11',message:'File received',data:{fileName:file?.name||'none',fileSize:file?.size||0,fileType:file?.type||'none',numSlides},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
@@ -46,17 +52,21 @@ export async function POST(req: NextRequest) {
     fetch('http://127.0.0.1:7243/ingest/7f74fb16-5e81-4704-9c2c-1a3dd73f3bf3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'route.ts:35',message:'Buffer created',data:{bufferSize:buffer.length,arrayBufferSize:arrayBuffer.byteLength,firstBytes:Array.from(buffer.slice(0,20)).map(b=>b.toString(16).padStart(2,'0')).join(' '),isPdfHeader:buffer.slice(0,4).toString()==='%PDF'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
     // #endregion
 
+    // Extract title from PDF
+    const extractedTitle = await extractTitleFromPdf(buffer, file.name);
+
     // Process PDF
     // #region agent log
     fetch('http://127.0.0.1:7243/ingest/7f74fb16-5e81-4704-9c2c-1a3dd73f3bf3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'route.ts:38',message:'Before processPdf call',data:{bufferSize:buffer.length,fileName:file.name},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
     // #endregion
-    const slides = await processPdf(buffer, file.name, true, numSlides); // Use AI by default
+    const useAI = extractionMode !== 'extract';
+    const slides = await processPdf(buffer, file.name, useAI, numSlides);
 
-    // Generate PPTX
+    // Generate PPTX with extracted title
     // #region agent log
     fetch('http://127.0.0.1:7243/ingest/7f74fb16-5e81-4704-9c2c-1a3dd73f3bf3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'route.ts:41',message:'Before generatePptx call',data:{slidesCount:slides?.length||0},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
     // #endregion
-    const pptxBuffer = await generatePptx(slides, file.name);
+    const pptxBuffer = await generatePptx(slides, file.name, extractedTitle);
 
     // Generate HTML preview
     const htmlPreview = generateHtmlPreview(slides, file.name);
