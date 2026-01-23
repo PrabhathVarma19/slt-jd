@@ -277,7 +277,7 @@ function splitIntoColumns(items: string[]): { left: string[]; right: string[] } 
   };
 }
 
-export function splitTextIntoSlides(text: string, filename: string): Slide[] {
+export function splitTextIntoSlides(text: string, filename: string, images?: PdfImage[]): Slide[] {
   if (!text.trim()) {
     throw new Error('PDF appears to be empty or contains no extractable text.');
   }
@@ -390,6 +390,44 @@ export function splitTextIntoSlides(text: string, filename: string): Slide[] {
   // Limit to reasonable number of slides (max 50)
   if (slides.length > 50) {
     return slides.slice(0, 50);
+  }
+
+  // Distribute images sequentially across slides (for "extract as is" mode)
+  if (images && images.length > 0) {
+    console.log(`[PDF Processor] Distributing ${images.length} images across ${slides.length} slides in extract-as-is mode`);
+    
+    // Skip section-divider slides when distributing images (they're usually headers)
+    const contentSlides = slides.filter((slide, index) => {
+      // Include all slides except section dividers, but prioritize content slides
+      return slide.type !== 'section-divider';
+    });
+    
+    if (contentSlides.length > 0) {
+      // Distribute images sequentially, cycling if there are more images than slides
+      let imageIndex = 0;
+      for (let i = 0; i < slides.length; i++) {
+        const slide = slides[i];
+        // Only add images to content slides (not section dividers)
+        if (slide.type !== 'section-divider' && imageIndex < images.length) {
+          if (!slide.images) {
+            slide.images = [];
+          }
+          slide.images.push(images[imageIndex]);
+          imageIndex++;
+          // Cycle back if we've used all images but have more slides
+          if (imageIndex >= images.length && i < slides.length - 1) {
+            imageIndex = 0;
+          }
+        }
+      }
+      console.log(`[PDF Processor] Assigned images to slides in extract-as-is mode`);
+    } else {
+      // If all slides are section dividers, just add images to the first slide
+      if (slides.length > 0 && images.length > 0) {
+        slides[0].images = [images[0]];
+        console.log(`[PDF Processor] All slides are section dividers, added first image to first slide`);
+      }
+    }
   }
 
   return slides;
@@ -900,11 +938,12 @@ export async function processPdf(pdfBuffer: Buffer, filename: string, useAI: boo
   let isScannedPdf = false;
   
   // Extract images from PDF (for text-based PDFs with embedded images)
+  // Skip AI analysis in "extract as is" mode
   const extractedImages: PdfImage[] = [];
   try {
-    const images = await extractImagesFromPdf(pdfBuffer);
+    const images = await extractImagesFromPdf(pdfBuffer, !useAI); // Skip analysis if not using AI
     extractedImages.push(...images);
-    console.log(`[PDF Processor] Extracted ${extractedImages.length} images from PDF`);
+    console.log(`[PDF Processor] Extracted ${extractedImages.length} images from PDF${!useAI ? ' (without AI analysis)' : ''}`);
   } catch (error) {
     console.log('[PDF Processor] Image extraction failed, continuing without images:', error);
     // Continue without images - not critical
@@ -961,8 +1000,9 @@ export async function processPdf(pdfBuffer: Buffer, filename: string, useAI: boo
     }
   }
   
-  // Fallback to pattern-based processing
-  return splitTextIntoSlides(text, filename);
+  // Fallback to pattern-based processing (extract as is mode)
+  // Pass extracted images so they can be included in slides
+  return splitTextIntoSlides(text, filename, extractedImages.length > 0 ? extractedImages : undefined);
 }
 
 // Extract images from PDF using pdf-lib's page resources
@@ -1016,7 +1056,7 @@ async function analyzeImageWithVision(imageData: string): Promise<string> {
   }
 }
 
-export async function extractImagesFromPdf(pdfBuffer: Buffer): Promise<PdfImage[]> {
+export async function extractImagesFromPdf(pdfBuffer: Buffer, skipAnalysis: boolean = false): Promise<PdfImage[]> {
   const images: PdfImage[] = [];
   
   try {
@@ -1376,8 +1416,8 @@ export async function extractImagesFromPdf(pdfBuffer: Buffer): Promise<PdfImage[
     
     console.log(`[Image Extract] Extracted ${images.length} images from PDF using pdf-lib`);
     
-    // Analyze images with vision API to get descriptions
-    if (images.length > 0 && openai) {
+    // Analyze images with vision API to get descriptions (skip in "extract as is" mode)
+    if (!skipAnalysis && images.length > 0 && openai) {
       console.log(`[Image Extract] Analyzing ${images.length} images with OpenAI vision...`);
       for (let i = 0; i < images.length; i++) {
         const image = images[i];
@@ -1392,6 +1432,8 @@ export async function extractImagesFromPdf(pdfBuffer: Buffer): Promise<PdfImage[
         }
       }
       console.log(`[Image Extract] Completed analysis of ${images.length} images`);
+    } else if (skipAnalysis) {
+      console.log(`[Image Extract] Skipping AI analysis (extract as is mode) - ${images.length} images will be included without descriptions`);
     }
     
     return images;
