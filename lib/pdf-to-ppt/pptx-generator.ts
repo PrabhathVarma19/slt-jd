@@ -6,9 +6,9 @@ import * as path from 'path';
 // Logo path - Trianz logo for bottom left of slides
 const LOGO_PATH = path.join(process.cwd(), 'public', 'trianz-logo-horizontal.png');
 
-export async function generatePptx(slides: Slide[], filename: string): Promise<ArrayBuffer> {
+export async function generatePptx(slides: Slide[], filename: string, title?: string): Promise<ArrayBuffer> {
   // Always use default generation with logo and Poppins font
-  return generatePptxDefault(slides, filename);
+  return generatePptxDefault(slides, filename, title);
 }
 
 // Helper function to add Trianz logo to bottom left of a slide
@@ -20,7 +20,7 @@ function addLogoToSlide(slide: any) {
         path: LOGO_PATH,
         x: 0.2,
         y: 7.0, // Logo position as requested - note: slide height is 5.625, so this may be clipped
-        w: 0.9375, // Logo width: 50% reduction (1.5 -> 0.75) then 25% increase (0.75 * 1.25 = 0.9375)
+        w: 1.1, // Logo width: 50% reduction (1.5 -> 0.75) then 25% increase (0.75 * 1.25 = 0.9375)
         h: 0.25, // Logo height: 50% reduction (0.5 -> 0.25)
       });
     } catch (err) {
@@ -30,7 +30,7 @@ function addLogoToSlide(slide: any) {
 }
 
 
-async function generatePptxDefault(slides: Slide[], filename: string): Promise<ArrayBuffer> {
+async function generatePptxDefault(slides: Slide[], filename: string, extractedTitle?: string): Promise<ArrayBuffer> {
   const pptx = new pptxgen();
 
   // Set slide size (standard 16:9)
@@ -41,8 +41,8 @@ async function generatePptxDefault(slides: Slide[], filename: string): Promise<A
   const titleSlide = pptx.addSlide();
   titleSlide.background = { color: 'FFFFFF' };
 
-  // Large title - dark text on white background
-  const titleText = filename.replace(/\.pdf$/i, '');
+  // Use extracted title if available, otherwise use filename
+  const titleText = extractedTitle || filename.replace(/\.pdf$/i, '');
   titleSlide.addText(titleText, {
     x: 0.5,
     y: 2,
@@ -63,6 +63,7 @@ async function generatePptxDefault(slides: Slide[], filename: string): Promise<A
   // Content slides with varied layouts
   slides.forEach((slide, index) => {
     const slideType = slide.type || 'content';
+    console.log(`[PPTX Generator] Processing slide ${index + 1}: "${slide.title}", type: ${slideType}, images: ${slide.images?.length || 0}`);
     
     switch (slideType) {
       case 'quote':
@@ -110,35 +111,124 @@ function createContentSlide(pptx: any, slide: Slide) {
       y: 0.3,
       w: 9,
       h: 0.8,
-      fontSize: 40,
+      fontSize: 25,
       fontFace: 'Poppins',
       color: '00367E',
       bold: true,
       align: 'left',
       valign: 'top',
-      lineSpacing: 36,
+      lineSpacing: 30,
     });
   }
 
-  // Content - use single text box with all bullets to prevent overlapping
-  if (slide.content && slide.content.length > 0) {
-    // Join all bullet points with newlines - pptxgenjs handles wrapping automatically
-    const bulletText = slide.content.join('\n');
-    
-    contentSlide.addText(bulletText, {
-      x: 0.7,
-      y: 1.4,
-      w: 8.6,
-      h: 3.5, // Fixed height - let text wrap naturally within this space
-      fontSize: 20,
-      fontFace: 'Poppins',
-      color: '090909',
-      align: 'left',
-      valign: 'top',
-      bullet: true,
-      lineSpacing: 32, // Increased spacing between lines
-      paraSpaceAfter: 8, // Space after each paragraph/bullet
-    });
+  // Add images if present (before content to position them properly)
+  if (slide.images && slide.images.length > 0) {
+    console.log(`[PPTX Generator] Adding ${slide.images.length} image(s) to slide: "${slide.title}"`);
+    // Add first image (can be expanded to handle multiple images)
+    const image = slide.images[0];
+    try {
+      console.log(`[PPTX Generator] Image data length: ${image.data?.length || 0}, format: ${image.data?.substring(0, 30)}`);
+      
+      // pptxgenjs requires base64 string with MIME type prefix (e.g., "image/png;base64,...")
+      // Our data URI format is "data:image/png;base64,...", so we need to remove "data:" prefix
+      let imageDataString = image.data;
+      if (imageDataString.startsWith('data:')) {
+        // Remove "data:" prefix, keep "image/png;base64,..."
+        imageDataString = imageDataString.substring(5);
+        console.log(`[PPTX Generator] Converted data URI to pptxgenjs format, length: ${imageDataString.length}`);
+      }
+      
+      // Calculate image dimensions maintaining aspect ratio
+      const maxWidth = 4; // Max width in inches
+      const maxHeight = 3; // Max height in inches
+      const aspectRatio = image.width / image.height;
+      
+      let imgWidth = maxWidth;
+      let imgHeight = maxWidth / aspectRatio;
+      
+      if (imgHeight > maxHeight) {
+        imgHeight = maxHeight;
+        imgWidth = maxHeight * aspectRatio;
+      }
+      
+      // Position image on the right side
+      console.log(`[PPTX Generator] Adding image to slide at x: ${10 - imgWidth - 0.5}, y: 1.4, w: ${imgWidth}, h: ${imgHeight}`);
+      
+      // pptxgenjs requires data as base64 string with MIME type prefix
+      contentSlide.addImage({
+        data: imageDataString, // Format: "image/png;base64,..." or "image/jpeg;base64,..."
+        x: 10 - imgWidth - 0.5, // Right side with margin
+        y: 1.4,
+        w: imgWidth,
+        h: imgHeight,
+      });
+      console.log(`[PPTX Generator] ✓ Image added successfully to slide`);
+      
+      // Adjust content width to make room for image
+      const contentWidth = 10 - imgWidth - 1.2; // Leave space for image
+      
+      // Content - use single text box with all bullets
+      if (slide.content && slide.content.length > 0) {
+        const bulletText = slide.content.join('\n');
+        contentSlide.addText(bulletText, {
+          x: 0.7,
+          y: 1.4,
+          w: contentWidth,
+          h: 3.5,
+          fontSize: 14,
+          fontFace: 'Poppins',
+          color: '090909',
+          align: 'left',
+          valign: 'top',
+          bullet: true,
+          lineSpacing: 20,
+          paraSpaceAfter: 6,
+        });
+      }
+    } catch (imageError: any) {
+      console.error('[PPTX Generator] Error adding image to slide:', imageError);
+      console.error('[PPTX Generator] Error message:', imageError?.message);
+      console.error('[PPTX Generator] Error stack:', imageError?.stack);
+      // Fall back to content without image
+      if (slide.content && slide.content.length > 0) {
+        const bulletText = slide.content.join('\n');
+        contentSlide.addText(bulletText, {
+          x: 0.7,
+          y: 1.4,
+          w: 8.6,
+          h: 3.5,
+          fontSize: 14,
+          fontFace: 'Poppins',
+          color: '090909',
+          align: 'left',
+          valign: 'top',
+          bullet: true,
+          lineSpacing: 32,
+          paraSpaceAfter: 8,
+        });
+      }
+    }
+  } else {
+    // No images - use full width for content
+    if (slide.content && slide.content.length > 0) {
+      // Join all bullet points with newlines - pptxgenjs handles wrapping automatically
+      const bulletText = slide.content.join('\n');
+      
+      contentSlide.addText(bulletText, {
+        x: 0.7,
+        y: 1.4,
+        w: 8.6,
+        h: 3.5, // Fixed height - let text wrap naturally within this space
+        fontSize: 14,
+        fontFace: 'Poppins',
+        color: '090909',
+        align: 'left',
+        valign: 'top',
+        bullet: true,
+        lineSpacing: 20, // Increased spacing between lines
+        paraSpaceAfter: 6, // Space after each paragraph/bullet
+      });
+    }
   }
 
   // Add logo to content slide

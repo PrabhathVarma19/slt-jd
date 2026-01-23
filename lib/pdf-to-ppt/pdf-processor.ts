@@ -1,6 +1,8 @@
-import { Slide } from '@/types/pdf-to-ppt';
+import { Slide, PdfImage } from '@/types/pdf-to-ppt';
 import OpenAI from 'openai';
 import * as path from 'path';
+import { PDFDocument, PDFName } from 'pdf-lib';
+import * as fs from 'fs';
 
 const openaiApiKey = process.env.OPENAI_API_KEY;
 const openai = openaiApiKey ? new OpenAI({ apiKey: openaiApiKey }) : null;
@@ -16,7 +18,9 @@ async function getPdfParse(): Promise<any> {
   // Try pdf-parse-debugging-disabled first (has debug mode disabled)
   // This package is identical to pdf-parse but with debug mode hardcoded to false
   try {
-    const disabledModule = await import('pdf-parse-debugging-disabled');
+    // Use dynamic import - Next.js will handle this at runtime
+    const moduleName = 'pdf-parse-debugging-disabled';
+    const disabledModule = await import(moduleName);
     pdfParseModule = disabledModule.default || disabledModule;
     if (pdfParseModule) {
       return pdfParseModule;
@@ -63,8 +67,17 @@ export async function extractTextFromPdf(pdfBuffer: Buffer): Promise<string> {
     const pdfParse = await getPdfParse();
     const data = await pdfParse(pdfBuffer);
     
+    // Log PDF metadata for debugging
+    console.log(`[PDF Extract] PDF parsed - pages: ${data?.numpages || 'unknown'}, text length: ${data?.text?.length || 0}`);
+    
     if (!data || !data.text) {
       throw new Error('PDF parsing returned empty text');
+    }
+    
+    // Check if text is actually empty or just whitespace
+    const trimmedText = data.text.trim();
+    if (trimmedText.length === 0) {
+      throw new Error('PDF contains no extractable text (likely image-based/scanned PDF)');
     }
     
     return data.text;
@@ -330,7 +343,7 @@ function addGroupAsSlide(group: string[], slides: Slide[]) {
 }
 
 // AI-powered slide generation
-async function processPdfWithAI(text: string, filename: string, numSlides?: number): Promise<Slide[]> {
+async function processPdfWithAI(text: string, filename: string, numSlides?: number, images?: PdfImage[]): Promise<Slide[]> {
   if (!openai) {
     throw new Error('OpenAI not configured');
   }
@@ -340,6 +353,8 @@ async function processPdfWithAI(text: string, filename: string, numSlides?: numb
 Your goal is to understand the content deeply and create a proper presentation deck (like Gamma presentations) - not just a summary, but a well-organized, engaging deck that tells a story with rich, narrative-driven content.
 
 CRITICAL: Create slides with SUBSTANTIAL content - not just bullet points. Each slide should tell part of a story with detailed explanations, context, and insights. Think like Gamma presentations: rich, narrative-driven content that flows naturally.
+
+${images && images.length > 0 ? `\nIMPORTANT: This PDF contains ${images.length} images extracted from pages ${images.map((img: PdfImage) => img.page).join(', ')}. When creating slides, decide which slides should include images based on content relevance. Include image references in your JSON response using the format: {"images": [{"page": 1, "description": "..."}]} for slides that should display images.` : ''}
 
 Guidelines:
 1. Understand the content's meaning, context, and purpose deeply
@@ -366,6 +381,7 @@ Return a JSON object with a "slides" array. Each slide should have:
 - leftContent?: string[] (if type is "two-column")
 - rightContent?: string[] (if type is "two-column")
 - highlight?: boolean (if type is "highlight" or "title")
+- images?: number[] (array of image indices, 0-based, for images that match this slide's content)
 
 Example response format:
 {
@@ -377,7 +393,8 @@ Example response format:
         "We will examine three core areas: strategic planning, operational efficiency, and customer engagement, each critical to long-term success.",
         "The insights presented here are based on extensive research and real-world case studies from leading organizations."
       ],
-      "type": "content"
+      "type": "content",
+      "images": [0]
     },
     {
       "title": "Key Insights",
@@ -393,6 +410,11 @@ ${text.substring(0, 12000)}${text.length > 12000 ? '\n\n[... content truncated f
 
 Filename: ${filename}
 ${numSlides ? `\n\n🚨 ABSOLUTE REQUIREMENT: Generate content distributed across EXACTLY ${numSlides} slides. Read the PDF content, understand it, then create ${numSlides} slides with meaningful content. The JSON must have exactly ${numSlides} slides in the array.` : ''}
+${images && images.length > 0 ? `\n\n📸 IMAGES AVAILABLE: This PDF contains ${images.length} image(s) with the following descriptions. Match these images to slides where they are thematically relevant based on the content:
+
+${images.map((img, idx) => `Image ${idx + 1} (from page ${img.page}): ${img.description || 'No description available'}`).join('\n')}
+
+When creating slides, assign relevant images by including an "images" field in the slide object with the image index (0-based). For example, if Image 0 matches a slide, include: "images": [0]. You can assign multiple images to one slide if relevant, or leave images out if no good match exists. Focus on semantic relevance - match images to slides that discuss related topics, concepts, or themes.` : ''}
 
 Analyze the content deeply, understand its structure and meaning, then create a well-organized presentation deck with appropriate slide types and professional titles. 
 
@@ -402,6 +424,7 @@ IMPORTANT: Write rich, narrative-driven content like Gamma presentations:
 - Transform raw information into engaging narrative with context and explanations
 - Ensure slides tell a story and flow naturally from one to the next
 - Avoid slides with minimal content - make each slide substantial and informative
+${images && images.length > 0 ? '- Include images on relevant slides where they add value to the content' : ''}
 
 Write content that flows naturally and tells a story, not just extracted text or simple bullet points.`;
 
@@ -414,7 +437,7 @@ Write content that flows naturally and tells a story, not just extracted text or
       ],
       response_format: { type: 'json_object' },
       temperature: 0.7,
-      max_tokens: numSlides ? Math.min(4000, numSlides * 150) : 4000,
+      max_tokens: numSlides ? Math.max(4000, Math.min(16000, numSlides * 200)) : 4000,
     });
 
     const content = completion.choices[0]?.message?.content;
@@ -425,32 +448,92 @@ Write content that flows naturally and tells a story, not just extracted text or
       // Validate and normalize slides
       const normalizedSlides = slides
         .filter((slide: any) => slide.title || slide.content?.length > 0)
-        .map((slide: any) => ({
-          title: slide.title || 'Untitled',
-          content: slide.content || [],
-          type: slide.type || 'content',
-          quote: slide.quote,
-          attribution: slide.attribution,
-          leftContent: slide.leftContent,
-          rightContent: slide.rightContent,
-          highlight: slide.highlight || false,
-        }));
+        .map((slide: any, index: number) => {
+          // Match images to slides based on AI's image references (indices or page numbers)
+          let slideImages: PdfImage[] | undefined = undefined;
+          if (images && images.length > 0 && slide.images !== undefined) {
+            // AI specified which images to include (can be indices or page numbers)
+            const imageRefs = Array.isArray(slide.images) ? slide.images : [slide.images];
+            const matchedImages = imageRefs
+              .map((ref: any) => {
+                // Handle both index-based (0-based) and page-based references
+                if (typeof ref === 'number') {
+                  // If it's a number, treat as index first, then fallback to page number
+                  if (ref >= 0 && ref < images.length) {
+                    return images[ref];
+                  }
+                  // Try as page number
+                  return images.find((img: PdfImage) => img.page === ref);
+                } else if (ref && typeof ref === 'object') {
+                  // Object with page or index property
+                  const pageNum = ref.page || ref.pageNumber;
+                  const idx = ref.index !== undefined ? ref.index : undefined;
+                  if (idx !== undefined && idx >= 0 && idx < images.length) {
+                    return images[idx];
+                  }
+                  if (pageNum !== undefined) {
+                    return images.find((img: PdfImage) => img.page === pageNum);
+                  }
+                }
+                return undefined;
+              })
+              .filter((img: PdfImage | undefined): img is PdfImage => img !== undefined);
+            
+            if (matchedImages.length > 0) {
+              slideImages = matchedImages;
+              console.log(`[PDF Processor] AI matched ${matchedImages.length} image(s) to slide ${index + 1}: "${slide.title}"`);
+              matchedImages.forEach((img: PdfImage, imgIdx: number) => {
+                console.log(`[PDF Processor]   - Image ${imgIdx + 1}: ${img.description?.substring(0, 60) || 'No description'}...`);
+              });
+            }
+          }
+          
+          // If AI didn't assign images but we have images, auto-assign based on slide index
+          if (!slideImages && images && images.length > 0) {
+            // Distribute images evenly across slides
+            const imagesPerSlide = Math.ceil(images.length / slides.length);
+            const startIdx = index * imagesPerSlide;
+            const endIdx = Math.min(startIdx + imagesPerSlide, images.length);
+            if (startIdx < images.length) {
+              slideImages = images.slice(startIdx, endIdx);
+              console.log(`[PDF Processor] Auto-assigned ${slideImages.length} images to slide ${index + 1}: "${slide.title}"`);
+            }
+          }
+          
+          return {
+            title: slide.title || 'Untitled',
+            content: slide.content || [],
+            type: slide.type || 'content',
+            quote: slide.quote,
+            attribution: slide.attribution,
+            leftContent: slide.leftContent,
+            rightContent: slide.rightContent,
+            highlight: slide.highlight || false,
+            images: slideImages,
+          };
+        });
+      
+      const totalImagesAssigned = normalizedSlides.reduce((sum: number, slide: Slide) => sum + (slide.images?.length || 0), 0);
+      console.log(`[PDF Processor] Total images assigned to ${normalizedSlides.length} slides: ${totalImagesAssigned}`);
       
       // Strictly enforce slide count if specified - redistribute content intelligently
       if (numSlides) {
         console.log(`[PDF Processor] Requested ${numSlides} slides, AI generated ${normalizedSlides.length} slides`);
         
-        // Collect all content from all slides
+        // Collect all content from all slides, preserving images
         const allContentItems: string[] = [];
         const allTitles: string[] = [];
+        const allImages: PdfImage[][] = []; // Track images per slide
         
         normalizedSlides.forEach((slide: any) => {
           if (slide.content && slide.content.length > 0) {
             allContentItems.push(...slide.content);
             allTitles.push(slide.title);
+            allImages.push(slide.images || []); // Preserve images from normalized slides
           } else if (slide.type === 'section-divider' || slide.type === 'title') {
             // Keep section dividers and title slides
             allTitles.push(slide.title);
+            allImages.push(slide.images || []); // Preserve images even for section dividers
           }
         });
         
@@ -466,14 +549,40 @@ Write content that flows naturally and tells a story, not just extracted text or
           // Use original title if available, otherwise generate one
           const slideTitle = allTitles[i] || allTitles[Math.floor(i * (allTitles.length / numSlides))] || `Slide ${i + 1}`;
           
+          // Collect images for this slide - distribute evenly across all slides
+          let slideImages: PdfImage[] = [];
+          
+          // Distribute images evenly across slides
+          if (images && images.length > 0) {
+            // Calculate which images should go to this slide
+            const imagesPerSlide = Math.max(1, Math.ceil(images.length / numSlides));
+            const startIdx = i * imagesPerSlide;
+            const endIdx = Math.min(startIdx + imagesPerSlide, images.length);
+            if (startIdx < images.length) {
+              slideImages = images.slice(startIdx, endIdx);
+              console.log(`[PDF Processor] Assigned ${slideImages.length} images to redistributed slide ${i + 1}: "${slideTitle}" (images ${startIdx + 1}-${endIdx} of ${images.length})`);
+            }
+          }
+          
           targetSlides.push({
             title: slideTitle,
             content: slideContent,
             type: 'content',
+            images: slideImages.length > 0 ? slideImages : undefined,
           });
         }
         
         console.log(`[PDF Processor] Redistributed content into exactly ${targetSlides.length} slides`);
+        const totalImagesInSlides = targetSlides.reduce((sum, slide) => sum + (slide.images?.length || 0), 0);
+        console.log(`[PDF Processor] Total images included in slides: ${totalImagesInSlides}`);
+        
+        // Log image assignment for each slide
+        targetSlides.forEach((slide, idx) => {
+          if (slide.images && slide.images.length > 0) {
+            console.log(`[PDF Processor] Slide ${idx + 1} "${slide.title}" has ${slide.images.length} image(s)`);
+          }
+        });
+        
         return targetSlides;
       }
       
@@ -487,13 +596,215 @@ Write content that flows naturally and tells a story, not just extracted text or
   return [];
 }
 
+// Extract title from PDF metadata and content
+export async function extractTitleFromPdf(pdfBuffer: Buffer, filename: string): Promise<string> {
+  try {
+    // Try to get title from PDF metadata using pdf-lib
+    const pdfDoc = await PDFDocument.load(pdfBuffer);
+    const title = pdfDoc.getTitle();
+    
+    if (title && title.trim().length > 0 && title.trim().length < 100) {
+      console.log(`[Title Extract] Found PDF metadata title: ${title}`);
+      return title.trim();
+    }
+  } catch (error) {
+    console.log('[Title Extract] Could not extract metadata title, trying content extraction');
+  }
+  
+  // Fallback: Extract from first few pages of content
+  try {
+    const pdfParse = await getPdfParse();
+    const data = await pdfParse(pdfBuffer);
+    
+      if (data && data.text) {
+        const lines = data.text.split('\n').map((l: string) => l.trim()).filter((l: string) => l.length > 0);
+      
+      // Look for title-like lines in first 20 lines
+      for (let i = 0; i < Math.min(20, lines.length); i++) {
+        const line = lines[i];
+        // Title characteristics: short (<60 chars), prominent position, might be all caps or title case
+        if (line.length > 10 && line.length < 60 && 
+            (line === line.toUpperCase() || /^[A-Z][a-z]+/.test(line)) &&
+            !line.includes('http') && !line.match(/^\d+$/)) {
+          console.log(`[Title Extract] Found title from content: ${line}`);
+          return line;
+        }
+      }
+      
+      // If no title found, use first substantial line
+      const firstLine = lines.find((l: string) => l.length > 10 && l.length < 100);
+      if (firstLine) {
+        console.log(`[Title Extract] Using first substantial line as title: ${firstLine}`);
+        return firstLine.substring(0, 60); // Limit length
+      }
+    }
+  } catch (error) {
+    console.log('[Title Extract] Could not extract title from content');
+  }
+  
+  // Final fallback: filename without extension
+  const titleFromFilename = filename.replace(/\.pdf$/i, '').replace(/[-_]/g, ' ');
+  console.log(`[Title Extract] Using filename as title: ${titleFromFilename}`);
+  return titleFromFilename;
+}
+
+// Extract text from scanned PDF using OCR
+async function extractTextWithOCR(pdfBuffer: Buffer): Promise<string> {
+  try {
+    // Dynamic import to avoid build-time issues
+    const { createWorker } = await import('tesseract.js');
+    const pdfjsLib = await import('pdfjs-dist');
+    
+    // Set worker source for Node.js
+    // pdfjs-dist requires a workerSrc - use minimal data URI worker for server-side
+    if (typeof window === 'undefined') {
+      const minimalWorkerCode = 'self.onmessage = function() {};';
+      const workerDataUri = `data:application/javascript;base64,${Buffer.from(minimalWorkerCode).toString('base64')}`;
+      pdfjsLib.GlobalWorkerOptions.workerSrc = workerDataUri;
+    }
+    
+    // Load PDF with pdfjs-dist - convert Buffer to Uint8Array
+    // Use server-side optimized options
+    const uint8Array = new Uint8Array(pdfBuffer);
+    const loadingTask = pdfjsLib.getDocument({ 
+      data: uint8Array,
+      disableAutoFetch: true,
+      disableStream: true,
+      useWorkerFetch: false,
+      isEvalSupported: false,
+    });
+    const pdf = await loadingTask.promise;
+    const numPages = pdf.numPages;
+    
+    console.log(`[OCR] Processing ${numPages} pages with OCR...`);
+    
+    // Try to load canvas - required for OCR
+    let createCanvasFn: any = null;
+    try {
+      // Use require with try-catch to avoid webpack bundling
+      const canvasModule = eval('require')('canvas');
+      createCanvasFn = canvasModule.createCanvas;
+      if (!createCanvasFn) {
+        throw new Error('Canvas module not available');
+      }
+    } catch (canvasError: any) {
+      console.log('[OCR] Canvas not available - OCR requires canvas library.');
+      throw new Error('OCR requires the canvas library which is not available. For scanned PDFs, please install canvas (npm install canvas) or use a PDF with extractable text.');
+    }
+    
+    // Create OCR worker
+    const worker = await createWorker('eng');
+    
+    const allText: string[] = [];
+    
+    // Process each page (limit to first 10 pages for performance)
+    for (let pageNum = 1; pageNum <= Math.min(numPages, 10); pageNum++) {
+      try {
+        const page = await pdf.getPage(pageNum);
+        const viewport = page.getViewport({ scale: 2.0 }); // Higher scale for better OCR
+        
+        // Use canvas to render page
+        const canvas = createCanvasFn(viewport.width, viewport.height);
+        const context = canvas.getContext('2d');
+        
+        const renderContext = {
+          canvasContext: context as any,
+          viewport: viewport,
+        };
+        
+        await page.render(renderContext).promise;
+        const imageBuffer = canvas.toBuffer('image/png');
+        
+        // Run OCR on the image
+        const { data: { text } } = await worker.recognize(imageBuffer);
+        
+        if (text && text.trim().length > 0) {
+          allText.push(`--- Page ${pageNum} ---\n${text.trim()}`);
+        }
+        
+        console.log(`[OCR] Page ${pageNum}/${numPages}: Extracted ${text.trim().length} characters`);
+      } catch (pageError: any) {
+        console.error(`[OCR] Error processing page ${pageNum}:`, pageError.message);
+        // Continue with next page
+      }
+    }
+    
+    await worker.terminate();
+    
+    const fullText = allText.join('\n\n');
+    console.log(`[OCR] Total extracted text: ${fullText.length} characters from ${allText.length} pages`);
+    
+    if (fullText.trim().length < 50) {
+      throw new Error('OCR extracted insufficient text from scanned PDF');
+    }
+    
+    return fullText;
+  } catch (error: any) {
+    console.error('[OCR] Error:', error);
+    if (error.message && (error.message.includes('canvas') || error.code === 'MODULE_NOT_FOUND')) {
+      throw new Error('OCR requires the canvas library which is not available. For scanned PDFs, please install canvas (npm install canvas) or use a PDF with extractable text.');
+    }
+    throw new Error(`OCR processing failed: ${error.message || 'Unknown error'}`);
+  }
+}
+
 export async function processPdf(pdfBuffer: Buffer, filename: string, useAI: boolean = true, numSlides?: number): Promise<Slide[]> {
-  const text = await extractTextFromPdf(pdfBuffer);
+  let text: string;
+  let isScannedPdf = false;
+  
+  // Extract images from PDF (for text-based PDFs with embedded images)
+  const extractedImages: PdfImage[] = [];
+  try {
+    const images = await extractImagesFromPdf(pdfBuffer);
+    extractedImages.push(...images);
+    console.log(`[PDF Processor] Extracted ${extractedImages.length} images from PDF`);
+  } catch (error) {
+    console.log('[PDF Processor] Image extraction failed, continuing without images:', error);
+    // Continue without images - not critical
+  }
+  
+  try {
+    text = await extractTextFromPdf(pdfBuffer);
+  } catch (error: any) {
+    // If extraction fails with empty text error, try OCR
+    if (error.message && (error.message.includes('empty') || error.message.includes('no extractable text'))) {
+      console.log('[PDF Processor] Text extraction failed, attempting OCR for scanned PDF...');
+      try {
+        text = await extractTextWithOCR(pdfBuffer);
+        isScannedPdf = true;
+        console.log(`[PDF Processor] OCR extracted ${text.length} characters`);
+      } catch (ocrError: any) {
+        throw new Error(`This PDF appears to be image-based (scanned) but OCR extraction failed: ${ocrError.message}. Please ensure the PDF contains readable text.`);
+      }
+    } else {
+      throw error;
+    }
+  }
+  
+  // Log extracted text length for debugging
+  console.log(`[PDF Processor] Extracted ${text.length} characters from PDF${isScannedPdf ? ' (via OCR)' : ''}`);
+  
+  // Check if text is too short
+  if (!text || text.trim().length < 50) {
+    // Try OCR if we haven't already
+    if (!isScannedPdf) {
+      console.log('[PDF Processor] Text too short, attempting OCR...');
+      try {
+        text = await extractTextWithOCR(pdfBuffer);
+        isScannedPdf = true;
+        console.log(`[PDF Processor] OCR extracted ${text.length} characters`);
+      } catch (ocrError: any) {
+        throw new Error(`This PDF appears to be image-based (scanned) but OCR extraction failed: ${ocrError.message}. Please ensure the PDF contains readable text.`);
+      }
+    } else {
+      throw new Error('This PDF appears to be image-based (scanned) and OCR extracted insufficient text. Please ensure the PDF contains readable text.');
+    }
+  }
   
   // Try AI-powered processing first if enabled and API key available
   if (useAI && openai && text.length > 100) {
     try {
-      const aiSlides = await processPdfWithAI(text, filename, numSlides);
+      const aiSlides = await processPdfWithAI(text, filename, numSlides, extractedImages.length > 0 ? extractedImages : undefined);
       if (aiSlides && aiSlides.length > 0) {
         return aiSlides;
       }
@@ -505,4 +816,442 @@ export async function processPdf(pdfBuffer: Buffer, filename: string, useAI: boo
   
   // Fallback to pattern-based processing
   return splitTextIntoSlides(text, filename);
+}
+
+// Extract images from PDF using pdf-lib's page resources
+// Analyze image using OpenAI vision API to get description
+async function analyzeImageWithVision(imageData: string): Promise<string> {
+  if (!openai) {
+    console.log('[Image Analysis] OpenAI not available, skipping image analysis');
+    return '';
+  }
+
+  try {
+    // Extract base64 data from data URI if needed
+    let base64Data = imageData;
+    if (imageData.startsWith('data:')) {
+      const match = imageData.match(/base64,(.+)/);
+      base64Data = match ? match[1] : imageData;
+    }
+
+    console.log('[Image Analysis] Analyzing image with OpenAI vision...');
+    
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'text',
+              text: 'Describe what is in this image in detail. What objects, scenes, concepts, or subjects are shown? Be specific and detailed. This description will be used to match the image to relevant presentation slide content.',
+            },
+            {
+              type: 'image_url',
+              image_url: {
+                url: `data:image/png;base64,${base64Data}`,
+                detail: 'low', // Use low detail to save tokens
+              },
+            },
+          ],
+        },
+      ],
+      max_tokens: 150,
+    });
+
+    const description = response.choices[0]?.message?.content || '';
+    console.log(`[Image Analysis] Generated description: ${description.substring(0, 100)}...`);
+    return description.trim();
+  } catch (error: any) {
+    console.error('[Image Analysis] Error analyzing image:', error.message);
+    // Return empty string on error - don't block processing
+    return '';
+  }
+}
+
+export async function extractImagesFromPdf(pdfBuffer: Buffer): Promise<PdfImage[]> {
+  const images: PdfImage[] = [];
+  
+  try {
+    const pdfDoc = await PDFDocument.load(pdfBuffer);
+    const pages = pdfDoc.getPages();
+    const context = (pdfDoc as any).context;
+    
+    console.log(`[Image Extract] Processing ${pages.length} pages for images using pdf-lib...`);
+    
+    // Also check root/catalog resources (images might be shared)
+    try {
+      const catalog = (pdfDoc as any).catalog;
+      const rootResources = catalog?.Resources?.();
+      if (rootResources) {
+        console.log(`[Image Extract] Checking root/catalog resources...`);
+        const rootXObjects = rootResources.get('XObject');
+        if (rootXObjects) {
+          console.log(`[Image Extract] Found XObjects in root resources!`);
+          // Process root XObjects
+          const rootKeys = rootXObjects.keys ? rootXObjects.keys() : Object.keys(rootXObjects.dict || rootXObjects);
+          console.log(`[Image Extract] Root XObjects count: ${rootKeys.length}`);
+        }
+      }
+    } catch (rootError: any) {
+      console.log(`[Image Extract] Could not access root resources: ${rootError.message}`);
+    }
+    
+    // Process each page to find images in XObject resources
+    for (let pageIndex = 0; pageIndex < pages.length; pageIndex++) {
+      const page = pages[pageIndex];
+      const pageNode = (page as any).node;
+      
+      try {
+        console.log(`[Image Extract] Processing page ${pageIndex + 1}...`);
+        
+        // Access page resources
+        const resources = pageNode.Resources();
+        if (!resources) {
+          console.log(`[Image Extract] Page ${pageIndex + 1}: No resources found`);
+          continue;
+        }
+        
+        console.log(`[Image Extract] Page ${pageIndex + 1}: Found resources`);
+        
+        // Debug: List all resource keys
+        try {
+          const resourceKeys = resources.keys ? resources.keys() : Object.keys(resources.dict || resources);
+          console.log(`[Image Extract] Page ${pageIndex + 1}: Resource keys: ${JSON.stringify(resourceKeys)}`);
+        } catch (keysError) {
+          console.log(`[Image Extract] Page ${pageIndex + 1}: Could not list resource keys`);
+        }
+        
+        // Get XObject dictionary (contains images)
+        // pdf-lib uses encoded names, so we need to access it properly
+        let xObjectsDict = null;
+        try {
+          // Method 1: Try direct get with encoded name
+          xObjectsDict = resources.get('XObject');
+        } catch {
+          try {
+            // Method 2: Try accessing via dict
+            const dict = resources.dict || resources;
+            xObjectsDict = dict.get('XObject');
+          } catch {
+            try {
+              // Method 3: Try PDFName lookup
+              const PDFName = (pdfDoc as any).context.obj('PDFName');
+              const xObjectName = PDFName.of('XObject');
+              xObjectsDict = resources.get(xObjectName);
+            } catch {}
+          }
+        }
+        
+        // If still not found, try accessing the dict directly
+        if (!xObjectsDict) {
+          try {
+            const dict = (resources as any).dict;
+            if (dict) {
+              // Try to find XObject key in dict
+              for (const [key, value] of dict.entries ? dict.entries() : Object.entries(dict)) {
+                const keyName = key?.encodedName || key?.toString() || key;
+                if (keyName === '/XObject' || keyName === 'XObject') {
+                  xObjectsDict = value;
+                  console.log(`[Image Extract] Page ${pageIndex + 1}: Found XObject via dict iteration`);
+                  break;
+                }
+              }
+            }
+          } catch (dictError: any) {
+            console.log(`[Image Extract] Page ${pageIndex + 1}: Error accessing dict: ${dictError.message}`);
+          }
+        }
+        
+        if (!xObjectsDict) {
+          console.log(`[Image Extract] Page ${pageIndex + 1}: No XObject dictionary found after all attempts`);
+          continue;
+        }
+        
+        console.log(`[Image Extract] Page ${pageIndex + 1}: Found XObject dictionary!`);
+        
+        console.log(`[Image Extract] Page ${pageIndex + 1}: Found XObject dictionary`);
+        
+        // Try different ways to iterate XObjects
+        let xObjectKeys: string[] = [];
+        try {
+          // Method 1: Try keys() method
+          if (typeof xObjectsDict.keys === 'function') {
+            xObjectKeys = xObjectsDict.keys();
+          } else if (xObjectsDict.dict && typeof xObjectsDict.dict.keys === 'function') {
+            xObjectKeys = xObjectsDict.dict.keys();
+          } else if (xObjectsDict.entries) {
+            // Method 2: Try entries() and get keys
+            xObjectKeys = Array.from(xObjectsDict.entries().keys());
+          } else {
+            // Method 3: Try to access as object
+            xObjectKeys = Object.keys(xObjectsDict.dict || xObjectsDict);
+          }
+        } catch (keysError: any) {
+          console.log(`[Image Extract] Page ${pageIndex + 1}: Error getting XObject keys: ${keysError.message}`);
+          // Try accessing dict directly
+          try {
+            const dict = (xObjectsDict as any).dict || xObjectsDict;
+            xObjectKeys = Object.keys(dict);
+          } catch {
+            console.log(`[Image Extract] Page ${pageIndex + 1}: Could not enumerate XObject keys`);
+            continue;
+          }
+        }
+        
+        console.log(`[Image Extract] Page ${pageIndex + 1}: Found ${xObjectKeys.length} XObjects`);
+        
+        // Iterate through XObjects
+        for (let i = 0; i < xObjectKeys.length; i++) {
+          const key = xObjectKeys[i];
+          
+            try {
+            const xObjectRef = xObjectsDict.get(key);
+            if (!xObjectRef) {
+              console.log(`[Image Extract] Page ${pageIndex + 1}: XObject ${key} has no reference`);
+              continue;
+            }
+            
+            console.log(`[Image Extract] Page ${pageIndex + 1}: Processing XObject ${key}...`);
+            
+            // Lookup the XObject - need to dereference if it's a PDFRef
+            let xObject: any = null;
+            let xObjectDict: any = null;
+            
+            try {
+              xObject = context.lookup(xObjectRef);
+              
+              // Debug: Log what we got
+              console.log(`[Image Extract] Page ${pageIndex + 1}: Lookup returned type: ${typeof xObject}, constructor: ${xObject?.constructor?.name}`);
+              
+              // Try to get the dict from the object
+              if (xObject) {
+                // Method 1: Try .dict property
+                if (xObject.dict) {
+                  xObjectDict = xObject.dict;
+                }
+                // Method 2: Try .get() if it's a PDFDict
+                else if (typeof xObject.get === 'function') {
+                  xObjectDict = xObject;
+                }
+                // Method 3: Try accessing as PDFStream
+                else if (xObject.contents !== undefined || xObject.dict) {
+                  xObjectDict = xObject.dict || xObject;
+                }
+                // Method 4: It might already be the dict
+                else {
+                  xObjectDict = xObject;
+                }
+              }
+            } catch (lookupError: any) {
+              console.log(`[Image Extract] Page ${pageIndex + 1}: Lookup error for ${key}: ${lookupError.message}`);
+              continue;
+            }
+            
+            if (!xObjectDict) {
+              console.log(`[Image Extract] Page ${pageIndex + 1}: Could not get dict for XObject ${key}`);
+              continue;
+            }
+            
+            // Access properties - try multiple methods
+            let subtype: any = null;
+            let width = 0;
+            let height = 0;
+            let filter: any = null;
+            
+            try {
+              // Try different access methods
+              if (typeof xObjectDict.get === 'function') {
+                // Method 1: Use .get() method
+                subtype = xObjectDict.get('Subtype') || xObjectDict.get(PDFName?.of('Subtype'));
+                width = xObjectDict.get('Width')?.valueOf() || xObjectDict.get(PDFName?.of('Width'))?.valueOf() || 0;
+                height = xObjectDict.get('Height')?.valueOf() || xObjectDict.get(PDFName?.of('Height'))?.valueOf() || 0;
+                filter = xObjectDict.get('Filter') || xObjectDict.get(PDFName?.of('Filter'));
+              } else {
+                // Method 2: Direct property access
+                subtype = xObjectDict.Subtype || (xObjectDict as any)['Subtype'];
+                width = (xObjectDict.Width?.valueOf?.() || (xObjectDict as any)['Width']?.valueOf?.() || xObjectDict.Width || 0);
+                height = (xObjectDict.Height?.valueOf?.() || (xObjectDict as any)['Height']?.valueOf?.() || xObjectDict.Height || 0);
+                filter = xObjectDict.Filter || (xObjectDict as any)['Filter'];
+              }
+              
+              // Debug: Log what we found
+              console.log(`[Image Extract] Page ${pageIndex + 1}: XObject ${key} - subtype type: ${typeof subtype}, value: ${JSON.stringify(subtype)}`);
+              
+            } catch (propError: any) {
+              console.log(`[Image Extract] Page ${pageIndex + 1}: Error accessing XObject ${key} properties: ${propError.message}`);
+              continue;
+            }
+            
+            // Extract subtype name - handle PDFName objects
+            let subtypeName = '';
+            if (subtype) {
+              if (subtype.name) {
+                subtypeName = subtype.name;
+              } else if (subtype.encodedName) {
+                subtypeName = subtype.encodedName;
+              } else if (typeof subtype === 'string') {
+                subtypeName = subtype;
+              } else if (subtype.toString) {
+                subtypeName = subtype.toString();
+              }
+            }
+            
+            console.log(`[Image Extract] Page ${pageIndex + 1}: XObject ${key} subtype: "${subtypeName}", width: ${width}, height: ${height}`);
+            
+            if (subtype && (subtypeName === 'Image' || subtypeName === '/Image')) {
+              console.log(`[Image Extract] Page ${pageIndex + 1}: Found image ${key}: ${width}x${height}`);
+              
+              if (width > 0 && height > 0) {
+                // xObject is already the PDFRawStream, access its contents directly
+                let streamContents: any = null;
+                
+                // Debug: Log available properties/methods on xObject
+                const availableMethods = Object.getOwnPropertyNames(Object.getPrototypeOf(xObject)).filter(
+                  name => typeof (xObject as any)[name] === 'function' && name !== 'constructor'
+                );
+                const availableProps = Object.keys(xObject).filter(
+                  name => !name.startsWith('_') && typeof (xObject as any)[name] !== 'function'
+                );
+                console.log(`[Image Extract] Page ${pageIndex + 1}: xObject methods: ${availableMethods.slice(0, 10).join(', ')}`);
+                console.log(`[Image Extract] Page ${pageIndex + 1}: xObject properties: ${availableProps.slice(0, 10).join(', ')}`);
+                
+                try {
+                  // Try multiple methods to get stream contents from PDFRawStream
+                  // Method 1: getContents() method
+                  if (typeof (xObject as any).getContents === 'function') {
+                    streamContents = (xObject as any).getContents();
+                    console.log(`[Image Extract] Page ${pageIndex + 1}: Got contents via getContents(), length: ${streamContents?.length || 0}`);
+                  }
+                  
+                  // Method 2: contents property
+                  if (!streamContents && (xObject as any).contents !== undefined) {
+                    streamContents = (xObject as any).contents;
+                    console.log(`[Image Extract] Page ${pageIndex + 1}: Got contents via .contents property, length: ${streamContents?.length || 0}`);
+                  }
+                  
+                  // Method 3: decode() method
+                  if (!streamContents && typeof (xObject as any).decode === 'function') {
+                    streamContents = (xObject as any).decode();
+                    console.log(`[Image Extract] Page ${pageIndex + 1}: Got contents via decode(), length: ${streamContents?.length || 0}`);
+                  }
+                  
+                  // Method 4: dict.contents (internal structure)
+                  if (!streamContents && (xObject as any).dict?.contents !== undefined) {
+                    streamContents = (xObject as any).dict.contents;
+                    console.log(`[Image Extract] Page ${pageIndex + 1}: Got contents via .dict.contents, length: ${streamContents?.length || 0}`);
+                  }
+                  
+                  // Method 5: bytes property
+                  if (!streamContents && (xObject as any).bytes !== undefined) {
+                    streamContents = (xObject as any).bytes;
+                    console.log(`[Image Extract] Page ${pageIndex + 1}: Got contents via .bytes property, length: ${streamContents?.length || 0}`);
+                  }
+                  
+                  // Method 6: data property
+                  if (!streamContents && (xObject as any).data !== undefined) {
+                    streamContents = (xObject as any).data;
+                    console.log(`[Image Extract] Page ${pageIndex + 1}: Got contents via .data property, length: ${streamContents?.length || 0}`);
+                  }
+                  
+                  // Method 7: Try accessing via context decodeStream
+                  if (!streamContents && context && typeof (context as any).decodeStream === 'function') {
+                    try {
+                      streamContents = (context as any).decodeStream(xObject);
+                      console.log(`[Image Extract] Page ${pageIndex + 1}: Got contents via context.decodeStream(), length: ${streamContents?.length || 0}`);
+                    } catch (decodeError: any) {
+                      console.log(`[Image Extract] Page ${pageIndex + 1}: context.decodeStream() failed: ${decodeError.message}`);
+                    }
+                  }
+                  
+                } catch (streamError: any) {
+                  console.log(`[Image Extract] Page ${pageIndex + 1}: Error accessing stream contents: ${streamError.message}`);
+                  console.log(`[Image Extract] Page ${pageIndex + 1}: Error stack: ${streamError.stack}`);
+                }
+                
+                if (streamContents) {
+                  // Determine format based on filter
+                  let format = 'image/png';
+                  if (filter) {
+                    const filterName = Array.isArray(filter) 
+                      ? filter[0]?.name || filter[0]?.encodedName || filter[0]?.toString()
+                      : filter?.name || filter?.encodedName || filter?.toString();
+                    console.log(`[Image Extract] Page ${pageIndex + 1}: Filter: ${filterName}`);
+                    if (filterName === 'DCTDecode' || filterName === 'DCT' || filterName === '/DCTDecode' || filterName === '/DCT') {
+                      format = 'image/jpeg';
+                    } else if (filterName === 'FlateDecode' || filterName === '/FlateDecode') {
+                      format = 'image/png'; // FlateDecode is often PNG
+                    }
+                  }
+                  
+                  // Convert to Buffer if needed
+                  let imageBuffer: Buffer;
+                  if (Buffer.isBuffer(streamContents)) {
+                    imageBuffer = streamContents;
+                  } else if (streamContents instanceof Uint8Array) {
+                    imageBuffer = Buffer.from(streamContents);
+                  } else if (typeof streamContents === 'string') {
+                    imageBuffer = Buffer.from(streamContents, 'binary');
+                  } else {
+                    imageBuffer = Buffer.from(streamContents);
+                  }
+                  
+                  const base64Data = imageBuffer.toString('base64');
+                  
+                  images.push({
+                    data: `data:${format};base64,${base64Data}`,
+                    page: pageIndex + 1,
+                    width: width,
+                    height: height,
+                    description: `Image from page ${pageIndex + 1}`,
+                  });
+                  
+                  console.log(`[Image Extract] ✓ Extracted image from page ${pageIndex + 1}: ${width}x${height}, format: ${format}, size: ${imageBuffer.length} bytes, key: ${key}`);
+                } else {
+                  console.log(`[Image Extract] Page ${pageIndex + 1}: Image ${key} has no stream contents (tried all methods)`);
+                }
+              } else {
+                console.log(`[Image Extract] Page ${pageIndex + 1}: Image ${key} invalid dimensions (${width}x${height})`);
+              }
+            } else {
+              console.log(`[Image Extract] Page ${pageIndex + 1}: XObject ${key} is not an image (subtype: ${subtypeName})`);
+            }
+          } catch (xObjError: any) {
+            console.log(`[Image Extract] Error processing XObject ${key} on page ${pageIndex + 1}: ${xObjError.message}`);
+            console.log(`[Image Extract] Error stack: ${xObjError.stack}`);
+          }
+        }
+      } catch (pageError: any) {
+        console.log(`[Image Extract] Error processing page ${pageIndex + 1}: ${pageError.message}`);
+        console.log(`[Image Extract] Error stack: ${pageError.stack}`);
+      }
+    }
+    
+    console.log(`[Image Extract] Extracted ${images.length} images from PDF using pdf-lib`);
+    
+    // Analyze images with vision API to get descriptions
+    if (images.length > 0 && openai) {
+      console.log(`[Image Extract] Analyzing ${images.length} images with OpenAI vision...`);
+      for (let i = 0; i < images.length; i++) {
+        const image = images[i];
+        const description = await analyzeImageWithVision(image.data);
+        if (description) {
+          images[i].description = description;
+          console.log(`[Image Extract] Image ${i + 1}/${images.length} analyzed: ${description.substring(0, 80)}...`);
+        }
+        // Small delay to avoid rate limits
+        if (i < images.length - 1) {
+          await new Promise(resolve => setTimeout(resolve, 200));
+        }
+      }
+      console.log(`[Image Extract] Completed analysis of ${images.length} images`);
+    }
+    
+    return images;
+  } catch (error: any) {
+    console.error('[Image Extract] Error extracting images:', error);
+    console.error('[Image Extract] Error stack:', error.stack);
+    // Return empty array if extraction fails - don't block PDF processing
+    return [];
+  }
 }

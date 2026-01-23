@@ -2,6 +2,16 @@ export type SlideType = 'title' | 'content' | 'quote' | 'two-column' | 'highligh
 
 export type TemplateType = 'trianz' | 'professional' | 'modern' | 'creative' | 'executive';
 
+export interface PdfImage {
+  data: string; // base64 encoded image
+  page: number;
+  width: number;
+  height: number;
+  x?: number; // position on page
+  y?: number;
+  description?: string;
+}
+
 export interface Slide {
   title: string;
   content: string[];
@@ -14,6 +24,8 @@ export interface Slide {
   attribution?: string;
   // Visual emphasis
   highlight?: boolean;
+  // Images extracted from PDF
+  images?: PdfImage[];
 }
 
 export interface PdfToPptResponse {
