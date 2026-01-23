@@ -80,12 +80,12 @@ async function getPdfParse(): Promise<any> {
 // Fallback text extraction using pdfjs-dist (works in serverless)
 async function extractTextWithPdfJs(pdfBuffer: Buffer): Promise<string> {
   try {
-    const pdfjsLib = await import('pdfjs-dist');
+    // Use legacy build for Node.js/serverless environments
+    const pdfjsLib = await import('pdfjs-dist/legacy/build/pdf');
     
-    // Disable workers completely for serverless environments
+    // Disable workers for serverless - set to null
     if (typeof window === 'undefined') {
-      // Disable worker entirely - use main thread
-      pdfjsLib.GlobalWorkerOptions.workerSrc = false as any;
+      pdfjsLib.GlobalWorkerOptions.workerSrc = null as any;
     }
     
     const uint8Array = new Uint8Array(pdfBuffer);
@@ -95,8 +95,6 @@ async function extractTextWithPdfJs(pdfBuffer: Buffer): Promise<string> {
       disableStream: true,
       useWorkerFetch: false,
       isEvalSupported: false,
-      useSystemFonts: true,
-      // Disable worker for serverless
       verbosity: 0,
     });
     
