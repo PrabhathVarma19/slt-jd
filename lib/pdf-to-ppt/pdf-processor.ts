@@ -403,20 +403,24 @@ export function splitTextIntoSlides(text: string, filename: string, images?: Pdf
     });
     
     if (contentSlides.length > 0) {
-      // Distribute images sequentially, cycling if there are more images than slides
+      // Distribute images sequentially, cycling if there are more slides than images
       let imageIndex = 0;
       for (let i = 0; i < slides.length; i++) {
         const slide = slides[i];
         // Only add images to content slides (not section dividers)
-        if (slide.type !== 'section-divider' && imageIndex < images.length) {
-          if (!slide.images) {
-            slide.images = [];
-          }
-          slide.images.push(images[imageIndex]);
-          imageIndex++;
-          // Cycle back if we've used all images but have more slides
-          if (imageIndex >= images.length && i < slides.length - 1) {
+        if (slide.type !== 'section-divider') {
+          // Cycle back if we've used all images
+          if (imageIndex >= images.length) {
             imageIndex = 0;
+          }
+          
+          if (images.length > 0) {
+            if (!slide.images) {
+              slide.images = [];
+            }
+            slide.images.push(images[imageIndex]);
+            console.log(`[PDF Processor] Assigned image ${imageIndex + 1}/${images.length} to slide ${i + 1}: "${slide.title}"`);
+            imageIndex++;
           }
         }
       }

@@ -415,24 +415,116 @@ function createHighlightSlide(pptx: any, slide: Slide) {
     lineSpacing: 44,
   });
 
-  // Content - single text box for all bullets
-  if (slide.content && slide.content.length > 0) {
-    const bulletText = slide.content.join('\n');
-    
-    highlightSlide.addText(bulletText, {
-      x: 0.7,
-      y: 1.6,
-      w: 8.6,
-      h: 3.2,
-      fontSize: 22,
-      fontFace: 'Poppins',
-      color: '090909',
-      align: 'left',
-      valign: 'top',
-      bullet: true,
-      lineSpacing: 36,
-      paraSpaceAfter: 10,
-    });
+  // Add images if present (before content to position them properly)
+  if (slide.images && slide.images.length > 0) {
+    console.log(`[PPTX Generator] Adding ${slide.images.length} image(s) to highlight slide: "${slide.title}"`);
+    // Add first image (can be expanded to handle multiple images)
+    const image = slide.images[0];
+    try {
+      console.log(`[PPTX Generator] Image data length: ${image.data?.length || 0}, format: ${image.data?.substring(0, 30)}`);
+      
+      // pptxgenjs requires base64 string with MIME type prefix (e.g., "image/png;base64,...")
+      // Our data URI format is "data:image/png;base64,...", so we need to remove "data:" prefix
+      let imageDataString = image.data;
+      if (imageDataString.startsWith('data:')) {
+        // Remove "data:" prefix, keep "image/png;base64,..."
+        imageDataString = imageDataString.substring(5);
+        console.log(`[PPTX Generator] Converted data URI to pptxgenjs format, length: ${imageDataString.length}`);
+      }
+      
+      // Calculate image dimensions maintaining aspect ratio
+      const maxWidth = 4; // Max width in inches
+      const maxHeight = 3; // Max height in inches
+      const aspectRatio = image.width / image.height;
+      
+      let imgWidth = maxWidth;
+      let imgHeight = maxWidth / aspectRatio;
+      
+      if (imgHeight > maxHeight) {
+        imgHeight = maxHeight;
+        imgWidth = maxHeight * aspectRatio;
+      }
+      
+      // Position image on the right side, centered vertically
+      console.log(`[PPTX Generator] Adding image to highlight slide at x: ${10 - imgWidth - 0.5}, y: 1.4, w: ${imgWidth}, h: ${imgHeight}`);
+      
+      // pptxgenjs requires data as base64 string with MIME type prefix
+      highlightSlide.addImage({
+        data: imageDataString, // Format: "image/png;base64,..." or "image/jpeg;base64,..."
+        x: 10 - imgWidth - 0.5, // Right side with margin
+        y: 1.4,
+        w: imgWidth,
+        h: imgHeight,
+      });
+      console.log(`[PPTX Generator] ✓ Image added successfully to highlight slide`);
+      
+      // Adjust content width to make room for image
+      const contentWidth = 10 - imgWidth - 1.2; // Leave space for image
+      
+      // Content - single text box for all bullets (adjusted width)
+      if (slide.content && slide.content.length > 0) {
+        const bulletText = slide.content.join('\n');
+        
+        highlightSlide.addText(bulletText, {
+          x: 0.7,
+          y: 1.6,
+          w: contentWidth,
+          h: 3.2,
+          fontSize: 22,
+          fontFace: 'Poppins',
+          color: '090909',
+          align: 'left',
+          valign: 'top',
+          bullet: true,
+          lineSpacing: 36,
+          paraSpaceAfter: 10,
+        });
+      }
+    } catch (imageError: any) {
+      console.error('[PPTX Generator] Error adding image to highlight slide:', imageError);
+      console.error('[PPTX Generator] Error message:', imageError?.message);
+      console.error('[PPTX Generator] Error stack:', imageError?.stack);
+      // Fall back to content without image
+      if (slide.content && slide.content.length > 0) {
+        const bulletText = slide.content.join('\n');
+        
+        highlightSlide.addText(bulletText, {
+          x: 0.7,
+          y: 1.6,
+          w: 8.6,
+          h: 3.2,
+          fontSize: 22,
+          fontFace: 'Poppins',
+          color: '090909',
+          align: 'left',
+          valign: 'top',
+          bullet: true,
+          lineSpacing: 36,
+          paraSpaceAfter: 10,
+        });
+      }
+    }
+  } else {
+    // No images - use full width for content
+    // Content - single text box for all bullets
+    if (slide.content && slide.content.length > 0) {
+      const bulletText = slide.content.join('\n');
+      
+      highlightSlide.addText(bulletText, {
+        x: 0.7,
+        y: 1.6,
+        w: 8.6,
+        h: 3.2,
+        fontSize: 22,
+        fontFace: 'Poppins',
+        color: '090909',
+        align: 'left',
+        valign: 'top',
+        bullet: true,
+        lineSpacing: 36,
+        paraSpaceAfter: 10,
+      });
+    }
   }
 
   // Add logo to highlight slide
