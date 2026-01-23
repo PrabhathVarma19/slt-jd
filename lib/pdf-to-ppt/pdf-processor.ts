@@ -77,6 +77,63 @@ async function getPdfParse(): Promise<any> {
   }
 }
 
+// Fallback text extraction using pdfjs-dist (works in serverless)
+async function extractTextWithPdfJs(pdfBuffer: Buffer): Promise<string> {
+  try {
+    const pdfjsLib = await import('pdfjs-dist');
+    
+    // Set worker source for Node.js serverless environment
+    if (typeof window === 'undefined') {
+      const minimalWorkerCode = 'self.onmessage = function() {};';
+      const workerDataUri = `data:application/javascript;base64,${Buffer.from(minimalWorkerCode).toString('base64')}`;
+      pdfjsLib.GlobalWorkerOptions.workerSrc = workerDataUri;
+    }
+    
+    const uint8Array = new Uint8Array(pdfBuffer);
+    const loadingTask = pdfjsLib.getDocument({ 
+      data: uint8Array,
+      disableAutoFetch: true,
+      disableStream: true,
+      useWorkerFetch: false,
+      isEvalSupported: false,
+    });
+    
+    const pdf = await loadingTask.promise;
+    const numPages = pdf.numPages;
+    const allText: string[] = [];
+    
+    // Extract text from all pages (limit to first 50 for performance)
+    for (let pageNum = 1; pageNum <= Math.min(numPages, 50); pageNum++) {
+      try {
+        const page = await pdf.getPage(pageNum);
+        const textContent = await page.getTextContent();
+        const pageText = textContent.items
+          .map((item: any) => item.str || '')
+          .join(' ')
+          .trim();
+        
+        if (pageText.length > 0) {
+          allText.push(`--- Page ${pageNum} ---\n${pageText}`);
+        }
+      } catch (pageError: any) {
+        console.error(`[PDF Extract] Error extracting text from page ${pageNum}:`, pageError.message);
+        // Continue with next page
+      }
+    }
+    
+    const fullText = allText.join('\n\n');
+    if (fullText.trim().length < 50) {
+      throw new Error('PDF contains insufficient extractable text');
+    }
+    
+    console.log(`[PDF Extract] Extracted ${fullText.length} characters using pdfjs-dist from ${numPages} pages`);
+    return fullText;
+  } catch (error: any) {
+    console.error('[PDF Extract] pdfjs-dist extraction failed:', error.message);
+    throw error;
+  }
+}
+
 export async function extractTextFromPdf(pdfBuffer: Buffer): Promise<string> {
   // Validate PDF buffer first
   if (!pdfBuffer || pdfBuffer.length === 0) {
@@ -89,6 +146,7 @@ export async function extractTextFromPdf(pdfBuffer: Buffer): Promise<string> {
     throw new Error('Invalid PDF file: file does not start with PDF header');
   }
 
+  // Try pdf-parse first (faster and better text extraction)
   try {
     const pdfParse = await getPdfParse();
     const data = await pdfParse(pdfBuffer);
@@ -110,9 +168,25 @@ export async function extractTextFromPdf(pdfBuffer: Buffer): Promise<string> {
   } catch (error: any) {
     const errorMsg = error?.message || '';
     
-    // Handle pdf-parse test file access errors
-    // The library tries to access test files during initialization in production
-    // We need to suppress these errors and retry
+    // Check if it's a pdf-parse initialization error (common in Vercel/serverless)
+    const isInitError = errorMsg.includes('ENOENT') && 
+                       (errorMsg.includes('test') || 
+                        errorMsg.includes('05-versions-space.pdf') ||
+                        errorMsg.includes('./test/data') ||
+                        errorMsg.includes('library initialization') ||
+                        errorMsg.includes('failed to initialize'));
+    
+    // If pdf-parse fails due to initialization, use pdfjs-dist fallback
+    if (isInitError) {
+      console.log('[PDF Extract] pdf-parse failed, falling back to pdfjs-dist...');
+      try {
+        return await extractTextWithPdfJs(pdfBuffer);
+      } catch (fallbackError: any) {
+        throw new Error(`PDF text extraction failed: ${fallbackError.message}`);
+      }
+    }
+    
+    // Handle other pdf-parse errors
     const isTestFileError = errorMsg.includes('ENOENT') && 
                            (errorMsg.includes('test') || 
                             errorMsg.includes('05-versions-space.pdf') ||
@@ -140,21 +214,31 @@ export async function extractTextFromPdf(pdfBuffer: Buffer): Promise<string> {
                                      retryErrorMsg.includes('05-versions-space.pdf'));
         
         if (isStillTestFileError) {
-          // The library is fundamentally broken due to test file access
-          // This happens in serverless environments where module.parent is undefined
-          throw new Error('PDF parsing failed due to library initialization issue in production environment. Please try uploading the file again.');
+          // Fallback to pdfjs-dist
+          console.log('[PDF Extract] pdf-parse retry failed, using pdfjs-dist fallback...');
+          try {
+            return await extractTextWithPdfJs(pdfBuffer);
+          } catch (fallbackError: any) {
+            throw new Error(`PDF text extraction failed: ${fallbackError.message}`);
+          }
         }
         
         throw retryError;
       }
     }
     
-    // Handle other errors
+    // Handle other errors (password-protected, etc.)
     if (errorMsg.toLowerCase().includes('password') || errorMsg.toLowerCase().includes('encrypted')) {
       throw new Error('PDF is password-protected or encrypted. Please provide an unencrypted PDF.');
     }
     
-    throw new Error(`Failed to extract text from PDF: ${errorMsg}. Please ensure the file is a valid, unencrypted PDF.`);
+    // For any other error, try pdfjs-dist as last resort
+    console.log('[PDF Extract] pdf-parse error, trying pdfjs-dist fallback...');
+    try {
+      return await extractTextWithPdfJs(pdfBuffer);
+    } catch (fallbackError: any) {
+      throw new Error(`PDF text extraction failed: ${errorMsg}. Fallback also failed: ${fallbackError.message}`);
+    }
   }
 }
 
@@ -637,41 +721,78 @@ export async function extractTitleFromPdf(pdfBuffer: Buffer, filename: string): 
     console.log('[Title Extract] Could not extract metadata title, trying content extraction');
   }
   
-  // Fallback: Extract from first few pages of content
-  try {
-    const pdfParse = await getPdfParse();
-    const data = await pdfParse(pdfBuffer);
-    
+    // Fallback: Extract from first few pages of content
+    try {
+      const pdfParse = await getPdfParse();
+      const data = await pdfParse(pdfBuffer);
+      
       if (data && data.text) {
         const lines = data.text.split('\n').map((l: string) => l.trim()).filter((l: string) => l.length > 0);
       
-      // Look for title-like lines in first 20 lines
-      for (let i = 0; i < Math.min(20, lines.length); i++) {
-        const line = lines[i];
-        // Title characteristics: short (<60 chars), prominent position, might be all caps or title case
-        if (line.length > 10 && line.length < 60 && 
-            (line === line.toUpperCase() || /^[A-Z][a-z]+/.test(line)) &&
-            !line.includes('http') && !line.match(/^\d+$/)) {
-          console.log(`[Title Extract] Found title from content: ${line}`);
-          return line;
+        // Look for title-like lines in first 20 lines
+        for (let i = 0; i < Math.min(20, lines.length); i++) {
+          const line = lines[i];
+          // Title characteristics: short (<60 chars), prominent position, might be all caps or title case
+          if (line.length > 10 && line.length < 60 && 
+              (line === line.toUpperCase() || /^[A-Z][a-z]+/.test(line)) &&
+              !line.includes('http') && !line.match(/^\d+$/)) {
+            console.log(`[Title Extract] Found title from content: ${line}`);
+            return line;
+          }
+        }
+        
+        // If no title found, use first substantial line
+        const firstLine = lines.find((l: string) => l.length > 10 && l.length < 100);
+        if (firstLine) {
+          console.log(`[Title Extract] Using first substantial line as title: ${firstLine}`);
+          return firstLine.substring(0, 60); // Limit length
         }
       }
+    } catch (error: any) {
+      const errorMsg = error?.message || '';
+      const isInitError = errorMsg.includes('ENOENT') && 
+                         (errorMsg.includes('test') || 
+                          errorMsg.includes('05-versions-space.pdf') ||
+                          errorMsg.includes('./test/data') ||
+                          errorMsg.includes('library initialization') ||
+                          errorMsg.includes('failed to initialize'));
       
-      // If no title found, use first substantial line
-      const firstLine = lines.find((l: string) => l.length > 10 && l.length < 100);
-      if (firstLine) {
-        console.log(`[Title Extract] Using first substantial line as title: ${firstLine}`);
-        return firstLine.substring(0, 60); // Limit length
+      // If pdf-parse fails, try pdfjs-dist fallback
+      if (isInitError) {
+        console.log('[Title Extract] pdf-parse failed, trying pdfjs-dist fallback...');
+        try {
+          const text = await extractTextWithPdfJs(pdfBuffer);
+          const lines = text.split('\n').map((l: string) => l.trim()).filter((l: string) => l.length > 0);
+          
+          // Look for title-like lines in first 20 lines
+          for (let i = 0; i < Math.min(20, lines.length); i++) {
+            const line = lines[i];
+            if (line.length > 10 && line.length < 60 && 
+                (line === line.toUpperCase() || /^[A-Z][a-z]+/.test(line)) &&
+                !line.includes('http') && !line.match(/^\d+$/)) {
+              console.log(`[Title Extract] Found title from content (pdfjs-dist): ${line}`);
+              return line;
+            }
+          }
+          
+          // If no title found, use first substantial line
+          const firstLine = lines.find((l: string) => l.length > 10 && l.length < 100);
+          if (firstLine) {
+            console.log(`[Title Extract] Using first substantial line as title (pdfjs-dist): ${firstLine}`);
+            return firstLine.substring(0, 60);
+          }
+        } catch (fallbackError: any) {
+          console.log('[Title Extract] pdfjs-dist fallback also failed, using filename');
+        }
+      } else {
+        console.log('[Title Extract] Could not extract title from content');
       }
     }
-  } catch (error) {
-    console.log('[Title Extract] Could not extract title from content');
-  }
-  
-  // Final fallback: filename without extension
-  const titleFromFilename = filename.replace(/\.pdf$/i, '').replace(/[-_]/g, ' ');
-  console.log(`[Title Extract] Using filename as title: ${titleFromFilename}`);
-  return titleFromFilename;
+    
+    // Final fallback: filename without extension
+    const titleFromFilename = filename.replace(/\.pdf$/i, '').replace(/[-_]/g, ' ');
+    console.log(`[Title Extract] Using filename as title: ${titleFromFilename}`);
+    return titleFromFilename;
 }
 
 // Extract text from scanned PDF using OCR
