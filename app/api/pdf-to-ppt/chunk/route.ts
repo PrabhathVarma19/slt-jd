@@ -13,6 +13,7 @@ interface ChunkSession {
   receivedChunks: number;
   filename: string;
   numSlides?: number;
+  extractionMode?: 'extract' | 'ai';
   createdAt: number;
 }
 
@@ -76,6 +77,7 @@ export async function POST(req: NextRequest) {
         receivedChunks: 0,
         filename,
         numSlides,
+        extractionMode,
         createdAt: Date.now(),
       };
       chunkStore.set(sessionId, session);
