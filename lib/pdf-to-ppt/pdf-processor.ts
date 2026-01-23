@@ -16,35 +16,61 @@ async function getPdfParse(): Promise<any> {
   }
 
   // Try pdf-parse-debugging-disabled first (has debug mode disabled)
-  // This package is identical to pdf-parse but with debug mode hardcoded to false
   try {
-    // Use dynamic import - Next.js will handle this at runtime
     const moduleName = 'pdf-parse-debugging-disabled';
     const disabledModule = await import(moduleName);
     pdfParseModule = disabledModule.default || disabledModule;
-    if (pdfParseModule) {
+    if (pdfParseModule && typeof pdfParseModule === 'function') {
+      console.log('[PDF Parse] Using pdf-parse-debugging-disabled');
       return pdfParseModule;
     }
-  } catch {
-    // Fall through to regular pdf-parse if disabled version isn't available
+  } catch (error: any) {
+    console.log('[PDF Parse] pdf-parse-debugging-disabled not available, trying pdf-parse');
   }
 
-  // Fallback to regular pdf-parse with error handling
+  // Fallback to regular pdf-parse with enhanced error handling
   try {
     const importedModule = await import('pdf-parse');
     pdfParseModule = importedModule.default || importedModule;
+    
+    // Try to patch at runtime if postinstall didn't work
+    if (pdfParseModule && typeof pdfParseModule === 'function') {
+      // Wrap the function to catch initialization errors
+      const originalParse = pdfParseModule;
+      pdfParseModule = async (buffer: Buffer) => {
+        try {
+          return await originalParse(buffer);
+        } catch (parseError: any) {
+          const errorMsg = parseError?.message || '';
+          // If it's a test file error, clear cache and retry once
+          if (errorMsg.includes('ENOENT') && errorMsg.includes('test')) {
+            console.log('[PDF Parse] Test file error detected, retrying...');
+            await new Promise(resolve => setTimeout(resolve, 300));
+            return await originalParse(buffer);
+          }
+          throw parseError;
+        }
+      };
+    }
+    
+    console.log('[PDF Parse] Successfully loaded pdf-parse');
     return pdfParseModule;
   } catch (importError: any) {
     const errorMsg = importError?.message || '';
+    console.error('[PDF Parse] Import error:', errorMsg);
+    
+    // Retry with delay for test file errors
     if (errorMsg.includes('ENOENT') && errorMsg.includes('test')) {
-      // Retry after a delay
-      await new Promise(resolve => setTimeout(resolve, 200));
+      console.log('[PDF Parse] Retrying after test file error...');
+      await new Promise(resolve => setTimeout(resolve, 500));
       try {
         const importedModule = await import('pdf-parse');
         pdfParseModule = importedModule.default || importedModule;
+        console.log('[PDF Parse] Successfully loaded pdf-parse on retry');
         return pdfParseModule;
-      } catch {
-        throw new Error(`PDF parsing library failed to initialize: ${errorMsg}`);
+      } catch (retryError: any) {
+        console.error('[PDF Parse] Retry failed:', retryError?.message);
+        throw new Error(`PDF parsing library failed to initialize: ${retryError?.message || errorMsg}`);
       }
     }
     throw importError;
