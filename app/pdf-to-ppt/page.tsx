@@ -136,42 +136,44 @@ export default function PdfToPptPage() {
   }, [chunkFile]);
 
   // Upload file directly (for files <4MB)
-  const uploadDirect = useCallback(async (file: File, numSlides: number): Promise<any> => {
-    const formData = new FormData();
-    formData.append('file', file);
-    if (numSlides && numSlides >= 5 && numSlides <= 25) {
-      formData.append('numSlides', numSlides.toString());
-    }
-
-    const response = await fetch('/api/pdf-to-ppt', {
-      method: 'POST',
-      body: formData,
-    });
-
-    // Check response status before parsing JSON
-    if (!response.ok) {
-      let errorMessage = 'Failed to convert PDF to PowerPoint';
-      const contentType = response.headers.get('content-type');
-      
-      if (contentType?.includes('application/json')) {
-        const errorData = await response.json();
-        errorMessage = errorData.error || errorMessage;
-      } else {
-        // Handle plain text errors (413, etc.)
-        const errorText = await response.text();
-        if (response.status === 413 || errorText.includes('payload too large') || errorText.includes('Content Too Large')) {
-          errorMessage = 'File is too large. Please try again - the system will automatically use chunked upload for large files.';
-        } else {
-          errorMessage = errorText || errorMessage;
-        }
+    // Upload file directly (for files <4MB)
+    const uploadDirect = useCallback(async (file: File, numSlides: number, extractionMode: 'extract' | 'ai'): Promise<any> => {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('extractionMode', extractionMode);
+      if (numSlides && numSlides >= 5 && numSlides <= 25) {
+        formData.append('numSlides', numSlides.toString());
       }
-      
-      throw new Error(errorMessage);
-    }
-
-    const data = await response.json();
-    return data;
-  }, []);
+  
+      const response = await fetch('/api/pdf-to-ppt', {
+        method: 'POST',
+        body: formData,
+      });
+  
+      // Check response status before parsing JSON
+      if (!response.ok) {
+        let errorMessage = 'Failed to convert PDF to PowerPoint';
+        const contentType = response.headers.get('content-type');
+        
+        if (contentType?.includes('application/json')) {
+          const errorData = await response.json();
+          errorMessage = errorData.error || errorMessage;
+        } else {
+          // Handle plain text errors (413, etc.)
+          const errorText = await response.text();
+          if (response.status === 413 || errorText.includes('payload too large') || errorText.includes('Content Too Large')) {
+            errorMessage = 'File is too large. Please try again - the system will automatically use chunked upload for large files.';
+          } else {
+            errorMessage = errorText || errorMessage;
+          }
+        }
+        
+        throw new Error(errorMessage);
+      }
+  
+      const data = await response.json();
+      return data;
+    }, []);
 
   const handleGenerate = async () => {
     if (!file) {
