@@ -6,7 +6,13 @@ import Button from '@/components/ui/button';
 import Input from '@/components/ui/input';
 import Textarea from '@/components/ui/textarea';
 import { CommsMode, CommsAudience, Formality, CommsTemplate } from '@/types/comms';
-import { CommsAgentMode, CommsAgentAudience, CommsAgentTone, CommsAgentResponse } from '@/types/comms-agent';
+import {
+  CommsAgentMode,
+  CommsAgentAudience,
+  CommsAgentTone,
+  CommsAgentResponse,
+  CommsAgentTemplateType,
+} from '@/types/comms-agent';
 import { Spinner } from '@/components/ui/spinner';
 
 interface GeneratedOutput {
@@ -106,6 +112,8 @@ export default function CommsHubPage() {
   const [agentMode, setAgentMode] = useState<CommsAgentMode>('incident_update');
   const [agentAudience, setAgentAudience] = useState<CommsAgentAudience>('org');
   const [agentTone, setAgentTone] = useState<CommsAgentTone>('neutral');
+  const [agentTemplateType, setAgentTemplateType] =
+    useState<CommsAgentTemplateType>('it_incident');
   const [ticketId, setTicketId] = useState('');
   const [incidentTitle, setIncidentTitle] = useState('');
   const [impact, setImpact] = useState('');
@@ -216,6 +224,7 @@ export default function CommsHubPage() {
         body: JSON.stringify({
           mode: agentMode,
           tone: agentTone,
+          templateType: agentMode === 'incident_update' ? agentTemplateType : undefined,
           audience: agentMode === 'incident_update' ? agentAudience : undefined,
           ticketId: ticketId || undefined,
           title: incidentTitle || undefined,
@@ -322,6 +331,30 @@ export default function CommsHubPage() {
 
           {agentMode === 'incident_update' ? (
             <div className="grid gap-4 md:grid-cols-2">
+              <div className="space-y-2 md:col-span-2">
+                <label className="text-sm font-medium text-gray-700">Template</label>
+                <div className="flex flex-wrap gap-2">
+                  {([
+                    { key: 'it_incident', label: 'IT Incident / Outage' },
+                    { key: 'security_advisory', label: 'Security Advisory' },
+                    { key: 'policy_update', label: 'Policy Update' },
+                    { key: 'travel_advisory', label: 'Travel Advisory' },
+                    { key: 'leadership_update', label: 'Leadership / Org Update' },
+                  ] as Array<{ key: CommsAgentTemplateType; label: string }>).map((item) => (
+                    <Button
+                      key={item.key}
+                      variant={agentTemplateType === item.key ? 'primary' : 'secondary'}
+                      size="sm"
+                      onClick={() => setAgentTemplateType(item.key)}
+                    >
+                      {item.label}
+                    </Button>
+                  ))}
+                </div>
+                <p className="text-xs text-gray-500">
+                  Output follows the selected template’s headers and order.
+                </p>
+              </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium text-gray-700">Ticket ID (optional)</label>
                 <Input

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { generateCommsAgentOutput } from '@/lib/ai/llm';
 import { CommsAgentRequest } from '@/types/comms-agent';
+import { getPublishedTemplate } from '@/lib/comms/templates';
+import { CommsTemplateType } from '@/types/comms-templates';
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,7 +15,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const result = await generateCommsAgentOutput(body);
+    let templateType: CommsTemplateType | null = null;
+    if (body.templateType) {
+      templateType = body.templateType as CommsTemplateType;
+    } else if (body.mode === 'incident_update') {
+      templateType = 'it_incident';
+    } else if (body.mode === 'reply_assistant') {
+      templateType = 'leadership_update';
+    }
+
+    const template = templateType ? await getPublishedTemplate(templateType) : null;
+    const result = await generateCommsAgentOutput(body, template?.sections);
 
     return NextResponse.json(result);
   } catch (error: any) {

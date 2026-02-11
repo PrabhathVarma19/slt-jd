@@ -3,6 +3,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import { JDSections, Tone, Seniority, AutocompleteRequest } from '@/types/jd';
 import { CommsRequest, CommsSections, CommsTemplate } from '@/types/comms';
 import { CommsAgentRequest, CommsAgentResponse } from '@/types/comms-agent';
+import { CommsTemplateSection } from '@/types/comms-templates';
 import { WeeklyBriefRequest, WeeklyBrief } from '@/types/weekly';
 
 const openaiApiKey = process.env.OPENAI_API_KEY;
@@ -773,8 +774,36 @@ ${headerInstruction}
   throw new Error('No AI provider available. Please set OPENAI_API_KEY or ANTHROPIC_API_KEY.');
 }
 
+const splitSentences = (text: string) =>
+  text
+    .split(/(?<=[.!?])\s+/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+const limitSentences = (text: string, maxSentences: number) => {
+  if (!text) return text;
+  const sentences = splitSentences(text);
+  if (sentences.length <= maxSentences) return text;
+  return sentences.slice(0, maxSentences).join(' ');
+};
+
+const buildSectionBody = (
+  section: CommsTemplateSection,
+  body: string | undefined
+) => {
+  const rules = (section.rules || {}) as any;
+  if (rules?.verbatim && rules?.defaultBody) {
+    return rules.defaultBody;
+  }
+  if ((!body || !body.trim()) && rules?.defaultBody) {
+    return rules.defaultBody;
+  }
+  return body || '';
+};
+
 export async function generateCommsAgentOutput(
-  request: CommsAgentRequest
+  request: CommsAgentRequest,
+  templateSections?: CommsTemplateSection[]
 ): Promise<CommsAgentResponse> {
   const {
     mode,
@@ -791,7 +820,8 @@ export async function generateCommsAgentOutput(
 
   const systemPrompt = `You are a communications assistant for an enterprise IT org.
 You draft clear, concise internal messages.
-Always return valid JSON with: subject, summary, body, followUpQuestions (array).
+Always return valid JSON with: subject, summary, followUpQuestions (array).
+If template sections are provided, return sections (array of {key, body}) instead of a single body.
 If required details are missing, ask focused follow-up questions in followUpQuestions.`;
 
   const modeLabel =
@@ -800,6 +830,24 @@ If required details are missing, ask focused follow-up questions in followUpQues
     audience === 'exec' ? 'Executive' : audience === 'org' ? 'Org-wide' : 'Team';
   const toneLabel =
     tone === 'executive' ? 'Executive' : tone === 'formal' ? 'Formal' : tone === 'casual' ? 'Casual' : 'Neutral';
+
+  const templatePrompt = templateSections && templateSections.length > 0
+    ? `Template sections (in order):
+${templateSections
+  .slice()
+  .sort((a, b) => a.order - b.order)
+  .map((section) => {
+    const rules = section.rules ? JSON.stringify(section.rules) : '';
+    return `- ${section.key}: "${section.title}"${section.required ? ' (required)' : ''}${section.locked ? ' [locked]' : ''}${rules ? ` rules=${rules}` : ''}`;
+  })
+  .join('\n')}
+
+Instructions:
+- Populate EVERY required section.
+- If a section has rules.verbatim=true, DO NOT paraphrase.
+- If a section has rules.defaultBody, you may use it verbatim when needed.
+- Return JSON with: subject, summary, sections (array of {key, body}), followUpQuestions.`
+    : '';
 
   const userPrompt = `Mode: ${modeLabel}
 Tone: ${toneLabel}
@@ -811,11 +859,13 @@ ETA: ${eta || 'None'}
 Context: ${context || 'None'}
 Email content: ${emailContent || 'None'}
 Desired outcome: ${desiredOutcome || 'None'}
+${templatePrompt ? `\n${templatePrompt}` : ''}
 
 Instructions:
-- If mode is Incident update: draft a status update with a subject + body.
-- If mode is Reply assistant: draft a reply with subject + body.
+- If mode is Incident update: draft a status update.
+- If mode is Reply assistant: draft a reply.
 - Keep the summary to 2-3 sentences.
+- If template sections are provided, return sections (array of {key, body}) that map to the template.
 - Ask follow-up questions only when needed (missing key fields).`;
 
   if (openai) {
@@ -833,11 +883,54 @@ Instructions:
       const content = completion.choices[0]?.message?.content;
       if (content) {
         const parsed = JSON.parse(content);
+        if (templateSections && templateSections.length > 0) {
+          const sectionsByKey = new Map<string, string>();
+          (parsed.sections || []).forEach((section: any) => {
+            if (!section?.key) return;
+            sectionsByKey.set(section.key, section.body || '');
+          });
+
+          const ordered = templateSections
+            .slice()
+            .sort((a, b) => a.order - b.order);
+          const missing = ordered.filter(
+            (section) => section.required && !sectionsByKey.get(section.key)
+          );
+          if (missing.length > 0) {
+            throw new Error(
+              `Missing required sections: ${missing.map((m) => m.title).join(', ')}`
+            );
+          }
+
+          const sectionBlocks = ordered.map((section) => {
+            const bodyValue = buildSectionBody(section, sectionsByKey.get(section.key));
+            const heading = section.title.trim();
+            return `${heading}\n${bodyValue}`;
+          });
+
+          const summarySection = ordered.find((section) => section.key === 'summary');
+          const summaryRules = summarySection?.rules as any;
+          const summaryValue = summaryRules?.maxSentences
+            ? limitSentences(parsed.summary || '', summaryRules.maxSentences)
+            : parsed.summary || '';
+
+          return {
+            subject: parsed.subject || '',
+            summary: summaryValue,
+            body: sectionBlocks.join('\n\n'),
+            followUpQuestions: Array.isArray(parsed.followUpQuestions)
+              ? parsed.followUpQuestions
+              : [],
+          };
+        }
+
         return {
           subject: parsed.subject || '',
           summary: parsed.summary || '',
           body: parsed.body || '',
-          followUpQuestions: Array.isArray(parsed.followUpQuestions) ? parsed.followUpQuestions : [],
+          followUpQuestions: Array.isArray(parsed.followUpQuestions)
+            ? parsed.followUpQuestions
+            : [],
         };
       }
     } catch (error) {
@@ -864,11 +957,54 @@ Instructions:
         const text = content.text.trim();
         const jsonText = text.replace(/^```json\n?/i, '').replace(/\n?```$/i, '');
         const parsed = JSON.parse(jsonText);
+        if (templateSections && templateSections.length > 0) {
+          const sectionsByKey = new Map<string, string>();
+          (parsed.sections || []).forEach((section: any) => {
+            if (!section?.key) return;
+            sectionsByKey.set(section.key, section.body || '');
+          });
+
+          const ordered = templateSections
+            .slice()
+            .sort((a, b) => a.order - b.order);
+          const missing = ordered.filter(
+            (section) => section.required && !sectionsByKey.get(section.key)
+          );
+          if (missing.length > 0) {
+            throw new Error(
+              `Missing required sections: ${missing.map((m) => m.title).join(', ')}`
+            );
+          }
+
+          const sectionBlocks = ordered.map((section) => {
+            const bodyValue = buildSectionBody(section, sectionsByKey.get(section.key));
+            const heading = section.title.trim();
+            return `${heading}\n${bodyValue}`;
+          });
+
+          const summarySection = ordered.find((section) => section.key === 'summary');
+          const summaryRules = summarySection?.rules as any;
+          const summaryValue = summaryRules?.maxSentences
+            ? limitSentences(parsed.summary || '', summaryRules.maxSentences)
+            : parsed.summary || '';
+
+          return {
+            subject: parsed.subject || '',
+            summary: summaryValue,
+            body: sectionBlocks.join('\n\n'),
+            followUpQuestions: Array.isArray(parsed.followUpQuestions)
+              ? parsed.followUpQuestions
+              : [],
+          };
+        }
+
         return {
           subject: parsed.subject || '',
           summary: parsed.summary || '',
           body: parsed.body || '',
-          followUpQuestions: Array.isArray(parsed.followUpQuestions) ? parsed.followUpQuestions : [],
+          followUpQuestions: Array.isArray(parsed.followUpQuestions)
+            ? parsed.followUpQuestions
+            : [],
         };
       }
     } catch (error) {

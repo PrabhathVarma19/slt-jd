@@ -1,6 +1,0 @@
-{"location":"route.ts:8","message":"POST handler entry","data":{},"timestamp":1769164200474,"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}
-{"location":"route.ts:11","message":"File received","data":{"fileName":"Hackathon-1.pdf","fileSize":2210360,"fileType":"application/pdf","numSlides":8},"timestamp":1769164200491,"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}
-{"location":"route.ts:35","message":"Buffer created","data":{"bufferSize":2210360,"arrayBufferSize":2210360,"firstBytes":"25 50 44 46 2d 31 2e 34 0a 25 c7 ec 8f a2 0a 25 25 49 6e 76","isPdfHeader":true},"timestamp":1769164200508,"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}
-{"location":"route.ts:38","message":"Before processPdf call","data":{"bufferSize":2210360,"fileName":"Hackathon-1.pdf"},"timestamp":1769164201456,"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}
-{"location":"route.ts:41","message":"Before generatePptx call","data":{"slidesCount":8},"timestamp":1769164219864,"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}
-{"location":"route.ts:49","message":"Success response","data":{"slidesCount":8,"pptxBufferSize":320761},"timestamp":1769164219969,"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}

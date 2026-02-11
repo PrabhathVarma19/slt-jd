@@ -11,5 +11,6 @@ create table if not exists "TicketMetricsDaily" (
   updatedAt timestamptz not null default now()
 );
 
+
 create index if not exists ticketmetricsdaily_day_idx
   on "TicketMetricsDaily"(day);

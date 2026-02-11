@@ -139,6 +139,14 @@ const ADMIN_TOOLS: Tool[] = [
     initials: 'UM',
     accent: 'bg-purple-100 text-purple-700',
   },
+  {
+    title: 'Comms Templates',
+    description: 'Edit and publish comms templates used by Beacon.',
+    href: '/admin/templates',
+    bucket: 'Admin',
+    initials: 'CT',
+    accent: 'bg-amber-100 text-amber-700',
+  },
 ];
 
 const SUPER_ADMIN_TOOLS: Tool[] = [
