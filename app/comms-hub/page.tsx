@@ -259,6 +259,49 @@ export default function CommsHubPage() {
     window.location.href = mailto;
   };
 
+  const renderDraftBlocks = (text: string) => {
+    const blocks = text
+      .split(/\n\s*\n/)
+      .map((block) => block.trim())
+      .filter(Boolean);
+    return blocks.map((block, index) => {
+      const lines = block.split(/\n/).filter(Boolean);
+      if (lines.length === 0) return null;
+      const first = lines[0].trim();
+      const rest = lines.slice(1);
+      const treatAsHeading =
+        rest.length > 0 &&
+        !first.startsWith('-') &&
+        !first.endsWith(',') &&
+        !first.endsWith('.');
+      const heading = treatAsHeading ? first : '';
+      const contentLines = treatAsHeading ? rest : lines;
+      const allBullets =
+        contentLines.length > 1 &&
+        contentLines.every((line) => line.trim().startsWith('-'));
+      return (
+        <div key={`${first}-${index}`} className="space-y-1">
+          {heading && (
+            <div className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+              {heading}
+            </div>
+          )}
+          {allBullets ? (
+            <ul className="list-disc space-y-1 pl-5 text-sm text-gray-900">
+              {contentLines.map((line) => (
+                <li key={line}>{line.replace(/^\-\s?/, '')}</li>
+              ))}
+            </ul>
+          ) : (
+            <p className="whitespace-pre-wrap text-sm text-gray-900">
+              {contentLines.join('\n')}
+            </p>
+          )}
+        </div>
+      );
+    });
+  };
+
   return (
     <div className="space-y-8">
       <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
@@ -473,9 +516,9 @@ export default function CommsHubPage() {
               )}
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Draft</p>
-                <pre className="whitespace-pre-wrap text-sm text-gray-900">
-                  {resolveSignature(agentOutput.body)}
-                </pre>
+                <div className="space-y-3">
+                  {renderDraftBlocks(resolveSignature(agentOutput.body))}
+                </div>
               </div>
               {agentOutput.followUpQuestions.length > 0 && (
                 <div>

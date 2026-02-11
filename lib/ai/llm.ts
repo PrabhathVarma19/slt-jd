@@ -823,6 +823,15 @@ const getGreeting = (request: CommsAgentRequest) => {
   return 'Hi All,';
 };
 
+const getTemplateGreeting = (sections?: CommsTemplateSection[]) => {
+  if (!sections || sections.length === 0) return '';
+  const greetingSection = sections.find(
+    (section) =>
+      section.key === 'greeting' || (section.rules as any)?.role === 'greeting'
+  );
+  return greetingSection?.title?.trim() || '';
+};
+
 const getSubjectFallback = (request: CommsAgentRequest) => {
   const base =
     request.templateType === 'security_advisory'
@@ -971,6 +980,7 @@ Instructions:
             const base = buildSectionBody(section, sectionsByKey.get(section.key));
             if (base.trim()) return base;
             const key = section.key;
+            if (key === 'greeting') return '';
             if (key === 'summary') return '';
             if (key.includes('impact')) return impact || '';
             if (key.includes('timeline')) return eta || context || '';
@@ -980,9 +990,9 @@ Instructions:
             return context || title || impact || '';
           };
 
-          const greeting = getGreeting(request);
+          const greeting = getTemplateGreeting(ordered) || getGreeting(request);
           const sectionBlocks = ordered
-            .filter((section) => section.key !== 'summary')
+            .filter((section) => section.key !== 'summary' && section.key !== 'greeting')
             .map((section) => {
               const bodyValue = resolveSectionBody(section);
               const heading = section.title.trim();
@@ -1064,6 +1074,7 @@ Instructions:
             const base = buildSectionBody(section, sectionsByKey.get(section.key));
             if (base.trim()) return base;
             const key = section.key;
+            if (key === 'greeting') return '';
             if (key === 'summary') return '';
             if (key.includes('impact')) return impact || '';
             if (key.includes('timeline')) return eta || context || '';
@@ -1073,9 +1084,9 @@ Instructions:
             return context || title || impact || '';
           };
 
-          const greeting = getGreeting(request);
+          const greeting = getTemplateGreeting(ordered) || getGreeting(request);
           const sectionBlocks = ordered
-            .filter((section) => section.key !== 'summary')
+            .filter((section) => section.key !== 'summary' && section.key !== 'greeting')
             .map((section) => {
               const bodyValue = resolveSectionBody(section);
               const heading = section.title.trim();

@@ -198,6 +198,26 @@ export default function AdminTemplatesPage() {
     });
   };
 
+  const draftWarnings = useMemo(() => {
+    if (!selectedGroup?.draft?.sections) return [];
+    const warnings: string[] = [];
+    const sections = selectedGroup.draft.sections;
+    const missingTitle = sections.filter((section) => section.required && !section.title?.trim());
+    if (missingTitle.length > 0) {
+      warnings.push('Required sections must have titles.');
+    }
+    if (selectedGroup.type === 'security_advisory') {
+      const requiredSecurity = ['hard_rules', 'examples', 'mandatory_actions'];
+      const missing = requiredSecurity.filter(
+        (key) => !sections.some((section) => section.key === key && section.required)
+      );
+      if (missing.length > 0) {
+        warnings.push(`Security advisory must include: ${missing.join(', ')}`);
+      }
+    }
+    return warnings;
+  }, [selectedGroup]);
+
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -307,6 +327,13 @@ export default function AdminTemplatesPage() {
                     {discarding ? 'Discarding...' : 'Discard Draft'}
                   </Button>
                 </div>
+                {draftWarnings.length > 0 && (
+                  <div className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800 space-y-1">
+                    {draftWarnings.map((warning) => (
+                      <div key={warning}>{warning}</div>
+                    ))}
+                  </div>
+                )}
 
                 <div className="space-y-3">
                   {draftSections.map((section, index) => (
@@ -435,6 +462,21 @@ export default function AdminTemplatesPage() {
                         const body =
                           rules.defaultBody ||
                           (section.required ? '[Generated content]' : '[Optional content]');
+                        if (section.key === 'greeting') {
+                          return (
+                            <div
+                              key={section.id}
+                              className="rounded-md border border-gray-200 bg-gray-50 px-3 py-2"
+                            >
+                              <div className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                                Greeting Line
+                              </div>
+                              <p className="mt-1 text-xs text-gray-700 whitespace-pre-wrap">
+                                {section.title}
+                              </p>
+                            </div>
+                          );
+                        }
                         return (
                           <div
                             key={section.id}
