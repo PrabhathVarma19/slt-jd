@@ -815,6 +815,29 @@ const buildBodyFromSections = (
     .join('\n\n');
 };
 
+const buildFallbackBody = (request: CommsAgentRequest) => {
+  const parts: string[] = [];
+  if (request.title) {
+    parts.push(`Title\n${request.title}`);
+  }
+  if (request.impact) {
+    parts.push(`Impact\n${request.impact}`);
+  }
+  if (request.eta) {
+    parts.push(`ETA / Next update\n${request.eta}`);
+  }
+  if (request.context) {
+    parts.push(`Additional context\n${request.context}`);
+  }
+  if (request.emailContent) {
+    parts.push(`Email content\n${request.emailContent}`);
+  }
+  if (request.desiredOutcome) {
+    parts.push(`Desired outcome\n${request.desiredOutcome}`);
+  }
+  return parts.join('\n\n');
+};
+
 export async function generateCommsAgentOutput(
   request: CommsAgentRequest,
   templateSections?: CommsTemplateSection[]
@@ -834,9 +857,8 @@ export async function generateCommsAgentOutput(
 
   const systemPrompt = `You are a communications assistant for an enterprise IT org.
 You draft clear, concise internal messages.
-Always return valid JSON with: subject, summary, followUpQuestions (array).
-If template sections are provided, return sections (array of {key, body}) instead of a single body.
-Otherwise, return a single body string.
+Always return valid JSON with: subject, summary, body, followUpQuestions (array).
+If template sections are provided, also return sections (array of {key, body}) aligned to the template.
 If required details are missing, ask focused follow-up questions in followUpQuestions.`;
 
   const modeLabel =
@@ -940,7 +962,9 @@ Instructions:
         }
 
         const fallbackBody =
-          parsed.body || buildBodyFromSections(parsed.sections || []) || '';
+          parsed.body ||
+          buildBodyFromSections(parsed.sections || []) ||
+          buildFallbackBody(request);
         return {
           subject: parsed.subject || '',
           summary: parsed.summary || '',
@@ -1016,7 +1040,9 @@ Instructions:
         }
 
         const fallbackBody =
-          parsed.body || buildBodyFromSections(parsed.sections || []) || '';
+          parsed.body ||
+          buildBodyFromSections(parsed.sections || []) ||
+          buildFallbackBody(request);
         return {
           subject: parsed.subject || '',
           summary: parsed.summary || '',

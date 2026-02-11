@@ -25,6 +25,12 @@ export async function POST(request: NextRequest) {
     }
 
     const template = templateType ? await getPublishedTemplate(templateType) : null;
+    if (templateType && !template) {
+      return NextResponse.json(
+        { error: `No published template found for ${templateType}` },
+        { status: 500 }
+      );
+    }
     const result = await generateCommsAgentOutput(body, template?.sections);
 
     return NextResponse.json(result);
