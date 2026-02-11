@@ -823,6 +823,30 @@ const getGreeting = (request: CommsAgentRequest) => {
   return 'Hi All,';
 };
 
+const getSubjectFallback = (request: CommsAgentRequest) => {
+  const base =
+    request.templateType === 'security_advisory'
+      ? 'Security Advisory'
+      : request.templateType === 'policy_update'
+        ? 'Policy Update'
+        : request.templateType === 'travel_advisory'
+          ? 'Travel Advisory'
+          : request.templateType === 'leadership_update'
+            ? 'Org Update'
+            : 'Incident Update';
+  if (request.title) {
+    return `${base}: ${request.title}`;
+  }
+  return base;
+};
+
+const getSummaryFallback = (request: CommsAgentRequest) => {
+  if (request.context) return request.context;
+  if (request.title) return request.title;
+  if (request.impact) return `Impact: ${request.impact}`;
+  return '';
+};
+
 const buildFallbackBody = (request: CommsAgentRequest) => {
   const parts: string[] = [];
   const greeting = getGreeting(request);
@@ -856,7 +880,6 @@ export async function generateCommsAgentOutput(
     mode,
     tone,
     audience,
-    ticketId,
     title,
     impact,
     eta,
@@ -864,12 +887,16 @@ export async function generateCommsAgentOutput(
     emailContent,
     desiredOutcome,
   } = request;
+  const hasContextInput = Boolean(
+    title || context || emailContent || impact || eta || desiredOutcome
+  );
 
   const systemPrompt = `You are a communications assistant for an enterprise IT org.
 You draft clear, concise internal messages.
 Always return valid JSON with: subject, summary, body, followUpQuestions (array).
 If template sections are provided, also return sections (array of {key, body}) aligned to the template.
-If required details are missing, ask focused follow-up questions in followUpQuestions.`;
+If required details are missing, ask focused follow-up questions in followUpQuestions.
+If title or context is provided, do NOT ask for more context and still return best-effort content.`;
 
   const modeLabel =
     mode === 'incident_update' ? 'Incident update' : 'Reply assistant';
@@ -899,7 +926,6 @@ Instructions:
   const userPrompt = `Mode: ${modeLabel}
 Tone: ${toneLabel}
 Audience: ${audienceLabel}
-Ticket ID: ${ticketId || 'None'}
 Title: ${title || 'None'}
 Impact: ${impact || 'None'}
 ETA: ${eta || 'None'}
@@ -913,7 +939,8 @@ Instructions:
 - If mode is Reply assistant: draft a reply.
 - Keep the summary to 2-3 sentences.
 - If template sections are provided, return sections (array of {key, body}) that map to the template.
-- Ask follow-up questions only when needed (missing key fields).`;
+- Ask follow-up questions only when critical fields are missing.
+- If title or context is provided, do NOT ask for more context.`;
 
   if (openai) {
     try {
@@ -940,37 +967,42 @@ Instructions:
           const ordered = templateSections
             .slice()
             .sort((a, b) => a.order - b.order);
-          const missing = ordered.filter(
-            (section) => section.required && !sectionsByKey.get(section.key)
-          );
-          if (missing.length > 0) {
-            throw new Error(
-              `Missing required sections: ${missing.map((m) => m.title).join(', ')}`
-            );
-          }
+          const resolveSectionBody = (section: CommsTemplateSection) => {
+            const base = buildSectionBody(section, sectionsByKey.get(section.key));
+            if (base.trim()) return base;
+            const key = section.key;
+            if (key === 'summary') return '';
+            if (key.includes('impact')) return impact || '';
+            if (key.includes('timeline')) return eta || context || '';
+            if (key.includes('next_update')) return eta || '';
+            if (key.includes('workaround')) return 'None at this time.';
+            if (key.includes('actions')) return context || title || impact || 'Please remain vigilant and report issues.';
+            return context || title || impact || '';
+          };
 
           const greeting = getGreeting(request);
           const sectionBlocks = ordered
             .filter((section) => section.key !== 'summary')
             .map((section) => {
-              const bodyValue = buildSectionBody(section, sectionsByKey.get(section.key));
+              const bodyValue = resolveSectionBody(section);
               const heading = section.title.trim();
               return `${heading}\n${bodyValue}`;
             });
 
           const summarySection = ordered.find((section) => section.key === 'summary');
           const summaryRules = summarySection?.rules as any;
+          const summaryInput = parsed.summary || getSummaryFallback(request);
           const summaryValue = summaryRules?.maxSentences
-            ? limitSentences(parsed.summary || '', summaryRules.maxSentences)
-            : parsed.summary || '';
+            ? limitSentences(summaryInput || '', summaryRules.maxSentences)
+            : summaryInput || '';
+          const resolvedSummary = summaryValue;
 
           return {
-            subject: parsed.subject || '',
-            summary: summaryValue,
+            subject: parsed.subject || getSubjectFallback(request),
+            summary: resolvedSummary,
             body: [greeting, sectionBlocks.join('\n\n')].filter(Boolean).join('\n\n'),
-            followUpQuestions: Array.isArray(parsed.followUpQuestions)
-              ? parsed.followUpQuestions
-              : [],
+            followUpQuestions:
+              hasContextInput ? [] : Array.isArray(parsed.followUpQuestions) ? parsed.followUpQuestions : [],
           };
         }
 
@@ -978,13 +1010,18 @@ Instructions:
           parsed.body ||
           buildBodyFromSections(parsed.sections || []) ||
           buildFallbackBody(request);
+        const greeting = getGreeting(request);
+        const normalizedBody = fallbackBody.trim();
+        const bodyWithGreeting =
+          greeting && normalizedBody && !normalizedBody.toLowerCase().startsWith(greeting.toLowerCase())
+            ? `${greeting}\n\n${normalizedBody}`
+            : greeting || normalizedBody;
         return {
-          subject: parsed.subject || '',
-          summary: parsed.summary || '',
-          body: fallbackBody,
-          followUpQuestions: Array.isArray(parsed.followUpQuestions)
-            ? parsed.followUpQuestions
-            : [],
+          subject: parsed.subject || getSubjectFallback(request),
+          summary: parsed.summary || getSummaryFallback(request),
+          body: bodyWithGreeting,
+          followUpQuestions:
+            hasContextInput ? [] : Array.isArray(parsed.followUpQuestions) ? parsed.followUpQuestions : [],
         };
       }
     } catch (error) {
@@ -1021,37 +1058,42 @@ Instructions:
           const ordered = templateSections
             .slice()
             .sort((a, b) => a.order - b.order);
-          const missing = ordered.filter(
-            (section) => section.required && !sectionsByKey.get(section.key)
-          );
-          if (missing.length > 0) {
-            throw new Error(
-              `Missing required sections: ${missing.map((m) => m.title).join(', ')}`
-            );
-          }
+          const resolveSectionBody = (section: CommsTemplateSection) => {
+            const base = buildSectionBody(section, sectionsByKey.get(section.key));
+            if (base.trim()) return base;
+            const key = section.key;
+            if (key === 'summary') return '';
+            if (key.includes('impact')) return impact || '';
+            if (key.includes('timeline')) return eta || context || '';
+            if (key.includes('next_update')) return eta || '';
+            if (key.includes('workaround')) return 'None at this time.';
+            if (key.includes('actions')) return context || title || impact || 'Please remain vigilant and report issues.';
+            return context || title || impact || '';
+          };
 
           const greeting = getGreeting(request);
           const sectionBlocks = ordered
             .filter((section) => section.key !== 'summary')
             .map((section) => {
-              const bodyValue = buildSectionBody(section, sectionsByKey.get(section.key));
+              const bodyValue = resolveSectionBody(section);
               const heading = section.title.trim();
               return `${heading}\n${bodyValue}`;
             });
 
           const summarySection = ordered.find((section) => section.key === 'summary');
           const summaryRules = summarySection?.rules as any;
+          const summaryInput = parsed.summary || getSummaryFallback(request);
           const summaryValue = summaryRules?.maxSentences
-            ? limitSentences(parsed.summary || '', summaryRules.maxSentences)
-            : parsed.summary || '';
+            ? limitSentences(summaryInput || '', summaryRules.maxSentences)
+            : summaryInput || '';
+          const resolvedSummary = summaryValue;
 
           return {
-            subject: parsed.subject || '',
-            summary: summaryValue,
+            subject: parsed.subject || getSubjectFallback(request),
+            summary: resolvedSummary,
             body: [greeting, sectionBlocks.join('\n\n')].filter(Boolean).join('\n\n'),
-            followUpQuestions: Array.isArray(parsed.followUpQuestions)
-              ? parsed.followUpQuestions
-              : [],
+            followUpQuestions:
+              hasContextInput ? [] : Array.isArray(parsed.followUpQuestions) ? parsed.followUpQuestions : [],
           };
         }
 
@@ -1059,13 +1101,18 @@ Instructions:
           parsed.body ||
           buildBodyFromSections(parsed.sections || []) ||
           buildFallbackBody(request);
+        const greeting = getGreeting(request);
+        const normalizedBody = fallbackBody.trim();
+        const bodyWithGreeting =
+          greeting && normalizedBody && !normalizedBody.toLowerCase().startsWith(greeting.toLowerCase())
+            ? `${greeting}\n\n${normalizedBody}`
+            : greeting || normalizedBody;
         return {
-          subject: parsed.subject || '',
-          summary: parsed.summary || '',
-          body: fallbackBody,
-          followUpQuestions: Array.isArray(parsed.followUpQuestions)
-            ? parsed.followUpQuestions
-            : [],
+          subject: parsed.subject || getSubjectFallback(request),
+          summary: parsed.summary || getSummaryFallback(request),
+          body: bodyWithGreeting,
+          followUpQuestions:
+            hasContextInput ? [] : Array.isArray(parsed.followUpQuestions) ? parsed.followUpQuestions : [],
         };
       }
     } catch (error) {
@@ -1073,11 +1120,12 @@ Instructions:
     }
   }
 
+  const fallbackBody = buildFallbackBody(request);
   return {
-    subject: '',
-    summary: '',
-    body: '',
-    followUpQuestions: ['Provide more context so I can draft a response.'],
+    subject: getSubjectFallback(request),
+    summary: getSummaryFallback(request),
+    body: fallbackBody,
+    followUpQuestions: hasContextInput ? [] : ['Provide more context so I can draft a response.'],
   };
 }
 
