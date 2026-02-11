@@ -801,6 +801,20 @@ const buildSectionBody = (
   return body || '';
 };
 
+const buildBodyFromSections = (
+  sections: Array<{ key?: string; heading?: string; body?: string }>
+) => {
+  if (!sections || sections.length === 0) return '';
+  return sections
+    .map((section) => {
+      const heading = section.heading || section.key || '';
+      const body = section.body || '';
+      return heading ? `${heading}\n${body}` : body;
+    })
+    .filter((block) => block.trim().length > 0)
+    .join('\n\n');
+};
+
 export async function generateCommsAgentOutput(
   request: CommsAgentRequest,
   templateSections?: CommsTemplateSection[]
@@ -822,6 +836,7 @@ export async function generateCommsAgentOutput(
 You draft clear, concise internal messages.
 Always return valid JSON with: subject, summary, followUpQuestions (array).
 If template sections are provided, return sections (array of {key, body}) instead of a single body.
+Otherwise, return a single body string.
 If required details are missing, ask focused follow-up questions in followUpQuestions.`;
 
   const modeLabel =
@@ -924,10 +939,12 @@ Instructions:
           };
         }
 
+        const fallbackBody =
+          parsed.body || buildBodyFromSections(parsed.sections || []) || '';
         return {
           subject: parsed.subject || '',
           summary: parsed.summary || '',
-          body: parsed.body || '',
+          body: fallbackBody,
           followUpQuestions: Array.isArray(parsed.followUpQuestions)
             ? parsed.followUpQuestions
             : [],
@@ -998,10 +1015,12 @@ Instructions:
           };
         }
 
+        const fallbackBody =
+          parsed.body || buildBodyFromSections(parsed.sections || []) || '';
         return {
           subject: parsed.subject || '',
           summary: parsed.summary || '',
-          body: parsed.body || '',
+          body: fallbackBody,
           followUpQuestions: Array.isArray(parsed.followUpQuestions)
             ? parsed.followUpQuestions
             : [],
