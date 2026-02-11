@@ -114,7 +114,6 @@ export default function CommsHubPage() {
   const [agentTone, setAgentTone] = useState<CommsAgentTone>('neutral');
   const [agentTemplateType, setAgentTemplateType] =
     useState<CommsAgentTemplateType>('it_incident');
-  const [ticketId, setTicketId] = useState('');
   const [incidentTitle, setIncidentTitle] = useState('');
   const [impact, setImpact] = useState('');
   const [eta, setEta] = useState('');
@@ -226,7 +225,6 @@ export default function CommsHubPage() {
           tone: agentTone,
           templateType: agentMode === 'incident_update' ? agentTemplateType : undefined,
           audience: agentMode === 'incident_update' ? agentAudience : undefined,
-          ticketId: ticketId || undefined,
           title: incidentTitle || undefined,
           impact: impact || undefined,
           eta: eta || undefined,
@@ -354,14 +352,6 @@ export default function CommsHubPage() {
                 <p className="text-xs text-gray-500">
                   Output follows the selected template’s headers and order.
                 </p>
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700">Ticket ID (optional)</label>
-                <Input
-                  value={ticketId}
-                  onChange={(e) => setTicketId(e.target.value)}
-                  placeholder="UUID from ticket"
-                />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium text-gray-700">Audience</label>

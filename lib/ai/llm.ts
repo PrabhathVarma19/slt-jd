@@ -815,8 +815,18 @@ const buildBodyFromSections = (
     .join('\n\n');
 };
 
+const getGreeting = (request: CommsAgentRequest) => {
+  if (request.mode === 'reply_assistant') return '';
+  const audience = request.audience || 'org';
+  if (audience === 'team') return 'Hi Team,';
+  if (audience === 'exec') return 'Hi Leaders,';
+  return 'Hi All,';
+};
+
 const buildFallbackBody = (request: CommsAgentRequest) => {
   const parts: string[] = [];
+  const greeting = getGreeting(request);
+  if (greeting) parts.push(greeting);
   if (request.title) {
     parts.push(`Title\n${request.title}`);
   }
@@ -939,11 +949,14 @@ Instructions:
             );
           }
 
-          const sectionBlocks = ordered.map((section) => {
-            const bodyValue = buildSectionBody(section, sectionsByKey.get(section.key));
-            const heading = section.title.trim();
-            return `${heading}\n${bodyValue}`;
-          });
+          const greeting = getGreeting(request);
+          const sectionBlocks = ordered
+            .filter((section) => section.key !== 'summary')
+            .map((section) => {
+              const bodyValue = buildSectionBody(section, sectionsByKey.get(section.key));
+              const heading = section.title.trim();
+              return `${heading}\n${bodyValue}`;
+            });
 
           const summarySection = ordered.find((section) => section.key === 'summary');
           const summaryRules = summarySection?.rules as any;
@@ -954,7 +967,7 @@ Instructions:
           return {
             subject: parsed.subject || '',
             summary: summaryValue,
-            body: sectionBlocks.join('\n\n'),
+            body: [greeting, sectionBlocks.join('\n\n')].filter(Boolean).join('\n\n'),
             followUpQuestions: Array.isArray(parsed.followUpQuestions)
               ? parsed.followUpQuestions
               : [],
@@ -1017,11 +1030,14 @@ Instructions:
             );
           }
 
-          const sectionBlocks = ordered.map((section) => {
-            const bodyValue = buildSectionBody(section, sectionsByKey.get(section.key));
-            const heading = section.title.trim();
-            return `${heading}\n${bodyValue}`;
-          });
+          const greeting = getGreeting(request);
+          const sectionBlocks = ordered
+            .filter((section) => section.key !== 'summary')
+            .map((section) => {
+              const bodyValue = buildSectionBody(section, sectionsByKey.get(section.key));
+              const heading = section.title.trim();
+              return `${heading}\n${bodyValue}`;
+            });
 
           const summarySection = ordered.find((section) => section.key === 'summary');
           const summaryRules = summarySection?.rules as any;
@@ -1032,7 +1048,7 @@ Instructions:
           return {
             subject: parsed.subject || '',
             summary: summaryValue,
-            body: sectionBlocks.join('\n\n'),
+            body: [greeting, sectionBlocks.join('\n\n')].filter(Boolean).join('\n\n'),
             followUpQuestions: Array.isArray(parsed.followUpQuestions)
               ? parsed.followUpQuestions
               : [],
