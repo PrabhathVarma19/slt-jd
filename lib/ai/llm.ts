@@ -1000,7 +1000,9 @@ Instructions:
           return {
             subject: parsed.subject || getSubjectFallback(request),
             summary: resolvedSummary,
-            body: [greeting, sectionBlocks.join('\n\n')].filter(Boolean).join('\n\n'),
+            body: [greeting, resolvedSummary, sectionBlocks.join('\n\n')]
+              .filter(Boolean)
+              .join('\n\n'),
             followUpQuestions:
               hasContextInput ? [] : Array.isArray(parsed.followUpQuestions) ? parsed.followUpQuestions : [],
           };
@@ -1014,7 +1016,7 @@ Instructions:
         const normalizedBody = fallbackBody.trim();
         const bodyWithGreeting =
           greeting && normalizedBody && !normalizedBody.toLowerCase().startsWith(greeting.toLowerCase())
-            ? `${greeting}\n\n${normalizedBody}`
+            ? `${greeting}\n\n${parsed.summary || getSummaryFallback(request)}\n\n${normalizedBody}`
             : greeting || normalizedBody;
         return {
           subject: parsed.subject || getSubjectFallback(request),
@@ -1091,7 +1093,9 @@ Instructions:
           return {
             subject: parsed.subject || getSubjectFallback(request),
             summary: resolvedSummary,
-            body: [greeting, sectionBlocks.join('\n\n')].filter(Boolean).join('\n\n'),
+            body: [greeting, resolvedSummary, sectionBlocks.join('\n\n')]
+              .filter(Boolean)
+              .join('\n\n'),
             followUpQuestions:
               hasContextInput ? [] : Array.isArray(parsed.followUpQuestions) ? parsed.followUpQuestions : [],
           };
@@ -1105,7 +1109,7 @@ Instructions:
         const normalizedBody = fallbackBody.trim();
         const bodyWithGreeting =
           greeting && normalizedBody && !normalizedBody.toLowerCase().startsWith(greeting.toLowerCase())
-            ? `${greeting}\n\n${normalizedBody}`
+            ? `${greeting}\n\n${parsed.summary || getSummaryFallback(request)}\n\n${normalizedBody}`
             : greeting || normalizedBody;
         return {
           subject: parsed.subject || getSubjectFallback(request),

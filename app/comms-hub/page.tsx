@@ -465,10 +465,12 @@ export default function CommsHubPage() {
                 <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Subject</p>
                 <p className="text-sm text-gray-900">{agentOutput.subject}</p>
               </div>
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Summary</p>
-                <p className="text-sm text-gray-900">{agentOutput.summary}</p>
-              </div>
+              {agentMode === 'reply_assistant' && (
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Summary</p>
+                  <p className="text-sm text-gray-900">{agentOutput.summary}</p>
+                </div>
+              )}
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Draft</p>
                 <pre className="whitespace-pre-wrap text-sm text-gray-900">
