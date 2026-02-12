@@ -5,6 +5,8 @@ export interface ReleaseNotesRequest {
   release_name: string;
   audience: 'customer' | 'internal';
   change_list: string;
+  template?: string;
+  focus_section?: string;
   known_issues?: string;
   rollback_steps?: string;
 }
@@ -23,6 +25,8 @@ export interface PRSummaryRequest {
   pr_title: string;
   pr_description: string;
   files_touched: string;
+  template?: string;
+  focus_section?: string;
   key_diffs?: string;
   tests_run?: string;
 }
@@ -41,6 +45,8 @@ export interface PostMortemRequest {
   incident_title: string;
   impact: string;
   timeline: string;
+  template?: string;
+  focus_section?: string;
   root_cause?: string;
   mitigation: string;
   preventive_actions?: string;

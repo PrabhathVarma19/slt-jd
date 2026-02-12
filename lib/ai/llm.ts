@@ -1278,7 +1278,8 @@ export async function generateEngineeringToolOutput(
   const systemPrompt = `You are an engineering productivity assistant.
 You write concise, structured outputs for internal teams.
 Return JSON only that matches the requested schema.
-Never include sensitive client names or internal hostnames.`;
+Never include sensitive client names or internal hostnames.
+If a focus section is provided, improve that section first but still return the full JSON schema.`;
 
   let userPrompt = '';
   let schemaHint = '';
@@ -1286,6 +1287,8 @@ Never include sensitive client names or internal hostnames.`;
   if (request.tool === 'release_notes') {
     userPrompt = `Release name/version: ${request.release_name}
 Audience: ${request.audience}
+Template style: ${request.template || 'Standard'}
+Focus section: ${request.focus_section || 'None'}
 Change list:
 ${request.change_list}
 
@@ -1320,6 +1323,9 @@ ${request.key_diffs || 'None'}
 Tests run:
 ${request.tests_run || 'None'}
 
+Template style: ${request.template || 'Reviewer Checklist'}
+Focus section: ${request.focus_section || 'None'}
+
 Generate a plain-English summary, risk areas, and a QA checklist.`;
 
     schemaHint = `Return JSON:
@@ -1345,6 +1351,9 @@ ${request.mitigation}
 
 Preventive actions:
 ${request.preventive_actions || 'None'}
+
+Template style: ${request.template || 'SRE Standard'}
+Focus section: ${request.focus_section || 'None'}
 
 Generate a post-mortem draft with clear sections.`;
 
