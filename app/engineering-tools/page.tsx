@@ -23,7 +23,7 @@ const TOOL_TABS: Array<{ key: EngineeringToolType; label: string }> = [
 
 const RELEASE_TEMPLATES = ['Trianz Standard', 'Customer Safe', 'Technical Internal'] as const;
 const PR_TEMPLATES = ['Reviewer Checklist', 'QA Focus', 'Exec Summary'] as const;
-const POSTMORTEM_TEMPLATES = ['SRE Standard', 'Blameless Short', 'Detailed RCA'] as const;
+const POSTMORTEM_TEMPLATES = ['SRE Standard', 'Short', 'Detailed RCA'] as const;
 
 type DraftHistoryItem = {
   id: string;
