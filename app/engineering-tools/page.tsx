@@ -615,7 +615,7 @@ export default function EngineeringToolsPage() {
               </>
             )}
 
-            <Button onClick={handleGenerate} disabled={loading}>
+            <Button onClick={() => handleGenerate()} disabled={loading}>
               {loading ? (
                 <>
                   <Spinner className="mr-2 h-4 w-4" />
