@@ -65,6 +65,14 @@ const TOOLS: Tool[] = [
     accent: 'bg-fuchsia-100 text-fuchsia-700',
   },
   {
+    title: 'Engineering Tools',
+    description: 'Generate release notes, PR summaries, and post-mortems.',
+    href: '/engineering-tools',
+    bucket: 'Outputs',
+    initials: 'ET',
+    accent: 'bg-emerald-100 text-emerald-700',
+  },
+  {
     title: 'Weekly Initiatives',
     description: 'Turn weekly updates into a CIO / SLT brief.',
     href: '/weekly-brief',

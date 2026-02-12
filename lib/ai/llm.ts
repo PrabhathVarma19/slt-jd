@@ -5,6 +5,13 @@ import { CommsRequest, CommsSections, CommsTemplate } from '@/types/comms';
 import { CommsAgentRequest, CommsAgentResponse } from '@/types/comms-agent';
 import { CommsTemplateSection } from '@/types/comms-templates';
 import { WeeklyBriefRequest, WeeklyBrief } from '@/types/weekly';
+import {
+  EngineeringToolRequest,
+  EngineeringToolResponse,
+  ReleaseNotesOutput,
+  PRSummaryOutput,
+  PostMortemOutput,
+} from '@/types/engineering-tools';
 
 const openaiApiKey = process.env.OPENAI_API_KEY;
 const anthropicApiKey = process.env.ANTHROPIC_API_KEY;
@@ -1248,6 +1255,268 @@ Return JSON with keys: digest (array of {title, body}), run_of_show (array of {t
     ],
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
+  };
+}
+
+const normalizeArray = (value: any, fallback: string[] = []) => {
+  if (!value) return fallback;
+  if (Array.isArray(value)) {
+    return value.map((item) => String(item).trim()).filter(Boolean);
+  }
+  if (typeof value === 'string') {
+    return value
+      .split(/\r?\n/)
+      .map((line) => line.replace(/^\-\s?/, '').trim())
+      .filter(Boolean);
+  }
+  return fallback;
+};
+
+export async function generateEngineeringToolOutput(
+  request: EngineeringToolRequest
+): Promise<EngineeringToolResponse> {
+  const systemPrompt = `You are an engineering productivity assistant.
+You write concise, structured outputs for internal teams.
+Return JSON only that matches the requested schema.
+Never include sensitive client names or internal hostnames.`;
+
+  let userPrompt = '';
+  let schemaHint = '';
+
+  if (request.tool === 'release_notes') {
+    userPrompt = `Release name/version: ${request.release_name}
+Audience: ${request.audience}
+Change list:
+${request.change_list}
+
+Known issues:
+${request.known_issues || 'None'}
+
+Rollback steps:
+${request.rollback_steps || 'None'}
+
+Generate clear release notes for the audience. Use short bullets.`;
+
+    schemaHint = `Return JSON:
+{
+  "headline": "string",
+  "highlights": ["string"],
+  "improvements": ["string"],
+  "fixes": ["string"],
+  "known_issues": ["string"],
+  "rollbacks": ["string"]
+}`;
+  } else if (request.tool === 'pr_summary') {
+    userPrompt = `PR title: ${request.pr_title}
+PR description:
+${request.pr_description}
+
+Files touched:
+${request.files_touched}
+
+Key diffs:
+${request.key_diffs || 'None'}
+
+Tests run:
+${request.tests_run || 'None'}
+
+Generate a plain-English summary, risk areas, and a QA checklist.`;
+
+    schemaHint = `Return JSON:
+{
+  "summary": "string",
+  "risk_level": "Low|Medium|High",
+  "risk_areas": ["string"],
+  "suggested_tests": ["string"],
+  "qa_checklist": ["string"],
+  "rollback_notes": ["string"]
+}`;
+  } else {
+    userPrompt = `Incident title: ${request.incident_title}
+Impact: ${request.impact}
+Timeline:
+${request.timeline}
+
+Root cause (if known):
+${request.root_cause || 'Unknown'}
+
+Mitigation steps:
+${request.mitigation}
+
+Preventive actions:
+${request.preventive_actions || 'None'}
+
+Generate a post-mortem draft with clear sections.`;
+
+    schemaHint = `Return JSON:
+{
+  "summary": "string",
+  "impact": "string",
+  "timeline": ["string"],
+  "root_cause": "string",
+  "resolution": "string",
+  "follow_up_actions": ["string"],
+  "lessons_learned": ["string"]
+}`;
+  }
+
+  const finalUserPrompt = `${userPrompt}
+
+${schemaHint}`;
+
+  if (openai) {
+    try {
+      const completion = await openai.chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: finalUserPrompt },
+        ],
+        response_format: { type: 'json_object' },
+        temperature: 0.4,
+      });
+
+      const content = completion.choices[0]?.message?.content;
+      if (content) {
+        const parsed = JSON.parse(content);
+        if (request.tool === 'release_notes') {
+          const output: ReleaseNotesOutput = {
+            headline: String(parsed.headline || request.release_name || '').trim(),
+            highlights: normalizeArray(parsed.highlights),
+            improvements: normalizeArray(parsed.improvements),
+            fixes: normalizeArray(parsed.fixes),
+            known_issues: normalizeArray(parsed.known_issues),
+            rollbacks: normalizeArray(parsed.rollbacks),
+          };
+          return { tool: 'release_notes', output };
+        }
+        if (request.tool === 'pr_summary') {
+          const output: PRSummaryOutput = {
+            summary: String(parsed.summary || '').trim(),
+            risk_level:
+              parsed.risk_level === 'High' || parsed.risk_level === 'Medium'
+                ? parsed.risk_level
+                : 'Low',
+            risk_areas: normalizeArray(parsed.risk_areas),
+            suggested_tests: normalizeArray(parsed.suggested_tests),
+            qa_checklist: normalizeArray(parsed.qa_checklist),
+            rollback_notes: normalizeArray(parsed.rollback_notes),
+          };
+          return { tool: 'pr_summary', output };
+        }
+        const output: PostMortemOutput = {
+          summary: String(parsed.summary || '').trim(),
+          impact: String(parsed.impact || request.impact || '').trim(),
+          timeline: normalizeArray(parsed.timeline),
+          root_cause: String(parsed.root_cause || 'Under investigation').trim(),
+          resolution: String(parsed.resolution || '').trim(),
+          follow_up_actions: normalizeArray(parsed.follow_up_actions),
+          lessons_learned: normalizeArray(parsed.lessons_learned),
+        };
+        return { tool: 'post_mortem', output };
+      }
+    } catch (error) {
+      console.error('OpenAI engineering tools error:', error);
+    }
+  }
+
+  if (anthropic) {
+    try {
+      const message = await anthropic.messages.create({
+        model: 'claude-3-haiku-20240307',
+        max_tokens: 1200,
+        system: systemPrompt,
+        messages: [
+          {
+            role: 'user',
+            content: finalUserPrompt + '\n\nRespond with valid JSON only.',
+          },
+        ],
+      });
+
+      const contentObj = message.content[0];
+      if (contentObj.type === 'text') {
+        const text = contentObj.text.trim();
+        const jsonText = text.replace(/^```json\n?/i, '').replace(/\n?```$/i, '');
+        const parsed = JSON.parse(jsonText);
+        if (request.tool === 'release_notes') {
+          const output: ReleaseNotesOutput = {
+            headline: String(parsed.headline || request.release_name || '').trim(),
+            highlights: normalizeArray(parsed.highlights),
+            improvements: normalizeArray(parsed.improvements),
+            fixes: normalizeArray(parsed.fixes),
+            known_issues: normalizeArray(parsed.known_issues),
+            rollbacks: normalizeArray(parsed.rollbacks),
+          };
+          return { tool: 'release_notes', output };
+        }
+        if (request.tool === 'pr_summary') {
+          const output: PRSummaryOutput = {
+            summary: String(parsed.summary || '').trim(),
+            risk_level:
+              parsed.risk_level === 'High' || parsed.risk_level === 'Medium'
+                ? parsed.risk_level
+                : 'Low',
+            risk_areas: normalizeArray(parsed.risk_areas),
+            suggested_tests: normalizeArray(parsed.suggested_tests),
+            qa_checklist: normalizeArray(parsed.qa_checklist),
+            rollback_notes: normalizeArray(parsed.rollback_notes),
+          };
+          return { tool: 'pr_summary', output };
+        }
+        const output: PostMortemOutput = {
+          summary: String(parsed.summary || '').trim(),
+          impact: String(parsed.impact || request.impact || '').trim(),
+          timeline: normalizeArray(parsed.timeline),
+          root_cause: String(parsed.root_cause || 'Under investigation').trim(),
+          resolution: String(parsed.resolution || '').trim(),
+          follow_up_actions: normalizeArray(parsed.follow_up_actions),
+          lessons_learned: normalizeArray(parsed.lessons_learned),
+        };
+        return { tool: 'post_mortem', output };
+      }
+    } catch (error) {
+      console.error('Anthropic engineering tools error:', error);
+    }
+  }
+
+  if (request.tool === 'release_notes') {
+    return {
+      tool: 'release_notes',
+      output: {
+        headline: request.release_name || 'Release Notes',
+        highlights: [],
+        improvements: [],
+        fixes: [],
+        known_issues: [],
+        rollbacks: [],
+      },
+    };
+  }
+  if (request.tool === 'pr_summary') {
+    return {
+      tool: 'pr_summary',
+      output: {
+        summary: request.pr_title || '',
+        risk_level: 'Low',
+        risk_areas: [],
+        suggested_tests: [],
+        qa_checklist: [],
+        rollback_notes: [],
+      },
+    };
+  }
+  return {
+    tool: 'post_mortem',
+    output: {
+      summary: request.incident_title || '',
+      impact: request.impact || '',
+      timeline: normalizeArray(request.timeline),
+      root_cause: request.root_cause || 'Under investigation',
+      resolution: request.mitigation || '',
+      follow_up_actions: normalizeArray(request.preventive_actions),
+      lessons_learned: [],
+    },
   };
 }
 
