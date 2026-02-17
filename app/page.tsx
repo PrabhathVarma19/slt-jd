@@ -166,6 +166,14 @@ const SUPER_ADMIN_TOOLS: Tool[] = [
     initials: 'AL',
     accent: 'bg-slate-100 text-slate-700',
   },
+  {
+    title: 'Home Metrics',
+    description: 'Track home command usage, approvals, and failure patterns.',
+    href: '/admin/home-metrics',
+    bucket: 'Admin',
+    initials: 'HM',
+    accent: 'bg-cyan-100 text-cyan-700',
+  },
 ];
 
 // Engineer tools - only shown to engineers
