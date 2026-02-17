@@ -128,6 +128,7 @@ function CommsHubContent() {
   const [activePanel, setActivePanel] = useState<'agent' | 'builder'>('agent');
   const [displayName, setDisplayName] = useState<string | null>(null);
   const autoRunTriggeredRef = useRef(false);
+  const [handoffReady, setHandoffReady] = useState(false);
 
   useEffect(() => {
     const panel = searchParams.get('panel');
@@ -176,6 +177,37 @@ function CommsHubContent() {
       setSections(getDefaultSections(nextMode, nextTemplate));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const hydrateFromRun = async () => {
+      const handoffRunId = searchParams.get('handoffRunId');
+      if (!handoffRunId) {
+        if (!cancelled) setHandoffReady(true);
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/home/command/run/${encodeURIComponent(handoffRunId)}`);
+        const data = await res.json();
+        const runOutput = data?.run?.output?.result;
+        if (!cancelled && runOutput && runOutput.subject && runOutput.text_body) {
+          setOutput(runOutput);
+          autoRunTriggeredRef.current = true;
+        }
+      } catch (error) {
+        console.error('Failed to hydrate comms output from handoff run:', error);
+      } finally {
+        if (!cancelled) setHandoffReady(true);
+      }
+    };
+
+    hydrateFromRun();
+    return () => {
+      cancelled = true;
+    };
   }, [searchParams]);
 
   useEffect(() => {
@@ -251,13 +283,15 @@ function CommsHubContent() {
   useEffect(() => {
     const shouldAutoRun = searchParams.get('autorun') === '1';
     if (!shouldAutoRun || autoRunTriggeredRef.current) return;
+    if (!handoffReady) return;
     if (activePanel !== 'builder') return;
     if (!content.trim()) return;
+    if (output) return;
 
     autoRunTriggeredRef.current = true;
     void handleSubmit();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams, activePanel, content]);
+  }, [searchParams, activePanel, content, handoffReady, output]);
 
   const copyToClipboard = async (text: string) => {
     try {

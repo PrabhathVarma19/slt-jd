@@ -180,6 +180,7 @@ function EngineeringToolsContent() {
   const [postMortemTemplate, setPostMortemTemplate] =
     useState<(typeof POSTMORTEM_TEMPLATES)[number]>(POSTMORTEM_TEMPLATES[0]);
   const autoRunTriggeredRef = useRef(false);
+  const [handoffReady, setHandoffReady] = useState(false);
 
   const updateReleaseOutput = (
     updater: (current: ReleaseNotesOutput) => ReleaseNotesOutput
@@ -247,6 +248,43 @@ function EngineeringToolsContent() {
       setMitigation(searchParams.get('mitigation') || '');
       setPreventiveActions(searchParams.get('preventive_actions') || '');
     }
+  }, [searchParams]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const hydrateFromRun = async () => {
+      const handoffRunId = searchParams.get('handoffRunId');
+      if (!handoffRunId) {
+        if (!cancelled) setHandoffReady(true);
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/home/command/run/${encodeURIComponent(handoffRunId)}`);
+        const data = await res.json();
+        const runOutput = data?.run?.output?.result;
+        if (
+          !cancelled &&
+          runOutput &&
+          typeof runOutput === 'object' &&
+          typeof runOutput.tool === 'string' &&
+          runOutput.output
+        ) {
+          setOutput(runOutput);
+          autoRunTriggeredRef.current = true;
+        }
+      } catch (error) {
+        console.error('Failed to hydrate engineering output from handoff run:', error);
+      } finally {
+        if (!cancelled) setHandoffReady(true);
+      }
+    };
+
+    hydrateFromRun();
+    return () => {
+      cancelled = true;
+    };
   }, [searchParams]);
 
   useEffect(() => {
@@ -408,6 +446,7 @@ function EngineeringToolsContent() {
   useEffect(() => {
     const shouldAutoRun = searchParams.get('autorun') === '1';
     if (!shouldAutoRun || autoRunTriggeredRef.current) return;
+    if (!handoffReady) return;
 
     const readyForAutoRun =
       (activeTab === 'release_notes' && !!changeList.trim()) ||
@@ -415,11 +454,12 @@ function EngineeringToolsContent() {
       (activeTab === 'post_mortem' && !!incidentTitle.trim() && !!timeline.trim());
 
     if (!readyForAutoRun) return;
+    if (output) return;
 
     autoRunTriggeredRef.current = true;
     void handleGenerate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams, activeTab, changeList, prTitle, incidentTitle, timeline]);
+  }, [searchParams, activeTab, changeList, prTitle, incidentTitle, timeline, handoffReady, output]);
 
   const copyMarkdown = async () => {
     if (!output) return;
