@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import OpenAI from 'openai';
 import { requireAuth } from '@/lib/auth/require-auth';
 import {
   createAgentApproval,
@@ -16,6 +17,24 @@ type CreateTicketDraft = {
   reason?: string;
   details: string;
 };
+
+type LlmIntentResult = {
+  intent: HomeCommandIntent;
+  confidence: number;
+  suggestedActions: string[];
+  reason?: string;
+};
+
+const VALID_HOME_INTENTS: HomeCommandIntent[] = [
+  'create_it_ticket',
+  'check_ticket_status',
+  'password_reset',
+  'policy_question',
+  'comms_generate',
+  'engineering_generate',
+  'jd_generate',
+  'unknown',
+];
 
 function buildRoute(path: string, params: Record<string, string | undefined>) {
   const searchParams = new URLSearchParams();
@@ -64,6 +83,74 @@ function detectIntent(message: string): HomeCommandIntent {
   return 'unknown';
 }
 
+async function classifyIntentWithLlm(message: string): Promise<LlmIntentResult> {
+  if (!process.env.OPENAI_API_KEY) {
+    return {
+      intent: 'unknown',
+      confidence: 0,
+      suggestedActions: [],
+      reason: 'OPENAI_API_KEY missing',
+    };
+  }
+
+  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  const systemPrompt = `Classify the user message into exactly one intent.
+Valid intents:
+- create_it_ticket
+- check_ticket_status
+- password_reset
+- policy_question
+- comms_generate
+- engineering_generate
+- jd_generate
+- unknown
+
+Return JSON only with keys:
+- intent (one of valid intents)
+- confidence (0 to 1)
+- suggested_actions (array of up to 3 short strings the user can click next)
+- reason (one short sentence)
+`;
+
+  try {
+    const completion = await openai.chat.completions.create({
+      model: process.env.CHAT_MODEL || 'gpt-4o-mini',
+      temperature: 0,
+      response_format: { type: 'json_object' },
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: message },
+      ],
+    });
+
+    const raw = completion.choices[0]?.message?.content || '{}';
+    const parsed = JSON.parse(raw);
+    const intent = VALID_HOME_INTENTS.includes(parsed?.intent) ? parsed.intent : 'unknown';
+    const confidence = Number.isFinite(parsed?.confidence)
+      ? Math.max(0, Math.min(1, Number(parsed.confidence)))
+      : 0;
+    const suggestedActions = Array.isArray(parsed?.suggested_actions)
+      ? parsed.suggested_actions
+          .filter((item: unknown) => typeof item === 'string')
+          .slice(0, 3)
+      : [];
+
+    return {
+      intent,
+      confidence,
+      suggestedActions,
+      reason: typeof parsed?.reason === 'string' ? parsed.reason : undefined,
+    };
+  } catch (error: any) {
+    return {
+      intent: 'unknown',
+      confidence: 0,
+      suggestedActions: [],
+      reason: error?.message || 'classifier_failed',
+    };
+  }
+}
+
 function normalizeTicketNumber(input?: string | null) {
   if (!input) return null;
   const trimmed = input.trim().toUpperCase();
@@ -108,7 +195,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'message is required' }, { status: 400 });
     }
 
-    const intent = detectIntent(message);
+    const ruleIntent = detectIntent(message);
+    let intent = ruleIntent;
+    let llmIntent: LlmIntentResult | null = null;
+    if (ruleIntent === 'unknown') {
+      llmIntent = await classifyIntentWithLlm(message);
+      if (llmIntent.confidence >= 0.7) {
+        intent = llmIntent.intent;
+      }
+    }
     const origin = new URL(req.url).origin;
     const cookie = req.headers.get('cookie') || '';
 
@@ -119,7 +214,12 @@ export async function POST(req: NextRequest) {
       model,
       status: 'RUNNING',
       riskLevel: intent === 'create_it_ticket' ? 'MEDIUM' : 'LOW',
-      input: { message, intent },
+      input: {
+        message,
+        ruleIntent,
+        llmIntent,
+        finalIntent: intent,
+      },
     });
 
     let stepNo = 1;
@@ -130,7 +230,11 @@ export async function POST(req: NextRequest) {
       status: 'COMPLETED',
       tool: 'intent_router',
       toolInput: { message },
-      toolOutput: { intent },
+      toolOutput: {
+        ruleIntent,
+        llmIntent,
+        finalIntent: intent,
+      },
       riskLevel: 'LOW',
     });
 
@@ -657,8 +761,17 @@ export async function POST(req: NextRequest) {
       ended: true,
       output: {
         intent: 'unknown',
+        llmIntent,
       },
     });
+
+    const suggestions = llmIntent?.suggestedActions?.length
+      ? llmIntent.suggestedActions
+      : [
+          'Reset my password',
+          'Check status of ticket IT-000123',
+          'Create a newsletter update for my team',
+        ];
 
     return NextResponse.json({
       runId: run.id,
@@ -670,6 +783,11 @@ export async function POST(req: NextRequest) {
         title: 'Need More Context',
         description:
           'I can help with IT requests, ticket status checks, password reset, policy questions, comms drafts, engineering drafts, or JD generation.',
+        data: {
+          suggestions,
+          reason: llmIntent?.reason || 'low_confidence_or_no_match',
+          confidence: llmIntent?.confidence ?? 0,
+        },
       },
     } satisfies HomeCommandResponse);
   } catch (error: any) {
