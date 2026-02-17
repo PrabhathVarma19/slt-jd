@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { generateEngineeringToolOutput } from '@/lib/ai/llm';
 import { EngineeringToolRequest } from '@/types/engineering-tools';
+import { supabaseServer } from '@/lib/supabase/server';
+import { getSession } from '@/lib/auth/session';
 
 export async function POST(request: NextRequest) {
   try {
@@ -20,6 +22,27 @@ export async function POST(request: NextRequest) {
     }
 
     const result = await generateEngineeringToolOutput(body);
+
+    const session = await getSession();
+    if (session) {
+      try {
+        await supabaseServer.from('EngineeringToolDraft').insert({
+          userId: session.userId,
+          tool: body.tool,
+          input: body,
+          output: result,
+        });
+
+        await supabaseServer.from('EngineeringToolAuditLog').insert({
+          userId: session.userId,
+          tool: body.tool,
+          action: body.focus_section ? 'regenerate_section' : 'generate',
+          meta: { focus_section: body.focus_section || null },
+        });
+      } catch (dbError) {
+        console.error('Engineering tools logging error:', dbError);
+      }
+    }
     return NextResponse.json(result);
   } catch (error: any) {
     console.error('Engineering tools error:', error);
