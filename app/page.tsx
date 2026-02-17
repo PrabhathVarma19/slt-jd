@@ -297,9 +297,20 @@ export default function Home() {
 
   useEffect(() => {
     const data = homeResult?.actionCard?.data || {};
+    const missingFields = Array.isArray(data.missingFields) ? data.missingFields : [];
     setHomeDraftPatch({
-      reason: typeof data.reason === 'string' ? data.reason : '',
-      details: typeof data.details === 'string' ? data.details : '',
+      reason:
+        missingFields.includes('reason')
+          ? ''
+          : typeof data.reason === 'string'
+            ? data.reason
+            : '',
+      details:
+        missingFields.includes('details')
+          ? ''
+          : typeof data.details === 'string'
+            ? data.details
+            : '',
       durationType: typeof data.durationType === 'string' ? data.durationType : '',
       durationUntil: typeof data.durationUntil === 'string' ? data.durationUntil : '',
     });
