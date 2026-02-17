@@ -255,6 +255,25 @@ export default function Home() {
   const [homeError, setHomeError] = useState<string | null>(null);
   const [homeRunId, setHomeRunId] = useState<string | null>(null);
   const [showHomeDetails, setShowHomeDetails] = useState(false);
+  const [homeRunDetails, setHomeRunDetails] = useState<{
+    steps: Array<{
+      id: string;
+      stepNo: number;
+      phase: string;
+      status: string;
+      tool?: string | null;
+      requiresApproval?: boolean;
+      createdAt?: string;
+    }>;
+    approvals: Array<{
+      id: string;
+      decision: string;
+      reason?: string | null;
+      requestedAt?: string;
+      decidedAt?: string | null;
+    }>;
+  } | null>(null);
+  const [homeRunDetailsLoading, setHomeRunDetailsLoading] = useState(false);
   const [homeResult, setHomeResult] = useState<{
     status: string;
     intent: string;
@@ -288,9 +307,28 @@ export default function Home() {
         throw new Error(data.error || 'Failed to process command');
       }
 
-      setHomeRunId(data.runId || null);
+      const nextRunId = data.runId || null;
+      setHomeRunId(nextRunId);
       setHomeResult(data);
       setShowHomeDetails(false);
+      setHomeRunDetails(null);
+      if (nextRunId) {
+        setHomeRunDetailsLoading(true);
+        try {
+          const runRes = await fetch(`/api/home/command/run/${encodeURIComponent(nextRunId)}`);
+          const runData = await runRes.json();
+          if (runRes.ok && !runData.error) {
+            setHomeRunDetails({
+              steps: runData.steps || [],
+              approvals: runData.approvals || [],
+            });
+          }
+        } catch (err) {
+          console.error('Failed to load run details:', err);
+        } finally {
+          setHomeRunDetailsLoading(false);
+        }
+      }
       setHomeMessage('');
     } catch (error: any) {
       setHomeError(error?.message || 'Failed to process command');
@@ -328,6 +366,23 @@ export default function Home() {
         },
       }));
       setShowHomeDetails(false);
+      if (homeRunId) {
+        setHomeRunDetailsLoading(true);
+        try {
+          const runRes = await fetch(`/api/home/command/run/${encodeURIComponent(homeRunId)}`);
+          const runData = await runRes.json();
+          if (runRes.ok && !runData.error) {
+            setHomeRunDetails({
+              steps: runData.steps || [],
+              approvals: runData.approvals || [],
+            });
+          }
+        } catch (err) {
+          console.error('Failed to refresh run details:', err);
+        } finally {
+          setHomeRunDetailsLoading(false);
+        }
+      }
     } catch (error: any) {
       setHomeError(error?.message || 'Failed to process approval');
     } finally {
@@ -659,6 +714,53 @@ export default function Home() {
               <p className="mt-2 text-xs text-slate-500">
                 Run ID: <span className="font-mono">{homeRunId}</span>
               </p>
+            )}
+            {(homeRunDetailsLoading || homeRunDetails) && (
+              <div className="mt-2 rounded-lg border border-slate-200 bg-white p-2">
+                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  Run Timeline
+                </p>
+                {homeRunDetailsLoading && (
+                  <p className="mt-1 text-xs text-slate-500">Loading timeline...</p>
+                )}
+                {!homeRunDetailsLoading && homeRunDetails?.steps?.length === 0 && (
+                  <p className="mt-1 text-xs text-slate-500">No steps recorded yet.</p>
+                )}
+                {!homeRunDetailsLoading && homeRunDetails?.steps?.length ? (
+                  <div className="mt-2 space-y-1">
+                    {homeRunDetails.steps.map((step) => (
+                      <div
+                        key={step.id}
+                        className="rounded-md border border-slate-100 bg-slate-50 px-2 py-1 text-xs"
+                      >
+                        <p className="font-medium text-slate-700">
+                          Step {step.stepNo}: {step.phase}
+                        </p>
+                        <p className="text-slate-600">
+                          Status: {step.status}
+                          {step.tool ? ` | Tool: ${step.tool}` : ''}
+                          {step.requiresApproval ? ' | Approval required' : ''}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
+                {!homeRunDetailsLoading && homeRunDetails?.approvals?.length ? (
+                  <div className="mt-2 border-t border-slate-100 pt-2">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                      Approvals
+                    </p>
+                    <div className="mt-1 space-y-1">
+                      {homeRunDetails.approvals.map((approval) => (
+                        <div key={approval.id} className="text-xs text-slate-600">
+                          Decision: {approval.decision}
+                          {approval.reason ? ` | Reason: ${approval.reason}` : ''}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
+              </div>
             )}
             {homeError && <p className="mt-2 text-xs text-red-600">{homeError}</p>}
           </div>
