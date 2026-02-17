@@ -19,6 +19,7 @@ type CreateTicketDraft = {
 
 function detectIntent(message: string): HomeCommandIntent {
   const text = message.toLowerCase();
+  const passwordSignals = ['reset password', 'forgot password', 'password reset', 'unlock account'];
   const createTicketSignals = [
     'raise ticket',
     'create ticket',
@@ -26,7 +27,6 @@ function detectIntent(message: string): HomeCommandIntent {
     'access request',
     'laptop',
     'vpn',
-    'password reset',
     'software install',
     'subscription',
     'not working',
@@ -34,6 +34,7 @@ function detectIntent(message: string): HomeCommandIntent {
   const statusSignals = ['ticket status', 'status of ticket', 'check ticket', 'track ticket'];
   const policySignals = ['policy', 'leave', 'travel policy', 'rto', 'how many days', 'guideline'];
 
+  if (passwordSignals.some((s) => text.includes(s))) return 'password_reset';
   if (statusSignals.some((s) => text.includes(s))) return 'check_ticket_status';
   if (createTicketSignals.some((s) => text.includes(s))) return 'create_it_ticket';
   if (policySignals.some((s) => text.includes(s))) return 'policy_question';
@@ -267,28 +268,118 @@ export async function POST(req: NextRequest) {
     }
 
     if (intent === 'policy_question') {
+      const startedAt = Date.now();
+      const res = await fetch(`${origin}/api/policy-agent`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', cookie },
+        body: JSON.stringify({
+          question: message,
+          messages: [{ role: 'user', content: message }],
+          mode: 'default',
+          style: 'standard',
+        }),
+      });
+      const data = await res.json();
+      const latencyMs = Date.now() - startedAt;
+
+      await createAgentRunStep({
+        runId: run.id,
+        stepNo: stepNo++,
+        phase: 'TOOL_RESULT',
+        status: res.ok ? 'COMPLETED' : 'FAILED',
+        tool: 'policy_agent',
+        toolInput: { question: message },
+        toolOutput: data,
+        riskLevel: 'LOW',
+        latencyMs,
+        errorText: res.ok ? null : data?.error || 'Failed to fetch policy answer',
+      });
+
       await updateAgentRun({
         runId: run.id,
-        status: 'COMPLETED',
+        status: res.ok ? 'COMPLETED' : 'FAILED',
         ended: true,
         output: {
           intent,
-          routeTo: '/policy-agent',
+          result: data,
         },
+        errorText: res.ok ? null : data?.error || 'Failed to fetch policy answer',
       });
 
       return NextResponse.json({
         runId: run.id,
-        status: 'COMPLETED',
+        status: res.ok ? 'COMPLETED' : 'FAILED',
         intent,
         requiresConfirmation: false,
-        actionCard: {
-          type: 'info',
-          title: 'Policy Query Detected',
-          description:
-            'This looks like a policy question. Next step is to run it through Ask Beacon policy flow.',
-          data: { routeTo: '/policy-agent' },
+        actionCard: res.ok
+          ? {
+              type: 'result',
+              title: 'Policy Answer',
+              description: data?.answer || 'Policy answer generated.',
+              data: {
+                keyRules: data?.keyRules || null,
+                sources: data?.sources || [],
+              },
+            }
+          : {
+              type: 'error',
+              title: 'Policy Lookup Failed',
+              description: data?.error || 'Unable to fetch policy answer right now.',
+            },
+      } satisfies HomeCommandResponse);
+    }
+
+    if (intent === 'password_reset') {
+      const startedAt = Date.now();
+      const res = await fetch(`${origin}/api/service-desk/self-service/password-reset`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', cookie },
+        body: JSON.stringify({}),
+      });
+      const data = await res.json();
+      const latencyMs = Date.now() - startedAt;
+
+      await createAgentRunStep({
+        runId: run.id,
+        stepNo: stepNo++,
+        phase: 'TOOL_RESULT',
+        status: res.ok ? 'COMPLETED' : 'FAILED',
+        tool: 'password_reset',
+        toolInput: {},
+        toolOutput: data,
+        riskLevel: 'LOW',
+        latencyMs,
+        errorText: res.ok ? null : data?.error || 'Failed to process password reset',
+      });
+
+      await updateAgentRun({
+        runId: run.id,
+        status: res.ok ? 'COMPLETED' : 'FAILED',
+        ended: true,
+        output: {
+          intent,
+          result: data,
         },
+        errorText: res.ok ? null : data?.error || 'Failed to process password reset',
+      });
+
+      return NextResponse.json({
+        runId: run.id,
+        status: res.ok ? 'COMPLETED' : 'FAILED',
+        intent,
+        requiresConfirmation: false,
+        actionCard: res.ok
+          ? {
+              type: 'result',
+              title: 'Password Reset',
+              description: data?.message || 'Password reset request submitted.',
+              data,
+            }
+          : {
+              type: 'error',
+              title: 'Password Reset Failed',
+              description: data?.error || 'Unable to process password reset right now.',
+            },
       } satisfies HomeCommandResponse);
     }
 
@@ -310,7 +401,7 @@ export async function POST(req: NextRequest) {
         type: 'info',
         title: 'Need More Context',
         description:
-          'I can help with IT requests, ticket status checks, or policy questions. Try one of those.',
+          'I can help with IT requests, ticket status checks, password reset, or policy questions. Try one of those.',
       },
     } satisfies HomeCommandResponse);
   } catch (error: any) {

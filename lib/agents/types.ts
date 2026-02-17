@@ -25,6 +25,7 @@ export type AgentRiskLevel = 'LOW' | 'MEDIUM' | 'HIGH';
 export type HomeCommandIntent =
   | 'create_it_ticket'
   | 'check_ticket_status'
+  | 'password_reset'
   | 'policy_question'
   | 'unknown';
 
