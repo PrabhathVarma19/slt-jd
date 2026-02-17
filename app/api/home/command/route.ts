@@ -17,6 +17,16 @@ type CreateTicketDraft = {
   details: string;
 };
 
+function buildRoute(path: string, params: Record<string, string | undefined>) {
+  const searchParams = new URLSearchParams();
+  Object.entries(params).forEach(([key, value]) => {
+    if (!value) return;
+    searchParams.set(key, value);
+  });
+  const query = searchParams.toString();
+  return query ? `${path}?${query}` : path;
+}
+
 function detectIntent(message: string): HomeCommandIntent {
   const text = message.toLowerCase();
   const passwordSignals = ['reset password', 'forgot password', 'password reset', 'unlock account'];
@@ -386,7 +396,14 @@ export async function POST(req: NextRequest) {
               title: data?.subject || 'Comms Draft Generated',
               description: data?.summary || 'Generated a communication draft from your prompt.',
               data: {
-                routeTo: '/comms-hub',
+                routeTo: buildRoute('/comms-hub', {
+                  panel: 'builder',
+                  mode: 'team',
+                  audience: 'org',
+                  formality: 'medium',
+                  content: message.slice(0, 4000),
+                  subject: (data?.subject || '').slice(0, 180),
+                }),
                 text: data?.text_body || null,
                 sections: data?.sections || [],
               },
@@ -470,7 +487,31 @@ export async function POST(req: NextRequest) {
               type: 'result',
               title: 'Engineering Draft Generated',
               description: `Generated ${tool.replace('_', ' ')} output.`,
-              data: { routeTo: '/engineering-tools', output: data?.output || data },
+              data: {
+                routeTo:
+                  tool === 'release_notes'
+                    ? buildRoute('/engineering-tools', {
+                        tool: 'release_notes',
+                        release_name: 'Quick Home Draft',
+                        audience: 'internal',
+                        change_list: message.slice(0, 4000),
+                      })
+                    : tool === 'pr_summary'
+                      ? buildRoute('/engineering-tools', {
+                          tool: 'pr_summary',
+                          pr_title: message.slice(0, 120),
+                          pr_description: message.slice(0, 4000),
+                          files_touched: 'Not provided',
+                        })
+                      : buildRoute('/engineering-tools', {
+                          tool: 'post_mortem',
+                          incident_title: message.slice(0, 120),
+                          impact: 'To be refined',
+                          timeline: message.slice(0, 4000),
+                          mitigation: 'To be refined',
+                        }),
+                output: data?.output || data,
+              },
             }
           : {
               type: 'error',

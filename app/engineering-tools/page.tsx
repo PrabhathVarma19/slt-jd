@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import Button from '@/components/ui/button';
 import Input from '@/components/ui/input';
 import Textarea from '@/components/ui/textarea';
@@ -33,6 +34,15 @@ type DraftHistoryItem = {
   output: EngineeringToolResponse;
 };
 
+type PresetItem = {
+  id: string;
+  tool: EngineeringToolType;
+  name: string;
+  data: Record<string, string>;
+  createdAt: string;
+  updatedAt: string;
+};
+
 const renderList = (items: string[]) => {
   if (!items || items.length === 0) return <p className="text-sm text-gray-600">None</p>;
   return (
@@ -42,26 +52,6 @@ const renderList = (items: string[]) => {
       ))}
     </ul>
   );
-};
-
-const HISTORY_STORAGE_KEY = 'beacon_engineering_tools_history';
-
-const loadHistory = (): DraftHistoryItem[] => {
-  if (typeof window === 'undefined') return [];
-  try {
-    const raw = window.localStorage.getItem(HISTORY_STORAGE_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed)) return [];
-    return parsed as DraftHistoryItem[];
-  } catch {
-    return [];
-  }
-};
-
-const saveHistory = (items: DraftHistoryItem[]) => {
-  if (typeof window === 'undefined') return;
-  window.localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(items.slice(0, 15)));
 };
 
 const detectRiskAreas = (filesTouched: string) => {
@@ -152,11 +142,18 @@ const buildMarkdown = (response: EngineeringToolResponse) => {
 };
 
 export default function EngineeringToolsPage() {
+  const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState<EngineeringToolType>('release_notes');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [output, setOutput] = useState<EngineeringToolResponse | null>(null);
   const [history, setHistory] = useState<DraftHistoryItem[]>([]);
+  const [presets, setPresets] = useState<PresetItem[]>([]);
+  const [presetName, setPresetName] = useState('');
+  const [savingPreset, setSavingPreset] = useState(false);
+  const [loadingHistory, setLoadingHistory] = useState(false);
+  const [loadingPresets, setLoadingPresets] = useState(false);
+  const [editMode, setEditMode] = useState(false);
 
   const [releaseName, setReleaseName] = useState('');
   const [releaseAudience, setReleaseAudience] = useState<'customer' | 'internal'>('internal');
@@ -184,8 +181,69 @@ export default function EngineeringToolsPage() {
     useState<(typeof POSTMORTEM_TEMPLATES)[number]>(POSTMORTEM_TEMPLATES[0]);
 
   useEffect(() => {
-    setHistory(loadHistory());
-  }, []);
+    const tool = searchParams.get('tool');
+    if (tool === 'release_notes' || tool === 'pr_summary' || tool === 'post_mortem') {
+      setActiveTab(tool);
+    }
+
+    if (tool === 'release_notes') {
+      setReleaseName(searchParams.get('release_name') || '');
+      setReleaseAudience(
+        (searchParams.get('audience') as 'customer' | 'internal') || 'internal'
+      );
+      setChangeList(searchParams.get('change_list') || '');
+      setKnownIssues(searchParams.get('known_issues') || '');
+      setRollbackSteps(searchParams.get('rollback_steps') || '');
+    }
+
+    if (tool === 'pr_summary') {
+      setPrTitle(searchParams.get('pr_title') || '');
+      setPrDescription(searchParams.get('pr_description') || '');
+      setFilesTouched(searchParams.get('files_touched') || '');
+      setKeyDiffs(searchParams.get('key_diffs') || '');
+      setTestsRun(searchParams.get('tests_run') || '');
+    }
+
+    if (tool === 'post_mortem') {
+      setIncidentTitle(searchParams.get('incident_title') || '');
+      setImpact(searchParams.get('impact') || '');
+      setTimeline(searchParams.get('timeline') || '');
+      setRootCause(searchParams.get('root_cause') || '');
+      setMitigation(searchParams.get('mitigation') || '');
+      setPreventiveActions(searchParams.get('preventive_actions') || '');
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    const loadHistory = async () => {
+      setLoadingHistory(true);
+      try {
+        const res = await fetch(`/api/engineering-tools/history?tool=${activeTab}`);
+        const data = await res.json();
+        setHistory(data.items || []);
+      } catch (err) {
+        console.error('Failed to load history:', err);
+      } finally {
+        setLoadingHistory(false);
+      }
+    };
+
+    const loadPresets = async () => {
+      setLoadingPresets(true);
+      try {
+        const res = await fetch(`/api/engineering-tools/presets?tool=${activeTab}`);
+        const data = await res.json();
+        setPresets(data.items || []);
+      } catch (err) {
+        console.error('Failed to load presets:', err);
+      } finally {
+        setLoadingPresets(false);
+      }
+    };
+
+    loadHistory();
+    loadPresets();
+  }, [activeTab]);
 
   const riskFlags = useMemo(() => detectRiskAreas(filesTouched), [filesTouched]);
   const testsMissing = useMemo(() => activeTab === 'pr_summary' && !testsRun.trim(), [activeTab, testsRun]);
@@ -301,37 +359,9 @@ export default function EngineeringToolsPage() {
         setOutput(data);
       }
       if (!focusSection) {
-        const inputSnapshot: Record<string, string> =
-          activeTab === 'release_notes'
-            ? {
-                release_name: releaseName,
-                audience: releaseAudience,
-                template: releaseTemplate,
-                change_list: changeList,
-              }
-            : activeTab === 'pr_summary'
-              ? {
-                  pr_title: prTitle,
-                  template: prTemplate,
-                  files_touched: filesTouched,
-                }
-              : {
-                  incident_title: incidentTitle,
-                  template: postMortemTemplate,
-                  timeline,
-                };
-        const nextHistory: DraftHistoryItem[] = [
-          {
-            id: `${Date.now()}-${activeTab}`,
-            tool: activeTab,
-            createdAt: new Date().toISOString(),
-            input: inputSnapshot,
-            output: data,
-          },
-          ...history,
-        ];
-        setHistory(nextHistory.slice(0, 15));
-        saveHistory(nextHistory);
+        const res = await fetch(`/api/engineering-tools/history?tool=${activeTab}`);
+        const historyData = await res.json();
+        setHistory(historyData.items || []);
       }
     } catch (err: any) {
       setError(err.message || 'Failed to generate output');
@@ -350,10 +380,144 @@ export default function EngineeringToolsPage() {
     }
   };
 
+  const downloadMarkdown = () => {
+    if (!output) return;
+    const markdown = buildMarkdown(output);
+    const blob = new Blob([markdown], { type: 'text/markdown;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `engineering-${output.tool}.md`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const savePreset = async () => {
+    if (!presetName.trim()) {
+      setError('Add a preset name before saving.');
+      return;
+    }
+    setSavingPreset(true);
+    try {
+      const data =
+        activeTab === 'release_notes'
+          ? {
+              release_name: releaseName,
+              audience: releaseAudience,
+              template: releaseTemplate,
+              change_list: changeList,
+              known_issues: knownIssues,
+              rollback_steps: rollbackSteps,
+            }
+          : activeTab === 'pr_summary'
+            ? {
+                pr_title: prTitle,
+                pr_description: prDescription,
+                files_touched: filesTouched,
+                key_diffs: keyDiffs,
+                tests_run: testsRun,
+                template: prTemplate,
+              }
+            : {
+                incident_title: incidentTitle,
+                impact,
+                timeline,
+                root_cause: rootCause,
+                mitigation,
+                preventive_actions: preventiveActions,
+                template: postMortemTemplate,
+              };
+
+      const res = await fetch('/api/engineering-tools/presets', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tool: activeTab, name: presetName, data }),
+      });
+      if (!res.ok) {
+        const body = await res.json();
+        throw new Error(body.error || 'Failed to save preset');
+      }
+      setPresetName('');
+      const refreshed = await fetch(`/api/engineering-tools/presets?tool=${activeTab}`);
+      const refreshedData = await refreshed.json();
+      setPresets(refreshedData.items || []);
+    } catch (err: any) {
+      setError(err.message || 'Failed to save preset');
+    } finally {
+      setSavingPreset(false);
+    }
+  };
+
+  const applyPreset = (preset: PresetItem) => {
+    if (preset.tool !== activeTab) return;
+    if (activeTab === 'release_notes') {
+      setReleaseName(preset.data.release_name || '');
+      setReleaseAudience((preset.data.audience as 'customer' | 'internal') || 'internal');
+      setReleaseTemplate(
+        (preset.data.template as (typeof RELEASE_TEMPLATES)[number]) || RELEASE_TEMPLATES[0]
+      );
+      setChangeList(preset.data.change_list || '');
+      setKnownIssues(preset.data.known_issues || '');
+      setRollbackSteps(preset.data.rollback_steps || '');
+    } else if (activeTab === 'pr_summary') {
+      setPrTitle(preset.data.pr_title || '');
+      setPrDescription(preset.data.pr_description || '');
+      setFilesTouched(preset.data.files_touched || '');
+      setKeyDiffs(preset.data.key_diffs || '');
+      setTestsRun(preset.data.tests_run || '');
+      setPrTemplate(
+        (preset.data.template as (typeof PR_TEMPLATES)[number]) || PR_TEMPLATES[0]
+      );
+    } else {
+      setIncidentTitle(preset.data.incident_title || '');
+      setImpact(preset.data.impact || '');
+      setTimeline(preset.data.timeline || '');
+      setRootCause(preset.data.root_cause || '');
+      setMitigation(preset.data.mitigation || '');
+      setPreventiveActions(preset.data.preventive_actions || '');
+      setPostMortemTemplate(
+        (preset.data.template as (typeof POSTMORTEM_TEMPLATES)[number]) || POSTMORTEM_TEMPLATES[0]
+      );
+    }
+  };
+
+  const deletePreset = async (id: string) => {
+    try {
+      const res = await fetch(`/api/engineering-tools/presets?id=${id}`, { method: 'DELETE' });
+      if (!res.ok) {
+        const body = await res.json();
+        throw new Error(body.error || 'Failed to delete preset');
+      }
+      setPresets((prev) => prev.filter((item) => item.id !== id));
+    } catch (err: any) {
+      setError(err.message || 'Failed to delete preset');
+    }
+  };
+
   const loadHistoryItem = (item: DraftHistoryItem) => {
     setActiveTab(item.tool);
     setOutput(item.output);
     setError(null);
+    if (item.tool === 'release_notes') {
+      setReleaseName(item.input.release_name || '');
+      setReleaseAudience((item.input.audience as 'customer' | 'internal') || 'internal');
+      setReleaseTemplate(
+        (item.input.template as (typeof RELEASE_TEMPLATES)[number]) || RELEASE_TEMPLATES[0]
+      );
+      setChangeList(item.input.change_list || '');
+    } else if (item.tool === 'pr_summary') {
+      setPrTitle(item.input.pr_title || '');
+      setPrTemplate(
+        (item.input.template as (typeof PR_TEMPLATES)[number]) || PR_TEMPLATES[0]
+      );
+      setFilesTouched(item.input.files_touched || '');
+    } else {
+      setIncidentTitle(item.input.incident_title || '');
+      setPostMortemTemplate(
+        (item.input.template as (typeof POSTMORTEM_TEMPLATES)[number]) || POSTMORTEM_TEMPLATES[0]
+      );
+      setTimeline(item.input.timeline || '');
+    }
   };
 
   return (
@@ -643,6 +807,12 @@ export default function EngineeringToolsPage() {
                 <Button variant="secondary" size="sm" onClick={copyMarkdown}>
                   Copy Markdown (Confluence)
                 </Button>
+                <Button variant="secondary" size="sm" onClick={downloadMarkdown}>
+                  Download .md
+                </Button>
+                <Button variant="secondary" size="sm" onClick={() => setEditMode((prev) => !prev)}>
+                  {editMode ? 'Done Editing' : 'Edit Output'}
+                </Button>
               </div>
             )}
 
@@ -654,7 +824,24 @@ export default function EngineeringToolsPage() {
                     Regenerate
                   </Button>
                 </div>
-                <p className="text-sm text-gray-900">{output.output.headline}</p>
+                {editMode ? (
+                  <Textarea
+                    value={(output.output as ReleaseNotesOutput).headline}
+                    onChange={(e) =>
+                      setOutput((prev) =>
+                        prev
+                          ? {
+                              ...prev,
+                              output: { ...(prev.output as ReleaseNotesOutput), headline: e.target.value },
+                            }
+                          : prev
+                      )
+                    }
+                    rows={2}
+                  />
+                ) : (
+                  <p className="text-sm text-gray-900">{(output.output as ReleaseNotesOutput).headline}</p>
+                )}
                 <div>
                   <div className="flex items-start justify-between gap-2">
                     <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Highlights</p>
@@ -662,7 +849,30 @@ export default function EngineeringToolsPage() {
                       Regenerate
                     </Button>
                   </div>
-                  {renderList((output.output as ReleaseNotesOutput).highlights)}
+                  {editMode ? (
+                    <Textarea
+                      value={(output.output as ReleaseNotesOutput).highlights.join('\n')}
+                      onChange={(e) =>
+                        setOutput((prev) =>
+                          prev
+                            ? {
+                                ...prev,
+                                output: {
+                                  ...(prev.output as ReleaseNotesOutput),
+                                  highlights: e.target.value
+                                    .split(/\r?\n/)
+                                    .map((line) => line.trim())
+                                    .filter(Boolean),
+                                },
+                              }
+                            : prev
+                        )
+                      }
+                      rows={4}
+                    />
+                  ) : (
+                    renderList((output.output as ReleaseNotesOutput).highlights)
+                  )}
                 </div>
                 <div>
                   <div className="flex items-start justify-between gap-2">
@@ -671,7 +881,30 @@ export default function EngineeringToolsPage() {
                       Regenerate
                     </Button>
                   </div>
-                  {renderList((output.output as ReleaseNotesOutput).improvements)}
+                  {editMode ? (
+                    <Textarea
+                      value={(output.output as ReleaseNotesOutput).improvements.join('\n')}
+                      onChange={(e) =>
+                        setOutput((prev) =>
+                          prev
+                            ? {
+                                ...prev,
+                                output: {
+                                  ...(prev.output as ReleaseNotesOutput),
+                                  improvements: e.target.value
+                                    .split(/\r?\n/)
+                                    .map((line) => line.trim())
+                                    .filter(Boolean),
+                                },
+                              }
+                            : prev
+                        )
+                      }
+                      rows={4}
+                    />
+                  ) : (
+                    renderList((output.output as ReleaseNotesOutput).improvements)
+                  )}
                 </div>
                 <div>
                   <div className="flex items-start justify-between gap-2">
@@ -680,7 +913,30 @@ export default function EngineeringToolsPage() {
                       Regenerate
                     </Button>
                   </div>
-                  {renderList((output.output as ReleaseNotesOutput).fixes)}
+                  {editMode ? (
+                    <Textarea
+                      value={(output.output as ReleaseNotesOutput).fixes.join('\n')}
+                      onChange={(e) =>
+                        setOutput((prev) =>
+                          prev
+                            ? {
+                                ...prev,
+                                output: {
+                                  ...(prev.output as ReleaseNotesOutput),
+                                  fixes: e.target.value
+                                    .split(/\r?\n/)
+                                    .map((line) => line.trim())
+                                    .filter(Boolean),
+                                },
+                              }
+                            : prev
+                        )
+                      }
+                      rows={4}
+                    />
+                  ) : (
+                    renderList((output.output as ReleaseNotesOutput).fixes)
+                  )}
                 </div>
                 <div>
                   <div className="flex items-start justify-between gap-2">
@@ -689,7 +945,30 @@ export default function EngineeringToolsPage() {
                       Regenerate
                     </Button>
                   </div>
-                  {renderList((output.output as ReleaseNotesOutput).known_issues)}
+                  {editMode ? (
+                    <Textarea
+                      value={(output.output as ReleaseNotesOutput).known_issues.join('\n')}
+                      onChange={(e) =>
+                        setOutput((prev) =>
+                          prev
+                            ? {
+                                ...prev,
+                                output: {
+                                  ...(prev.output as ReleaseNotesOutput),
+                                  known_issues: e.target.value
+                                    .split(/\r?\n/)
+                                    .map((line) => line.trim())
+                                    .filter(Boolean),
+                                },
+                              }
+                            : prev
+                        )
+                      }
+                      rows={4}
+                    />
+                  ) : (
+                    renderList((output.output as ReleaseNotesOutput).known_issues)
+                  )}
                 </div>
                 <div>
                   <div className="flex items-start justify-between gap-2">
@@ -698,7 +977,30 @@ export default function EngineeringToolsPage() {
                       Regenerate
                     </Button>
                   </div>
-                  {renderList((output.output as ReleaseNotesOutput).rollbacks)}
+                  {editMode ? (
+                    <Textarea
+                      value={(output.output as ReleaseNotesOutput).rollbacks.join('\n')}
+                      onChange={(e) =>
+                        setOutput((prev) =>
+                          prev
+                            ? {
+                                ...prev,
+                                output: {
+                                  ...(prev.output as ReleaseNotesOutput),
+                                  rollbacks: e.target.value
+                                    .split(/\r?\n/)
+                                    .map((line) => line.trim())
+                                    .filter(Boolean),
+                                },
+                              }
+                            : prev
+                        )
+                      }
+                      rows={4}
+                    />
+                  ) : (
+                    renderList((output.output as ReleaseNotesOutput).rollbacks)
+                  )}
                 </div>
               </>
             )}
@@ -712,7 +1014,24 @@ export default function EngineeringToolsPage() {
                       Regenerate
                     </Button>
                   </div>
-                  <p className="text-sm text-gray-900">{(output.output as PRSummaryOutput).summary}</p>
+                  {editMode ? (
+                    <Textarea
+                      value={(output.output as PRSummaryOutput).summary}
+                      onChange={(e) =>
+                        setOutput((prev) =>
+                          prev
+                            ? {
+                                ...prev,
+                                output: { ...(prev.output as PRSummaryOutput), summary: e.target.value },
+                              }
+                            : prev
+                        )
+                      }
+                      rows={4}
+                    />
+                  ) : (
+                    <p className="text-sm text-gray-900">{(output.output as PRSummaryOutput).summary}</p>
+                  )}
                 </div>
                 <div>
                   <div className="flex items-start justify-between gap-2">
@@ -721,7 +1040,23 @@ export default function EngineeringToolsPage() {
                       Regenerate
                     </Button>
                   </div>
-                  <p className="text-sm text-gray-900">{(output.output as PRSummaryOutput).risk_level}</p>
+                  {editMode ? (
+                    <Input
+                      value={(output.output as PRSummaryOutput).risk_level}
+                      onChange={(e) =>
+                        setOutput((prev) =>
+                          prev
+                            ? {
+                                ...prev,
+                                output: { ...(prev.output as PRSummaryOutput), risk_level: e.target.value as any },
+                              }
+                            : prev
+                        )
+                      }
+                    />
+                  ) : (
+                    <p className="text-sm text-gray-900">{(output.output as PRSummaryOutput).risk_level}</p>
+                  )}
                 </div>
                 <div>
                   <div className="flex items-start justify-between gap-2">
@@ -730,7 +1065,30 @@ export default function EngineeringToolsPage() {
                       Regenerate
                     </Button>
                   </div>
-                  {renderList((output.output as PRSummaryOutput).risk_areas)}
+                  {editMode ? (
+                    <Textarea
+                      value={(output.output as PRSummaryOutput).risk_areas.join('\n')}
+                      onChange={(e) =>
+                        setOutput((prev) =>
+                          prev
+                            ? {
+                                ...prev,
+                                output: {
+                                  ...(prev.output as PRSummaryOutput),
+                                  risk_areas: e.target.value
+                                    .split(/\r?\n/)
+                                    .map((line) => line.trim())
+                                    .filter(Boolean),
+                                },
+                              }
+                            : prev
+                        )
+                      }
+                      rows={4}
+                    />
+                  ) : (
+                    renderList((output.output as PRSummaryOutput).risk_areas)
+                  )}
                 </div>
                 <div>
                   <div className="flex items-start justify-between gap-2">
@@ -739,7 +1097,30 @@ export default function EngineeringToolsPage() {
                       Regenerate
                     </Button>
                   </div>
-                  {renderList((output.output as PRSummaryOutput).suggested_tests)}
+                  {editMode ? (
+                    <Textarea
+                      value={(output.output as PRSummaryOutput).suggested_tests.join('\n')}
+                      onChange={(e) =>
+                        setOutput((prev) =>
+                          prev
+                            ? {
+                                ...prev,
+                                output: {
+                                  ...(prev.output as PRSummaryOutput),
+                                  suggested_tests: e.target.value
+                                    .split(/\r?\n/)
+                                    .map((line) => line.trim())
+                                    .filter(Boolean),
+                                },
+                              }
+                            : prev
+                        )
+                      }
+                      rows={4}
+                    />
+                  ) : (
+                    renderList((output.output as PRSummaryOutput).suggested_tests)
+                  )}
                 </div>
                 <div>
                   <div className="flex items-start justify-between gap-2">
@@ -748,7 +1129,30 @@ export default function EngineeringToolsPage() {
                       Regenerate
                     </Button>
                   </div>
-                  {renderList((output.output as PRSummaryOutput).qa_checklist)}
+                  {editMode ? (
+                    <Textarea
+                      value={(output.output as PRSummaryOutput).qa_checklist.join('\n')}
+                      onChange={(e) =>
+                        setOutput((prev) =>
+                          prev
+                            ? {
+                                ...prev,
+                                output: {
+                                  ...(prev.output as PRSummaryOutput),
+                                  qa_checklist: e.target.value
+                                    .split(/\r?\n/)
+                                    .map((line) => line.trim())
+                                    .filter(Boolean),
+                                },
+                              }
+                            : prev
+                        )
+                      }
+                      rows={4}
+                    />
+                  ) : (
+                    renderList((output.output as PRSummaryOutput).qa_checklist)
+                  )}
                 </div>
                 <div>
                   <div className="flex items-start justify-between gap-2">
@@ -757,7 +1161,30 @@ export default function EngineeringToolsPage() {
                       Regenerate
                     </Button>
                   </div>
-                  {renderList((output.output as PRSummaryOutput).rollback_notes)}
+                  {editMode ? (
+                    <Textarea
+                      value={(output.output as PRSummaryOutput).rollback_notes.join('\n')}
+                      onChange={(e) =>
+                        setOutput((prev) =>
+                          prev
+                            ? {
+                                ...prev,
+                                output: {
+                                  ...(prev.output as PRSummaryOutput),
+                                  rollback_notes: e.target.value
+                                    .split(/\r?\n/)
+                                    .map((line) => line.trim())
+                                    .filter(Boolean),
+                                },
+                              }
+                            : prev
+                        )
+                      }
+                      rows={3}
+                    />
+                  ) : (
+                    renderList((output.output as PRSummaryOutput).rollback_notes)
+                  )}
                 </div>
               </>
             )}
@@ -771,7 +1198,24 @@ export default function EngineeringToolsPage() {
                       Regenerate
                     </Button>
                   </div>
-                  <p className="text-sm text-gray-900">{(output.output as PostMortemOutput).summary}</p>
+                  {editMode ? (
+                    <Textarea
+                      value={(output.output as PostMortemOutput).summary}
+                      onChange={(e) =>
+                        setOutput((prev) =>
+                          prev
+                            ? {
+                                ...prev,
+                                output: { ...(prev.output as PostMortemOutput), summary: e.target.value },
+                              }
+                            : prev
+                        )
+                      }
+                      rows={4}
+                    />
+                  ) : (
+                    <p className="text-sm text-gray-900">{(output.output as PostMortemOutput).summary}</p>
+                  )}
                 </div>
                 <div>
                   <div className="flex items-start justify-between gap-2">
@@ -780,7 +1224,24 @@ export default function EngineeringToolsPage() {
                       Regenerate
                     </Button>
                   </div>
-                  <p className="text-sm text-gray-900">{(output.output as PostMortemOutput).impact}</p>
+                  {editMode ? (
+                    <Textarea
+                      value={(output.output as PostMortemOutput).impact}
+                      onChange={(e) =>
+                        setOutput((prev) =>
+                          prev
+                            ? {
+                                ...prev,
+                                output: { ...(prev.output as PostMortemOutput), impact: e.target.value },
+                              }
+                            : prev
+                        )
+                      }
+                      rows={3}
+                    />
+                  ) : (
+                    <p className="text-sm text-gray-900">{(output.output as PostMortemOutput).impact}</p>
+                  )}
                 </div>
                 <div>
                   <div className="flex items-start justify-between gap-2">
@@ -789,7 +1250,30 @@ export default function EngineeringToolsPage() {
                       Regenerate
                     </Button>
                   </div>
-                  {renderList((output.output as PostMortemOutput).timeline)}
+                  {editMode ? (
+                    <Textarea
+                      value={(output.output as PostMortemOutput).timeline.join('\n')}
+                      onChange={(e) =>
+                        setOutput((prev) =>
+                          prev
+                            ? {
+                                ...prev,
+                                output: {
+                                  ...(prev.output as PostMortemOutput),
+                                  timeline: e.target.value
+                                    .split(/\r?\n/)
+                                    .map((line) => line.trim())
+                                    .filter(Boolean),
+                                },
+                              }
+                            : prev
+                        )
+                      }
+                      rows={5}
+                    />
+                  ) : (
+                    renderList((output.output as PostMortemOutput).timeline)
+                  )}
                 </div>
                 <div>
                   <div className="flex items-start justify-between gap-2">
@@ -798,7 +1282,24 @@ export default function EngineeringToolsPage() {
                       Regenerate
                     </Button>
                   </div>
-                  <p className="text-sm text-gray-900">{(output.output as PostMortemOutput).root_cause}</p>
+                  {editMode ? (
+                    <Textarea
+                      value={(output.output as PostMortemOutput).root_cause}
+                      onChange={(e) =>
+                        setOutput((prev) =>
+                          prev
+                            ? {
+                                ...prev,
+                                output: { ...(prev.output as PostMortemOutput), root_cause: e.target.value },
+                              }
+                            : prev
+                        )
+                      }
+                      rows={3}
+                    />
+                  ) : (
+                    <p className="text-sm text-gray-900">{(output.output as PostMortemOutput).root_cause}</p>
+                  )}
                 </div>
                 <div>
                   <div className="flex items-start justify-between gap-2">
@@ -807,7 +1308,24 @@ export default function EngineeringToolsPage() {
                       Regenerate
                     </Button>
                   </div>
-                  <p className="text-sm text-gray-900">{(output.output as PostMortemOutput).resolution}</p>
+                  {editMode ? (
+                    <Textarea
+                      value={(output.output as PostMortemOutput).resolution}
+                      onChange={(e) =>
+                        setOutput((prev) =>
+                          prev
+                            ? {
+                                ...prev,
+                                output: { ...(prev.output as PostMortemOutput), resolution: e.target.value },
+                              }
+                            : prev
+                        )
+                      }
+                      rows={3}
+                    />
+                  ) : (
+                    <p className="text-sm text-gray-900">{(output.output as PostMortemOutput).resolution}</p>
+                  )}
                 </div>
                 <div>
                   <div className="flex items-start justify-between gap-2">
@@ -816,7 +1334,30 @@ export default function EngineeringToolsPage() {
                       Regenerate
                     </Button>
                   </div>
-                  {renderList((output.output as PostMortemOutput).follow_up_actions)}
+                  {editMode ? (
+                    <Textarea
+                      value={(output.output as PostMortemOutput).follow_up_actions.join('\n')}
+                      onChange={(e) =>
+                        setOutput((prev) =>
+                          prev
+                            ? {
+                                ...prev,
+                                output: {
+                                  ...(prev.output as PostMortemOutput),
+                                  follow_up_actions: e.target.value
+                                    .split(/\r?\n/)
+                                    .map((line) => line.trim())
+                                    .filter(Boolean),
+                                },
+                              }
+                            : prev
+                        )
+                      }
+                      rows={4}
+                    />
+                  ) : (
+                    renderList((output.output as PostMortemOutput).follow_up_actions)
+                  )}
                 </div>
                 <div>
                   <div className="flex items-start justify-between gap-2">
@@ -825,7 +1366,30 @@ export default function EngineeringToolsPage() {
                       Regenerate
                     </Button>
                   </div>
-                  {renderList((output.output as PostMortemOutput).lessons_learned)}
+                  {editMode ? (
+                    <Textarea
+                      value={(output.output as PostMortemOutput).lessons_learned.join('\n')}
+                      onChange={(e) =>
+                        setOutput((prev) =>
+                          prev
+                            ? {
+                                ...prev,
+                                output: {
+                                  ...(prev.output as PostMortemOutput),
+                                  lessons_learned: e.target.value
+                                    .split(/\r?\n/)
+                                    .map((line) => line.trim())
+                                    .filter(Boolean),
+                                },
+                              }
+                            : prev
+                        )
+                      }
+                      rows={4}
+                    />
+                  ) : (
+                    renderList((output.output as PostMortemOutput).lessons_learned)
+                  )}
                 </div>
               </>
             )}
@@ -835,10 +1399,57 @@ export default function EngineeringToolsPage() {
 
       <Card>
         <CardHeader>
+          <CardTitle>Presets</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <div className="flex flex-wrap items-center gap-2">
+            <Input
+              value={presetName}
+              onChange={(e) => setPresetName(e.target.value)}
+              placeholder="Preset name"
+            />
+            <Button onClick={savePreset} disabled={savingPreset}>
+              {savingPreset ? 'Saving...' : 'Save Preset'}
+            </Button>
+          </div>
+          {loadingPresets && <p className="text-sm text-gray-600">Loading presets...</p>}
+          {!loadingPresets && presets.length === 0 && (
+            <p className="text-sm text-gray-600">No presets saved yet.</p>
+          )}
+          {presets.map((item) => (
+            <div
+              key={item.id}
+              className="rounded-md border border-gray-200 px-3 py-2 flex items-center justify-between gap-2"
+            >
+              <div>
+                <p className="text-xs font-semibold uppercase text-gray-500">
+                  {item.tool.replace('_', ' ')}
+                </p>
+                <p className="text-sm text-gray-900">{item.name}</p>
+                <p className="text-xs text-gray-500">
+                  {new Date(item.updatedAt || item.createdAt).toLocaleString()}
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <Button variant="secondary" size="sm" onClick={() => applyPreset(item)}>
+                  Load
+                </Button>
+                <Button variant="secondary" size="sm" onClick={() => deletePreset(item.id)}>
+                  Delete
+                </Button>
+              </div>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
           <CardTitle>Recent Drafts</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
-          {history.length === 0 && (
+          {loadingHistory && <p className="text-sm text-gray-600">Loading drafts...</p>}
+          {!loadingHistory && history.length === 0 && (
             <p className="text-sm text-gray-600">No drafts yet.</p>
           )}
           {history.map((item) => (

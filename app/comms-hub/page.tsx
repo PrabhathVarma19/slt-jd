@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import Button from '@/components/ui/button';
 import Input from '@/components/ui/input';
 import Textarea from '@/components/ui/textarea';
@@ -93,6 +94,7 @@ const getDefaultSections = (mode: CommsMode, template: CommsTemplate) => {
 };
 
 export default function CommsHubPage() {
+  const searchParams = useSearchParams();
   const [mode, setMode] = useState<CommsMode>('newsletter');
   const [template, setTemplate] = useState<CommsTemplate>('default');
   const [audience, setAudience] = useState<CommsAudience>('org');
@@ -125,6 +127,55 @@ export default function CommsHubPage() {
   const [agentError, setAgentError] = useState<string | null>(null);
   const [activePanel, setActivePanel] = useState<'agent' | 'builder'>('agent');
   const [displayName, setDisplayName] = useState<string | null>(null);
+
+  useEffect(() => {
+    const panel = searchParams.get('panel');
+    if (panel === 'agent' || panel === 'builder') {
+      setActivePanel(panel);
+    }
+
+    const modeParam = searchParams.get('mode');
+    const templateParam = searchParams.get('template');
+    const audienceParam = searchParams.get('audience');
+    const formalityParam = searchParams.get('formality');
+    const contentParam = searchParams.get('content');
+    const subjectParam = searchParams.get('subject');
+
+    const nextMode: CommsMode =
+      modeParam === 'newsletter' || modeParam === 'team' ? modeParam : mode;
+    const nextTemplate: CommsTemplate =
+      templateParam === 'default' || templateParam === 'change_notice' || templateParam === 'awareness'
+        ? templateParam
+        : template;
+
+    if (modeParam === 'newsletter' || modeParam === 'team') {
+      setMode(modeParam);
+    }
+    if (
+      templateParam === 'default' ||
+      templateParam === 'change_notice' ||
+      templateParam === 'awareness'
+    ) {
+      setTemplate(templateParam);
+    }
+    if (audienceParam === 'exec' || audienceParam === 'org' || audienceParam === 'team') {
+      setAudience(audienceParam);
+    }
+    if (formalityParam === 'low' || formalityParam === 'medium' || formalityParam === 'high') {
+      setFormality(formalityParam);
+    }
+    if (contentParam) {
+      setContent(contentParam);
+    }
+    if (subjectParam) {
+      setSubjectSeed(subjectParam);
+    }
+
+    if (modeParam || templateParam) {
+      setSections(getDefaultSections(nextMode, nextTemplate));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   useEffect(() => {
     let isMounted = true;
