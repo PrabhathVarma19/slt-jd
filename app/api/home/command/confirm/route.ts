@@ -60,6 +60,35 @@ async function createItTicketFromDraft(
   return data;
 }
 
+function validateItDraft(draft: Record<string, any>) {
+  const requestType = (draft.requestType || '').toString().trim().toLowerCase();
+  const system = (draft.system || '').toString().trim().toLowerCase();
+  const reason = (draft.reason || '').toString().trim();
+  const details = (draft.details || '').toString().trim();
+  const durationType = (draft.durationType || '').toString().trim();
+  const durationUntil = (draft.durationUntil || '').toString().trim();
+
+  const isVpnRequest = requestType === 'access' && system.includes('vpn');
+  const isSubscriptionRequest = requestType === 'subscription';
+  const requiresReason = requestType === 'software' || isSubscriptionRequest || isVpnRequest;
+  const requiresDuration = isSubscriptionRequest || isVpnRequest;
+  const requiresSystem =
+    requestType === 'software' || requestType === 'subscription' || requestType === 'access';
+
+  const missingFields: string[] = [];
+  if (!details) missingFields.push('details');
+  if (requiresSystem && !system) missingFields.push('system');
+  if (requiresReason && !reason) missingFields.push('reason');
+  if (requiresDuration && !durationType && !durationUntil) {
+    missingFields.push('durationType');
+  }
+  if (requiresDuration && durationType.toLowerCase() === 'temporary' && !durationUntil) {
+    missingFields.push('durationUntil');
+  }
+
+  return missingFields;
+}
+
 export async function POST(req: NextRequest) {
   try {
     const auth = await requireAuth();
@@ -67,6 +96,8 @@ export async function POST(req: NextRequest) {
     const runId = (body?.runId || '').toString().trim();
     const approve = !!body?.approve;
     const reason = body?.reason ? String(body.reason) : null;
+    const draftPatchInput =
+      body?.draftPatch && typeof body.draftPatch === 'object' ? body.draftPatch : {};
 
     if (!runId) {
       return NextResponse.json({ error: 'runId is required' }, { status: 400 });
@@ -118,18 +149,6 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    await setAgentApprovalDecision({
-      approvalId: pendingApproval.id,
-      decision: 'APPROVED',
-      reason,
-      approverUserId: auth.userId,
-    });
-
-    await updateAgentRunStep({
-      stepId: pendingApproval.stepId,
-      status: 'RUNNING',
-    });
-
     const actionType = pendingApproval?.metadata?.actionType as string | undefined;
     const draft = pendingApproval?.metadata?.draft as Record<string, any> | undefined;
 
@@ -148,8 +167,59 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Unsupported approval action' }, { status: 400 });
     }
 
+    const draftPatch = {
+      requestType: draftPatchInput?.requestType ? String(draftPatchInput.requestType) : undefined,
+      system: draftPatchInput?.system ? String(draftPatchInput.system) : undefined,
+      impact: draftPatchInput?.impact ? String(draftPatchInput.impact) : undefined,
+      reason: draftPatchInput?.reason ? String(draftPatchInput.reason) : undefined,
+      details: draftPatchInput?.details ? String(draftPatchInput.details) : undefined,
+      durationType: draftPatchInput?.durationType ? String(draftPatchInput.durationType) : undefined,
+      durationUntil: draftPatchInput?.durationUntil ? String(draftPatchInput.durationUntil) : undefined,
+    };
+
+    const mergedDraft = {
+      ...draft,
+      ...Object.fromEntries(
+        Object.entries(draftPatch).filter(
+          ([, value]) => typeof value === 'string' && value.trim().length > 0
+        )
+      ),
+    };
+
+    const missingFields = validateItDraft(mergedDraft);
+    if (missingFields.length > 0) {
+      return NextResponse.json(
+        {
+          error: 'Please fill required fields before approval.',
+          missingFields,
+          actionCard: {
+            type: 'confirm',
+            title: 'More Details Needed',
+            description: 'Please fill required fields and click Approve & Run again.',
+            data: {
+              ...mergedDraft,
+              missingFields,
+            },
+          },
+        },
+        { status: 400 }
+      );
+    }
+
+    await setAgentApprovalDecision({
+      approvalId: pendingApproval.id,
+      decision: 'APPROVED',
+      reason,
+      approverUserId: auth.userId,
+    });
+
+    await updateAgentRunStep({
+      stepId: pendingApproval.stepId,
+      status: 'RUNNING',
+    });
+
     const startedAt = Date.now();
-    const result = await createItTicketFromDraft(req, draft, auth.userId, auth.email);
+    const result = await createItTicketFromDraft(req, mergedDraft, auth.userId, auth.email);
     const latencyMs = Date.now() - startedAt;
 
     await updateAgentRunStep({

@@ -255,6 +255,12 @@ export default function Home() {
   const [homeError, setHomeError] = useState<string | null>(null);
   const [homeRunId, setHomeRunId] = useState<string | null>(null);
   const [showHomeDetails, setShowHomeDetails] = useState(false);
+  const [homeDraftPatch, setHomeDraftPatch] = useState({
+    reason: '',
+    details: '',
+    durationType: '',
+    durationUntil: '',
+  });
   const [homeRunDetails, setHomeRunDetails] = useState<{
     steps: Array<{
       id: string;
@@ -288,6 +294,16 @@ export default function Home() {
   type ToolCategory = 'All' | ToolBucket;
   const TOOL_CATEGORIES: ToolCategory[] = ['All', 'Ask', 'Requests', 'Outputs'];
   const [activeToolCategory, setActiveToolCategory] = useState<ToolCategory>('All');
+
+  useEffect(() => {
+    const data = homeResult?.actionCard?.data || {};
+    setHomeDraftPatch({
+      reason: typeof data.reason === 'string' ? data.reason : '',
+      details: typeof data.details === 'string' ? data.details : '',
+      durationType: typeof data.durationType === 'string' ? data.durationType : '',
+      durationUntil: typeof data.durationUntil === 'string' ? data.durationUntil : '',
+    });
+  }, [homeResult]);
 
   const submitHomeCommand = async (messageOverride?: string) => {
     const message = (messageOverride ?? homeMessage).trim();
@@ -346,10 +362,21 @@ export default function Home() {
       const res = await fetch('/api/home/command/confirm', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ runId: homeRunId, approve }),
+        body: JSON.stringify({ runId: homeRunId, approve, draftPatch: homeDraftPatch }),
       });
       const data = await res.json();
       if (!res.ok || data.error) {
+        if (data?.actionCard) {
+          setHomeResult((prev) =>
+            prev
+              ? {
+                  ...prev,
+                  actionCard: data.actionCard,
+                  requiresConfirmation: true,
+                }
+              : null
+          );
+        }
         throw new Error(data.error || 'Failed to process approval');
       }
 
@@ -644,6 +671,82 @@ export default function Home() {
                           {suggestion}
                         </button>
                       ))}
+                  </div>
+                )}
+                {homeResult.requiresConfirmation &&
+                  Array.isArray(homeResult.actionCard.data?.missingFields) &&
+                  homeResult.actionCard.data.missingFields.length > 0 && (
+                    <div className="mt-3 grid gap-2 rounded-lg border border-amber-200 bg-amber-50 p-3">
+                      <p className="text-xs font-semibold text-amber-800">
+                        Required before submit:
+                        {' '}
+                        {homeResult.actionCard.data.missingFields.join(', ')}
+                      </p>
+
+                      {homeResult.actionCard.data.missingFields.includes('reason') && (
+                        <label className="text-xs text-slate-700">
+                          Business reason / use case
+                          <input
+                            value={homeDraftPatch.reason}
+                            onChange={(e) =>
+                              setHomeDraftPatch((prev) => ({ ...prev, reason: e.target.value }))
+                            }
+                            className="mt-1 w-full rounded-md border border-slate-300 px-2 py-1 text-sm"
+                            placeholder="Why do you need this access?"
+                          />
+                        </label>
+                      )}
+
+                      {homeResult.actionCard.data.missingFields.includes('details') && (
+                        <label className="text-xs text-slate-700">
+                          Request details
+                          <textarea
+                            value={homeDraftPatch.details}
+                            onChange={(e) =>
+                              setHomeDraftPatch((prev) => ({ ...prev, details: e.target.value }))
+                            }
+                            className="mt-1 w-full rounded-md border border-slate-300 px-2 py-1 text-sm"
+                            rows={3}
+                            placeholder="Add exact details for IT team"
+                          />
+                        </label>
+                      )}
+
+                      {homeResult.actionCard.data.missingFields.includes('durationType') && (
+                        <label className="text-xs text-slate-700">
+                          Duration
+                          <input
+                            value={homeDraftPatch.durationType}
+                            onChange={(e) =>
+                              setHomeDraftPatch((prev) => ({
+                                ...prev,
+                                durationType: e.target.value,
+                              }))
+                            }
+                            className="mt-1 w-full rounded-md border border-slate-300 px-2 py-1 text-sm"
+                            placeholder='e.g. permanent, 2 weeks, or temporary'
+                          />
+                        </label>
+                      )}
+
+                      {(homeResult.actionCard.data.missingFields.includes('durationUntil') ||
+                        (homeDraftPatch.durationType || '').trim().toLowerCase() ===
+                          'temporary') && (
+                        <label className="text-xs text-slate-700">
+                          Temporary access end date
+                          <input
+                            type="date"
+                            value={homeDraftPatch.durationUntil}
+                            onChange={(e) =>
+                              setHomeDraftPatch((prev) => ({
+                                ...prev,
+                                durationUntil: e.target.value,
+                              }))
+                            }
+                            className="mt-1 w-full rounded-md border border-slate-300 px-2 py-1 text-sm"
+                          />
+                        </label>
+                      )}
                     </div>
                   )}
                 {(homeResult.actionCard.data?.ticketNumber ||

@@ -15,6 +15,8 @@ type CreateTicketDraft = {
   system?: string;
   impact?: string;
   reason?: string;
+  durationType?: string;
+  durationUntil?: string;
   details: string;
 };
 
@@ -24,6 +26,48 @@ type LlmIntentResult = {
   suggestedActions: string[];
   reason?: string;
 };
+
+const GENERIC_REASON_PATTERNS = [
+  /\braise\b.*\bticket\b/i,
+  /\bcreate\b.*\bticket\b/i,
+  /\bneed\b.*\baccess\b/i,
+  /\b(access|vpn|subscription)\s+request\b/i,
+];
+
+function isMeaningfulReason(reason: string | undefined, sourceMessage: string) {
+  const normalizedReason = (reason || '').trim();
+  if (!normalizedReason) return false;
+  const normalizedMessage = sourceMessage.trim();
+  if (!normalizedMessage) return true;
+  if (normalizedReason.toLowerCase() === normalizedMessage.toLowerCase()) return false;
+  if (normalizedReason.length < 12) return false;
+  if (GENERIC_REASON_PATTERNS.some((pattern) => pattern.test(normalizedReason))) return false;
+  return true;
+}
+
+function extractDurationFromText(input: string) {
+  const text = input.toLowerCase();
+  const absoluteDate = input.match(/\b\d{4}-\d{2}-\d{2}\b/)?.[0] || '';
+
+  if (absoluteDate) {
+    return { durationType: 'temporary', durationUntil: absoluteDate };
+  }
+
+  if (/\b(permanent|indefinite)\b/i.test(text)) {
+    return { durationType: 'permanent', durationUntil: '' };
+  }
+
+  const relative = input.match(/\b\d+\s*(day|week|month|year)s?\b/i)?.[0] || '';
+  if (relative) {
+    return { durationType: relative, durationUntil: '' };
+  }
+
+  if (/\btemporary\b/i.test(text)) {
+    return { durationType: 'temporary', durationUntil: '' };
+  }
+
+  return { durationType: '', durationUntil: '' };
+}
 
 const VALID_HOME_INTENTS: HomeCommandIntent[] = [
   'create_it_ticket',
@@ -240,13 +284,43 @@ export async function POST(req: NextRequest) {
 
     if (intent === 'create_it_ticket') {
       const classification = await classifyItDraft(origin, cookie, message);
+      const extractedDuration = extractDurationFromText(message);
       const draft: CreateTicketDraft = {
         requestType: classification?.requestType || 'other',
         system: classification?.system || 'General',
         impact: classification?.impact || 'medium',
         reason: classification?.reason || message,
+        durationType: extractedDuration.durationType,
+        durationUntil: extractedDuration.durationUntil,
         details: message,
       };
+
+      const normalizedRequestType = (draft.requestType || '').toLowerCase();
+      const normalizedSystem = (draft.system || '').toLowerCase();
+      const isVpnRequest = normalizedRequestType === 'access' && normalizedSystem.includes('vpn');
+      const isSubscriptionRequest = normalizedRequestType === 'subscription';
+      const requiresReason =
+        normalizedRequestType === 'software' || isSubscriptionRequest || isVpnRequest;
+      const requiresDuration = isSubscriptionRequest || isVpnRequest;
+      const requiresSystem =
+        normalizedRequestType === 'software' ||
+        normalizedRequestType === 'subscription' ||
+        normalizedRequestType === 'access';
+
+      const missingFields: string[] = [];
+      if (requiresSystem && !(draft.system || '').trim()) missingFields.push('system');
+      if (requiresReason && !isMeaningfulReason(draft.reason, message)) missingFields.push('reason');
+      if (!draft.details.trim()) missingFields.push('details');
+      if (requiresDuration && !(draft.durationType || '').trim() && !(draft.durationUntil || '').trim()) {
+        missingFields.push('durationType');
+      }
+      if (
+        requiresDuration &&
+        (draft.durationType || '').trim().toLowerCase() === 'temporary' &&
+        !(draft.durationUntil || '').trim()
+      ) {
+        missingFields.push('durationUntil');
+      }
 
       const step = await createAgentRunStep({
         runId: run.id,
@@ -287,6 +361,7 @@ export async function POST(req: NextRequest) {
           requiresConfirmation: true,
           approvalId: approval.id,
           draft,
+          missingFields,
         },
       });
 
@@ -298,13 +373,19 @@ export async function POST(req: NextRequest) {
         actionCard: {
           type: 'confirm',
           title: 'Confirm IT Ticket Creation',
-          description: 'I prepared an IT ticket draft. Review and confirm to submit.',
+          description:
+            missingFields.length > 0
+              ? 'I prepared a draft. Please fill required fields, then approve to submit.'
+              : 'I prepared an IT ticket draft. Review and confirm to submit.',
           data: {
             requestType: draft.requestType,
             system: draft.system,
             impact: draft.impact,
             reason: draft.reason,
+            durationType: draft.durationType,
+            durationUntil: draft.durationUntil,
             details: draft.details,
+            missingFields,
           },
         },
       };
