@@ -405,6 +405,7 @@ export async function POST(req: NextRequest) {
               data: {
                 routeTo: buildRoute('/comms-hub', {
                   panel: 'builder',
+                  autorun: '1',
                   mode: 'team',
                   audience: 'org',
                   formality: 'medium',
@@ -498,6 +499,7 @@ export async function POST(req: NextRequest) {
                 routeTo:
                   tool === 'release_notes'
                     ? buildRoute('/engineering-tools', {
+                        autorun: '1',
                         tool: 'release_notes',
                         release_name: 'Quick Home Draft',
                         audience: 'internal',
@@ -505,12 +507,14 @@ export async function POST(req: NextRequest) {
                       })
                     : tool === 'pr_summary'
                       ? buildRoute('/engineering-tools', {
+                          autorun: '1',
                           tool: 'pr_summary',
                           pr_title: message.slice(0, 120),
                           pr_description: message.slice(0, 4000),
                           files_touched: 'Not provided',
                         })
                       : buildRoute('/engineering-tools', {
+                          autorun: '1',
                           tool: 'post_mortem',
                           incident_title: message.slice(0, 120),
                           impact: 'To be refined',

@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import Button from '@/components/ui/button';
@@ -179,6 +179,7 @@ function EngineeringToolsContent() {
   const [preventiveActions, setPreventiveActions] = useState('');
   const [postMortemTemplate, setPostMortemTemplate] =
     useState<(typeof POSTMORTEM_TEMPLATES)[number]>(POSTMORTEM_TEMPLATES[0]);
+  const autoRunTriggeredRef = useRef(false);
 
   const updateReleaseOutput = (
     updater: (current: ReleaseNotesOutput) => ReleaseNotesOutput
@@ -403,6 +404,22 @@ function EngineeringToolsContent() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const shouldAutoRun = searchParams.get('autorun') === '1';
+    if (!shouldAutoRun || autoRunTriggeredRef.current) return;
+
+    const readyForAutoRun =
+      (activeTab === 'release_notes' && !!changeList.trim()) ||
+      (activeTab === 'pr_summary' && !!prTitle.trim()) ||
+      (activeTab === 'post_mortem' && !!incidentTitle.trim() && !!timeline.trim());
+
+    if (!readyForAutoRun) return;
+
+    autoRunTriggeredRef.current = true;
+    void handleGenerate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams, activeTab, changeList, prTitle, incidentTitle, timeline]);
 
   const copyMarkdown = async () => {
     if (!output) return;

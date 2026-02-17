@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import Button from '@/components/ui/button';
@@ -127,6 +127,7 @@ function CommsHubContent() {
   const [agentError, setAgentError] = useState<string | null>(null);
   const [activePanel, setActivePanel] = useState<'agent' | 'builder'>('agent');
   const [displayName, setDisplayName] = useState<string | null>(null);
+  const autoRunTriggeredRef = useRef(false);
 
   useEffect(() => {
     const panel = searchParams.get('panel');
@@ -246,6 +247,17 @@ function CommsHubContent() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    const shouldAutoRun = searchParams.get('autorun') === '1';
+    if (!shouldAutoRun || autoRunTriggeredRef.current) return;
+    if (activePanel !== 'builder') return;
+    if (!content.trim()) return;
+
+    autoRunTriggeredRef.current = true;
+    void handleSubmit();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams, activePanel, content]);
 
   const copyToClipboard = async (text: string) => {
     try {
