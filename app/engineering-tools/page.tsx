@@ -180,6 +180,40 @@ export default function EngineeringToolsPage() {
   const [postMortemTemplate, setPostMortemTemplate] =
     useState<(typeof POSTMORTEM_TEMPLATES)[number]>(POSTMORTEM_TEMPLATES[0]);
 
+  const updateReleaseOutput = (
+    updater: (current: ReleaseNotesOutput) => ReleaseNotesOutput
+  ) => {
+    setOutput((prev) => {
+      if (!prev || prev.tool !== 'release_notes') return prev;
+      return {
+        ...prev,
+        output: updater(prev.output as ReleaseNotesOutput),
+      };
+    });
+  };
+
+  const updatePrOutput = (updater: (current: PRSummaryOutput) => PRSummaryOutput) => {
+    setOutput((prev) => {
+      if (!prev || prev.tool !== 'pr_summary') return prev;
+      return {
+        ...prev,
+        output: updater(prev.output as PRSummaryOutput),
+      };
+    });
+  };
+
+  const updatePostMortemOutput = (
+    updater: (current: PostMortemOutput) => PostMortemOutput
+  ) => {
+    setOutput((prev) => {
+      if (!prev || prev.tool !== 'post_mortem') return prev;
+      return {
+        ...prev,
+        output: updater(prev.output as PostMortemOutput),
+      };
+    });
+  };
+
   useEffect(() => {
     const tool = searchParams.get('tool');
     if (tool === 'release_notes' || tool === 'pr_summary' || tool === 'post_mortem') {
@@ -828,14 +862,7 @@ export default function EngineeringToolsPage() {
                   <Textarea
                     value={(output.output as ReleaseNotesOutput).headline}
                     onChange={(e) =>
-                      setOutput((prev) =>
-                        prev
-                          ? {
-                              ...prev,
-                              output: { ...(prev.output as ReleaseNotesOutput), headline: e.target.value },
-                            }
-                          : prev
-                      )
+                      updateReleaseOutput((current) => ({ ...current, headline: e.target.value }))
                     }
                     rows={2}
                   />
@@ -853,20 +880,13 @@ export default function EngineeringToolsPage() {
                     <Textarea
                       value={(output.output as ReleaseNotesOutput).highlights.join('\n')}
                       onChange={(e) =>
-                        setOutput((prev) =>
-                          prev
-                            ? {
-                                ...prev,
-                                output: {
-                                  ...(prev.output as ReleaseNotesOutput),
-                                  highlights: e.target.value
-                                    .split(/\r?\n/)
-                                    .map((line) => line.trim())
-                                    .filter(Boolean),
-                                },
-                              }
-                            : prev
-                        )
+                        updateReleaseOutput((current) => ({
+                          ...current,
+                          highlights: e.target.value
+                            .split(/\r?\n/)
+                            .map((line) => line.trim())
+                            .filter(Boolean),
+                        }))
                       }
                       rows={4}
                     />
@@ -885,20 +905,13 @@ export default function EngineeringToolsPage() {
                     <Textarea
                       value={(output.output as ReleaseNotesOutput).improvements.join('\n')}
                       onChange={(e) =>
-                        setOutput((prev) =>
-                          prev
-                            ? {
-                                ...prev,
-                                output: {
-                                  ...(prev.output as ReleaseNotesOutput),
-                                  improvements: e.target.value
-                                    .split(/\r?\n/)
-                                    .map((line) => line.trim())
-                                    .filter(Boolean),
-                                },
-                              }
-                            : prev
-                        )
+                        updateReleaseOutput((current) => ({
+                          ...current,
+                          improvements: e.target.value
+                            .split(/\r?\n/)
+                            .map((line) => line.trim())
+                            .filter(Boolean),
+                        }))
                       }
                       rows={4}
                     />
@@ -917,20 +930,13 @@ export default function EngineeringToolsPage() {
                     <Textarea
                       value={(output.output as ReleaseNotesOutput).fixes.join('\n')}
                       onChange={(e) =>
-                        setOutput((prev) =>
-                          prev
-                            ? {
-                                ...prev,
-                                output: {
-                                  ...(prev.output as ReleaseNotesOutput),
-                                  fixes: e.target.value
-                                    .split(/\r?\n/)
-                                    .map((line) => line.trim())
-                                    .filter(Boolean),
-                                },
-                              }
-                            : prev
-                        )
+                        updateReleaseOutput((current) => ({
+                          ...current,
+                          fixes: e.target.value
+                            .split(/\r?\n/)
+                            .map((line) => line.trim())
+                            .filter(Boolean),
+                        }))
                       }
                       rows={4}
                     />
@@ -949,20 +955,13 @@ export default function EngineeringToolsPage() {
                     <Textarea
                       value={(output.output as ReleaseNotesOutput).known_issues.join('\n')}
                       onChange={(e) =>
-                        setOutput((prev) =>
-                          prev
-                            ? {
-                                ...prev,
-                                output: {
-                                  ...(prev.output as ReleaseNotesOutput),
-                                  known_issues: e.target.value
-                                    .split(/\r?\n/)
-                                    .map((line) => line.trim())
-                                    .filter(Boolean),
-                                },
-                              }
-                            : prev
-                        )
+                        updateReleaseOutput((current) => ({
+                          ...current,
+                          known_issues: e.target.value
+                            .split(/\r?\n/)
+                            .map((line) => line.trim())
+                            .filter(Boolean),
+                        }))
                       }
                       rows={4}
                     />
@@ -981,20 +980,13 @@ export default function EngineeringToolsPage() {
                     <Textarea
                       value={(output.output as ReleaseNotesOutput).rollbacks.join('\n')}
                       onChange={(e) =>
-                        setOutput((prev) =>
-                          prev
-                            ? {
-                                ...prev,
-                                output: {
-                                  ...(prev.output as ReleaseNotesOutput),
-                                  rollbacks: e.target.value
-                                    .split(/\r?\n/)
-                                    .map((line) => line.trim())
-                                    .filter(Boolean),
-                                },
-                              }
-                            : prev
-                        )
+                        updateReleaseOutput((current) => ({
+                          ...current,
+                          rollbacks: e.target.value
+                            .split(/\r?\n/)
+                            .map((line) => line.trim())
+                            .filter(Boolean),
+                        }))
                       }
                       rows={4}
                     />
@@ -1018,14 +1010,7 @@ export default function EngineeringToolsPage() {
                     <Textarea
                       value={(output.output as PRSummaryOutput).summary}
                       onChange={(e) =>
-                        setOutput((prev) =>
-                          prev
-                            ? {
-                                ...prev,
-                                output: { ...(prev.output as PRSummaryOutput), summary: e.target.value },
-                              }
-                            : prev
-                        )
+                        updatePrOutput((current) => ({ ...current, summary: e.target.value }))
                       }
                       rows={4}
                     />
@@ -1044,14 +1029,10 @@ export default function EngineeringToolsPage() {
                     <Input
                       value={(output.output as PRSummaryOutput).risk_level}
                       onChange={(e) =>
-                        setOutput((prev) =>
-                          prev
-                            ? {
-                                ...prev,
-                                output: { ...(prev.output as PRSummaryOutput), risk_level: e.target.value as any },
-                              }
-                            : prev
-                        )
+                        updatePrOutput((current) => ({
+                          ...current,
+                          risk_level: e.target.value as any,
+                        }))
                       }
                     />
                   ) : (
@@ -1069,20 +1050,13 @@ export default function EngineeringToolsPage() {
                     <Textarea
                       value={(output.output as PRSummaryOutput).risk_areas.join('\n')}
                       onChange={(e) =>
-                        setOutput((prev) =>
-                          prev
-                            ? {
-                                ...prev,
-                                output: {
-                                  ...(prev.output as PRSummaryOutput),
-                                  risk_areas: e.target.value
-                                    .split(/\r?\n/)
-                                    .map((line) => line.trim())
-                                    .filter(Boolean),
-                                },
-                              }
-                            : prev
-                        )
+                        updatePrOutput((current) => ({
+                          ...current,
+                          risk_areas: e.target.value
+                            .split(/\r?\n/)
+                            .map((line) => line.trim())
+                            .filter(Boolean),
+                        }))
                       }
                       rows={4}
                     />
@@ -1101,20 +1075,13 @@ export default function EngineeringToolsPage() {
                     <Textarea
                       value={(output.output as PRSummaryOutput).suggested_tests.join('\n')}
                       onChange={(e) =>
-                        setOutput((prev) =>
-                          prev
-                            ? {
-                                ...prev,
-                                output: {
-                                  ...(prev.output as PRSummaryOutput),
-                                  suggested_tests: e.target.value
-                                    .split(/\r?\n/)
-                                    .map((line) => line.trim())
-                                    .filter(Boolean),
-                                },
-                              }
-                            : prev
-                        )
+                        updatePrOutput((current) => ({
+                          ...current,
+                          suggested_tests: e.target.value
+                            .split(/\r?\n/)
+                            .map((line) => line.trim())
+                            .filter(Boolean),
+                        }))
                       }
                       rows={4}
                     />
@@ -1133,20 +1100,13 @@ export default function EngineeringToolsPage() {
                     <Textarea
                       value={(output.output as PRSummaryOutput).qa_checklist.join('\n')}
                       onChange={(e) =>
-                        setOutput((prev) =>
-                          prev
-                            ? {
-                                ...prev,
-                                output: {
-                                  ...(prev.output as PRSummaryOutput),
-                                  qa_checklist: e.target.value
-                                    .split(/\r?\n/)
-                                    .map((line) => line.trim())
-                                    .filter(Boolean),
-                                },
-                              }
-                            : prev
-                        )
+                        updatePrOutput((current) => ({
+                          ...current,
+                          qa_checklist: e.target.value
+                            .split(/\r?\n/)
+                            .map((line) => line.trim())
+                            .filter(Boolean),
+                        }))
                       }
                       rows={4}
                     />
@@ -1165,20 +1125,13 @@ export default function EngineeringToolsPage() {
                     <Textarea
                       value={(output.output as PRSummaryOutput).rollback_notes.join('\n')}
                       onChange={(e) =>
-                        setOutput((prev) =>
-                          prev
-                            ? {
-                                ...prev,
-                                output: {
-                                  ...(prev.output as PRSummaryOutput),
-                                  rollback_notes: e.target.value
-                                    .split(/\r?\n/)
-                                    .map((line) => line.trim())
-                                    .filter(Boolean),
-                                },
-                              }
-                            : prev
-                        )
+                        updatePrOutput((current) => ({
+                          ...current,
+                          rollback_notes: e.target.value
+                            .split(/\r?\n/)
+                            .map((line) => line.trim())
+                            .filter(Boolean),
+                        }))
                       }
                       rows={3}
                     />
@@ -1202,14 +1155,10 @@ export default function EngineeringToolsPage() {
                     <Textarea
                       value={(output.output as PostMortemOutput).summary}
                       onChange={(e) =>
-                        setOutput((prev) =>
-                          prev
-                            ? {
-                                ...prev,
-                                output: { ...(prev.output as PostMortemOutput), summary: e.target.value },
-                              }
-                            : prev
-                        )
+                        updatePostMortemOutput((current) => ({
+                          ...current,
+                          summary: e.target.value,
+                        }))
                       }
                       rows={4}
                     />
@@ -1228,14 +1177,10 @@ export default function EngineeringToolsPage() {
                     <Textarea
                       value={(output.output as PostMortemOutput).impact}
                       onChange={(e) =>
-                        setOutput((prev) =>
-                          prev
-                            ? {
-                                ...prev,
-                                output: { ...(prev.output as PostMortemOutput), impact: e.target.value },
-                              }
-                            : prev
-                        )
+                        updatePostMortemOutput((current) => ({
+                          ...current,
+                          impact: e.target.value,
+                        }))
                       }
                       rows={3}
                     />
@@ -1254,20 +1199,13 @@ export default function EngineeringToolsPage() {
                     <Textarea
                       value={(output.output as PostMortemOutput).timeline.join('\n')}
                       onChange={(e) =>
-                        setOutput((prev) =>
-                          prev
-                            ? {
-                                ...prev,
-                                output: {
-                                  ...(prev.output as PostMortemOutput),
-                                  timeline: e.target.value
-                                    .split(/\r?\n/)
-                                    .map((line) => line.trim())
-                                    .filter(Boolean),
-                                },
-                              }
-                            : prev
-                        )
+                        updatePostMortemOutput((current) => ({
+                          ...current,
+                          timeline: e.target.value
+                            .split(/\r?\n/)
+                            .map((line) => line.trim())
+                            .filter(Boolean),
+                        }))
                       }
                       rows={5}
                     />
@@ -1286,14 +1224,10 @@ export default function EngineeringToolsPage() {
                     <Textarea
                       value={(output.output as PostMortemOutput).root_cause}
                       onChange={(e) =>
-                        setOutput((prev) =>
-                          prev
-                            ? {
-                                ...prev,
-                                output: { ...(prev.output as PostMortemOutput), root_cause: e.target.value },
-                              }
-                            : prev
-                        )
+                        updatePostMortemOutput((current) => ({
+                          ...current,
+                          root_cause: e.target.value,
+                        }))
                       }
                       rows={3}
                     />
@@ -1312,14 +1246,10 @@ export default function EngineeringToolsPage() {
                     <Textarea
                       value={(output.output as PostMortemOutput).resolution}
                       onChange={(e) =>
-                        setOutput((prev) =>
-                          prev
-                            ? {
-                                ...prev,
-                                output: { ...(prev.output as PostMortemOutput), resolution: e.target.value },
-                              }
-                            : prev
-                        )
+                        updatePostMortemOutput((current) => ({
+                          ...current,
+                          resolution: e.target.value,
+                        }))
                       }
                       rows={3}
                     />
@@ -1338,20 +1268,13 @@ export default function EngineeringToolsPage() {
                     <Textarea
                       value={(output.output as PostMortemOutput).follow_up_actions.join('\n')}
                       onChange={(e) =>
-                        setOutput((prev) =>
-                          prev
-                            ? {
-                                ...prev,
-                                output: {
-                                  ...(prev.output as PostMortemOutput),
-                                  follow_up_actions: e.target.value
-                                    .split(/\r?\n/)
-                                    .map((line) => line.trim())
-                                    .filter(Boolean),
-                                },
-                              }
-                            : prev
-                        )
+                        updatePostMortemOutput((current) => ({
+                          ...current,
+                          follow_up_actions: e.target.value
+                            .split(/\r?\n/)
+                            .map((line) => line.trim())
+                            .filter(Boolean),
+                        }))
                       }
                       rows={4}
                     />
@@ -1370,20 +1293,13 @@ export default function EngineeringToolsPage() {
                     <Textarea
                       value={(output.output as PostMortemOutput).lessons_learned.join('\n')}
                       onChange={(e) =>
-                        setOutput((prev) =>
-                          prev
-                            ? {
-                                ...prev,
-                                output: {
-                                  ...(prev.output as PostMortemOutput),
-                                  lessons_learned: e.target.value
-                                    .split(/\r?\n/)
-                                    .map((line) => line.trim())
-                                    .filter(Boolean),
-                                },
-                              }
-                            : prev
-                        )
+                        updatePostMortemOutput((current) => ({
+                          ...current,
+                          lessons_learned: e.target.value
+                            .split(/\r?\n/)
+                            .map((line) => line.trim())
+                            .filter(Boolean),
+                        }))
                       }
                       rows={4}
                     />
