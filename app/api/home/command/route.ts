@@ -40,7 +40,8 @@ function isMeaningfulReason(reason: string | undefined, sourceMessage: string) {
   const normalizedMessage = sourceMessage.trim();
   if (!normalizedMessage) return true;
   if (normalizedReason.toLowerCase() === normalizedMessage.toLowerCase()) return false;
-  if (normalizedReason.length < 12) return false;
+  // Accept concise but specific reasons like "ABC UAT" or "Prod support".
+  if (normalizedReason.length < 3) return false;
   if (GENERIC_REASON_PATTERNS.some((pattern) => pattern.test(normalizedReason))) return false;
   return true;
 }
