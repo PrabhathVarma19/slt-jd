@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import Button from '@/components/ui/button';
@@ -93,7 +93,7 @@ const getDefaultSections = (mode: CommsMode, template: CommsTemplate) => {
   return mode === 'newsletter' ? defaultNewsletterSections : defaultTeamSections;
 };
 
-export default function CommsHubPage() {
+function CommsHubContent() {
   const searchParams = useSearchParams();
   const [mode, setMode] = useState<CommsMode>('newsletter');
   const [template, setTemplate] = useState<CommsTemplate>('default');
@@ -897,5 +897,13 @@ export default function CommsHubPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function CommsHubPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <CommsHubContent />
+    </Suspense>
   );
 }

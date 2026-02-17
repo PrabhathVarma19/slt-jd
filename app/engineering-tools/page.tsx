@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import Button from '@/components/ui/button';
@@ -141,7 +141,7 @@ const buildMarkdown = (response: EngineeringToolResponse) => {
   ].join('\n');
 };
 
-export default function EngineeringToolsPage() {
+function EngineeringToolsContent() {
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState<EngineeringToolType>('release_notes');
   const [loading, setLoading] = useState(false);
@@ -1397,5 +1397,13 @@ export default function EngineeringToolsPage() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export default function EngineeringToolsPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <EngineeringToolsContent />
+    </Suspense>
   );
 }
