@@ -723,26 +723,88 @@ export default function Home() {
                         </label>
                       )}
 
-                      {homeResult.actionCard.data.missingFields.includes('durationType') && (
-                        <label className="text-xs text-slate-700">
-                          Duration
-                          <input
-                            value={homeDraftPatch.durationType}
-                            onChange={(e) =>
-                              setHomeDraftPatch((prev) => ({
-                                ...prev,
-                                durationType: e.target.value,
-                              }))
-                            }
-                            className="mt-1 w-full rounded-md border border-slate-300 px-2 py-1 text-sm"
-                            placeholder='e.g. permanent, 2 weeks, or temporary'
-                          />
-                        </label>
+                      {(homeResult.actionCard.data.missingFields.includes('durationType') ||
+                        homeResult.actionCard.data.missingFields.includes('durationUntil')) && (
+                        <div className="space-y-2">
+                          <p className="text-xs text-slate-700">Duration</p>
+                          <div className="flex flex-wrap gap-2">
+                            <button
+                              type="button"
+                              className={`rounded-full border px-3 py-1 text-xs ${
+                                homeDraftPatch.durationType.trim().toLowerCase() === 'permanent'
+                                  ? 'border-slate-900 bg-slate-900 text-white'
+                                  : 'border-slate-300 bg-white text-slate-700'
+                              }`}
+                              onClick={() =>
+                                setHomeDraftPatch((prev) => ({
+                                  ...prev,
+                                  durationType: 'permanent',
+                                  durationUntil: '',
+                                }))
+                              }
+                            >
+                              Permanent
+                            </button>
+                            <button
+                              type="button"
+                              className={`rounded-full border px-3 py-1 text-xs ${
+                                homeDraftPatch.durationType.trim().toLowerCase() === 'temporary'
+                                  ? 'border-slate-900 bg-slate-900 text-white'
+                                  : 'border-slate-300 bg-white text-slate-700'
+                              }`}
+                              onClick={() =>
+                                setHomeDraftPatch((prev) => ({
+                                  ...prev,
+                                  durationType: 'temporary',
+                                }))
+                              }
+                            >
+                              Temporary until date
+                            </button>
+                            <button
+                              type="button"
+                              className={`rounded-full border px-3 py-1 text-xs ${
+                                homeDraftPatch.durationType.trim().toLowerCase() !== 'permanent' &&
+                                homeDraftPatch.durationType.trim().toLowerCase() !== 'temporary' &&
+                                homeDraftPatch.durationType.trim().length > 0
+                                  ? 'border-slate-900 bg-slate-900 text-white'
+                                  : 'border-slate-300 bg-white text-slate-700'
+                              }`}
+                              onClick={() =>
+                                setHomeDraftPatch((prev) => ({
+                                  ...prev,
+                                  durationType:
+                                    prev.durationType.trim().toLowerCase() === 'permanent' ||
+                                    prev.durationType.trim().toLowerCase() === 'temporary'
+                                      ? ''
+                                      : prev.durationType,
+                                  durationUntil: '',
+                                }))
+                              }
+                            >
+                              Custom
+                            </button>
+                          </div>
+                          {homeDraftPatch.durationType.trim().toLowerCase() !== 'permanent' &&
+                            homeDraftPatch.durationType.trim().toLowerCase() !== 'temporary' && (
+                              <input
+                                value={homeDraftPatch.durationType}
+                                onChange={(e) =>
+                                  setHomeDraftPatch((prev) => ({
+                                    ...prev,
+                                    durationType: e.target.value,
+                                    durationUntil: '',
+                                  }))
+                                }
+                                className="w-full rounded-md border border-slate-300 px-2 py-1 text-sm"
+                                placeholder="e.g. 2 weeks"
+                              />
+                            )}
+                        </div>
                       )}
 
                       {(homeResult.actionCard.data.missingFields.includes('durationUntil') ||
-                        (homeDraftPatch.durationType || '').trim().toLowerCase() ===
-                          'temporary') && (
+                        homeDraftPatch.durationType.trim().toLowerCase() === 'temporary') && (
                         <label className="text-xs text-slate-700">
                           Temporary access end date
                           <input
