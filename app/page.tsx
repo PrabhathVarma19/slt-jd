@@ -249,9 +249,88 @@ export default function Home() {
   ];
 
   const [activePromptCategory, setActivePromptCategory] = useState<PromptCategory>('Catch Up');
+  const [homeMessage, setHomeMessage] = useState('');
+  const [homeLoading, setHomeLoading] = useState(false);
+  const [homeConfirmLoading, setHomeConfirmLoading] = useState(false);
+  const [homeError, setHomeError] = useState<string | null>(null);
+  const [homeRunId, setHomeRunId] = useState<string | null>(null);
+  const [homeResult, setHomeResult] = useState<{
+    status: string;
+    intent: string;
+    requiresConfirmation: boolean;
+    actionCard: {
+      type: 'confirm' | 'info' | 'result' | 'error';
+      title: string;
+      description: string;
+      data?: Record<string, any>;
+    };
+  } | null>(null);
   type ToolCategory = 'All' | ToolBucket;
   const TOOL_CATEGORIES: ToolCategory[] = ['All', 'Ask', 'Requests', 'Outputs'];
   const [activeToolCategory, setActiveToolCategory] = useState<ToolCategory>('All');
+
+  const submitHomeCommand = async (messageOverride?: string) => {
+    const message = (messageOverride ?? homeMessage).trim();
+    if (!message) return;
+
+    try {
+      setHomeLoading(true);
+      setHomeError(null);
+
+      const res = await fetch('/api/home/command', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message }),
+      });
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        throw new Error(data.error || 'Failed to process command');
+      }
+
+      setHomeRunId(data.runId || null);
+      setHomeResult(data);
+      setHomeMessage('');
+    } catch (error: any) {
+      setHomeError(error?.message || 'Failed to process command');
+    } finally {
+      setHomeLoading(false);
+    }
+  };
+
+  const confirmHomeAction = async (approve: boolean) => {
+    if (!homeRunId) return;
+    try {
+      setHomeConfirmLoading(true);
+      setHomeError(null);
+
+      const res = await fetch('/api/home/command/confirm', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ runId: homeRunId, approve }),
+      });
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        throw new Error(data.error || 'Failed to process approval');
+      }
+
+      setHomeResult((prev) => ({
+        status: data.status || prev?.status || 'COMPLETED',
+        intent: prev?.intent || 'create_it_ticket',
+        requiresConfirmation: false,
+        actionCard: data.actionCard || {
+          type: 'result',
+          title: approve ? 'Action completed' : 'Action cancelled',
+          description: approve
+            ? 'Your request was submitted.'
+            : 'Your request was not submitted.',
+        },
+      }));
+    } catch (error: any) {
+      setHomeError(error?.message || 'Failed to process approval');
+    } finally {
+      setHomeConfirmLoading(false);
+    }
+  };
 
   type PromptCard = {
     title: string;
@@ -443,6 +522,89 @@ export default function Home() {
             >
               See all tools
             </button>
+          </div>
+
+          <div className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm max-w-2xl">
+            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              Home Command Bar
+            </p>
+            <div className="mt-2 flex flex-col gap-2 sm:flex-row">
+              <input
+                value={homeMessage}
+                onChange={(e) => setHomeMessage(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !homeLoading && !homeConfirmLoading) {
+                    e.preventDefault();
+                    submitHomeCommand();
+                  }
+                }}
+                placeholder="Try: I need VPN access for project work"
+                className="flex-1 rounded-xl border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-500"
+              />
+              <Button
+                onClick={() => submitHomeCommand()}
+                disabled={homeLoading || homeConfirmLoading || !homeMessage.trim()}
+                className="rounded-xl px-4"
+              >
+                {homeLoading ? 'Running...' : 'Run'}
+              </Button>
+            </div>
+
+            <div className="mt-2 flex flex-wrap gap-2">
+              {[
+                'Raise IT ticket for VPN access',
+                'Check status of ticket IT-000123',
+                'What is the RTO policy?',
+              ].map((preset) => (
+                <button
+                  key={preset}
+                  type="button"
+                  className="rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-700 hover:bg-slate-200"
+                  disabled={homeLoading || homeConfirmLoading}
+                  onClick={() => submitHomeCommand(preset)}
+                >
+                  {preset}
+                </button>
+              ))}
+            </div>
+
+            {homeResult?.actionCard && (
+              <div className="mt-3 rounded-xl border border-slate-200 bg-slate-50 p-3">
+                <p className="text-sm font-semibold text-slate-900">{homeResult.actionCard.title}</p>
+                <p className="mt-1 text-sm text-slate-700">{homeResult.actionCard.description}</p>
+                {homeResult.actionCard.data && (
+                  <pre className="mt-2 overflow-auto rounded-lg bg-white p-2 text-xs text-slate-700">
+                    {JSON.stringify(homeResult.actionCard.data, null, 2)}
+                  </pre>
+                )}
+                {homeResult.requiresConfirmation && (
+                  <div className="mt-3 flex gap-2">
+                    <Button
+                      size="sm"
+                      onClick={() => confirmHomeAction(true)}
+                      disabled={homeConfirmLoading}
+                    >
+                      {homeConfirmLoading ? 'Processing...' : 'Approve & Run'}
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => confirmHomeAction(false)}
+                      disabled={homeConfirmLoading}
+                    >
+                      Reject
+                    </Button>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {homeRunId && (
+              <p className="mt-2 text-xs text-slate-500">
+                Run ID: <span className="font-mono">{homeRunId}</span>
+              </p>
+            )}
+            {homeError && <p className="mt-2 text-xs text-red-600">{homeError}</p>}
           </div>
 
           <p className="text-xs text-slate-400">Built for Trianz. Content updated Dec 2025.</p>
