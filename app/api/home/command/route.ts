@@ -29,7 +29,14 @@ function buildRoute(path: string, params: Record<string, string | undefined>) {
 
 function detectIntent(message: string): HomeCommandIntent {
   const text = message.toLowerCase();
-  const passwordSignals = ['reset password', 'forgot password', 'password reset', 'unlock account'];
+  const passwordPatterns = [
+    /\breset(?:\s+my)?\s+password\b/i,
+    /\bforgot(?:\s+my)?\s+password\b/i,
+    /\bpassword\s+reset\b/i,
+    /\bunlock(?:\s+my)?\s+account\b/i,
+    /\b(can(?:not|'t)|unable)\s+to\s+log\s*in\b/i,
+    /\blog\s*in\s+issue\b/i,
+  ];
   const commsSignals = ['newsletter', 'announcement', 'email draft', 'comms', 'communication'];
   const engineeringSignals = ['release notes', 'pr summary', 'post mortem', 'post-mortem', 'incident report'];
   const jdSignals = ['job description', 'jd for', 'create jd', 'hiring role', 'role description'];
@@ -47,7 +54,7 @@ function detectIntent(message: string): HomeCommandIntent {
   const statusSignals = ['ticket status', 'status of ticket', 'check ticket', 'track ticket'];
   const policySignals = ['policy', 'leave', 'travel policy', 'rto', 'how many days', 'guideline'];
 
-  if (passwordSignals.some((s) => text.includes(s))) return 'password_reset';
+  if (passwordPatterns.some((pattern) => pattern.test(text))) return 'password_reset';
   if (engineeringSignals.some((s) => text.includes(s))) return 'engineering_generate';
   if (commsSignals.some((s) => text.includes(s))) return 'comms_generate';
   if (jdSignals.some((s) => text.includes(s))) return 'jd_generate';
