@@ -295,6 +295,62 @@ export default function Home() {
   const TOOL_CATEGORIES: ToolCategory[] = ['All', 'Ask', 'Requests', 'Outputs'];
   const [activeToolCategory, setActiveToolCategory] = useState<ToolCategory>('All');
 
+  const formatHomeFieldLabel = (key: string) =>
+    key
+      .replace(/([A-Z])/g, ' $1')
+      .replace(/^./, (str) => str.toUpperCase())
+      .trim();
+
+  const renderHomeActionDetails = () => {
+    const data = homeResult?.actionCard?.data;
+    if (!data) return null;
+
+    if (homeResult?.intent === 'create_it_ticket') {
+      const duration =
+        data.durationType && data.durationUntil
+          ? `${data.durationType} (until ${data.durationUntil})`
+          : data.durationType || data.durationUntil || '-';
+
+      const rows: Array<{ label: string; value: string }> = [
+        { label: 'Request Type', value: data.requestType || '-' },
+        { label: 'System', value: data.system || '-' },
+        { label: 'Impact', value: data.impact || '-' },
+        { label: 'Business Reason', value: data.reason || '-' },
+        { label: 'Duration', value: duration },
+        { label: 'Details', value: data.details || '-' },
+      ];
+
+      return (
+        <div className="mt-2 rounded-lg bg-white p-3 text-xs text-slate-700 space-y-2">
+          {rows.map((row) => (
+            <div key={row.label} className="grid gap-1 sm:grid-cols-[140px_1fr]">
+              <p className="font-semibold text-slate-600">{row.label}</p>
+              <p className="break-words">{row.value}</p>
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    const entries = Object.entries(data).filter(([key]) => key !== 'missingFields');
+    return (
+      <div className="mt-2 rounded-lg bg-white p-3 text-xs text-slate-700 space-y-2">
+        {entries.map(([key, value]) => (
+          <div key={key} className="grid gap-1 sm:grid-cols-[140px_1fr]">
+            <p className="font-semibold text-slate-600">{formatHomeFieldLabel(key)}</p>
+            <p className="break-words">
+              {typeof value === 'string'
+                ? value
+                : value == null
+                  ? '-'
+                  : JSON.stringify(value)}
+            </p>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
   useEffect(() => {
     const data = homeResult?.actionCard?.data || {};
     const missingFields = Array.isArray(data.missingFields) ? data.missingFields : [];
@@ -859,11 +915,7 @@ export default function Home() {
                     </button>
                   </div>
                 )}
-                {homeResult.actionCard.data && showHomeDetails && (
-                  <pre className="mt-2 overflow-auto rounded-lg bg-white p-2 text-xs text-slate-700">
-                    {JSON.stringify(homeResult.actionCard.data, null, 2)}
-                  </pre>
-                )}
+                {homeResult.actionCard.data && showHomeDetails && renderHomeActionDetails()}
                 {homeResult.requiresConfirmation && (
                   <div className="mt-3 flex gap-2">
                     <Button
