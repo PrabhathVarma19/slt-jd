@@ -9,6 +9,7 @@ import {
   upsertPersistentMemory,
 } from '@/lib/agents/store';
 import { HomeCommandIntent, HomeCommandResponse } from '@/lib/agents/types';
+import { evaluateItTicketDraft } from '@/lib/home/it-ticket-rules';
 
 type CreateTicketDraft = {
   requestType?: string;
@@ -152,7 +153,16 @@ function detectIntent(message: string): HomeCommandIntent {
     'it request',
     'access request',
     'laptop',
+    'monitor',
+    'mouse',
+    'keyboard',
+    'headset',
+    'dock',
     'vpn',
+    'wifi',
+    'internet',
+    'network',
+    'lan',
     'software install',
     'subscription',
     'not working',
@@ -339,32 +349,10 @@ export async function POST(req: NextRequest) {
         details: message,
       };
 
-      const normalizedRequestType = (draft.requestType || '').toLowerCase();
-      const normalizedSystem = (draft.system || '').toLowerCase();
-      const isVpnRequest = normalizedRequestType === 'access' && normalizedSystem.includes('vpn');
-      const isSubscriptionRequest = normalizedRequestType === 'subscription';
-      const requiresReason =
-        normalizedRequestType === 'software' || isSubscriptionRequest || isVpnRequest;
-      const requiresDuration = isSubscriptionRequest || isVpnRequest;
-      const requiresSystem =
-        normalizedRequestType === 'software' ||
-        normalizedRequestType === 'subscription' ||
-        normalizedRequestType === 'access';
-
-      const missingFields: string[] = [];
-      if (requiresSystem && !(draft.system || '').trim()) missingFields.push('system');
-      if (requiresReason && !isMeaningfulReason(draft.reason, message)) missingFields.push('reason');
-      if (!draft.details.trim()) missingFields.push('details');
-      if (requiresDuration && !(draft.durationType || '').trim() && !(draft.durationUntil || '').trim()) {
-        missingFields.push('durationType');
-      }
-      if (
-        requiresDuration &&
-        (draft.durationType || '').trim().toLowerCase() === 'temporary' &&
-        !(draft.durationUntil || '').trim()
-      ) {
-        missingFields.push('durationUntil');
-      }
+      const evaluation = evaluateItTicketDraft(draft, {
+        reasonValid: isMeaningfulReason(draft.reason, message),
+      });
+      const missingFields = evaluation.missingFields;
 
       const step = await createAgentRunStep({
         runId: run.id,
@@ -422,6 +410,7 @@ export async function POST(req: NextRequest) {
               ? 'I prepared a draft. Please fill required fields, then approve to submit.'
               : 'I prepared an IT ticket draft. Review and confirm to submit.',
           data: {
+            category: evaluation.category,
             requestType: draft.requestType,
             system: draft.system,
             impact: draft.impact,

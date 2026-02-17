@@ -9,6 +9,7 @@ import {
   updateAgentRunStep,
   upsertPersistentMemory,
 } from '@/lib/agents/store';
+import { evaluateItTicketDraft } from '@/lib/home/it-ticket-rules';
 
 async function createItTicketFromDraft(
   req: NextRequest,
@@ -58,35 +59,6 @@ async function createItTicketFromDraft(
   }
 
   return data;
-}
-
-function validateItDraft(draft: Record<string, any>) {
-  const requestType = (draft.requestType || '').toString().trim().toLowerCase();
-  const system = (draft.system || '').toString().trim().toLowerCase();
-  const reason = (draft.reason || '').toString().trim();
-  const details = (draft.details || '').toString().trim();
-  const durationType = (draft.durationType || '').toString().trim();
-  const durationUntil = (draft.durationUntil || '').toString().trim();
-
-  const isVpnRequest = requestType === 'access' && system.includes('vpn');
-  const isSubscriptionRequest = requestType === 'subscription';
-  const requiresReason = requestType === 'software' || isSubscriptionRequest || isVpnRequest;
-  const requiresDuration = isSubscriptionRequest || isVpnRequest;
-  const requiresSystem =
-    requestType === 'software' || requestType === 'subscription' || requestType === 'access';
-
-  const missingFields: string[] = [];
-  if (!details) missingFields.push('details');
-  if (requiresSystem && !system) missingFields.push('system');
-  if (requiresReason && !reason) missingFields.push('reason');
-  if (requiresDuration && !durationType && !durationUntil) {
-    missingFields.push('durationType');
-  }
-  if (requiresDuration && durationType.toLowerCase() === 'temporary' && !durationUntil) {
-    missingFields.push('durationUntil');
-  }
-
-  return missingFields;
 }
 
 export async function POST(req: NextRequest) {
@@ -186,7 +158,7 @@ export async function POST(req: NextRequest) {
       ),
     };
 
-    const missingFields = validateItDraft(mergedDraft);
+    const missingFields = evaluateItTicketDraft(mergedDraft).missingFields;
     if (missingFields.length > 0) {
       return NextResponse.json(
         {
