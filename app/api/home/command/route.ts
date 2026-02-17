@@ -69,6 +69,48 @@ function extractDurationFromText(input: string) {
   return { durationType: '', durationUntil: '' };
 }
 
+function deriveReasonFromMessage(message: string) {
+  let working = message.trim();
+  if (!working) return '';
+
+  // Prefer explicit "for <reason>" phrasing when present.
+  const forMatch = working.match(/\bfor\b([\s\S]*)$/i);
+  if (forMatch?.[1]) {
+    working = forMatch[1].trim();
+  }
+
+  // Remove common duration phrases so business reason remains.
+  working = working
+    .replace(/\b\d+\s*(day|week|month|year)s?\b/gi, ' ')
+    .replace(/\b(permanent|indefinite|temporary)\b/gi, ' ')
+    .replace(/\b\d{4}-\d{2}-\d{2}\b/g, ' ');
+
+  // Remove common request boilerplate.
+  working = working
+    .replace(
+      /\b(please|kindly)?\s*(raise|create|open|submit)\s+(an?\s+)?(it\s+)?(ticket|request)\b/gi,
+      ' '
+    )
+    .replace(
+      /\b(i\s+need|need|request|require|want)\b/gi,
+      ' '
+    )
+    .replace(
+      /\b(vpn|access|subscription|license|licence|software|install|hardware|network|issue)\b/gi,
+      ' '
+    );
+
+  // Cleanup punctuation and spacing.
+  working = working
+    .replace(/^[\s,;:\-]+/, '')
+    .replace(/[\s,;:\-]+$/, '')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+
+  if (!working || working.length < 5) return '';
+  return working;
+}
+
 const VALID_HOME_INTENTS: HomeCommandIntent[] = [
   'create_it_ticket',
   'check_ticket_status',
@@ -285,11 +327,12 @@ export async function POST(req: NextRequest) {
     if (intent === 'create_it_ticket') {
       const classification = await classifyItDraft(origin, cookie, message);
       const extractedDuration = extractDurationFromText(message);
+      const derivedReason = deriveReasonFromMessage(message);
       const draft: CreateTicketDraft = {
         requestType: classification?.requestType || 'other',
         system: classification?.system || 'General',
         impact: classification?.impact || 'medium',
-        reason: classification?.reason || message,
+        reason: derivedReason || classification?.reason || message,
         durationType: extractedDuration.durationType,
         durationUntil: extractedDuration.durationUntil,
         details: message,
