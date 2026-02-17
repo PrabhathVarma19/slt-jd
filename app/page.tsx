@@ -254,6 +254,7 @@ export default function Home() {
   const [homeConfirmLoading, setHomeConfirmLoading] = useState(false);
   const [homeError, setHomeError] = useState<string | null>(null);
   const [homeRunId, setHomeRunId] = useState<string | null>(null);
+  const [showHomeDetails, setShowHomeDetails] = useState(false);
   const [homeResult, setHomeResult] = useState<{
     status: string;
     intent: string;
@@ -289,6 +290,7 @@ export default function Home() {
 
       setHomeRunId(data.runId || null);
       setHomeResult(data);
+      setShowHomeDetails(false);
       setHomeMessage('');
     } catch (error: any) {
       setHomeError(error?.message || 'Failed to process command');
@@ -325,6 +327,7 @@ export default function Home() {
             : 'Your request was not submitted.',
         },
       }));
+      setShowHomeDetails(false);
     } catch (error: any) {
       setHomeError(error?.message || 'Failed to process approval');
     } finally {
@@ -572,10 +575,40 @@ export default function Home() {
               <div className="mt-3 rounded-xl border border-slate-200 bg-slate-50 p-3">
                 <p className="text-sm font-semibold text-slate-900">{homeResult.actionCard.title}</p>
                 <p className="mt-1 text-sm text-slate-700">{homeResult.actionCard.description}</p>
-                {homeResult.actionCard.data && (
-                  <pre className="mt-2 overflow-auto rounded-lg bg-white p-2 text-xs text-slate-700">
-                    {JSON.stringify(homeResult.actionCard.data, null, 2)}
-                  </pre>
+                {Array.isArray(homeResult.actionCard.data?.suggestions) &&
+                  homeResult.actionCard.data.suggestions.length > 0 && (
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {homeResult.actionCard.data.suggestions.map((suggestion: string) => (
+                        <button
+                          key={suggestion}
+                          type="button"
+                          className="rounded-full bg-white px-3 py-1 text-xs text-slate-700 border border-slate-200 hover:bg-slate-100"
+                          onClick={() => submitHomeCommand(suggestion)}
+                          disabled={homeLoading || homeConfirmLoading}
+                        >
+                          {suggestion}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                {(homeResult.actionCard.data?.ticketNumber ||
+                  typeof homeResult.actionCard.data?.jd_id === 'string' ||
+                  Array.isArray(homeResult.actionCard.data?.sources)) && (
+                  <div className="mt-2 text-xs text-slate-600 space-y-1">
+                    {homeResult.actionCard.data?.ticketNumber && (
+                      <p>
+                        Ticket: <span className="font-mono">{homeResult.actionCard.data.ticketNumber}</span>
+                      </p>
+                    )}
+                    {homeResult.actionCard.data?.jd_id && (
+                      <p>
+                        JD ID: <span className="font-mono">{homeResult.actionCard.data.jd_id}</span>
+                      </p>
+                    )}
+                    {Array.isArray(homeResult.actionCard.data?.sources) && (
+                      <p>Sources: {homeResult.actionCard.data.sources.length}</p>
+                    )}
+                  </div>
                 )}
                 {typeof homeResult.actionCard.data?.routeTo === 'string' && (
                   <div className="mt-2">
@@ -583,6 +616,22 @@ export default function Home() {
                       <Link href={homeResult.actionCard.data.routeTo}>Open in Tool</Link>
                     </Button>
                   </div>
+                )}
+                {homeResult.actionCard.data && (
+                  <div className="mt-2">
+                    <button
+                      type="button"
+                      className="text-xs text-slate-500 underline underline-offset-2"
+                      onClick={() => setShowHomeDetails((prev) => !prev)}
+                    >
+                      {showHomeDetails ? 'Hide details' : 'View details'}
+                    </button>
+                  </div>
+                )}
+                {homeResult.actionCard.data && showHomeDetails && (
+                  <pre className="mt-2 overflow-auto rounded-lg bg-white p-2 text-xs text-slate-700">
+                    {JSON.stringify(homeResult.actionCard.data, null, 2)}
+                  </pre>
                 )}
                 {homeResult.requiresConfirmation && (
                   <div className="mt-3 flex gap-2">
