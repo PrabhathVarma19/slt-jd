@@ -294,6 +294,15 @@ export default function Home() {
   type ToolCategory = 'All' | ToolBucket;
   const TOOL_CATEGORIES: ToolCategory[] = ['All', 'Ask', 'Requests', 'Outputs'];
   const [activeToolCategory, setActiveToolCategory] = useState<ToolCategory>('All');
+  const isItApprovalCard =
+    homeResult?.intent === 'create_it_ticket' &&
+    homeResult?.requiresConfirmation &&
+    !!homeResult?.actionCard?.data;
+  const itMissingFields =
+    Array.isArray(homeResult?.actionCard?.data?.missingFields) &&
+    homeResult?.actionCard?.data?.missingFields?.length
+      ? homeResult.actionCard.data.missingFields
+      : [];
 
   const formatHomeFieldLabel = (key: string) =>
     key
@@ -740,144 +749,151 @@ export default function Home() {
                       ))}
                   </div>
                 )}
-                {homeResult.requiresConfirmation &&
-                  Array.isArray(homeResult.actionCard.data?.missingFields) &&
-                  homeResult.actionCard.data.missingFields.length > 0 && (
-                    <div className="mt-3 grid gap-2 rounded-lg border border-amber-200 bg-amber-50 p-3">
-                      <p className="text-xs font-semibold text-amber-800">
-                        Required before submit:
-                        {' '}
-                        {homeResult.actionCard.data.missingFields.join(', ')}
+                {isItApprovalCard && (
+                  <div className="mt-3 grid gap-3 rounded-lg border border-slate-200 bg-white p-3">
+                    {itMissingFields.length > 0 && (
+                      <p className="text-xs font-semibold text-amber-700">
+                        Required before submit: {itMissingFields.join(', ')}
                       </p>
+                    )}
 
-                      {homeResult.actionCard.data.missingFields.includes('reason') && (
-                        <label className="text-xs text-slate-700">
-                          Business reason / use case
+                    <div className="grid gap-2 sm:grid-cols-3">
+                      <div className="rounded-md bg-slate-50 p-2">
+                        <p className="text-[11px] font-semibold uppercase text-slate-500">Request type</p>
+                        <p className="text-xs text-slate-800">
+                          {homeResult.actionCard.data?.requestType || '-'}
+                        </p>
+                      </div>
+                      <div className="rounded-md bg-slate-50 p-2">
+                        <p className="text-[11px] font-semibold uppercase text-slate-500">System</p>
+                        <p className="text-xs text-slate-800">{homeResult.actionCard.data?.system || '-'}</p>
+                      </div>
+                      <div className="rounded-md bg-slate-50 p-2">
+                        <p className="text-[11px] font-semibold uppercase text-slate-500">Impact</p>
+                        <p className="text-xs text-slate-800">{homeResult.actionCard.data?.impact || '-'}</p>
+                      </div>
+                    </div>
+
+                    <label className="text-xs text-slate-700">
+                      Business reason / use case
+                      <input
+                        value={homeDraftPatch.reason}
+                        onChange={(e) =>
+                          setHomeDraftPatch((prev) => ({ ...prev, reason: e.target.value }))
+                        }
+                        className="mt-1 w-full rounded-md border border-slate-300 px-2 py-1 text-sm"
+                        placeholder="Why do you need this access?"
+                      />
+                    </label>
+
+                    <div className="space-y-2">
+                      <p className="text-xs text-slate-700">Duration</p>
+                      <div className="flex flex-wrap gap-2">
+                        <button
+                          type="button"
+                          className={`rounded-full border px-3 py-1 text-xs ${
+                            homeDraftPatch.durationType.trim().toLowerCase() === 'permanent'
+                              ? 'border-slate-900 bg-slate-900 text-white'
+                              : 'border-slate-300 bg-white text-slate-700'
+                          }`}
+                          onClick={() =>
+                            setHomeDraftPatch((prev) => ({
+                              ...prev,
+                              durationType: 'permanent',
+                              durationUntil: '',
+                            }))
+                          }
+                        >
+                          Permanent
+                        </button>
+                        <button
+                          type="button"
+                          className={`rounded-full border px-3 py-1 text-xs ${
+                            homeDraftPatch.durationType.trim().toLowerCase() === 'temporary'
+                              ? 'border-slate-900 bg-slate-900 text-white'
+                              : 'border-slate-300 bg-white text-slate-700'
+                          }`}
+                          onClick={() =>
+                            setHomeDraftPatch((prev) => ({
+                              ...prev,
+                              durationType: 'temporary',
+                            }))
+                          }
+                        >
+                          Temporary until date
+                        </button>
+                        <button
+                          type="button"
+                          className={`rounded-full border px-3 py-1 text-xs ${
+                            homeDraftPatch.durationType.trim().toLowerCase() !== 'permanent' &&
+                            homeDraftPatch.durationType.trim().toLowerCase() !== 'temporary' &&
+                            homeDraftPatch.durationType.trim().length > 0
+                              ? 'border-slate-900 bg-slate-900 text-white'
+                              : 'border-slate-300 bg-white text-slate-700'
+                          }`}
+                          onClick={() =>
+                            setHomeDraftPatch((prev) => ({
+                              ...prev,
+                              durationType:
+                                prev.durationType.trim().toLowerCase() === 'permanent' ||
+                                prev.durationType.trim().toLowerCase() === 'temporary'
+                                  ? ''
+                                  : prev.durationType,
+                              durationUntil: '',
+                            }))
+                          }
+                        >
+                          Custom
+                        </button>
+                      </div>
+                      {homeDraftPatch.durationType.trim().toLowerCase() !== 'permanent' &&
+                        homeDraftPatch.durationType.trim().toLowerCase() !== 'temporary' && (
                           <input
-                            value={homeDraftPatch.reason}
-                            onChange={(e) =>
-                              setHomeDraftPatch((prev) => ({ ...prev, reason: e.target.value }))
-                            }
-                            className="mt-1 w-full rounded-md border border-slate-300 px-2 py-1 text-sm"
-                            placeholder="Why do you need this access?"
-                          />
-                        </label>
-                      )}
-
-                      {homeResult.actionCard.data.missingFields.includes('details') && (
-                        <label className="text-xs text-slate-700">
-                          Request details
-                          <textarea
-                            value={homeDraftPatch.details}
-                            onChange={(e) =>
-                              setHomeDraftPatch((prev) => ({ ...prev, details: e.target.value }))
-                            }
-                            className="mt-1 w-full rounded-md border border-slate-300 px-2 py-1 text-sm"
-                            rows={3}
-                            placeholder="Add exact details for IT team"
-                          />
-                        </label>
-                      )}
-
-                      {(homeResult.actionCard.data.missingFields.includes('durationType') ||
-                        homeResult.actionCard.data.missingFields.includes('durationUntil')) && (
-                        <div className="space-y-2">
-                          <p className="text-xs text-slate-700">Duration</p>
-                          <div className="flex flex-wrap gap-2">
-                            <button
-                              type="button"
-                              className={`rounded-full border px-3 py-1 text-xs ${
-                                homeDraftPatch.durationType.trim().toLowerCase() === 'permanent'
-                                  ? 'border-slate-900 bg-slate-900 text-white'
-                                  : 'border-slate-300 bg-white text-slate-700'
-                              }`}
-                              onClick={() =>
-                                setHomeDraftPatch((prev) => ({
-                                  ...prev,
-                                  durationType: 'permanent',
-                                  durationUntil: '',
-                                }))
-                              }
-                            >
-                              Permanent
-                            </button>
-                            <button
-                              type="button"
-                              className={`rounded-full border px-3 py-1 text-xs ${
-                                homeDraftPatch.durationType.trim().toLowerCase() === 'temporary'
-                                  ? 'border-slate-900 bg-slate-900 text-white'
-                                  : 'border-slate-300 bg-white text-slate-700'
-                              }`}
-                              onClick={() =>
-                                setHomeDraftPatch((prev) => ({
-                                  ...prev,
-                                  durationType: 'temporary',
-                                }))
-                              }
-                            >
-                              Temporary until date
-                            </button>
-                            <button
-                              type="button"
-                              className={`rounded-full border px-3 py-1 text-xs ${
-                                homeDraftPatch.durationType.trim().toLowerCase() !== 'permanent' &&
-                                homeDraftPatch.durationType.trim().toLowerCase() !== 'temporary' &&
-                                homeDraftPatch.durationType.trim().length > 0
-                                  ? 'border-slate-900 bg-slate-900 text-white'
-                                  : 'border-slate-300 bg-white text-slate-700'
-                              }`}
-                              onClick={() =>
-                                setHomeDraftPatch((prev) => ({
-                                  ...prev,
-                                  durationType:
-                                    prev.durationType.trim().toLowerCase() === 'permanent' ||
-                                    prev.durationType.trim().toLowerCase() === 'temporary'
-                                      ? ''
-                                      : prev.durationType,
-                                  durationUntil: '',
-                                }))
-                              }
-                            >
-                              Custom
-                            </button>
-                          </div>
-                          {homeDraftPatch.durationType.trim().toLowerCase() !== 'permanent' &&
-                            homeDraftPatch.durationType.trim().toLowerCase() !== 'temporary' && (
-                              <input
-                                value={homeDraftPatch.durationType}
-                                onChange={(e) =>
-                                  setHomeDraftPatch((prev) => ({
-                                    ...prev,
-                                    durationType: e.target.value,
-                                    durationUntil: '',
-                                  }))
-                                }
-                                className="w-full rounded-md border border-slate-300 px-2 py-1 text-sm"
-                                placeholder="e.g. 2 weeks"
-                              />
-                            )}
-                        </div>
-                      )}
-
-                      {(homeResult.actionCard.data.missingFields.includes('durationUntil') ||
-                        homeDraftPatch.durationType.trim().toLowerCase() === 'temporary') && (
-                        <label className="text-xs text-slate-700">
-                          Temporary access end date
-                          <input
-                            type="date"
-                            value={homeDraftPatch.durationUntil}
+                            value={homeDraftPatch.durationType}
                             onChange={(e) =>
                               setHomeDraftPatch((prev) => ({
                                 ...prev,
-                                durationUntil: e.target.value,
+                                durationType: e.target.value,
+                                durationUntil: '',
                               }))
                             }
-                            className="mt-1 w-full rounded-md border border-slate-300 px-2 py-1 text-sm"
+                            className="w-full rounded-md border border-slate-300 px-2 py-1 text-sm"
+                            placeholder="e.g. 2 weeks"
                           />
-                        </label>
-                      )}
+                        )}
                     </div>
-                  )}
+
+                    {(homeDraftPatch.durationType || '').trim().toLowerCase() === 'temporary' && (
+                      <label className="text-xs text-slate-700">
+                        Temporary access end date
+                        <input
+                          type="date"
+                          value={homeDraftPatch.durationUntil}
+                          onChange={(e) =>
+                            setHomeDraftPatch((prev) => ({
+                              ...prev,
+                              durationUntil: e.target.value,
+                            }))
+                          }
+                          className="mt-1 w-full rounded-md border border-slate-300 px-2 py-1 text-sm"
+                        />
+                      </label>
+                    )}
+
+                    <label className="text-xs text-slate-700">
+                      Request details
+                      <textarea
+                        value={homeDraftPatch.details}
+                        onChange={(e) =>
+                          setHomeDraftPatch((prev) => ({ ...prev, details: e.target.value }))
+                        }
+                        className="mt-1 w-full rounded-md border border-slate-300 px-2 py-1 text-sm"
+                        rows={3}
+                        placeholder="Add exact details for IT team"
+                      />
+                    </label>
+                  </div>
+                )}
                 {(homeResult.actionCard.data?.ticketNumber ||
                   typeof homeResult.actionCard.data?.jd_id === 'string' ||
                   Array.isArray(homeResult.actionCard.data?.sources)) && (
@@ -904,7 +920,7 @@ export default function Home() {
                     </Button>
                   </div>
                 )}
-                {homeResult.actionCard.data && (
+                {homeResult.actionCard.data && !isItApprovalCard && (
                   <div className="mt-2">
                     <button
                       type="button"
@@ -915,7 +931,7 @@ export default function Home() {
                     </button>
                   </div>
                 )}
-                {homeResult.actionCard.data && showHomeDetails && renderHomeActionDetails()}
+                {homeResult.actionCard.data && !isItApprovalCard && showHomeDetails && renderHomeActionDetails()}
                 {homeResult.requiresConfirmation && (
                   <div className="mt-3 flex gap-2">
                     <Button

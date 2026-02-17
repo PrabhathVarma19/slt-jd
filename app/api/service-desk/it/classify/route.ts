@@ -4,6 +4,14 @@ import OpenAI from 'openai';
 const openaiApiKey = process.env.OPENAI_API_KEY;
 const openai = openaiApiKey ? new OpenAI({ apiKey: openaiApiKey }) : null;
 
+function toTitleCase(value: string) {
+  return value
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
+    .join(' ');
+}
+
 export async function POST(req: NextRequest) {
   if (!openai) {
     return NextResponse.json(
@@ -25,6 +33,23 @@ export async function POST(req: NextRequest) {
 
     // First, try a very fast keyword-based classification for common requests.
     const lower = details.toLowerCase();
+
+    // Handle install/setup prompts first to extract product names.
+    const installMatch = details.match(
+      /\b(?:install|setup|set up)\s+([a-zA-Z0-9][a-zA-Z0-9 .+\-_/]{1,80}?)(?:\s+(?:for|on|in)\b|$)/i
+    );
+    if (installMatch?.[1]) {
+      const rawSystem = installMatch[1].trim().replace(/[.,;:]+$/, '');
+      const system = toTitleCase(rawSystem);
+      return NextResponse.json({
+        requestType: 'software',
+        system: system || 'Software',
+        environment: 'NA',
+        accessType: 'NA',
+        impact: 'medium',
+        reason: details.split(/[\r\n\.]/)[0]?.trim().slice(0, 160) || details.slice(0, 160),
+      });
+    }
 
     type QuickResult = {
       requestType: string;
@@ -53,6 +78,8 @@ export async function POST(req: NextRequest) {
       { keywords: ['keyboard', 'mouse', 'headset'], requestType: 'hardware', system: 'Peripherals' },
       // Software / installs
       { keywords: ['install', 'installation'], requestType: 'software', system: 'Software' },
+      // Network
+      { keywords: ['network', 'wifi', 'wi-fi', 'lan', 'internet'], requestType: 'other', system: 'Network' },
       // Password / account
       { keywords: ['reset password', 'forgot password', 'password reset'], requestType: 'password', system: 'Account' },
     ];
