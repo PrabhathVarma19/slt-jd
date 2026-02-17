@@ -577,6 +577,13 @@ export default function Home() {
                     {JSON.stringify(homeResult.actionCard.data, null, 2)}
                   </pre>
                 )}
+                {typeof homeResult.actionCard.data?.routeTo === 'string' && (
+                  <div className="mt-2">
+                    <Button asChild size="sm" variant="outline">
+                      <Link href={homeResult.actionCard.data.routeTo}>Open in Tool</Link>
+                    </Button>
+                  </div>
+                )}
                 {homeResult.requiresConfirmation && (
                   <div className="mt-3 flex gap-2">
                     <Button

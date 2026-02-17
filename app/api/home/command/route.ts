@@ -20,6 +20,9 @@ type CreateTicketDraft = {
 function detectIntent(message: string): HomeCommandIntent {
   const text = message.toLowerCase();
   const passwordSignals = ['reset password', 'forgot password', 'password reset', 'unlock account'];
+  const commsSignals = ['newsletter', 'announcement', 'email draft', 'comms', 'communication'];
+  const engineeringSignals = ['release notes', 'pr summary', 'post mortem', 'post-mortem', 'incident report'];
+  const jdSignals = ['job description', 'jd for', 'create jd', 'hiring role', 'role description'];
   const createTicketSignals = [
     'raise ticket',
     'create ticket',
@@ -35,6 +38,9 @@ function detectIntent(message: string): HomeCommandIntent {
   const policySignals = ['policy', 'leave', 'travel policy', 'rto', 'how many days', 'guideline'];
 
   if (passwordSignals.some((s) => text.includes(s))) return 'password_reset';
+  if (engineeringSignals.some((s) => text.includes(s))) return 'engineering_generate';
+  if (commsSignals.some((s) => text.includes(s))) return 'comms_generate';
+  if (jdSignals.some((s) => text.includes(s))) return 'jd_generate';
   if (statusSignals.some((s) => text.includes(s))) return 'check_ticket_status';
   if (createTicketSignals.some((s) => text.includes(s))) return 'create_it_ticket';
   if (policySignals.some((s) => text.includes(s))) return 'policy_question';
@@ -329,6 +335,216 @@ export async function POST(req: NextRequest) {
       } satisfies HomeCommandResponse);
     }
 
+    if (intent === 'comms_generate') {
+      const startedAt = Date.now();
+      const res = await fetch(`${origin}/api/comms-hub`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', cookie },
+        body: JSON.stringify({
+          mode: 'team',
+          template: 'default',
+          audience: 'org',
+          formality: 'medium',
+          content: message,
+          include_links: false,
+          include_section_headers: true,
+          include_deltas: false,
+        }),
+      });
+      const data = await res.json();
+      const latencyMs = Date.now() - startedAt;
+
+      await createAgentRunStep({
+        runId: run.id,
+        stepNo: stepNo++,
+        phase: 'TOOL_RESULT',
+        status: res.ok ? 'COMPLETED' : 'FAILED',
+        tool: 'comms_hub',
+        toolInput: { content: message },
+        toolOutput: data,
+        riskLevel: 'LOW',
+        latencyMs,
+        errorText: res.ok ? null : data?.error || 'Failed to generate communication draft',
+      });
+
+      await updateAgentRun({
+        runId: run.id,
+        status: res.ok ? 'COMPLETED' : 'FAILED',
+        ended: true,
+        output: { intent, result: data },
+        errorText: res.ok ? null : data?.error || 'Failed to generate communication draft',
+      });
+
+      return NextResponse.json({
+        runId: run.id,
+        status: res.ok ? 'COMPLETED' : 'FAILED',
+        intent,
+        requiresConfirmation: false,
+        actionCard: res.ok
+          ? {
+              type: 'result',
+              title: data?.subject || 'Comms Draft Generated',
+              description: data?.summary || 'Generated a communication draft from your prompt.',
+              data: {
+                routeTo: '/comms-hub',
+                text: data?.text_body || null,
+                sections: data?.sections || [],
+              },
+            }
+          : {
+              type: 'error',
+              title: 'Comms Generation Failed',
+              description: data?.error || 'Unable to generate communication draft right now.',
+            },
+      } satisfies HomeCommandResponse);
+    }
+
+    if (intent === 'engineering_generate') {
+      const lower = message.toLowerCase();
+      const tool: 'release_notes' | 'pr_summary' | 'post_mortem' = lower.includes('pr summary')
+        ? 'pr_summary'
+        : lower.includes('post mortem') || lower.includes('post-mortem')
+          ? 'post_mortem'
+          : 'release_notes';
+
+      const payload =
+        tool === 'release_notes'
+          ? {
+              tool,
+              release_name: 'Quick Home Draft',
+              audience: 'internal',
+              change_list: message,
+            }
+          : tool === 'pr_summary'
+            ? {
+                tool,
+                pr_title: message.slice(0, 120),
+                pr_description: message,
+                files_touched: 'Not provided',
+              }
+            : {
+                tool,
+                incident_title: message.slice(0, 120),
+                impact: 'To be refined',
+                timeline: message,
+                mitigation: 'To be refined',
+              };
+
+      const startedAt = Date.now();
+      const res = await fetch(`${origin}/api/engineering-tools`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', cookie },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      const latencyMs = Date.now() - startedAt;
+
+      await createAgentRunStep({
+        runId: run.id,
+        stepNo: stepNo++,
+        phase: 'TOOL_RESULT',
+        status: res.ok ? 'COMPLETED' : 'FAILED',
+        tool: 'engineering_tools',
+        toolInput: payload,
+        toolOutput: data,
+        riskLevel: 'LOW',
+        latencyMs,
+        errorText: res.ok ? null : data?.error || 'Failed to generate engineering output',
+      });
+
+      await updateAgentRun({
+        runId: run.id,
+        status: res.ok ? 'COMPLETED' : 'FAILED',
+        ended: true,
+        output: { intent, result: data },
+        errorText: res.ok ? null : data?.error || 'Failed to generate engineering output',
+      });
+
+      return NextResponse.json({
+        runId: run.id,
+        status: res.ok ? 'COMPLETED' : 'FAILED',
+        intent,
+        requiresConfirmation: false,
+        actionCard: res.ok
+          ? {
+              type: 'result',
+              title: 'Engineering Draft Generated',
+              description: `Generated ${tool.replace('_', ' ')} output.`,
+              data: { routeTo: '/engineering-tools', output: data?.output || data },
+            }
+          : {
+              type: 'error',
+              title: 'Engineering Generation Failed',
+              description: data?.error || 'Unable to generate engineering output right now.',
+            },
+      } satisfies HomeCommandResponse);
+    }
+
+    if (intent === 'jd_generate') {
+      const titleMatch =
+        message.match(/(?:jd for|job description for|role description for)\s+(.+)/i)?.[1] || null;
+      const jobTitle = (titleMatch || message).slice(0, 80).trim() || 'Software Engineer';
+      const payload = {
+        job_title: jobTitle,
+        context: message,
+        tone: 'standard',
+        seniority: 'mid',
+        length: 'standard',
+      };
+
+      const startedAt = Date.now();
+      const res = await fetch(`${origin}/api/generate-jd`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', cookie },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      const latencyMs = Date.now() - startedAt;
+
+      await createAgentRunStep({
+        runId: run.id,
+        stepNo: stepNo++,
+        phase: 'TOOL_RESULT',
+        status: res.ok ? 'COMPLETED' : 'FAILED',
+        tool: 'generate_jd',
+        toolInput: payload,
+        toolOutput: data,
+        riskLevel: 'LOW',
+        latencyMs,
+        errorText: res.ok ? null : data?.error || 'Failed to generate JD',
+      });
+
+      await updateAgentRun({
+        runId: run.id,
+        status: res.ok ? 'COMPLETED' : 'FAILED',
+        ended: true,
+        output: { intent, result: data },
+        errorText: res.ok ? null : data?.error || 'Failed to generate JD',
+      });
+
+      return NextResponse.json({
+        runId: run.id,
+        status: res.ok ? 'COMPLETED' : 'FAILED',
+        intent,
+        requiresConfirmation: false,
+        actionCard: res.ok
+          ? {
+              type: 'result',
+              title: `JD Draft: ${data?.job_title || jobTitle}`,
+              description: data?.sections?.summary || 'Generated a JD draft.',
+              data: {
+                routeTo: data?.jd_id ? `/jd?jd=${data.jd_id}` : '/jd',
+                jd_id: data?.jd_id || null,
+              },
+            }
+          : {
+              type: 'error',
+              title: 'JD Generation Failed',
+              description: data?.error || 'Unable to generate JD right now.',
+            },
+      } satisfies HomeCommandResponse);
+    }
+
     if (intent === 'password_reset') {
       const startedAt = Date.now();
       const res = await fetch(`${origin}/api/service-desk/self-service/password-reset`, {
@@ -401,7 +617,7 @@ export async function POST(req: NextRequest) {
         type: 'info',
         title: 'Need More Context',
         description:
-          'I can help with IT requests, ticket status checks, password reset, or policy questions. Try one of those.',
+          'I can help with IT requests, ticket status checks, password reset, policy questions, comms drafts, engineering drafts, or JD generation.',
       },
     } satisfies HomeCommandResponse);
   } catch (error: any) {

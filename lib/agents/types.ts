@@ -27,6 +27,9 @@ export type HomeCommandIntent =
   | 'check_ticket_status'
   | 'password_reset'
   | 'policy_question'
+  | 'comms_generate'
+  | 'engineering_generate'
+  | 'jd_generate'
   | 'unknown';
 
 export type HomeActionCard = {
