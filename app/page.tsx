@@ -481,6 +481,21 @@ export default function Home() {
     }
   };
 
+  const resetHomeRunState = () => {
+    setHomeResult(null);
+    setHomeRunId(null);
+    setHomeRunDetails(null);
+    setShowHomeDetails(false);
+    setHomeError(null);
+    setHomeDraftPatch({
+      system: '',
+      reason: '',
+      details: '',
+      durationType: '',
+      durationUntil: '',
+    });
+  };
+
   const confirmHomeAction = async (approve: boolean) => {
     if (!homeRunId) return;
     try {
@@ -744,7 +759,13 @@ export default function Home() {
             <div className="mt-2 flex flex-col gap-2 sm:flex-row">
               <input
                 value={homeMessage}
-                onChange={(e) => setHomeMessage(e.target.value)}
+                onChange={(e) => {
+                  const nextValue = e.target.value;
+                  if (homeResult && nextValue.trim() !== homeMessage.trim()) {
+                    resetHomeRunState();
+                  }
+                  setHomeMessage(nextValue);
+                }}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && !homeLoading && !homeConfirmLoading) {
                     e.preventDefault();
@@ -819,6 +840,16 @@ export default function Home() {
 
             {homeResult?.actionCard && (
               <div className="mt-3 rounded-xl border border-slate-200 bg-slate-50 p-3">
+                <div className="mb-2 flex justify-end">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={resetHomeRunState}
+                    disabled={homeLoading || homeConfirmLoading}
+                  >
+                    Start New Request
+                  </Button>
+                </div>
                 <p className="text-sm font-semibold text-slate-900">{homeResult.actionCard.title}</p>
                 <p className="mt-1 text-sm text-slate-700">{homeResult.actionCard.description}</p>
                 {Array.isArray(homeResult.actionCard.data?.suggestions) &&
