@@ -305,9 +305,9 @@ export default function Home() {
   const [activeToolCategory, setActiveToolCategory] = useState<ToolCategory>('All');
   const [recentItTickets, setRecentItTickets] = useState<string[]>([]);
   const quickPrompts = [
-    'Raise a request for ...',
-    'Check status of ticket ...',
-    'Ask a policy question ...',
+    { label: 'Raise a request for ...', value: 'Raise a request for ' },
+    { label: 'Check status of ticket ...', value: 'Check status of ticket ' },
+    { label: 'Ask a policy question ...', value: 'Ask a policy question ' },
   ];
   const isItApprovalCard =
     homeResult?.intent === 'create_it_ticket' &&
@@ -750,13 +750,13 @@ export default function Home() {
             <div className="mt-2 flex flex-wrap gap-2">
               {quickPrompts.map((preset) => (
                 <button
-                  key={preset}
+                  key={preset.label}
                   type="button"
                   className="rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-700 hover:bg-slate-200"
                   disabled={homeLoading || homeConfirmLoading}
-                  onClick={() => setHomeMessage(preset)}
+                  onClick={() => setHomeMessage(preset.value)}
                 >
-                  {preset}
+                  {preset.label}
                 </button>
               ))}
             </div>
