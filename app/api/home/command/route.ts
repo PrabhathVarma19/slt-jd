@@ -195,6 +195,18 @@ function detectIntent(message: string): HomeCommandIntent {
   return 'unknown';
 }
 
+function isStarterOnlyPrompt(message: string) {
+  const normalized = message.trim().toLowerCase().replace(/\s+/g, ' ');
+  const starterPhrases = [
+    'raise a request for',
+    'check status of ticket',
+    'ask a policy question',
+    'raise request for',
+    'check ticket status',
+  ];
+  return starterPhrases.some((starter) => normalized === starter);
+}
+
 async function classifyIntentWithLlm(message: string): Promise<LlmIntentResult> {
   if (!process.env.OPENAI_API_KEY) {
     return {
@@ -351,6 +363,38 @@ export async function POST(req: NextRequest) {
     });
 
     if (intent === 'create_it_ticket') {
+      if (isStarterOnlyPrompt(message) || message.trim().length < 10) {
+        await updateAgentRun({
+          runId: run.id,
+          status: 'COMPLETED',
+          ended: true,
+          output: {
+            intent,
+            needsMoreDetails: true,
+          },
+        });
+
+        return NextResponse.json({
+          runId: run.id,
+          status: 'COMPLETED',
+          intent,
+          requiresConfirmation: false,
+          actionCard: {
+            type: 'info',
+            title: 'Need More Details',
+            description:
+              'Please add what you need, for which system/app, and why (plus duration if access is temporary).',
+            data: {
+              suggestions: [
+                'Raise a request for Cursor installation for QA team',
+                'Need VPN for ABC UAT for 2 weeks',
+                'Need monitor replacement for dual-screen setup',
+              ],
+            },
+          },
+        });
+      }
+
       const classification = await classifyItDraft(origin, cookie, message);
       const extractedDuration = extractDurationFromText(message);
       const derivedReason = deriveReasonFromMessage(message);
