@@ -167,6 +167,15 @@ function detectIntent(message: string): HomeCommandIntent {
     'subscription',
     'not working',
   ];
+  const createTicketPatterns = [
+    /\b(?:install|setup|set up)\b/i,
+    /\bsoftware\b/i,
+    /\bdesktop app\b/i,
+    /\blicen[cs]e\b/i,
+    /\bsubscription\b/i,
+    /\b(can(?:not|'t)|unable)\s+to\s+access\b/i,
+    /\b(issue|problem)\b/i,
+  ];
   const statusSignals = ['ticket status', 'status of ticket', 'check ticket', 'track ticket'];
   const policySignals = ['policy', 'leave', 'travel policy', 'rto', 'how many days', 'guideline'];
 
@@ -175,7 +184,12 @@ function detectIntent(message: string): HomeCommandIntent {
   if (commsSignals.some((s) => text.includes(s))) return 'comms_generate';
   if (jdSignals.some((s) => text.includes(s))) return 'jd_generate';
   if (statusSignals.some((s) => text.includes(s))) return 'check_ticket_status';
-  if (createTicketSignals.some((s) => text.includes(s))) return 'create_it_ticket';
+  if (
+    createTicketSignals.some((s) => text.includes(s)) ||
+    createTicketPatterns.some((pattern) => pattern.test(text))
+  ) {
+    return 'create_it_ticket';
+  }
   if (policySignals.some((s) => text.includes(s))) return 'policy_question';
   return 'unknown';
 }
