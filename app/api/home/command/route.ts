@@ -142,6 +142,16 @@ function applyFollowupToDraft(
     changed = true;
   }
 
+  const looksLikeDurationOnly = (value: string) => {
+    const normalized = value.trim().toLowerCase();
+    if (!normalized) return false;
+    if (/\b\d{4}-\d{2}-\d{2}\b/.test(normalized)) return true;
+    if (/\b(permanent|indefinite|temporary)\b/.test(normalized)) return true;
+    if (/^\d+\s*(day|week|month|year)s?$/.test(normalized)) return true;
+    if (/^for\s+\d+\s*(day|week|month|year)s?$/.test(normalized)) return true;
+    return false;
+  };
+
   const lower = trimmed.toLowerCase();
   if (
     lower.startsWith('for ') ||
@@ -152,11 +162,15 @@ function applyFollowupToDraft(
     const normalizedReason = trimmed
       .replace(/^(for|because|reason|use case)\s*[:\-]?\s*/i, '')
       .trim();
-    if (normalizedReason && normalizedReason !== (nextDraft.reason || '').trim()) {
+    if (
+      normalizedReason &&
+      !looksLikeDurationOnly(normalizedReason) &&
+      normalizedReason !== (nextDraft.reason || '').trim()
+    ) {
       nextDraft.reason = normalizedReason;
       changed = true;
     }
-  } else {
+  } else if (!looksLikeDurationOnly(trimmed)) {
     const derivedReason = deriveReasonFromMessage(trimmed);
     if (
       derivedReason &&
