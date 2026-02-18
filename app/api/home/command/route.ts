@@ -297,6 +297,38 @@ function isStarterOnlyPrompt(message: string) {
   return starterPhrases.some((starter) => normalized === starter);
 }
 
+function isLikelyDraftFollowup(message: string) {
+  const text = message.trim().toLowerCase();
+  if (!text) return false;
+
+  // Strong follow-up cues.
+  if (/^(for|because|reason|use case)\b/.test(text)) return true;
+  if (/^\d+\s*(day|week|month|year)s?$/.test(text)) return true;
+  if (/^for\s+\d+\s*(day|week|month|year)s?$/.test(text)) return true;
+  if (/^\d{4}-\d{2}-\d{2}$/.test(text)) return true;
+  if (/^(temporary|permanent|indefinite)$/.test(text)) return true;
+
+  // Avoid hijacking clear "new task" intents.
+  const explicitNewIntentSignals = [
+    'ticket status',
+    'check status',
+    'reset password',
+    'forgot password',
+    'policy',
+    'newsletter',
+    'release notes',
+    'pr summary',
+    'post mortem',
+    'create jd',
+    'job description',
+  ];
+  if (explicitNewIntentSignals.some((signal) => text.includes(signal))) return false;
+
+  // Short contextual fragments are usually follow-ups while a draft is pending.
+  const words = text.split(/\s+/).filter(Boolean);
+  return words.length <= 8;
+}
+
 async function classifyIntentWithLlm(message: string): Promise<LlmIntentResult> {
   if (!process.env.OPENAI_API_KEY) {
     return {
@@ -422,7 +454,10 @@ export async function POST(req: NextRequest) {
     const cookie = req.headers.get('cookie') || '';
 
     const pendingCtx = await getLatestPendingHomeApprovalForUser(auth.userId);
-    if (pendingCtx && (intent === 'create_it_ticket' || intent === 'unknown')) {
+    if (
+      pendingCtx &&
+      (isLikelyDraftFollowup(message) || intent === 'create_it_ticket' || intent === 'unknown')
+    ) {
       const draft = (pendingCtx.approval?.metadata?.draft || {}) as CreateTicketDraft & Record<string, any>;
       const { nextDraft, changed } = applyFollowupToDraft(draft, message);
       if (changed) {
