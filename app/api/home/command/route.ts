@@ -164,11 +164,12 @@ function detectIntent(message: string): HomeCommandIntent {
     'network',
     'lan',
     'software install',
+    'installation',
     'subscription',
     'not working',
   ];
   const createTicketPatterns = [
-    /\b(?:install|setup|set up)\b/i,
+    /\b(?:install|installation|setup|set up)\b/i,
     /\bsoftware\b/i,
     /\bdesktop app\b/i,
     /\blicen[cs]e\b/i,
