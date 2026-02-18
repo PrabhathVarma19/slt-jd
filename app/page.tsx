@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 import Button from '@/components/ui/button';
@@ -309,6 +309,22 @@ export default function Home() {
     { label: 'Check status of ticket ...', value: 'Check status of ticket ' },
     { label: 'Ask a policy question ...', value: 'Ask a policy question ' },
   ];
+  const ticketAutocompleteSuggestions = useMemo(() => {
+    const text = homeMessage.trim().toLowerCase();
+    if (!text.includes('ticket')) return [];
+
+    const ticketLike = text.match(/(it[-_ ]?\d{0,6}|tr[-_ ]?\d{0,6}|\d{1,6})$/i)?.[0] || '';
+    if (!ticketLike) return recentItTickets.slice(0, 5);
+
+    const normalized = ticketLike.toUpperCase().replace(/[_ ]/g, '-');
+    const digitOnly = normalized.replace(/[^0-9]/g, '');
+    return recentItTickets
+      .filter((ticketNumber) => {
+        const upper = ticketNumber.toUpperCase();
+        return upper.includes(normalized) || (digitOnly ? upper.includes(digitOnly) : false);
+      })
+      .slice(0, 5);
+  }, [homeMessage, recentItTickets]);
   const isItApprovalCard =
     homeResult?.intent === 'create_it_ticket' &&
     homeResult?.requiresConfirmation &&
@@ -771,6 +787,26 @@ export default function Home() {
                       key={ticketNumber}
                       type="button"
                       className="rounded-full bg-white px-3 py-1 text-xs text-slate-700 border border-slate-200 hover:bg-slate-100"
+                      disabled={homeLoading || homeConfirmLoading}
+                      onClick={() => setHomeMessage(`Check status of ticket ${ticketNumber}`)}
+                    >
+                      {ticketNumber}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+            {ticketAutocompleteSuggestions.length > 0 && homeMessage.toLowerCase().includes('ticket') && (
+              <div className="mt-2">
+                <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+                  Ticket Suggestions
+                </p>
+                <div className="mt-1 flex flex-wrap gap-2">
+                  {ticketAutocompleteSuggestions.map((ticketNumber: string) => (
+                    <button
+                      key={`suggestion-${ticketNumber}`}
+                      type="button"
+                      className="rounded-full bg-emerald-50 px-3 py-1 text-xs text-emerald-800 border border-emerald-200 hover:bg-emerald-100"
                       disabled={homeLoading || homeConfirmLoading}
                       onClick={() => setHomeMessage(`Check status of ticket ${ticketNumber}`)}
                     >
