@@ -509,6 +509,12 @@ export default function Home() {
     }
   };
 
+  const runTicketStatusCheck = (ticketNumber: string) => {
+    const command = `Check status of ticket ${ticketNumber}`;
+    setHomeMessage(command);
+    submitHomeCommand(command);
+  };
+
   const resetHomeRunState = () => {
     setHomeResult(null);
     setHomeRunId(null);
@@ -895,7 +901,7 @@ export default function Home() {
                       type="button"
                       className="rounded-full bg-white px-3 py-1 text-xs text-slate-700 border border-slate-200 hover:bg-slate-100"
                       disabled={homeLoading || homeConfirmLoading}
-                      onClick={() => setHomeMessage(`Check status of ticket ${ticketNumber}`)}
+                      onClick={() => runTicketStatusCheck(ticketNumber)}
                     >
                       {ticketNumber}
                     </button>
@@ -915,7 +921,7 @@ export default function Home() {
                       type="button"
                       className="rounded-full bg-emerald-50 px-3 py-1 text-xs text-emerald-800 border border-emerald-200 hover:bg-emerald-100"
                       disabled={homeLoading || homeConfirmLoading}
-                      onClick={() => setHomeMessage(`Check status of ticket ${ticketNumber}`)}
+                      onClick={() => runTicketStatusCheck(ticketNumber)}
                     >
                       {ticketNumber}
                     </button>
@@ -1150,9 +1156,7 @@ export default function Home() {
                       size="sm"
                       variant="outline"
                       onClick={() =>
-                        setHomeMessage(
-                          `Check status of ticket ${homeResult.actionCard.data?.duplicateTicketNumber}`
-                        )
+                        runTicketStatusCheck(String(homeResult.actionCard.data?.duplicateTicketNumber))
                       }
                       disabled={homeLoading || homeConfirmLoading}
                     >
@@ -1165,9 +1169,7 @@ export default function Home() {
                     <Button
                       size="sm"
                       variant="outline"
-                      onClick={() =>
-                        setHomeMessage(`Check status of ticket ${homeResult.actionCard.data?.ticketNumber}`)
-                      }
+                      onClick={() => runTicketStatusCheck(String(homeResult.actionCard.data?.ticketNumber))}
                       disabled={homeLoading || homeConfirmLoading}
                     >
                       Track Ticket
