@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 import Button from '@/components/ui/button';
+import { useToast } from '@/lib/hooks/useToast';
 import {
   Card,
   CardHeader,
@@ -189,6 +190,7 @@ const ENGINEER_TOOLS: Tool[] = [
 ];
 
 export default function Home() {
+  const { showToast, ToastContainer } = useToast();
   const [isAdmin, setIsAdmin] = useState(false);
   const [isEngineer, setIsEngineer] = useState(false);
   const [isSupervisor, setIsSupervisor] = useState(false);
@@ -334,6 +336,22 @@ export default function Home() {
     homeResult?.actionCard?.data?.missingFields?.length
       ? homeResult.actionCard.data.missingFields
       : [];
+  const homeStatusLabel = homeLoading
+    ? 'Running'
+    : homeConfirmLoading
+      ? 'Submitting'
+      : homeResult?.requiresConfirmation
+        ? 'Awaiting Approval'
+        : homeResult
+          ? 'Completed'
+          : 'Ready';
+  const homeStatusClass = homeLoading || homeConfirmLoading
+    ? 'bg-amber-100 text-amber-800'
+    : homeResult?.requiresConfirmation
+      ? 'bg-blue-100 text-blue-800'
+      : homeResult
+        ? 'bg-emerald-100 text-emerald-800'
+        : 'bg-slate-100 text-slate-700';
 
   const formatHomeFieldLabel = (key: string) =>
     key
@@ -536,6 +554,12 @@ export default function Home() {
         },
       }));
       setShowHomeDetails(false);
+      showToast(
+        approve
+          ? data?.actionCard?.description || 'Request submitted successfully.'
+          : data?.actionCard?.description || 'Request cancelled.',
+        approve ? 'success' : 'info'
+      );
       if (homeRunId) {
         setHomeRunDetailsLoading(true);
         try {
@@ -555,6 +579,7 @@ export default function Home() {
       }
     } catch (error: any) {
       setHomeError(error?.message || 'Failed to process approval');
+      showToast(error?.message || 'Failed to process approval', 'error');
     } finally {
       setHomeConfirmLoading(false);
     }
@@ -753,9 +778,14 @@ export default function Home() {
           </div>
 
           <div className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm max-w-2xl">
-            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-              Home Command Bar
-            </p>
+            <div className="flex items-center justify-between gap-2">
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                Home Command Bar
+              </p>
+              <span className={`rounded-full px-2 py-1 text-[11px] font-semibold ${homeStatusClass}`}>
+                {homeStatusLabel}
+              </span>
+            </div>
             <div className="mt-2 flex flex-col gap-2 sm:flex-row">
               <input
                 value={homeMessage}
@@ -780,7 +810,7 @@ export default function Home() {
                 disabled={homeLoading || homeConfirmLoading || !homeMessage.trim()}
                 className="rounded-xl px-4"
               >
-                {homeLoading ? 'Running...' : 'Run'}
+                {homeLoading ? 'Running...' : homeConfirmLoading ? 'Please wait...' : 'Run'}
               </Button>
             </div>
 
@@ -1065,7 +1095,7 @@ export default function Home() {
                       onClick={() => confirmHomeAction(true)}
                       disabled={homeConfirmLoading}
                     >
-                      {homeConfirmLoading ? 'Processing...' : 'Approve & Run'}
+                      {homeConfirmLoading ? 'Submitting...' : 'Approve & Run'}
                     </Button>
                     <Button
                       size="sm"
@@ -1522,6 +1552,7 @@ export default function Home() {
           </ul>
         </div>
       </section>
+      <ToastContainer />
     </div>
   );
 }
