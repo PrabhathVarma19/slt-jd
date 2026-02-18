@@ -303,6 +303,12 @@ export default function Home() {
   type ToolCategory = 'All' | ToolBucket;
   const TOOL_CATEGORIES: ToolCategory[] = ['All', 'Ask', 'Requests', 'Outputs'];
   const [activeToolCategory, setActiveToolCategory] = useState<ToolCategory>('All');
+  const [recentItTickets, setRecentItTickets] = useState<string[]>([]);
+  const quickPrompts = [
+    'Raise a request for ...',
+    'Check status of ticket ...',
+    'Ask a policy question ...',
+  ];
   const isItApprovalCard =
     homeResult?.intent === 'create_it_ticket' &&
     homeResult?.requiresConfirmation &&
@@ -390,6 +396,26 @@ export default function Home() {
       durationUntil: typeof data.durationUntil === 'string' ? data.durationUntil : '',
     });
   }, [homeResult]);
+
+  useEffect(() => {
+    const fetchRecentTickets = async () => {
+      try {
+        const res = await fetch('/api/profile/tickets?type=IT&limit=5');
+        if (!res.ok) return;
+        const data = await res.json();
+        const numbers = Array.isArray(data?.tickets)
+          ? data.tickets
+              .map((ticket: any) => ticket?.ticketNumber)
+              .filter((ticketNumber: unknown) => typeof ticketNumber === 'string')
+          : [];
+        setRecentItTickets(Array.from(new Set(numbers)));
+      } catch (err) {
+        console.error('Failed to load recent IT tickets:', err);
+      }
+    };
+
+    fetchRecentTickets();
+  }, []);
 
   const submitHomeCommand = async (messageOverride?: string) => {
     const message = (messageOverride ?? homeMessage).trim();
@@ -722,11 +748,7 @@ export default function Home() {
             </div>
 
             <div className="mt-2 flex flex-wrap gap-2">
-              {[
-                'Raise IT ticket for VPN access',
-                'Check status of ticket IT-000123',
-                'What is the RTO policy?',
-              ].map((preset) => (
+              {quickPrompts.map((preset) => (
                 <button
                   key={preset}
                   type="button"
@@ -738,6 +760,26 @@ export default function Home() {
                 </button>
               ))}
             </div>
+            {recentItTickets.length > 0 && (
+              <div className="mt-2">
+                <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+                  My Recent IT Tickets
+                </p>
+                <div className="mt-1 flex flex-wrap gap-2">
+                  {recentItTickets.map((ticketNumber) => (
+                    <button
+                      key={ticketNumber}
+                      type="button"
+                      className="rounded-full bg-white px-3 py-1 text-xs text-slate-700 border border-slate-200 hover:bg-slate-100"
+                      disabled={homeLoading || homeConfirmLoading}
+                      onClick={() => submitHomeCommand(`Check status of ticket ${ticketNumber}`)}
+                    >
+                      {ticketNumber}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {homeResult?.actionCard && (
               <div className="mt-3 rounded-xl border border-slate-200 bg-slate-50 p-3">

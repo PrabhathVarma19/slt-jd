@@ -1,0 +1,227 @@
+[
+  {
+    "id": "it-001",
+    "prompt": "Need VPN for ABC UAT, 2 weeks",
+    "expectedIntent": "create_it_ticket",
+    "expectedCategory": "vpn_access",
+    "expectedMissingFields": [],
+    "expectedRoute": "confirm",
+    "notes": "Reason and duration should auto-fill."
+  },
+  {
+    "id": "it-002",
+    "prompt": "Raise VPN access request",
+    "expectedIntent": "create_it_ticket",
+    "expectedCategory": "vpn_access",
+    "expectedMissingFields": ["reason", "durationType"],
+    "expectedRoute": "confirm",
+    "notes": "Should ask follow-up fields."
+  },
+  {
+    "id": "it-003",
+    "prompt": "Install Power BI desktop for finance reporting",
+    "expectedIntent": "create_it_ticket",
+    "expectedCategory": "software_install",
+    "expectedMissingFields": [],
+    "expectedRoute": "confirm",
+    "notes": "System should resolve near Power BI Desktop."
+  },
+  {
+    "id": "it-004",
+    "prompt": "i need cusror installation",
+    "expectedIntent": "create_it_ticket",
+    "expectedCategory": "software_install",
+    "expectedMissingFields": [],
+    "expectedRoute": "confirm",
+    "notes": "Supports typo path and manual correction."
+  },
+  {
+    "id": "it-005",
+    "prompt": "Need Jira installation for QA team",
+    "expectedIntent": "create_it_ticket",
+    "expectedCategory": "software_install",
+    "expectedMissingFields": [],
+    "expectedRoute": "confirm",
+    "notes": "Installation phrasing should route correctly."
+  },
+  {
+    "id": "it-006",
+    "prompt": "Need a new monitor for dual-screen setup",
+    "expectedIntent": "create_it_ticket",
+    "expectedCategory": "hardware_request",
+    "expectedMissingFields": [],
+    "expectedRoute": "confirm",
+    "notes": "Hardware request classification."
+  },
+  {
+    "id": "it-007",
+    "prompt": "Office wifi is down on 5th floor, blocker for support calls",
+    "expectedIntent": "create_it_ticket",
+    "expectedCategory": "network_issue",
+    "expectedMissingFields": [],
+    "expectedRoute": "confirm",
+    "notes": "Should classify as network issue."
+  },
+  {
+    "id": "it-008",
+    "prompt": "Need Tableau subscription for 3 months for customer analytics",
+    "expectedIntent": "create_it_ticket",
+    "expectedCategory": "subscription",
+    "expectedMissingFields": [],
+    "expectedRoute": "confirm",
+    "notes": "Subscription with duration."
+  },
+  {
+    "id": "it-009",
+    "prompt": "Need Adobe license",
+    "expectedIntent": "create_it_ticket",
+    "expectedCategory": "subscription",
+    "expectedMissingFields": ["reason", "durationType"],
+    "expectedRoute": "confirm",
+    "notes": "Should ask reason and duration."
+  },
+  {
+    "id": "it-010",
+    "prompt": "Can’t access GitLab, urgent",
+    "expectedIntent": "create_it_ticket",
+    "expectedCategory": "general",
+    "expectedMissingFields": [],
+    "expectedRoute": "confirm",
+    "notes": "Access issue should still route to IT."
+  },
+  {
+    "id": "policy-001",
+    "prompt": "What is the RTO policy?",
+    "expectedIntent": "policy_question",
+    "expectedCategory": null,
+    "expectedMissingFields": [],
+    "expectedRoute": "result",
+    "notes": "Policy answer with sources."
+  },
+  {
+    "id": "policy-002",
+    "prompt": "How many leave days can I carry forward?",
+    "expectedIntent": "policy_question",
+    "expectedCategory": null,
+    "expectedMissingFields": [],
+    "expectedRoute": "result",
+    "notes": "Policy grounding check."
+  },
+  {
+    "id": "policy-003",
+    "prompt": "What is travel reimbursement eligibility?",
+    "expectedIntent": "policy_question",
+    "expectedCategory": null,
+    "expectedMissingFields": [],
+    "expectedRoute": "result",
+    "notes": "Travel policy question."
+  },
+  {
+    "id": "policy-004",
+    "prompt": "Probation period for new joiners",
+    "expectedIntent": "policy_question",
+    "expectedCategory": null,
+    "expectedMissingFields": [],
+    "expectedRoute": "result",
+    "notes": "HR policy lookup."
+  },
+  {
+    "id": "policy-005",
+    "prompt": "Can I work from home full week?",
+    "expectedIntent": "policy_question",
+    "expectedCategory": null,
+    "expectedMissingFields": [],
+    "expectedRoute": "result",
+    "notes": "RTO/WFH guidance."
+  },
+  {
+    "id": "password-001",
+    "prompt": "Reset my password",
+    "expectedIntent": "password_reset",
+    "expectedCategory": null,
+    "expectedMissingFields": [],
+    "expectedRoute": "result",
+    "notes": "Self-service password reset route."
+  },
+  {
+    "id": "password-002",
+    "prompt": "I forgot my password",
+    "expectedIntent": "password_reset",
+    "expectedCategory": null,
+    "expectedMissingFields": [],
+    "expectedRoute": "result",
+    "notes": "Forgot-password phrasing."
+  },
+  {
+    "id": "password-003",
+    "prompt": "Unable to login, account locked",
+    "expectedIntent": "password_reset",
+    "expectedCategory": null,
+    "expectedMissingFields": [],
+    "expectedRoute": "result",
+    "notes": "Account unlock flow."
+  },
+  {
+    "id": "output-001",
+    "prompt": "Create a newsletter update for Q1 AI initiatives",
+    "expectedIntent": "comms_generate",
+    "expectedCategory": null,
+    "expectedMissingFields": [],
+    "expectedRoute": "result",
+    "notes": "Comms generation handoff."
+  },
+  {
+    "id": "output-002",
+    "prompt": "Generate release notes for fixed VPN timeout and improved login audit logs",
+    "expectedIntent": "engineering_generate",
+    "expectedCategory": null,
+    "expectedMissingFields": [],
+    "expectedRoute": "result",
+    "notes": "Engineering generation handoff."
+  },
+  {
+    "id": "output-003",
+    "prompt": "Create JD for Senior Data Engineer",
+    "expectedIntent": "jd_generate",
+    "expectedCategory": null,
+    "expectedMissingFields": [],
+    "expectedRoute": "result",
+    "notes": "JD generation path."
+  },
+  {
+    "id": "status-001",
+    "prompt": "Check status of ticket IT-000123",
+    "expectedIntent": "check_ticket_status",
+    "expectedCategory": null,
+    "expectedMissingFields": [],
+    "expectedRoute": "result",
+    "notes": "Ticket status lookup."
+  },
+  {
+    "id": "status-002",
+    "prompt": "Track ticket 123",
+    "expectedIntent": "check_ticket_status",
+    "expectedCategory": null,
+    "expectedMissingFields": [],
+    "expectedRoute": "result",
+    "notes": "Ticket number normalization."
+  },
+  {
+    "id": "ambiguous-001",
+    "prompt": "Need help",
+    "expectedIntent": "unknown",
+    "expectedCategory": null,
+    "expectedMissingFields": [],
+    "expectedRoute": "info",
+    "notes": "Should ask for more context."
+  },
+  {
+    "id": "ambiguous-002",
+    "prompt": "Can you do this quickly?",
+    "expectedIntent": "unknown",
+    "expectedCategory": null,
+    "expectedMissingFields": [],
+    "expectedRoute": "info",
+    "notes": "No actionable context."
+  }
+]
