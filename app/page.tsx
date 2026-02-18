@@ -291,6 +291,7 @@ export default function Home() {
     }>;
   } | null>(null);
   const [homeRunDetailsLoading, setHomeRunDetailsLoading] = useState(false);
+  const [showRunAuditDetails, setShowRunAuditDetails] = useState(false);
   const [homeResult, setHomeResult] = useState<{
     status: string;
     intent: string;
@@ -307,9 +308,9 @@ export default function Home() {
   const [activeToolCategory, setActiveToolCategory] = useState<ToolCategory>('All');
   const [recentItTickets, setRecentItTickets] = useState<string[]>([]);
   const quickPrompts = [
-    { label: 'Raise a request for ...', value: 'Raise a request for ' },
-    { label: 'Check status of ticket ...', value: 'Check status of ticket ' },
-    { label: 'Ask a policy question ...', value: 'Ask a policy question ' },
+    { label: 'Raise a request', value: 'Raise a request for ' },
+    { label: 'Check ticket status', value: 'Check status of ticket ' },
+    { label: 'Ask a policy question', value: 'Ask a policy question: ' },
   ];
   const ticketAutocompleteSuggestions = useMemo(() => {
     const text = homeMessage.trim().toLowerCase();
@@ -474,6 +475,7 @@ export default function Home() {
       setHomeResult(data);
       setShowHomeDetails(false);
       setHomeRunDetails(null);
+      setShowRunAuditDetails(false);
       if (nextRunId) {
         setHomeRunDetailsLoading(true);
         try {
@@ -505,6 +507,7 @@ export default function Home() {
     setHomeRunDetails(null);
     setShowHomeDetails(false);
     setHomeError(null);
+    setShowRunAuditDetails(false);
     setHomeDraftPatch({
       system: '',
       reason: '',
@@ -554,6 +557,7 @@ export default function Home() {
         },
       }));
       setShowHomeDetails(false);
+      setShowRunAuditDetails(false);
       showToast(
         approve
           ? data?.actionCard?.description || 'Request submitted successfully.'
@@ -837,6 +841,30 @@ export default function Home() {
                 </button>
               ))}
             </div>
+            {!homeResult && !homeLoading && !homeConfirmLoading && (
+              <div className="mt-2 rounded-lg border border-slate-200 bg-white p-2">
+                <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+                  Try one
+                </p>
+                <div className="mt-1 flex flex-wrap gap-2">
+                  {[
+                    'Need VPN access for ABC UAT for 2 weeks',
+                    'Install Cursor for QA team',
+                    'What is the RTO policy for India?',
+                  ].map((example) => (
+                    <button
+                      key={example}
+                      type="button"
+                      className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-700 hover:bg-slate-100"
+                      disabled={homeLoading || homeConfirmLoading}
+                      onClick={() => setHomeMessage(example)}
+                    >
+                      {example}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
             {recentItTickets.length > 0 && (
               <div className="mt-2">
                 <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">
@@ -892,6 +920,11 @@ export default function Home() {
                 </div>
                 <p className="text-sm font-semibold text-slate-900">{homeResult.actionCard.title}</p>
                 <p className="mt-1 text-sm text-slate-700">{homeResult.actionCard.description}</p>
+                {homeResult.actionCard.type === 'result' && (
+                  <p className="mt-1 text-xs font-medium text-emerald-700">
+                    Completed. You can track this in the relevant tool.
+                  </p>
+                )}
                 {homeResult.actionCard.data?.lastFollowupMessage && (
                   <p className="mt-1 text-xs text-slate-500">
                     Last update:
@@ -1093,6 +1126,20 @@ export default function Home() {
                     </Button>
                   </div>
                 )}
+                {homeResult.actionCard.data?.ticketNumber && (
+                  <div className="mt-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() =>
+                        setHomeMessage(`Check status of ticket ${homeResult.actionCard.data?.ticketNumber}`)
+                      }
+                      disabled={homeLoading || homeConfirmLoading}
+                    >
+                      Track Ticket
+                    </Button>
+                  </div>
+                )}
                 {homeResult.actionCard.data && !isItApprovalCard && (
                   <div className="mt-2">
                     <button
@@ -1134,49 +1181,60 @@ export default function Home() {
             )}
             {(homeRunDetailsLoading || homeRunDetails) && (
               <div className="mt-2 rounded-lg border border-slate-200 bg-white p-2">
-                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  Run Timeline
-                </p>
-                {homeRunDetailsLoading && (
-                  <p className="mt-1 text-xs text-slate-500">Loading timeline...</p>
-                )}
-                {!homeRunDetailsLoading && homeRunDetails?.steps?.length === 0 && (
-                  <p className="mt-1 text-xs text-slate-500">No steps recorded yet.</p>
-                )}
-                {!homeRunDetailsLoading && homeRunDetails?.steps?.length ? (
-                  <div className="mt-2 space-y-1">
-                    {homeRunDetails.steps.map((step) => (
-                      <div
-                        key={step.id}
-                        className="rounded-md border border-slate-100 bg-slate-50 px-2 py-1 text-xs"
-                      >
-                        <p className="font-medium text-slate-700">
-                          Step {step.stepNo}: {step.phase}
-                        </p>
-                        <p className="text-slate-600">
-                          Status: {step.status}
-                          {step.tool ? ` | Tool: ${step.tool}` : ''}
-                          {step.requiresApproval ? ' | Approval required' : ''}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                ) : null}
-                {!homeRunDetailsLoading && homeRunDetails?.approvals?.length ? (
-                  <div className="mt-2 border-t border-slate-100 pt-2">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                      Approvals
+                <button
+                  type="button"
+                  className="text-xs font-semibold uppercase tracking-wide text-slate-500 underline underline-offset-2"
+                  onClick={() => setShowRunAuditDetails((prev) => !prev)}
+                >
+                  {showRunAuditDetails ? 'Hide audit details' : 'View audit details'}
+                </button>
+                {showRunAuditDetails && (
+                  <>
+                    <p className="mt-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+                      Run Timeline
                     </p>
-                    <div className="mt-1 space-y-1">
-                      {homeRunDetails.approvals.map((approval) => (
-                        <div key={approval.id} className="text-xs text-slate-600">
-                          Decision: {approval.decision}
-                          {approval.reason ? ` | Reason: ${approval.reason}` : ''}
+                    {homeRunDetailsLoading && (
+                      <p className="mt-1 text-xs text-slate-500">Loading timeline...</p>
+                    )}
+                    {!homeRunDetailsLoading && homeRunDetails?.steps?.length === 0 && (
+                      <p className="mt-1 text-xs text-slate-500">No steps recorded yet.</p>
+                    )}
+                    {!homeRunDetailsLoading && homeRunDetails?.steps?.length ? (
+                      <div className="mt-2 space-y-1">
+                        {homeRunDetails.steps.map((step) => (
+                          <div
+                            key={step.id}
+                            className="rounded-md border border-slate-100 bg-slate-50 px-2 py-1 text-xs"
+                          >
+                            <p className="font-medium text-slate-700">
+                              Step {step.stepNo}: {step.phase}
+                            </p>
+                            <p className="text-slate-600">
+                              Status: {step.status}
+                              {step.tool ? ` | Tool: ${step.tool}` : ''}
+                              {step.requiresApproval ? ' | Approval required' : ''}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    ) : null}
+                    {!homeRunDetailsLoading && homeRunDetails?.approvals?.length ? (
+                      <div className="mt-2 border-t border-slate-100 pt-2">
+                        <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                          Approvals
+                        </p>
+                        <div className="mt-1 space-y-1">
+                          {homeRunDetails.approvals.map((approval) => (
+                            <div key={approval.id} className="text-xs text-slate-600">
+                              Decision: {approval.decision}
+                              {approval.reason ? ` | Reason: ${approval.reason}` : ''}
+                            </div>
+                          ))}
                         </div>
-                      ))}
-                    </div>
-                  </div>
-                ) : null}
+                      </div>
+                    ) : null}
+                  </>
+                )}
               </div>
             )}
             {homeError && <p className="mt-2 text-xs text-red-600">{homeError}</p>}
