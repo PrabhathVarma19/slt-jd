@@ -12,8 +12,78 @@ import {
 } from '@/lib/agents/store';
 import { evaluateItTicketDraft } from '@/lib/home/it-ticket-rules';
 
+const ACTIVE_TICKET_STATUSES = [
+  'OPEN',
+  'IN_PROGRESS',
+  'WAITING_ON_REQUESTER',
+  'PENDING_APPROVAL',
+  'RESOLVED',
+];
+
 function normalizeAliasKey(value: string) {
   return value.trim().toLowerCase().replace(/[^a-z0-9]+/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+function normalizeText(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9 ]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function tokenSet(value: string) {
+  return new Set(
+    normalizeText(value)
+      .split(' ')
+      .filter((token) => token.length > 2)
+  );
+}
+
+function tokenOverlapScore(a: string, b: string) {
+  const setA = tokenSet(a);
+  const setB = tokenSet(b);
+  if (setA.size === 0 || setB.size === 0) return 0;
+  let overlap = 0;
+  setA.forEach((token) => {
+    if (setB.has(token)) overlap += 1;
+  });
+  return overlap / Math.max(setA.size, setB.size);
+}
+
+async function findRecentDuplicateItTicket(params: {
+  userId: string;
+  draft: Record<string, any>;
+}) {
+  const sinceIso = new Date(Date.now() - 72 * 60 * 60 * 1000).toISOString();
+  const { data: recentTickets, error } = await supabaseServer
+    .from('Ticket')
+    .select('id,ticketNumber,title,description,status,createdAt,subcategory')
+    .eq('requesterId', params.userId)
+    .eq('type', 'IT')
+    .in('status', ACTIVE_TICKET_STATUSES)
+    .gte('createdAt', sinceIso)
+    .order('createdAt', { ascending: false })
+    .limit(20);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  const draftSystem = normalizeText((params.draft.system || '').toString());
+  const draftText = `${params.draft.reason || ''} ${params.draft.details || ''}`.trim();
+
+  const duplicate = (recentTickets || []).find((ticket: any) => {
+    const ticketSystem = normalizeText((ticket.subcategory || '').toString());
+    const sameSystem = draftSystem && ticketSystem && draftSystem === ticketSystem;
+    const overlap = tokenOverlapScore(
+      draftText,
+      `${ticket.title || ''} ${ticket.description || ''}`.trim()
+    );
+    return sameSystem || overlap >= 0.45;
+  });
+
+  return duplicate || null;
 }
 
 function extractSoftwareCandidate(details: string) {
@@ -243,6 +313,32 @@ export async function POST(req: NextRequest) {
           },
         },
         { status: 400 }
+      );
+    }
+
+    const duplicateTicket = await findRecentDuplicateItTicket({
+      userId: auth.userId,
+      draft: mergedDraft,
+    });
+    if (duplicateTicket) {
+      return NextResponse.json(
+        {
+          error: 'Possible duplicate ticket found.',
+          actionCard: {
+            type: 'info',
+            title: 'Possible Duplicate Found',
+            description:
+              `A similar IT ticket (${duplicateTicket.ticketNumber}) was raised recently. ` +
+              'Review it first or update details before submitting a new request.',
+            data: {
+              duplicateTicketNumber: duplicateTicket.ticketNumber,
+              duplicateStatus: duplicateTicket.status,
+              duplicateCreatedAt: duplicateTicket.createdAt,
+              routeTo: `/profile`,
+            },
+          },
+        },
+        { status: 409 }
       );
     }
 
