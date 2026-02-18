@@ -264,6 +264,7 @@ export default function Home() {
   const [homeRunId, setHomeRunId] = useState<string | null>(null);
   const [showHomeDetails, setShowHomeDetails] = useState(false);
   const [homeDraftPatch, setHomeDraftPatch] = useState({
+    system: '',
     reason: '',
     details: '',
     durationType: '',
@@ -372,6 +373,7 @@ export default function Home() {
     const data = homeResult?.actionCard?.data || {};
     const missingFields = Array.isArray(data.missingFields) ? data.missingFields : [];
     setHomeDraftPatch({
+      system: typeof data.system === 'string' ? data.system : '',
       reason:
         missingFields.includes('reason')
           ? ''
@@ -772,10 +774,17 @@ export default function Home() {
                           {homeResult.actionCard.data?.requestType || '-'}
                         </p>
                       </div>
-                      <div className="rounded-md bg-slate-50 p-2">
+                      <label className="rounded-md bg-slate-50 p-2 text-xs text-slate-700">
                         <p className="text-[11px] font-semibold uppercase text-slate-500">System</p>
-                        <p className="text-xs text-slate-800">{homeResult.actionCard.data?.system || '-'}</p>
-                      </div>
+                        <input
+                          value={homeDraftPatch.system}
+                          onChange={(e) =>
+                            setHomeDraftPatch((prev) => ({ ...prev, system: e.target.value }))
+                          }
+                          className="mt-1 w-full rounded-md border border-slate-300 px-2 py-1 text-sm"
+                          placeholder="e.g. Cursor, Power BI, Jira"
+                        />
+                      </label>
                       <div className="rounded-md bg-slate-50 p-2">
                         <p className="text-[11px] font-semibold uppercase text-slate-500">Impact</p>
                         <p className="text-xs text-slate-800">{homeResult.actionCard.data?.impact || '-'}</p>

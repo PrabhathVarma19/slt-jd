@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { requireAuth } from '@/lib/auth/require-auth';
 import { supabaseServer } from '@/lib/supabase/server';
 import {
+  getPersistentMemory,
   getPendingApprovalForRun,
   getRunById,
   setAgentApprovalDecision,
@@ -10,6 +11,73 @@ import {
   upsertPersistentMemory,
 } from '@/lib/agents/store';
 import { evaluateItTicketDraft } from '@/lib/home/it-ticket-rules';
+
+function normalizeAliasKey(value: string) {
+  return value.trim().toLowerCase().replace(/[^a-z0-9]+/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+function extractSoftwareCandidate(details: string) {
+  const installPrefix =
+    details.match(/\b(?:install|setup|set up)\s+([a-zA-Z0-9][a-zA-Z0-9 .+\-_/]{1,80}?)(?:\s+(?:for|on|in)\b|$)/i)?.[1] ||
+    '';
+  const installationSuffix =
+    details.match(/\b([a-zA-Z0-9][a-zA-Z0-9 .+\-_/]{1,80}?)\s+installation\b/i)?.[1] || '';
+  const raw = (installPrefix || installationSuffix || '').trim();
+  return raw
+    .replace(/^(?:i\s+need|need|please|kindly|want|require)\s+/i, '')
+    .replace(/[.,;:]+$/, '')
+    .trim();
+}
+
+async function saveSystemAliasFromCorrection(params: {
+  userId: string;
+  originalSystem?: string;
+  correctedSystem?: string;
+  details?: string;
+}) {
+  const corrected = (params.correctedSystem || '').trim();
+  if (!corrected) return;
+
+  const original = (params.originalSystem || '').trim();
+  const detailCandidate = extractSoftwareCandidate((params.details || '').trim());
+  const aliasSources = [detailCandidate, original]
+    .map((value) => value.trim())
+    .filter((value) => value.length > 0);
+
+  const existing = await getPersistentMemory({
+    userId: params.userId,
+    agent: 'home-orchestrator',
+    memoryKey: 'it_system_aliases',
+  });
+  const aliases =
+    existing?.memoryValue && typeof existing.memoryValue === 'object'
+      ? { ...(existing.memoryValue.aliases || {}) }
+      : {};
+
+  let changed = false;
+  for (const source of aliasSources) {
+    if (!source) continue;
+    if (source.toLowerCase() === corrected.toLowerCase()) continue;
+    if (source.toLowerCase() === 'software') continue;
+    const key = normalizeAliasKey(source);
+    if (!key) continue;
+    if (aliases[key] !== corrected) {
+      aliases[key] = corrected;
+      changed = true;
+    }
+  }
+
+  if (!changed) return;
+  await upsertPersistentMemory({
+    userId: params.userId,
+    agent: 'home-orchestrator',
+    memoryKey: 'it_system_aliases',
+    memoryValue: { aliases },
+    source: 'home-command-confirm',
+    sensitivity: 'internal',
+    confidence: 0.95,
+  });
+}
 
 async function createItTicketFromDraft(
   req: NextRequest,
@@ -193,6 +261,13 @@ export async function POST(req: NextRequest) {
     const startedAt = Date.now();
     const result = await createItTicketFromDraft(req, mergedDraft, auth.userId, auth.email);
     const latencyMs = Date.now() - startedAt;
+
+    await saveSystemAliasFromCorrection({
+      userId: auth.userId,
+      originalSystem: draft.system,
+      correctedSystem: mergedDraft.system,
+      details: mergedDraft.details,
+    });
 
     await updateAgentRunStep({
       stepId: pendingApproval.stepId,

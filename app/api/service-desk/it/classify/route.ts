@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
+import { requireAuth } from '@/lib/auth/require-auth';
+import { getPersistentMemory } from '@/lib/agents/store';
 
 const openaiApiKey = process.env.OPENAI_API_KEY;
 const openai = openaiApiKey ? new OpenAI({ apiKey: openaiApiKey }) : null;
@@ -12,6 +14,17 @@ function toTitleCase(value: string) {
     .join(' ');
 }
 
+function normalizeAliasKey(value: string) {
+  return value.trim().toLowerCase().replace(/[^a-z0-9]+/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+function cleanSoftwareCandidate(rawValue: string) {
+  return rawValue
+    .replace(/^(?:i\s+need|need|please|kindly|want|require)\s+/i, '')
+    .replace(/[.,;:]+$/, '')
+    .trim();
+}
+
 export async function POST(req: NextRequest) {
   if (!openai) {
     return NextResponse.json(
@@ -21,6 +34,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
+    const auth = await requireAuth();
     const body = await req.json();
     const details = (body?.details || '').toString().trim();
 
@@ -32,15 +46,34 @@ export async function POST(req: NextRequest) {
     }
 
     // First, try a very fast keyword-based classification for common requests.
+    const aliasMemory = await getPersistentMemory({
+      userId: auth.userId,
+      agent: 'home-orchestrator',
+      memoryKey: 'it_system_aliases',
+    });
+    const aliasMap =
+      aliasMemory?.memoryValue && typeof aliasMemory.memoryValue === 'object'
+        ? (aliasMemory.memoryValue.aliases as Record<string, string>) || {}
+        : {};
+    const applyAlias = (value: string) => {
+      const key = normalizeAliasKey(value);
+      return aliasMap[key] || value;
+    };
+
     const lower = details.toLowerCase();
 
     // Handle install/setup prompts first to extract product names.
     const installMatch = details.match(
       /\b(?:install|setup|set up)\s+([a-zA-Z0-9][a-zA-Z0-9 .+\-_/]{1,80}?)(?:\s+(?:for|on|in)\b|$)/i
     );
-    if (installMatch?.[1]) {
-      const rawSystem = installMatch[1].trim().replace(/[.,;:]+$/, '');
-      const system = toTitleCase(rawSystem);
+    const installationSuffixMatch = details.match(
+      /\b([a-zA-Z0-9][a-zA-Z0-9 .+\-_/]{1,80}?)\s+installation\b/i
+    );
+    const extractedSoftware = cleanSoftwareCandidate(
+      (installMatch?.[1] || installationSuffixMatch?.[1] || '').trim()
+    );
+    if (extractedSoftware) {
+      const system = toTitleCase(applyAlias(extractedSoftware));
       return NextResponse.json({
         requestType: 'software',
         system: system || 'Software',
@@ -126,9 +159,10 @@ export async function POST(req: NextRequest) {
 
     const quick = pickQuickRule();
     if (quick) {
+      const aliasedSystem = applyAlias(quick.system);
       return NextResponse.json({
         requestType: quick.requestType,
-        system: quick.system,
+        system: aliasedSystem,
         environment: 'NA',
         accessType: 'Standard user',
         impact: quick.impact,
@@ -180,7 +214,7 @@ Respond with JSON only, no explanation.`;
 
     return NextResponse.json({
       requestType: parsed.request_type || null,
-      system: parsed.system || null,
+      system: parsed.system ? applyAlias(toTitleCase(String(parsed.system))) : null,
       environment: parsed.environment || null,
       accessType: parsed.access_level || null,
       impact: parsed.impact || null,
