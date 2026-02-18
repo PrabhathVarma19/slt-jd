@@ -335,6 +335,7 @@ export default function Home() {
   const isDuplicateWarningCard =
     !!homeResult?.actionCard?.data?.duplicateTicketNumber &&
     homeResult?.actionCard?.type === 'info';
+  const isNeedsReviewStatus = isDuplicateWarningCard;
   const itMissingFields =
     Array.isArray(homeResult?.actionCard?.data?.missingFields) &&
     homeResult?.actionCard?.data?.missingFields?.length
@@ -344,14 +345,18 @@ export default function Home() {
     ? 'Running'
     : homeConfirmLoading
       ? 'Submitting'
-      : homeResult?.requiresConfirmation
+      : isNeedsReviewStatus
+        ? 'Needs Review'
+        : homeResult?.requiresConfirmation
         ? 'Awaiting Approval'
         : homeResult
           ? 'Completed'
           : 'Ready';
   const homeStatusClass = homeLoading || homeConfirmLoading
     ? 'bg-amber-100 text-amber-800'
-    : homeResult?.requiresConfirmation
+    : isNeedsReviewStatus
+      ? 'bg-amber-100 text-amber-800'
+      : homeResult?.requiresConfirmation
       ? 'bg-blue-100 text-blue-800'
       : homeResult
         ? 'bg-emerald-100 text-emerald-800'
