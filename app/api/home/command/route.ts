@@ -33,6 +33,7 @@ type LlmIntentResult = {
 const GENERIC_REASON_PATTERNS = [
   /\braise\b.*\bticket\b/i,
   /\bcreate\b.*\bticket\b/i,
+  /^\s*(raise|create|open|submit|request)\s*$/i,
   /\bneed\b.*\baccess\b/i,
   /\b(access|vpn|subscription)\s+request\b/i,
 ];
@@ -45,6 +46,13 @@ function isMeaningfulReason(reason: string | undefined, sourceMessage: string) {
   if (normalizedReason.toLowerCase() === normalizedMessage.toLowerCase()) return false;
   // Accept concise but specific reasons like "ABC UAT" or "Prod support".
   if (normalizedReason.length < 3) return false;
+  const genericSingleTokens = new Set(['raise', 'create', 'open', 'submit', 'request', 'help']);
+  if (
+    normalizedReason.split(/\s+/).length === 1 &&
+    genericSingleTokens.has(normalizedReason.toLowerCase())
+  ) {
+    return false;
+  }
   if (GENERIC_REASON_PATTERNS.some((pattern) => pattern.test(normalizedReason))) return false;
   return true;
 }
@@ -95,6 +103,7 @@ function deriveReasonFromMessage(message: string) {
       /\b(please|kindly)?\s*(raise|create|open|submit)\s+(an?\s+)?(it\s+)?(ticket|request)\b/gi,
       ' '
     )
+    .replace(/\b(raise|create|open|submit|request)\b/gi, ' ')
     .replace(
       /\b(i\s+need|need|request|require|want)\b/gi,
       ' '
