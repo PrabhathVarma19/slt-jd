@@ -332,6 +332,9 @@ export default function Home() {
     homeResult?.intent === 'create_it_ticket' &&
     homeResult?.requiresConfirmation &&
     !!homeResult?.actionCard?.data;
+  const isDuplicateWarningCard =
+    !!homeResult?.actionCard?.data?.duplicateTicketNumber &&
+    homeResult?.actionCard?.type === 'info';
   const itMissingFields =
     Array.isArray(homeResult?.actionCard?.data?.missingFields) &&
     homeResult?.actionCard?.data?.missingFields?.length
@@ -530,16 +533,26 @@ export default function Home() {
       });
       const data = await res.json();
       if (!res.ok || data.error) {
+        const isDuplicateConflict =
+          res.status === 409 || !!data?.actionCard?.data?.duplicateTicketNumber;
         if (data?.actionCard) {
           setHomeResult((prev) =>
             prev
               ? {
                   ...prev,
                   actionCard: data.actionCard,
-                  requiresConfirmation: true,
+                  requiresConfirmation: isDuplicateConflict ? false : true,
                 }
               : null
           );
+        }
+        if (isDuplicateConflict) {
+          setHomeError(null);
+          showToast(
+            data?.actionCard?.description || 'Possible duplicate found. Review existing ticket first.',
+            'info'
+          );
+          return;
         }
         throw new Error(data.error || 'Failed to process approval');
       }
@@ -1119,10 +1132,26 @@ export default function Home() {
                     )}
                   </div>
                 )}
-                {typeof homeResult.actionCard.data?.routeTo === 'string' && (
+                {typeof homeResult.actionCard.data?.routeTo === 'string' && !isDuplicateWarningCard && (
                   <div className="mt-2">
                     <Button asChild size="sm" variant="outline">
                       <Link href={homeResult.actionCard.data.routeTo}>Open in Tool</Link>
+                    </Button>
+                  </div>
+                )}
+                {isDuplicateWarningCard && (
+                  <div className="mt-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() =>
+                        setHomeMessage(
+                          `Check status of ticket ${homeResult.actionCard.data?.duplicateTicketNumber}`
+                        )
+                      }
+                      disabled={homeLoading || homeConfirmLoading}
+                    >
+                      Review Ticket {homeResult.actionCard.data?.duplicateTicketNumber}
                     </Button>
                   </div>
                 )}
@@ -1237,7 +1266,7 @@ export default function Home() {
                 )}
               </div>
             )}
-            {homeError && <p className="mt-2 text-xs text-red-600">{homeError}</p>}
+            {homeError && !isDuplicateWarningCard && <p className="mt-2 text-xs text-red-600">{homeError}</p>}
           </div>
 
           <p className="text-xs text-slate-400">Built for Trianz. Content updated Dec 2025.</p>
