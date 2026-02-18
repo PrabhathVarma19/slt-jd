@@ -5,6 +5,8 @@ import {
   createAgentApproval,
   createAgentRun,
   createAgentRunStep,
+  getLatestPendingHomeApprovalForUser,
+  updateAgentApprovalMetadata,
   updateAgentRun,
   upsertPersistentMemory,
 } from '@/lib/agents/store';
@@ -111,6 +113,71 @@ function deriveReasonFromMessage(message: string) {
 
   if (!working || working.length < 5) return '';
   return working;
+}
+
+function applyFollowupToDraft(
+  draft: CreateTicketDraft & Record<string, any>,
+  message: string
+) {
+  const nextDraft: CreateTicketDraft & Record<string, any> = { ...draft };
+  const trimmed = message.trim();
+  let changed = false;
+
+  const duration = extractDurationFromText(trimmed);
+  if (duration.durationType && duration.durationType !== (nextDraft.durationType || '')) {
+    nextDraft.durationType = duration.durationType;
+    changed = true;
+  }
+  if (duration.durationUntil && duration.durationUntil !== (nextDraft.durationUntil || '')) {
+    nextDraft.durationUntil = duration.durationUntil;
+    changed = true;
+  }
+
+  const lower = trimmed.toLowerCase();
+  if (
+    lower.startsWith('for ') ||
+    lower.startsWith('because ') ||
+    lower.startsWith('reason ') ||
+    lower.startsWith('use case ')
+  ) {
+    const normalizedReason = trimmed
+      .replace(/^(for|because|reason|use case)\s*[:\-]?\s*/i, '')
+      .trim();
+    if (normalizedReason && normalizedReason !== (nextDraft.reason || '').trim()) {
+      nextDraft.reason = normalizedReason;
+      changed = true;
+    }
+  } else {
+    const derivedReason = deriveReasonFromMessage(trimmed);
+    if (
+      derivedReason &&
+      derivedReason !== (nextDraft.reason || '').trim() &&
+      isMeaningfulReason(derivedReason, trimmed)
+    ) {
+      nextDraft.reason = derivedReason;
+      changed = true;
+    }
+  }
+
+  const installMatch =
+    trimmed.match(/\b(?:install|setup|set up)\s+([a-zA-Z0-9][a-zA-Z0-9 .+\-_/]{1,80}?)(?:\s+(?:for|on|in)\b|$)/i)?.[1] ||
+    trimmed.match(/\b([a-zA-Z0-9][a-zA-Z0-9 .+\-_/]{1,80}?)\s+installation\b/i)?.[1] ||
+    '';
+  const candidateSystem = installMatch.trim().replace(/[.,;:]+$/, '');
+  if (candidateSystem && candidateSystem.toLowerCase() !== (nextDraft.system || '').toLowerCase()) {
+    nextDraft.system = candidateSystem;
+    changed = true;
+  }
+
+  if (trimmed.length > 0) {
+    const existingDetails = (nextDraft.details || '').trim();
+    if (!existingDetails || trimmed.length > existingDetails.length) {
+      nextDraft.details = trimmed;
+      changed = true;
+    }
+  }
+
+  return { nextDraft, changed };
 }
 
 const VALID_HOME_INTENTS: HomeCommandIntent[] = [
@@ -330,6 +397,60 @@ export async function POST(req: NextRequest) {
     }
     const origin = new URL(req.url).origin;
     const cookie = req.headers.get('cookie') || '';
+
+    const pendingCtx = await getLatestPendingHomeApprovalForUser(auth.userId);
+    if (pendingCtx && (intent === 'create_it_ticket' || intent === 'unknown')) {
+      const draft = (pendingCtx.approval?.metadata?.draft || {}) as CreateTicketDraft & Record<string, any>;
+      const { nextDraft, changed } = applyFollowupToDraft(draft, message);
+      if (changed) {
+        const followupMissingFields = evaluateItTicketDraft(nextDraft, {
+          reasonValid: isMeaningfulReason(nextDraft.reason, nextDraft.details || message),
+        }).missingFields;
+
+        await updateAgentApprovalMetadata({
+          approvalId: pendingCtx.approval.id,
+          metadata: {
+            ...(pendingCtx.approval.metadata || {}),
+            draft: nextDraft,
+            followupMessage: message,
+          },
+        });
+
+        await updateAgentRun({
+          runId: pendingCtx.run.id,
+          output: {
+            ...(pendingCtx.run.output || {}),
+            intent: 'create_it_ticket',
+            requiresConfirmation: true,
+            approvalId: pendingCtx.approval.id,
+            draft: nextDraft,
+            missingFields: followupMissingFields,
+          },
+        });
+
+        return NextResponse.json({
+          runId: pendingCtx.run.id,
+          status: 'WAITING_APPROVAL',
+          intent: 'create_it_ticket',
+          requiresConfirmation: true,
+          actionCard: {
+            type: 'confirm',
+            title: 'Updated IT Ticket Draft',
+            description: 'I updated the pending draft from your latest message. Review and approve.',
+            data: {
+              requestType: nextDraft.requestType,
+              system: nextDraft.system,
+              impact: nextDraft.impact,
+              reason: nextDraft.reason,
+              durationType: nextDraft.durationType,
+              durationUntil: nextDraft.durationUntil,
+              details: nextDraft.details,
+              missingFields: followupMissingFields,
+            },
+          },
+        } as HomeCommandResponse);
+      }
+    }
 
     const run = await createAgentRun({
       userId: auth.userId,

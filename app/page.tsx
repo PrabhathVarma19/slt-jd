@@ -791,7 +791,11 @@ export default function Home() {
                 value={homeMessage}
                 onChange={(e) => {
                   const nextValue = e.target.value;
-                  if (homeResult && nextValue.trim() !== homeMessage.trim()) {
+                  if (
+                    homeResult &&
+                    !homeResult.requiresConfirmation &&
+                    nextValue.trim() !== homeMessage.trim()
+                  ) {
                     resetHomeRunState();
                   }
                   setHomeMessage(nextValue);
@@ -813,6 +817,12 @@ export default function Home() {
                 {homeLoading ? 'Running...' : homeConfirmLoading ? 'Please wait...' : 'Run'}
               </Button>
             </div>
+            {homeResult?.requiresConfirmation && (
+              <p className="mt-1 text-[11px] text-slate-500">
+                Tip: You can type follow-ups like <span className="font-mono">for 2 weeks</span> or{' '}
+                <span className="font-mono">for QA team</span> and click Run to update this draft.
+              </p>
+            )}
 
             <div className="mt-2 flex flex-wrap gap-2">
               {quickPrompts.map((preset) => (

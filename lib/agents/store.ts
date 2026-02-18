@@ -231,6 +231,52 @@ export async function getPendingApprovalForRun(runId: string) {
   return data;
 }
 
+export async function getLatestPendingHomeApprovalForUser(userId: string) {
+  const { data: run, error: runError } = await supabaseServer
+    .from('AgentRun')
+    .select('*')
+    .eq('userId', userId)
+    .eq('agent', 'home-orchestrator')
+    .eq('status', 'WAITING_APPROVAL')
+    .order('createdAt', { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (runError) throw new Error(runError.message);
+  if (!run) return null;
+
+  const { data: approval, error: approvalError } = await supabaseServer
+    .from('AgentApproval')
+    .select('*')
+    .eq('runId', run.id)
+    .eq('decision', 'PENDING')
+    .order('requestedAt', { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (approvalError) throw new Error(approvalError.message);
+  if (!approval) return null;
+
+  return { run, approval };
+}
+
+export async function updateAgentApprovalMetadata(params: {
+  approvalId: string;
+  metadata: Record<string, any>;
+}) {
+  const { data, error } = await supabaseServer
+    .from('AgentApproval')
+    .update({ metadata: params.metadata })
+    .eq('id', params.approvalId)
+    .select('*')
+    .single();
+
+  if (error || !data) {
+    throw new Error(error?.message || 'Failed to update agent approval metadata');
+  }
+  return data;
+}
+
 export async function upsertPersistentMemory(params: {
   userId: string;
   agent: string;
