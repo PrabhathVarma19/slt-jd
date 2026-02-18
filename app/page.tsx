@@ -754,7 +754,7 @@ export default function Home() {
                   type="button"
                   className="rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-700 hover:bg-slate-200"
                   disabled={homeLoading || homeConfirmLoading}
-                  onClick={() => submitHomeCommand(preset)}
+                  onClick={() => setHomeMessage(preset)}
                 >
                   {preset}
                 </button>
@@ -772,7 +772,7 @@ export default function Home() {
                       type="button"
                       className="rounded-full bg-white px-3 py-1 text-xs text-slate-700 border border-slate-200 hover:bg-slate-100"
                       disabled={homeLoading || homeConfirmLoading}
-                      onClick={() => submitHomeCommand(`Check status of ticket ${ticketNumber}`)}
+                      onClick={() => setHomeMessage(`Check status of ticket ${ticketNumber}`)}
                     >
                       {ticketNumber}
                     </button>
