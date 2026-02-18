@@ -892,6 +892,13 @@ export default function Home() {
                 </div>
                 <p className="text-sm font-semibold text-slate-900">{homeResult.actionCard.title}</p>
                 <p className="mt-1 text-sm text-slate-700">{homeResult.actionCard.description}</p>
+                {homeResult.actionCard.data?.lastFollowupMessage && (
+                  <p className="mt-1 text-xs text-slate-500">
+                    Last update:
+                    {' '}
+                    <span className="font-medium">{String(homeResult.actionCard.data.lastFollowupMessage)}</span>
+                  </p>
+                )}
                 {Array.isArray(homeResult.actionCard.data?.suggestions) &&
                   homeResult.actionCard.data.suggestions.length > 0 && (
                     <div className="mt-2 flex flex-wrap gap-2">

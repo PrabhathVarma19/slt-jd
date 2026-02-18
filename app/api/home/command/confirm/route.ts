@@ -6,6 +6,7 @@ import {
   getPendingApprovalForRun,
   getRunById,
   setAgentApprovalDecision,
+  updateAgentApprovalMetadata,
   updateAgentRun,
   updateAgentRunStep,
   upsertPersistentMemory,
@@ -348,6 +349,15 @@ export async function POST(req: NextRequest) {
       reason,
       approverUserId: auth.userId,
     });
+    await updateAgentApprovalMetadata({
+      approvalId: pendingApproval.id,
+      metadata: {
+        ...(pendingApproval.metadata || {}),
+        approvedDraft: mergedDraft,
+        approvedAt: new Date().toISOString(),
+        approvedBy: auth.userId,
+      },
+    });
 
     await updateAgentRunStep({
       stepId: pendingApproval.stepId,
@@ -379,6 +389,7 @@ export async function POST(req: NextRequest) {
       output: {
         decision: 'APPROVED',
         result,
+        approvedDraft: mergedDraft,
       },
     });
 

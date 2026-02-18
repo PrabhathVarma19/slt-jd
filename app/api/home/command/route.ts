@@ -429,6 +429,14 @@ export async function POST(req: NextRequest) {
         const followupMissingFields = evaluateItTicketDraft(nextDraft, {
           reasonValid: isMeaningfulReason(nextDraft.reason, nextDraft.details || message),
         }).missingFields;
+        const previousHistory = Array.isArray(pendingCtx.approval?.metadata?.followupHistory)
+          ? pendingCtx.approval.metadata.followupHistory
+          : [];
+        const followupEntry = {
+          message,
+          at: new Date().toISOString(),
+        };
+        const followupHistory = [...previousHistory, followupEntry].slice(-20);
 
         await updateAgentApprovalMetadata({
           approvalId: pendingCtx.approval.id,
@@ -436,6 +444,7 @@ export async function POST(req: NextRequest) {
             ...(pendingCtx.approval.metadata || {}),
             draft: nextDraft,
             followupMessage: message,
+            followupHistory,
           },
         });
 
@@ -469,6 +478,8 @@ export async function POST(req: NextRequest) {
               durationUntil: nextDraft.durationUntil,
               details: nextDraft.details,
               missingFields: followupMissingFields,
+              lastFollowupMessage: message,
+              lastFollowupAt: followupEntry.at,
             },
           },
         } as HomeCommandResponse);
