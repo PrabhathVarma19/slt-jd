@@ -771,6 +771,29 @@ export default function Home() {
     Admin: [], // Admin tools shown separately below
   };
 
+  const QUICK_ACCESS_LINKS = [
+    {
+      title: 'Ask a policy question',
+      hint: 'Get grounded answers with citations',
+      href: '/policy-agent',
+    },
+    {
+      title: 'Raise IT request',
+      hint: 'Create and submit structured IT requests',
+      href: '/service-desk',
+    },
+    {
+      title: 'Create comms draft',
+      hint: 'Generate team newsletters and updates',
+      href: '/comms-hub',
+    },
+    {
+      title: 'Draft engineering update',
+      hint: 'Release notes, PR summary, post-mortem',
+      href: '/engineering-tools',
+    },
+  ];
+
   return (
     <div className="space-y-10">
       {/* Hero */}
@@ -796,18 +819,18 @@ export default function Home() {
             <button
               type="button"
               onClick={() => {
-                const el = document.getElementById('all-tools');
+                const el = document.getElementById('tools-hub');
                 if (el) {
                   el.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
               }}
               className="text-sm text-slate-500 underline-offset-4 hover:underline"
             >
-              See all tools
+              Open tools hub
             </button>
           </div>
 
-          <div className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm max-w-2xl">
+          <div id="home-command-bar" className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm max-w-2xl">
             <div className="flex items-center justify-between gap-2">
               <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
                 Home Command Bar
@@ -1401,6 +1424,94 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Recent actions + quick access */}
+      <section id="recent-actions" className="space-y-5">
+        <div className="space-y-2">
+          <h2 className="text-2xl font-semibold tracking-tight text-slate-900">
+            Recent Actions
+          </h2>
+          <p className="text-sm text-slate-600">
+            Resume active work or jump straight into a common workflow.
+          </p>
+        </div>
+        <div className="grid gap-3 md:grid-cols-2">
+          {homeResult?.requiresConfirmation ? (
+            <button
+              type="button"
+              onClick={() => {
+                const el = document.getElementById('home-command-bar');
+                if (el) {
+                  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              }}
+              className="flex items-center justify-between gap-4 rounded-2xl border border-blue-200 bg-blue-50 px-4 py-3 text-left"
+            >
+              <div>
+                <p className="text-sm font-semibold text-slate-900">Resume Pending IT Draft</p>
+                <p className="text-xs text-slate-600">
+                  Complete required fields and approve submission.
+                </p>
+              </div>
+              <ChevronRight className="h-4 w-4 text-slate-400" aria-hidden="true" />
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => {
+                const el = document.getElementById('home-command-bar');
+                if (el) {
+                  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              }}
+              className="flex items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-left hover:bg-slate-50"
+            >
+              <div>
+                <p className="text-sm font-semibold text-slate-900">Start New Home Request</p>
+                <p className="text-xs text-slate-600">
+                  Use the command bar to route a new request.
+                </p>
+              </div>
+              <ChevronRight className="h-4 w-4 text-slate-400" aria-hidden="true" />
+            </button>
+          )}
+          <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3">
+            <p className="text-sm font-semibold text-slate-900">My Recent IT Tickets</p>
+            {recentItTickets.length > 0 ? (
+              <div className="mt-2 flex flex-wrap gap-2">
+                {recentItTickets.slice(0, 4).map((ticketNumber) => (
+                  <button
+                    key={`recent-actions-${ticketNumber}`}
+                    type="button"
+                    className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-700 hover:bg-slate-100"
+                    onClick={() => runTicketStatusCheck(ticketNumber)}
+                    disabled={homeLoading || homeConfirmLoading}
+                  >
+                    {ticketNumber}
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <p className="mt-2 text-xs text-slate-600">No recent IT tickets yet.</p>
+            )}
+          </div>
+        </div>
+        <div className="grid gap-3 md:grid-cols-2">
+          {QUICK_ACCESS_LINKS.map((item) => (
+            <Link
+              key={item.title}
+              href={item.href}
+              className="flex items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-card px-4 py-3 shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-md"
+            >
+              <div>
+                <p className="text-sm font-semibold text-slate-900">{item.title}</p>
+                <p className="text-xs text-slate-600">{item.hint}</p>
+              </div>
+              <ChevronRight className="h-4 w-4 text-slate-400" aria-hidden="true" />
+            </Link>
+          ))}
+        </div>
+      </section>
+
       {/* Task-based prompts */}
       <section id="tools" className="space-y-5">
         <div className="space-y-2">
@@ -1474,10 +1585,11 @@ export default function Home() {
       </section>
 
       {/* Tools (categorized like prompts) */}
-      <section id="all-tools" className="space-y-5">
+      <section id="tools-hub" className="space-y-5">
+        <div id="all-tools" />
                 <div className="space-y-2">
           <h2 className="text-2xl font-semibold tracking-tight text-slate-900">
-            Tools
+            Tools Hub
           </h2>
           <p className="text-sm text-slate-600">
             Jump straight into a tool, grouped by workflow.
