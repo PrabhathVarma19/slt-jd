@@ -81,6 +81,82 @@ function extractDurationFromText(input: string) {
   return { durationType: '', durationUntil: '' };
 }
 
+function inferImpactFromText(input: string, fallback: string = 'medium') {
+  const text = input.toLowerCase();
+  if (
+    /\b(blocker|cannot work|can't work|production down|prod down|sev1|sev 1)\b/.test(text)
+  ) {
+    return 'blocker';
+  }
+  if (/\b(urgent|asap|immediately|today|before eod|deadline|client escalation)\b/.test(text)) {
+    return 'high';
+  }
+  if (/\b(low impact|minor|not urgent)\b/.test(text)) {
+    return 'low';
+  }
+  return fallback || 'medium';
+}
+
+function inferRequestTypeFromText(input: string, fallback?: string) {
+  const text = input.toLowerCase();
+  if (/\b(password|forgot password|reset password|unlock account|login issue)\b/.test(text)) {
+    return 'password';
+  }
+  if (
+    /\b(laptop|monitor|mouse|keyboard|headset|dock|charger|hardware|device)\b/.test(text)
+  ) {
+    return 'hardware';
+  }
+  if (
+    /\b(license|licence|subscription|saas|seat|power bi pro|jira premium)\b/.test(text)
+  ) {
+    return 'subscription';
+  }
+  if (/\b(vpn|access|permission|grant access|enable access)\b/.test(text)) {
+    return 'access';
+  }
+  if (/\b(install|installation|setup|set up|software)\b/.test(text)) {
+    return 'software';
+  }
+  return fallback || 'other';
+}
+
+function inferSystemFromText(input: string, fallback?: string) {
+  const current = (fallback || '').trim();
+  const genericSystemValues = new Set([
+    '',
+    'general',
+    'system',
+    'application',
+    'app',
+    'software',
+    'access',
+    'request',
+    'it',
+  ]);
+  const currentLower = current.toLowerCase();
+  if (current && !genericSystemValues.has(currentLower)) return current;
+
+  const trimmed = input.trim();
+  const candidates = [
+    trimmed.match(
+      /\b(?:install|setup|set up)\s+([a-zA-Z0-9][a-zA-Z0-9 .+\-_/]{1,80}?)(?:\s+(?:for|on|in)\b|$)/i
+    )?.[1],
+    trimmed.match(/\baccess\s+(?:to\s+)?([a-zA-Z0-9][a-zA-Z0-9 .+\-_/]{1,80}?)(?:\s+(?:for|on|in)\b|$)/i)?.[1],
+    trimmed.match(/\bfor\s+([a-zA-Z][a-zA-Z0-9 .+\-_/]{1,60})\s+(?:access|installation|install)\b/i)?.[1],
+    trimmed.match(/\b([a-zA-Z0-9][a-zA-Z0-9 .+\-_/]{1,80}?)\s+installation\b/i)?.[1],
+  ];
+
+  for (const rawCandidate of candidates) {
+    const candidate = (rawCandidate || '').trim().replace(/[.,;:]+$/, '');
+    if (!candidate) continue;
+    const normalized = candidate.toLowerCase();
+    if (!genericSystemValues.has(normalized)) return candidate;
+  }
+
+  return current || 'General';
+}
+
 function deriveReasonFromMessage(message: string) {
   let working = message.trim();
   if (!working) return '';
@@ -142,6 +218,18 @@ function applyFollowupToDraft(
     changed = true;
   }
 
+  const inferredImpact = inferImpactFromText(trimmed, nextDraft.impact || 'medium');
+  if (inferredImpact && inferredImpact !== (nextDraft.impact || '')) {
+    nextDraft.impact = inferredImpact;
+    changed = true;
+  }
+
+  const inferredRequestType = inferRequestTypeFromText(trimmed, nextDraft.requestType || 'other');
+  if (inferredRequestType && inferredRequestType !== (nextDraft.requestType || '')) {
+    nextDraft.requestType = inferredRequestType;
+    changed = true;
+  }
+
   const looksLikeDurationOnly = (value: string) => {
     const normalized = value.trim().toLowerCase();
     if (!normalized) return false;
@@ -182,11 +270,7 @@ function applyFollowupToDraft(
     }
   }
 
-  const installMatch =
-    trimmed.match(/\b(?:install|setup|set up)\s+([a-zA-Z0-9][a-zA-Z0-9 .+\-_/]{1,80}?)(?:\s+(?:for|on|in)\b|$)/i)?.[1] ||
-    trimmed.match(/\b([a-zA-Z0-9][a-zA-Z0-9 .+\-_/]{1,80}?)\s+installation\b/i)?.[1] ||
-    '';
-  const candidateSystem = installMatch.trim().replace(/[.,;:]+$/, '');
+  const candidateSystem = inferSystemFromText(trimmed, nextDraft.system);
   if (candidateSystem && candidateSystem.toLowerCase() !== (nextDraft.system || '').toLowerCase()) {
     nextDraft.system = candidateSystem;
     changed = true;
@@ -460,7 +544,7 @@ export async function POST(req: NextRequest) {
     ) {
       const draft = (pendingCtx.approval?.metadata?.draft || {}) as CreateTicketDraft & Record<string, any>;
       const { nextDraft, changed } = applyFollowupToDraft(draft, message);
-      if (changed) {
+    if (changed) {
         const followupMissingFields = evaluateItTicketDraft(nextDraft, {
           reasonValid: isMeaningfulReason(nextDraft.reason, nextDraft.details || message),
         }).missingFields;
@@ -519,6 +603,32 @@ export async function POST(req: NextRequest) {
           },
         } as HomeCommandResponse);
       }
+
+      return NextResponse.json({
+        runId: pendingCtx.run.id,
+        status: 'WAITING_APPROVAL',
+        intent: 'create_it_ticket',
+        requiresConfirmation: true,
+        actionCard: {
+          type: 'confirm',
+          title: 'Pending IT Ticket Draft',
+          description:
+            'No new changes detected from your last message. Update fields or approve to submit.',
+          data: {
+            requestType: draft.requestType,
+            system: draft.system,
+            impact: draft.impact,
+            reason: draft.reason,
+            durationType: draft.durationType,
+            durationUntil: draft.durationUntil,
+            details: draft.details,
+            missingFields: evaluateItTicketDraft(draft, {
+              reasonValid: isMeaningfulReason(draft.reason, draft.details || message),
+            }).missingFields,
+            lastFollowupMessage: message,
+          },
+        },
+      } as HomeCommandResponse);
     }
 
     const run = await createAgentRun({
@@ -588,10 +698,13 @@ export async function POST(req: NextRequest) {
       const classification = await classifyItDraft(origin, cookie, message);
       const extractedDuration = extractDurationFromText(message);
       const derivedReason = deriveReasonFromMessage(message);
+      const inferredRequestType = inferRequestTypeFromText(message, classification?.requestType);
+      const inferredSystem = inferSystemFromText(message, classification?.system);
+      const inferredImpact = inferImpactFromText(message, classification?.impact || 'medium');
       const draft: CreateTicketDraft = {
-        requestType: classification?.requestType || 'other',
-        system: classification?.system || 'General',
-        impact: classification?.impact || 'medium',
+        requestType: inferredRequestType || 'other',
+        system: inferredSystem || 'General',
+        impact: inferredImpact || 'medium',
         reason: derivedReason || classification?.reason || message,
         durationType: extractedDuration.durationType,
         durationUntil: extractedDuration.durationUntil,
