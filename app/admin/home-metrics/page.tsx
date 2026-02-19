@@ -65,10 +65,16 @@ export default function HomeMetricsPage() {
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
+          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Beacon - Admin</p>
           <h1 className="text-2xl font-bold text-slate-900">Home Command Metrics</h1>
           <p className="text-sm text-slate-600">
-            Super Admin view of home-orchestrator usage and reliability.
+            Super Admin view of home orchestrator usage and reliability.
           </p>
+          {metrics?.generatedAt && (
+            <p className="mt-1 text-xs text-slate-500">
+              Last updated: {new Date(metrics.generatedAt).toLocaleString()}
+            </p>
+          )}
         </div>
         <div className="flex gap-2">
           {[7, 30, 60].map((d) => (

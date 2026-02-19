@@ -1377,7 +1377,7 @@ export default function Home() {
 
       {/* What Beacon helps with */}
       <section className="space-y-4">
-        <h2 className="text-xl font-semibold text-slate-900">What you can do with Beacon</h2>
+        <h2 className="text-xl font-semibold text-slate-900">What Beacon helps you do</h2>
         <div className="grid gap-6 md:grid-cols-3">
           <Card className="rounded-2xl border border-slate-200 bg-card shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md">
             <CardHeader className="space-y-2">

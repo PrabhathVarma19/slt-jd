@@ -48,6 +48,7 @@ export default function TravelAdminApprovalsPage() {
   const [loading, setLoading] = useState(true);
   const [processingId, setProcessingId] = useState<string | null>(null);
   const [note, setNote] = useState<Record<string, string>>({});
+  const [actionError, setActionError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchApprovals();
@@ -66,8 +67,10 @@ export default function TravelAdminApprovalsPage() {
       }
       const data = await res.json();
       setApprovals(data.approvals || []);
+      setActionError(null);
     } catch (error) {
       console.error('Error fetching approvals:', error);
+      setActionError('Could not load approvals right now. Please refresh.');
     } finally {
       setLoading(false);
     }
@@ -76,6 +79,7 @@ export default function TravelAdminApprovalsPage() {
   const handleApproval = async (approvalId: string, action: 'approve' | 'reject') => {
     try {
       setProcessingId(approvalId);
+      setActionError(null);
       const res = await fetch('/api/approvals/travel-admin', {
         method: 'POST',
         headers: {
@@ -101,7 +105,7 @@ export default function TravelAdminApprovalsPage() {
         return newNote;
       });
     } catch (error: any) {
-      alert(error.message || 'Failed to process approval');
+      setActionError(error.message || 'Failed to process approval');
     } finally {
       setProcessingId(null);
     }
@@ -132,6 +136,7 @@ export default function TravelAdminApprovalsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
+          <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Beacon - Approvals</p>
           <h1 className="text-3xl font-semibold text-gray-900">Travel Admin Approvals</h1>
           <p className="mt-1 text-sm text-gray-600">
             Review and approve travel requests (after supervisor approval)
@@ -139,6 +144,12 @@ export default function TravelAdminApprovalsPage() {
         </div>
         <BackToHome />
       </div>
+
+      {actionError && (
+        <Card>
+          <CardContent className="py-3 text-sm text-red-700">{actionError}</CardContent>
+        </Card>
+      )}
 
       {approvals.length === 0 ? (
         <Card>

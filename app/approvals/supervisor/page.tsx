@@ -10,8 +10,6 @@ import { Spinner } from '@/components/ui/spinner';
 import {
   CheckCircle,
   XCircle,
-  Clock,
-  AlertCircle,
   Ticket,
   User,
   Mail,
@@ -48,6 +46,7 @@ export default function SupervisorApprovalsPage() {
   const [loading, setLoading] = useState(true);
   const [processingId, setProcessingId] = useState<string | null>(null);
   const [note, setNote] = useState<Record<string, string>>({});
+  const [actionError, setActionError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchApprovals();
@@ -66,8 +65,10 @@ export default function SupervisorApprovalsPage() {
       }
       const data = await res.json();
       setApprovals(data.approvals || []);
+      setActionError(null);
     } catch (error) {
       console.error('Error fetching approvals:', error);
+      setActionError('Could not load approvals right now. Please refresh.');
     } finally {
       setLoading(false);
     }
@@ -76,6 +77,7 @@ export default function SupervisorApprovalsPage() {
   const handleApproval = async (approvalId: string, action: 'approve' | 'reject') => {
     try {
       setProcessingId(approvalId);
+      setActionError(null);
       const res = await fetch('/api/approvals/supervisor', {
         method: 'POST',
         headers: {
@@ -101,7 +103,7 @@ export default function SupervisorApprovalsPage() {
         return newNote;
       });
     } catch (error: any) {
-      alert(error.message || 'Failed to process approval');
+      setActionError(error.message || 'Failed to process approval');
     } finally {
       setProcessingId(null);
     }
@@ -132,6 +134,7 @@ export default function SupervisorApprovalsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
+          <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Beacon - Approvals</p>
           <h1 className="text-3xl font-semibold text-gray-900">Supervisor Approvals</h1>
           <p className="mt-1 text-sm text-gray-600">
             Review and approve travel requests from your team members
@@ -139,6 +142,12 @@ export default function SupervisorApprovalsPage() {
         </div>
         <BackToHome />
       </div>
+
+      {actionError && (
+        <Card>
+          <CardContent className="py-3 text-sm text-red-700">{actionError}</CardContent>
+        </Card>
+      )}
 
       {approvals.length === 0 ? (
         <Card>
