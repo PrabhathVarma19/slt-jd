@@ -614,16 +614,16 @@ function EngineeringToolsContent() {
   return (
     <div className="mx-auto w-full max-w-screen-2xl px-4 py-6 space-y-6">
       <div className="space-y-2">
-        <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Beacon · Engineering Tools</p>
+        <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Beacon - Engineering Tools</p>
         <h1 className="text-2xl font-semibold text-gray-900">Release notes, PR summaries, and post-mortems.</h1>
         <p className="text-sm text-gray-600">
-          Manual input for now. Integrations can be added later.
+          Inputs, Generate, Output. Manual input for now; integrations can be added later.
         </p>
       </div>
 
       <div>
         <Link href="/" className="text-xs text-blue-600 hover:underline">
-          ← Back to Home
+          Back to Home
         </Link>
       </div>
 

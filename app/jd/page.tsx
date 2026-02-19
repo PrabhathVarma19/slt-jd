@@ -182,16 +182,17 @@ function JDContent() {
           href="/"
           className="inline-flex items-center text-xs font-medium text-blue-700 hover:underline"
         >
-          ← Back to Home
+          Back to Home
         </Link>
       </div>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div className="flex flex-col">
             <span className="text-xs font-medium uppercase tracking-wide text-gray-500">
-              Beacon · Create JD
+              Beacon - Create JD
             </span>
             <h1 className="text-xl font-semibold text-gray-900 mt-1">Create Job Description</h1>
+            <p className="mt-1 text-sm text-slate-600">Inputs, Generate, Output</p>
           </div>
           <Link href="/library">
             <Button variant="secondary" size="sm">
@@ -204,8 +205,14 @@ function JDContent() {
             {error}
           </div>
         )}
-        <RoleBriefPanel onGenerate={handleGenerate} isGenerating={isGenerating} />
-        <JDPreview jd={jd} onCopy={handleCopy} onRegenerate={handleRegenerate} />
+        <section className="space-y-2">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">Inputs</h2>
+          <RoleBriefPanel onGenerate={handleGenerate} isGenerating={isGenerating} />
+        </section>
+        <section className="space-y-2">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">Output</h2>
+          <JDPreview jd={jd} onCopy={handleCopy} onRegenerate={handleRegenerate} />
+        </section>
       </div>
       <ToastContainer />
     </>

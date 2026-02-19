@@ -67,7 +67,7 @@ const defaultAwarenessNewsletter = [
   'Threat overview',
   'Why it matters',
   'Do',
-  "Don’t",
+  "Don't",
   'Verification steps',
   'Report & Contacts',
   'Resources',
@@ -77,7 +77,7 @@ const defaultAwarenessTeam = [
   'Theme',
   'What to watch for',
   'Do',
-  "Don’t",
+  "Don't",
   'How to verify',
   'Report & Contacts',
   'Resources',
@@ -403,11 +403,12 @@ function CommsHubContent() {
     <div className="space-y-8">
       <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
         <div className="space-y-2">
-          <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Beacon · Comms Hub</p>
+          <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Beacon - Comms Hub</p>
           <h1 className="text-2xl font-semibold text-gray-900 mt-1">Generate newsletters or single-team emails.</h1>
           <p className="text-sm text-gray-600">
             Paste your updates, pick mode and audience, and get HTML + text outputs ready to send.
           </p>
+          <p className="text-sm text-slate-600">Inputs, Generate, Output</p>
         </div>
       </div>
 
@@ -417,7 +418,7 @@ function CommsHubContent() {
             href="/"
             className="inline-flex items-center text-xs font-medium text-blue-700 hover:underline"
           >
-            ← Back to Home
+            Back to Home
           </Link>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -490,7 +491,7 @@ function CommsHubContent() {
                   ))}
                 </div>
                 <p className="text-xs text-gray-500">
-                  Output follows the selected template’s headers and order.
+                  Output follows the selected template&apos;s headers and order.
                 </p>
               </div>
               <div className="space-y-2">
@@ -586,7 +587,7 @@ function CommsHubContent() {
                   Generating...
                 </>
               ) : (
-                'Generate draft'
+                'Generate'
               )}
             </Button>
             {agentOutput && (
@@ -835,7 +836,7 @@ function CommsHubContent() {
 
           <div className="flex justify-end">
             <Button onClick={handleSubmit} disabled={isLoading}>
-              {isLoading ? 'Generating...' : 'Generate Comms'}
+              {isLoading ? 'Generating...' : 'Generate'}
             </Button>
           </div>
         </div>

@@ -352,6 +352,9 @@ export default function ServiceDeskPage() {
               ? 'Chat with Beacon to submit IT requests or get help with self-service actions.'
               : 'Raise structured IT and access requests. Beacon can suggest category, system and impact.'}
           </p>
+          <p className="col-start-2 text-sm text-slate-600">
+            Inputs, Submit Request, Output
+          </p>
         </div>
         <ViewToggle value={viewMode} onChange={setViewMode} />
       </div>
@@ -594,7 +597,7 @@ export default function ServiceDeskPage() {
                   Submitting...
                 </span>
               ) : (
-                'Submit IT request'
+                'Submit Request'
               )}
             </Button>
           </div>
@@ -617,7 +620,7 @@ export default function ServiceDeskPage() {
           </div>
 
           <div className="bg-card rounded-3xl shadow-sm p-4 space-y-3 text-sm text-gray-700">
-            <p className="text-sm font-semibold text-gray-900">What happens next</p>
+            <p className="text-sm font-semibold text-gray-900">Output & status</p>
             <p className="text-sm text-gray-600">
               Beacon formats your request and emails it to the IT Service Desk. You are CC&apos;d on the email.
             </p>
