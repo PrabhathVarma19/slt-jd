@@ -260,6 +260,7 @@ export default function Home() {
 
   const [activePromptCategory, setActivePromptCategory] = useState<PromptCategory>('Catch Up');
   const [homeMessage, setHomeMessage] = useState('');
+  const [lastHomeCommand, setLastHomeCommand] = useState('');
   const [homeLoading, setHomeLoading] = useState(false);
   const [homeConfirmLoading, setHomeConfirmLoading] = useState(false);
   const [homeError, setHomeError] = useState<string | null>(null);
@@ -348,10 +349,10 @@ export default function Home() {
       : isNeedsReviewStatus
         ? 'Needs Review'
         : homeResult?.requiresConfirmation
-        ? 'Awaiting Approval'
-        : homeResult
-          ? 'Completed'
-          : 'Ready';
+          ? 'Awaiting Approval'
+          : homeResult
+            ? 'Done'
+            : 'Ready';
   const homeStatusClass = homeLoading || homeConfirmLoading
     ? 'bg-amber-100 text-amber-800'
     : isNeedsReviewStatus
@@ -467,6 +468,7 @@ export default function Home() {
     try {
       setHomeLoading(true);
       setHomeError(null);
+      setLastHomeCommand(message);
 
       const res = await fetch('/api/home/command', {
         method: 'POST',
@@ -776,12 +778,12 @@ export default function Home() {
         {/* Text column */}
         <div className="space-y-6">
           <h1 className="text-3xl font-semibold text-slate-900 sm:text-4xl">
-            Beacon - the Trianz AI desk for answers and requests.
+            Beacon is your command center for work requests and policy answers.
           </h1>
 
           <p className="max-w-xl text-base text-slate-600">
             Ask policy questions with citations, raise IT and travel requests, and generate
-            leadership updates - all in one place, grounded in Trianz policies and systems.
+            leadership-ready drafts from one place.
           </p>
 
           <div className="flex flex-wrap items-center gap-3">
@@ -845,11 +847,24 @@ export default function Home() {
                 {homeLoading ? 'Running...' : homeConfirmLoading ? 'Please wait...' : 'Run'}
               </Button>
             </div>
+            {!homeLoading && !homeConfirmLoading && !homeResult && (
+              <p className="mt-1 text-[11px] text-slate-500">
+                Use plain language. Example: <span className="font-mono">Install Jira for QA team</span>.
+              </p>
+            )}
             {homeResult?.requiresConfirmation && (
               <p className="mt-1 text-[11px] text-slate-500">
                 Tip: You can type follow-ups like <span className="font-mono">for 2 weeks</span> or{' '}
                 <span className="font-mono">for QA team</span> and click Run to update this draft.
               </p>
+            )}
+            {homeLoading && !homeResult && (
+              <div className="mt-2 rounded-lg border border-amber-200 bg-amber-50 p-2">
+                <p className="text-xs font-medium text-amber-800">Analyzing your request...</p>
+                <p className="mt-1 text-xs text-amber-700">
+                  Routing to the right tool and preparing the next step.
+                </p>
+              </div>
             )}
 
             <div className="mt-2 flex flex-wrap gap-2">
@@ -1273,7 +1288,21 @@ export default function Home() {
                 )}
               </div>
             )}
-            {homeError && !isDuplicateWarningCard && <p className="mt-2 text-xs text-red-600">{homeError}</p>}
+            {homeError && !isDuplicateWarningCard && (
+              <div className="mt-2 rounded-lg border border-red-200 bg-red-50 p-2">
+                <p className="text-xs font-medium text-red-700">{homeError}</p>
+                {lastHomeCommand && (
+                  <button
+                    type="button"
+                    className="mt-1 text-xs font-medium text-red-700 underline underline-offset-2"
+                    onClick={() => submitHomeCommand(lastHomeCommand)}
+                    disabled={homeLoading || homeConfirmLoading}
+                  >
+                    Retry last command
+                  </button>
+                )}
+              </div>
+            )}
           </div>
 
           <p className="text-xs text-slate-400">Built for Trianz. Content updated Dec 2025.</p>
