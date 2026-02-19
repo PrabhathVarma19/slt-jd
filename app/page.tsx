@@ -795,16 +795,16 @@ export default function Home() {
   ];
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-12">
       {/* Hero */}
-      <section className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
+      <section className="grid items-center gap-12 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
         {/* Text column */}
-        <div className="space-y-6">
-          <h1 className="text-3xl font-semibold text-slate-900 sm:text-4xl">
+        <div className="space-y-7">
+          <h1 className="text-3xl font-semibold leading-tight text-slate-900 sm:text-4xl">
             Beacon is your command center for work requests and policy answers.
           </h1>
 
-          <p className="max-w-xl text-base text-slate-600">
+          <p className="max-w-xl text-base leading-relaxed text-slate-600">
             Ask policy questions with citations, raise IT and travel requests, and generate
             leadership-ready drafts from one place.
           </p>
@@ -824,18 +824,18 @@ export default function Home() {
                   el.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
               }}
-              className="text-sm text-slate-500 underline-offset-4 hover:underline"
+              className="text-sm text-slate-500 underline-offset-4 hover:text-slate-700 hover:underline"
             >
               Open tools hub
             </button>
           </div>
 
-          <div id="home-command-bar" className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm max-w-2xl">
+          <div id="home-command-bar" className="max-w-2xl rounded-2xl border border-slate-300/80 bg-white p-4 shadow-sm">
             <div className="flex items-center justify-between gap-2">
               <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
                 Home Command Bar
               </p>
-              <span className={`rounded-full px-2 py-1 text-[11px] font-semibold ${homeStatusClass}`}>
+              <span className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ${homeStatusClass}`}>
                 {homeStatusLabel}
               </span>
             </div>
@@ -860,7 +860,7 @@ export default function Home() {
                   }
                 }}
                 placeholder="Try: I need VPN access for project work"
-                className="flex-1 rounded-xl border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-500"
+                className="flex-1 rounded-xl border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
               />
               <Button
                 onClick={() => submitHomeCommand()}
@@ -895,7 +895,7 @@ export default function Home() {
                 <button
                   key={preset.label}
                   type="button"
-                  className="rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-700 hover:bg-slate-200"
+                  className="rounded-full border border-transparent bg-slate-100 px-3 py-1 text-xs text-slate-700 hover:bg-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300"
                   disabled={homeLoading || homeConfirmLoading}
                   onClick={() => setHomeMessage(preset.value)}
                 >
@@ -917,7 +917,7 @@ export default function Home() {
                     <button
                       key={example}
                       type="button"
-                      className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-700 hover:bg-slate-100"
+                      className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300"
                       disabled={homeLoading || homeConfirmLoading}
                       onClick={() => setHomeMessage(example)}
                     >
@@ -937,7 +937,7 @@ export default function Home() {
                     <button
                       key={ticketNumber}
                       type="button"
-                      className="rounded-full bg-white px-3 py-1 text-xs text-slate-700 border border-slate-200 hover:bg-slate-100"
+                      className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300"
                       disabled={homeLoading || homeConfirmLoading}
                       onClick={() => runTicketStatusCheck(ticketNumber)}
                     >
@@ -957,7 +957,7 @@ export default function Home() {
                     <button
                       key={`suggestion-${ticketNumber}`}
                       type="button"
-                      className="rounded-full bg-emerald-50 px-3 py-1 text-xs text-emerald-800 border border-emerald-200 hover:bg-emerald-100"
+                      className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs text-emerald-800 hover:bg-emerald-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200"
                       disabled={homeLoading || homeConfirmLoading}
                       onClick={() => runTicketStatusCheck(ticketNumber)}
                     >
@@ -969,7 +969,7 @@ export default function Home() {
             )}
 
             {homeResult?.actionCard && (
-              <div className="mt-3 rounded-xl border border-slate-200 bg-slate-50 p-3">
+              <div className="mt-3 rounded-xl border border-slate-200 bg-slate-50/80 p-3.5">
                 <div className="mb-2 flex justify-end">
                   <Button
                     size="sm"
@@ -1379,7 +1379,7 @@ export default function Home() {
       <section className="space-y-4">
         <h2 className="text-xl font-semibold text-slate-900">What you can do with Beacon</h2>
         <div className="grid gap-6 md:grid-cols-3">
-          <Card className="rounded-2xl bg-card shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+          <Card className="rounded-2xl border border-slate-200 bg-card shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md">
             <CardHeader className="space-y-2">
               <CardTitle className="flex items-center gap-2 text-sm font-semibold">
                 <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-sky-100 text-xs font-semibold text-sky-700">
@@ -1393,7 +1393,7 @@ export default function Home() {
             </CardHeader>
           </Card>
 
-          <Card className="rounded-2xl bg-card shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+          <Card className="rounded-2xl border border-slate-200 bg-card shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md">
             <CardHeader className="space-y-2">
               <CardTitle className="flex items-center gap-2 text-sm font-semibold">
                 <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-xs font-semibold text-slate-700">
@@ -1408,7 +1408,7 @@ export default function Home() {
             </CardHeader>
           </Card>
 
-          <Card className="rounded-2xl bg-card shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+          <Card className="rounded-2xl border border-slate-200 bg-card shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md">
             <CardHeader className="space-y-2">
               <CardTitle className="flex items-center gap-2 text-sm font-semibold">
                 <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-indigo-100 text-xs font-semibold text-indigo-700">
@@ -1444,7 +1444,7 @@ export default function Home() {
                   el.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
               }}
-              className="flex items-center justify-between gap-4 rounded-2xl border border-blue-200 bg-blue-50 px-4 py-3 text-left"
+              className="flex items-center justify-between gap-4 rounded-2xl border border-blue-200 bg-blue-50 px-4 py-3 text-left transition hover:border-blue-300"
             >
               <div>
                 <p className="text-sm font-semibold text-slate-900">Resume Pending IT Draft</p>
@@ -1463,7 +1463,7 @@ export default function Home() {
                   el.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
               }}
-              className="flex items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-left hover:bg-slate-50"
+              className="flex items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-left transition hover:border-slate-300 hover:bg-slate-50"
             >
               <div>
                 <p className="text-sm font-semibold text-slate-900">Start New Home Request</p>
@@ -1500,7 +1500,7 @@ export default function Home() {
             <Link
               key={item.title}
               href={item.href}
-              className="flex items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-card px-4 py-3 shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-md"
+              className="flex items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-card px-4 py-3 shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50 hover:shadow-md"
             >
               <div>
                 <p className="text-sm font-semibold text-slate-900">{item.title}</p>
@@ -1550,7 +1550,7 @@ export default function Home() {
           {PROMPTS[activePromptCategory].map((prompt) => (
             <Card
               key={prompt.title}
-              className="rounded-3xl bg-card shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+              className="rounded-3xl border border-slate-200 bg-card shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md"
             >
               <CardHeader className="space-y-3">
                 <div className="flex items-center gap-3">
@@ -1620,11 +1620,11 @@ export default function Home() {
 
         <div className="grid gap-3 md:grid-cols-2">
           {TOOL_GROUPS[activeToolCategory].map((tool) => (
-                    <Link
-                      key={tool.title}
-                      href={tool.href}
-              className="flex items-center justify-between gap-4 rounded-2xl bg-card px-4 py-3 shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-md"
-                    >
+            <Link
+              key={tool.title}
+              href={tool.href}
+              className="flex items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-card px-4 py-3 shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50 hover:shadow-md"
+            >
                       <div className="flex items-center gap-3">
                         <div
                           className={`flex h-9 w-9 items-center justify-center rounded-full text-xs font-semibold ${tool.accent}`}
@@ -1793,7 +1793,7 @@ export default function Home() {
 
       {/* Trust strip */}
       <section className="pb-4">
-        <div className="rounded-2xl bg-card px-4 py-4 text-sm shadow-sm">
+        <div className="rounded-2xl border border-slate-200 bg-card px-4 py-4 text-sm shadow-sm">
           <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
             How Beacon answers
           </p>
