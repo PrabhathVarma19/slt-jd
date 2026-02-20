@@ -296,6 +296,9 @@ export default function Home() {
   const [homePdfFile, setHomePdfFile] = useState<File | null>(null);
   const [homePdfLoading, setHomePdfLoading] = useState(false);
   const [homePdfProgress, setHomePdfProgress] = useState(0);
+  const [homePdfStage, setHomePdfStage] = useState<'idle' | 'uploading' | 'processing' | 'ready'>('idle');
+  const [homePdfLocalError, setHomePdfLocalError] = useState<string | null>(null);
+  const [isHomePdfDragging, setIsHomePdfDragging] = useState(false);
   const [homePdfResult, setHomePdfResult] = useState<{
     filename: string;
     pptxBase64: string;
@@ -499,6 +502,8 @@ export default function Home() {
       setHomePdfFile(null);
       setHomePdfResult(null);
       setHomePdfProgress(0);
+      setHomePdfStage('idle');
+      setHomePdfLocalError(null);
       if (nextRunId) {
         setHomeRunDetailsLoading(true);
         try {
@@ -540,6 +545,8 @@ export default function Home() {
     setHomePdfFile(null);
     setHomePdfResult(null);
     setHomePdfProgress(0);
+    setHomePdfStage('idle');
+    setHomePdfLocalError(null);
     setHomeDraftPatch({
       system: '',
       reason: '',
@@ -665,6 +672,7 @@ export default function Home() {
       if (!res.ok || data?.error) {
         throw new Error(data?.error || 'Chunk upload failed');
       }
+      setHomePdfStage(i < chunks.length - 1 ? 'uploading' : 'processing');
       setHomePdfProgress(Math.round(((i + 1) / chunks.length) * 100));
       if (data?.pptxBase64) {
         finalData = data;
@@ -689,32 +697,56 @@ export default function Home() {
     if (!res.ok || data?.error) {
       throw new Error(data?.error || 'Failed to convert PDF');
     }
+    setHomePdfStage('processing');
     setHomePdfProgress(100);
     return data;
   };
 
+  const selectHomePdfFile = (file: File | null) => {
+    setHomePdfLocalError(null);
+    setHomePdfResult(null);
+    setHomePdfProgress(0);
+    setHomePdfStage('idle');
+    if (!file) {
+      setHomePdfFile(null);
+      return;
+    }
+    if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
+      setHomePdfLocalError('Only PDF files are supported.');
+      setHomePdfFile(null);
+      return;
+    }
+    if (file.size > 25 * 1024 * 1024) {
+      setHomePdfLocalError('File size exceeds 25MB limit.');
+      setHomePdfFile(null);
+      return;
+    }
+    setHomePdfFile(file);
+  };
+
   const handleHomePdfConvert = async () => {
     if (!homePdfFile) {
-      setHomeError('Please upload a PDF file first.');
+      setHomePdfLocalError('Please upload a PDF file first.');
       return;
     }
     if (
       homePdfFile.type !== 'application/pdf' &&
       !homePdfFile.name.toLowerCase().endsWith('.pdf')
     ) {
-      setHomeError('Only PDF files are supported.');
+      setHomePdfLocalError('Only PDF files are supported.');
       return;
     }
     if (homePdfFile.size > 25 * 1024 * 1024) {
-      setHomeError('File size exceeds 25MB limit.');
+      setHomePdfLocalError('File size exceeds 25MB limit.');
       return;
     }
 
     try {
       setHomePdfLoading(true);
-      setHomeError(null);
+      setHomePdfLocalError(null);
       setHomePdfResult(null);
       setHomePdfProgress(0);
+      setHomePdfStage(homePdfFile.size > 4 * 1024 * 1024 ? 'uploading' : 'processing');
 
       const data =
         homePdfFile.size > 4 * 1024 * 1024
@@ -729,9 +761,11 @@ export default function Home() {
         pptxBase64: data.pptxBase64,
         totalSlides: data.totalSlides,
       });
+      setHomePdfStage('ready');
       showToast('PDF converted successfully.', 'success');
     } catch (error: any) {
-      setHomeError(error?.message || 'Failed to convert PDF.');
+      setHomePdfLocalError(error?.message || 'Failed to convert PDF.');
+      setHomePdfStage('idle');
       showToast(error?.message || 'Failed to convert PDF.', 'error');
     } finally {
       setHomePdfLoading(false);
@@ -1168,22 +1202,79 @@ export default function Home() {
                       <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
                         Upload PDF
                       </p>
-                      <input
-                        type="file"
-                        accept=".pdf,application/pdf"
-                        onChange={(e) => setHomePdfFile(e.target.files?.[0] || null)}
-                        className="block w-full rounded-md border border-slate-300 px-2 py-2 text-sm file:mr-3 file:rounded-md file:border-0 file:bg-slate-100 file:px-3 file:py-1 file:text-xs file:font-medium"
-                        disabled={homePdfLoading}
-                      />
+                      <div
+                        role="button"
+                        tabIndex={0}
+                        onDragOver={(e) => {
+                          e.preventDefault();
+                          setIsHomePdfDragging(true);
+                        }}
+                        onDragLeave={(e) => {
+                          e.preventDefault();
+                          setIsHomePdfDragging(false);
+                        }}
+                        onDrop={(e) => {
+                          e.preventDefault();
+                          setIsHomePdfDragging(false);
+                          selectHomePdfFile(e.dataTransfer.files?.[0] || null);
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            const input = document.getElementById('home-pdf-input') as HTMLInputElement | null;
+                            input?.click();
+                          }
+                        }}
+                        className={`rounded-md border border-dashed p-3 text-center transition ${
+                          isHomePdfDragging
+                            ? 'border-blue-400 bg-blue-50'
+                            : 'border-slate-300 bg-slate-50 hover:bg-slate-100'
+                        }`}
+                      >
+                        <input
+                          id="home-pdf-input"
+                          type="file"
+                          accept=".pdf,application/pdf"
+                          onChange={(e) => selectHomePdfFile(e.target.files?.[0] || null)}
+                          className="hidden"
+                          disabled={homePdfLoading}
+                        />
+                        <p className="text-xs text-slate-700">
+                          Drag and drop a PDF here, or{' '}
+                          <button
+                            type="button"
+                            className="font-semibold text-blue-700 underline underline-offset-2"
+                            onClick={() => {
+                              const input = document.getElementById('home-pdf-input') as HTMLInputElement | null;
+                              input?.click();
+                            }}
+                            disabled={homePdfLoading}
+                          >
+                            browse
+                          </button>
+                        </p>
+                      </div>
                       <p className="text-xs text-slate-500">
                         Max file size: 25MB. Large files auto-use chunked upload.
                       </p>
                     </div>
                     {homePdfFile && (
-                      <p className="text-xs text-slate-600">
+                      <div className="flex items-center justify-between gap-2 rounded-md border border-slate-200 bg-slate-50 px-2 py-1.5">
+                        <p className="text-xs text-slate-600">
                         Selected: <span className="font-medium">{homePdfFile.name}</span> (
                         {(homePdfFile.size / 1024 / 1024).toFixed(2)} MB)
-                      </p>
+                        </p>
+                        <button
+                          type="button"
+                          className="text-xs text-slate-500 underline underline-offset-2"
+                          onClick={() => selectHomePdfFile(null)}
+                          disabled={homePdfLoading}
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    )}
+                    {homePdfLocalError && (
+                      <p className="text-xs text-red-700">{homePdfLocalError}</p>
                     )}
                     {homePdfLoading && (
                       <div className="space-y-1">
@@ -1193,7 +1284,11 @@ export default function Home() {
                             style={{ width: `${homePdfProgress}%` }}
                           />
                         </div>
-                        <p className="text-xs text-slate-600">Converting... {homePdfProgress}%</p>
+                        <p className="text-xs text-slate-600">
+                          {homePdfStage === 'uploading'
+                            ? `Uploading... ${homePdfProgress}%`
+                            : `Processing... ${homePdfProgress}%`}
+                        </p>
                       </div>
                     )}
                     {homePdfResult && (
@@ -1213,7 +1308,7 @@ export default function Home() {
                         onClick={handleHomePdfConvert}
                         disabled={homePdfLoading || !homePdfFile}
                       >
-                        {homePdfLoading ? 'Converting...' : 'Convert'}
+                        {homePdfLoading ? 'Working...' : 'Convert'}
                       </Button>
                       {homePdfResult && (
                         <Button size="sm" variant="outline" onClick={downloadHomePptx}>
