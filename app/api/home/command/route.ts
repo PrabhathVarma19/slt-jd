@@ -295,6 +295,7 @@ const VALID_HOME_INTENTS: HomeCommandIntent[] = [
   'comms_generate',
   'engineering_generate',
   'jd_generate',
+  'pdf_to_ppt_convert',
   'unknown',
 ];
 
@@ -321,6 +322,15 @@ function detectIntent(message: string): HomeCommandIntent {
   const commsSignals = ['newsletter', 'announcement', 'email draft', 'comms', 'communication'];
   const engineeringSignals = ['release notes', 'pr summary', 'post mortem', 'post-mortem', 'incident report'];
   const jdSignals = ['job description', 'jd for', 'create jd', 'hiring role', 'role description'];
+  const pdfToPptSignals = [
+    'pdf to ppt',
+    'pdf to powerpoint',
+    'convert pdf',
+    'ppt from pdf',
+    'powerpoint from pdf',
+    'convert to ppt',
+    'convert to powerpoint',
+  ];
   const createTicketSignals = [
     'raise ticket',
     'create ticket',
@@ -358,6 +368,7 @@ function detectIntent(message: string): HomeCommandIntent {
   if (engineeringSignals.some((s) => text.includes(s))) return 'engineering_generate';
   if (commsSignals.some((s) => text.includes(s))) return 'comms_generate';
   if (jdSignals.some((s) => text.includes(s))) return 'jd_generate';
+  if (pdfToPptSignals.some((s) => text.includes(s))) return 'pdf_to_ppt_convert';
   if (statusSignals.some((s) => text.includes(s))) return 'check_ticket_status';
   if (
     createTicketSignals.some((s) => text.includes(s)) ||
@@ -433,6 +444,7 @@ Valid intents:
 - comms_generate
 - engineering_generate
 - jd_generate
+- pdf_to_ppt_convert
 - unknown
 
 Return JSON only with keys:
@@ -1005,6 +1017,37 @@ export async function POST(req: NextRequest) {
       } satisfies HomeCommandResponse);
     }
 
+    if (intent === 'pdf_to_ppt_convert') {
+      await updateAgentRun({
+        runId: run.id,
+        status: 'COMPLETED',
+        ended: true,
+        output: {
+          intent,
+          routeTo: '/pdf-to-ppt',
+        },
+      });
+
+      return NextResponse.json({
+        runId: run.id,
+        status: 'COMPLETED',
+        intent,
+        requiresConfirmation: false,
+        actionCard: {
+          type: 'info',
+          title: 'PDF to PowerPoint Converter',
+          description:
+            'Upload your PDF in Home to convert now, or open the full converter for advanced options.',
+          data: {
+            routeTo: '/pdf-to-ppt',
+            supportsInlineUpload: true,
+            acceptedTypes: ['application/pdf'],
+            maxSizeMb: 25,
+          },
+        },
+      } satisfies HomeCommandResponse);
+    }
+
     if (intent === 'engineering_generate') {
       const lower = message.toLowerCase();
       const tool: 'release_notes' | 'pr_summary' | 'post_mortem' = lower.includes('pr summary')
@@ -1250,6 +1293,7 @@ export async function POST(req: NextRequest) {
       : [
           'Reset my password',
           'Check status of ticket IT-000123',
+          'Convert this PDF to PowerPoint',
           'Create a newsletter update for my team',
         ];
 
@@ -1262,7 +1306,7 @@ export async function POST(req: NextRequest) {
         type: 'info',
         title: 'Need More Context',
         description:
-          'I can help with IT requests, ticket status checks, password reset, policy questions, comms drafts, engineering drafts, or JD generation.',
+          'I can help with IT requests, ticket status checks, password reset, policy questions, comms drafts, engineering drafts, JD generation, or PDF to PowerPoint conversion.',
         data: {
           suggestions,
           reason: llmIntent?.reason || 'low_confidence_or_no_match',

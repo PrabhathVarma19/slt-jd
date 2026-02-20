@@ -30,6 +30,7 @@ export type HomeCommandIntent =
   | 'comms_generate'
   | 'engineering_generate'
   | 'jd_generate'
+  | 'pdf_to_ppt_convert'
   | 'unknown';
 
 export type HomeActionCard = {

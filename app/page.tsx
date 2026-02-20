@@ -293,6 +293,14 @@ export default function Home() {
   } | null>(null);
   const [homeRunDetailsLoading, setHomeRunDetailsLoading] = useState(false);
   const [showRunAuditDetails, setShowRunAuditDetails] = useState(false);
+  const [homePdfFile, setHomePdfFile] = useState<File | null>(null);
+  const [homePdfLoading, setHomePdfLoading] = useState(false);
+  const [homePdfProgress, setHomePdfProgress] = useState(0);
+  const [homePdfResult, setHomePdfResult] = useState<{
+    filename: string;
+    pptxBase64: string;
+    totalSlides?: number;
+  } | null>(null);
   const [homeResult, setHomeResult] = useState<{
     status: string;
     intent: string;
@@ -312,6 +320,7 @@ export default function Home() {
     { label: 'Raise a request', value: 'Raise a request for ' },
     { label: 'Check ticket status', value: 'Check status of ticket ' },
     { label: 'Ask a policy question', value: 'Ask a policy question: ' },
+    { label: 'Convert PDF to PPT', value: 'Convert this PDF to PowerPoint' },
   ];
   const ticketAutocompleteSuggestions = useMemo(() => {
     const text = homeMessage.trim().toLowerCase();
@@ -336,6 +345,7 @@ export default function Home() {
   const isDuplicateWarningCard =
     !!homeResult?.actionCard?.data?.duplicateTicketNumber &&
     homeResult?.actionCard?.type === 'info';
+  const isPdfConvertCard = homeResult?.intent === 'pdf_to_ppt_convert';
   const isNeedsReviewStatus = isDuplicateWarningCard;
   const itMissingFields =
     Array.isArray(homeResult?.actionCard?.data?.missingFields) &&
@@ -486,6 +496,9 @@ export default function Home() {
       setShowHomeDetails(false);
       setHomeRunDetails(null);
       setShowRunAuditDetails(false);
+      setHomePdfFile(null);
+      setHomePdfResult(null);
+      setHomePdfProgress(0);
       if (nextRunId) {
         setHomeRunDetailsLoading(true);
         try {
@@ -524,6 +537,9 @@ export default function Home() {
     setShowHomeDetails(false);
     setHomeError(null);
     setShowRunAuditDetails(false);
+    setHomePdfFile(null);
+    setHomePdfResult(null);
+    setHomePdfProgress(0);
     setHomeDraftPatch({
       system: '',
       reason: '',
@@ -612,6 +628,137 @@ export default function Home() {
       showToast(error?.message || 'Failed to process approval', 'error');
     } finally {
       setHomeConfirmLoading(false);
+    }
+  };
+
+  const chunkHomePdfFile = (file: File, chunkSize = 4 * 1024 * 1024): Blob[] => {
+    const chunks: Blob[] = [];
+    let start = 0;
+    while (start < file.size) {
+      const end = Math.min(start + chunkSize, file.size);
+      chunks.push(file.slice(start, end));
+      start = end;
+    }
+    return chunks;
+  };
+
+  const uploadHomePdfChunked = async (file: File) => {
+    const chunks = chunkHomePdfFile(file);
+    const sessionId = crypto.randomUUID();
+    let finalData: any = null;
+
+    for (let i = 0; i < chunks.length; i++) {
+      const formData = new FormData();
+      formData.append('chunk', chunks[i]);
+      formData.append('sessionId', sessionId);
+      formData.append('chunkIndex', i.toString());
+      formData.append('totalChunks', chunks.length.toString());
+      formData.append('filename', file.name);
+      formData.append('extractionMode', 'ai');
+      formData.append('numSlides', '10');
+
+      const res = await fetch('/api/pdf-to-ppt/chunk', {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await res.json();
+      if (!res.ok || data?.error) {
+        throw new Error(data?.error || 'Chunk upload failed');
+      }
+      setHomePdfProgress(Math.round(((i + 1) / chunks.length) * 100));
+      if (data?.pptxBase64) {
+        finalData = data;
+      }
+    }
+
+    if (!finalData) throw new Error('Upload completed but conversion result is missing');
+    return finalData;
+  };
+
+  const uploadHomePdfDirect = async (file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('extractionMode', 'ai');
+    formData.append('numSlides', '10');
+
+    const res = await fetch('/api/pdf-to-ppt', {
+      method: 'POST',
+      body: formData,
+    });
+    const data = await res.json();
+    if (!res.ok || data?.error) {
+      throw new Error(data?.error || 'Failed to convert PDF');
+    }
+    setHomePdfProgress(100);
+    return data;
+  };
+
+  const handleHomePdfConvert = async () => {
+    if (!homePdfFile) {
+      setHomeError('Please upload a PDF file first.');
+      return;
+    }
+    if (
+      homePdfFile.type !== 'application/pdf' &&
+      !homePdfFile.name.toLowerCase().endsWith('.pdf')
+    ) {
+      setHomeError('Only PDF files are supported.');
+      return;
+    }
+    if (homePdfFile.size > 25 * 1024 * 1024) {
+      setHomeError('File size exceeds 25MB limit.');
+      return;
+    }
+
+    try {
+      setHomePdfLoading(true);
+      setHomeError(null);
+      setHomePdfResult(null);
+      setHomePdfProgress(0);
+
+      const data =
+        homePdfFile.size > 4 * 1024 * 1024
+          ? await uploadHomePdfChunked(homePdfFile)
+          : await uploadHomePdfDirect(homePdfFile);
+
+      if (!data?.pptxBase64) {
+        throw new Error('Conversion succeeded but PPT file is missing.');
+      }
+      setHomePdfResult({
+        filename: data.filename || homePdfFile.name.replace(/\.pdf$/i, '.pptx'),
+        pptxBase64: data.pptxBase64,
+        totalSlides: data.totalSlides,
+      });
+      showToast('PDF converted successfully.', 'success');
+    } catch (error: any) {
+      setHomeError(error?.message || 'Failed to convert PDF.');
+      showToast(error?.message || 'Failed to convert PDF.', 'error');
+    } finally {
+      setHomePdfLoading(false);
+    }
+  };
+
+  const downloadHomePptx = () => {
+    if (!homePdfResult?.pptxBase64) return;
+    try {
+      const binary = atob(homePdfResult.pptxBase64);
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+      }
+      const blob = new Blob([bytes], {
+        type: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+      });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = homePdfResult.filename || 'presentation.pptx';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch {
+      setHomeError('Failed to download PowerPoint file.');
     }
   };
 
@@ -791,6 +938,11 @@ export default function Home() {
       title: 'Draft engineering update',
       hint: 'Release notes, PR summary, post-mortem',
       href: '/engineering-tools',
+    },
+    {
+      title: 'Convert PDF to PowerPoint',
+      hint: 'Upload PDF and generate Trianz PPT output',
+      href: '/pdf-to-ppt',
     },
   ];
 
@@ -1008,6 +1160,67 @@ export default function Home() {
                           {suggestion}
                         </button>
                       ))}
+                  </div>
+                )}
+                {isPdfConvertCard && (
+                  <div className="mt-3 grid gap-3 rounded-lg border border-slate-200 bg-white p-3">
+                    <div className="space-y-1">
+                      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                        Upload PDF
+                      </p>
+                      <input
+                        type="file"
+                        accept=".pdf,application/pdf"
+                        onChange={(e) => setHomePdfFile(e.target.files?.[0] || null)}
+                        className="block w-full rounded-md border border-slate-300 px-2 py-2 text-sm file:mr-3 file:rounded-md file:border-0 file:bg-slate-100 file:px-3 file:py-1 file:text-xs file:font-medium"
+                        disabled={homePdfLoading}
+                      />
+                      <p className="text-xs text-slate-500">
+                        Max file size: 25MB. Large files auto-use chunked upload.
+                      </p>
+                    </div>
+                    {homePdfFile && (
+                      <p className="text-xs text-slate-600">
+                        Selected: <span className="font-medium">{homePdfFile.name}</span> (
+                        {(homePdfFile.size / 1024 / 1024).toFixed(2)} MB)
+                      </p>
+                    )}
+                    {homePdfLoading && (
+                      <div className="space-y-1">
+                        <div className="h-2 w-full rounded bg-slate-200">
+                          <div
+                            className="h-2 rounded bg-blue-500 transition-all"
+                            style={{ width: `${homePdfProgress}%` }}
+                          />
+                        </div>
+                        <p className="text-xs text-slate-600">Converting... {homePdfProgress}%</p>
+                      </div>
+                    )}
+                    {homePdfResult && (
+                      <div className="rounded-md border border-emerald-200 bg-emerald-50 p-2">
+                        <p className="text-xs font-medium text-emerald-800">
+                          Conversion complete
+                          {typeof homePdfResult.totalSlides === 'number'
+                            ? ` (${homePdfResult.totalSlides} slides)`
+                            : ''}
+                        </p>
+                        <p className="text-xs text-emerald-700">{homePdfResult.filename}</p>
+                      </div>
+                    )}
+                    <div className="flex flex-wrap gap-2">
+                      <Button
+                        size="sm"
+                        onClick={handleHomePdfConvert}
+                        disabled={homePdfLoading || !homePdfFile}
+                      >
+                        {homePdfLoading ? 'Converting...' : 'Convert'}
+                      </Button>
+                      {homePdfResult && (
+                        <Button size="sm" variant="outline" onClick={downloadHomePptx}>
+                          Download PPT
+                        </Button>
+                      )}
+                    </div>
                   </div>
                 )}
                 {isItApprovalCard && (
