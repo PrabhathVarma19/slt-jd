@@ -702,6 +702,30 @@ export default function Home() {
     return data;
   };
 
+  const showHomePdfConvertCard = () => {
+    setHomeResult({
+      status: 'COMPLETED',
+      intent: 'pdf_to_ppt_convert',
+      requiresConfirmation: false,
+      actionCard: {
+        type: 'info',
+        title: 'PDF to PowerPoint Converter',
+        description:
+          'Upload your PDF in Home to convert now, or open the full converter for advanced options.',
+        data: {
+          routeTo: '/pdf-to-ppt',
+          supportsInlineUpload: true,
+          acceptedTypes: ['application/pdf'],
+          maxSizeMb: 25,
+        },
+      },
+    });
+    setHomeRunId(null);
+    setHomeRunDetails(null);
+    setShowRunAuditDetails(false);
+    setHomeError(null);
+  };
+
   const selectHomePdfFile = (file: File | null) => {
     setHomePdfLocalError(null);
     setHomePdfResult(null);
@@ -722,6 +746,7 @@ export default function Home() {
       return;
     }
     setHomePdfFile(file);
+    showHomePdfConvertCard();
   };
 
   const handleHomePdfConvert = async () => {
@@ -1016,7 +1041,29 @@ export default function Home() {
             </button>
           </div>
 
-          <div id="home-command-bar" className="max-w-2xl rounded-2xl border border-slate-300/80 bg-white p-4 shadow-sm">
+          <div
+            id="home-command-bar"
+            className={`max-w-2xl rounded-2xl border bg-white p-4 shadow-sm transition ${
+              isHomePdfDragging
+                ? 'border-blue-400 ring-2 ring-blue-100'
+                : 'border-slate-300/80'
+            }`}
+            onDragOver={(e) => {
+              const hasPdf = Array.from(e.dataTransfer?.items || []).some(
+                (item) => item.kind === 'file' && item.type === 'application/pdf'
+              );
+              if (!hasPdf) return;
+              e.preventDefault();
+              setIsHomePdfDragging(true);
+            }}
+            onDragLeave={() => setIsHomePdfDragging(false)}
+            onDrop={(e) => {
+              e.preventDefault();
+              setIsHomePdfDragging(false);
+              const file = e.dataTransfer?.files?.[0] || null;
+              selectHomePdfFile(file);
+            }}
+          >
             <div className="flex items-center justify-between gap-2">
               <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
                 Home Command Bar
@@ -1026,6 +1073,14 @@ export default function Home() {
               </span>
             </div>
             <div className="mt-2 flex flex-col gap-2 sm:flex-row">
+              <input
+                id="home-pdf-input-global"
+                type="file"
+                accept=".pdf,application/pdf"
+                onChange={(e) => selectHomePdfFile(e.target.files?.[0] || null)}
+                className="hidden"
+                disabled={homePdfLoading || homeLoading || homeConfirmLoading}
+              />
               <input
                 value={homeMessage}
                 onChange={(e) => {
@@ -1049,6 +1104,18 @@ export default function Home() {
                 className="flex-1 rounded-xl border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
               />
               <Button
+                type="button"
+                variant="outline"
+                className="rounded-xl px-3"
+                onClick={() => {
+                  const input = document.getElementById('home-pdf-input-global') as HTMLInputElement | null;
+                  input?.click();
+                }}
+                disabled={homePdfLoading || homeLoading || homeConfirmLoading}
+              >
+                Attach PDF
+              </Button>
+              <Button
                 onClick={() => submitHomeCommand()}
                 disabled={homeLoading || homeConfirmLoading || !homeMessage.trim()}
                 className="rounded-xl px-4"
@@ -1056,6 +1123,9 @@ export default function Home() {
                 {homeLoading ? 'Running...' : homeConfirmLoading ? 'Please wait...' : 'Run'}
               </Button>
             </div>
+            {isHomePdfDragging && (
+              <p className="mt-1 text-[11px] text-blue-700">Drop PDF to start conversion</p>
+            )}
             {!homeLoading && !homeConfirmLoading && !homeResult && (
               <p className="mt-1 text-[11px] text-slate-500">
                 Use plain language. Example: <span className="font-mono">Install Jira for QA team</span>.
