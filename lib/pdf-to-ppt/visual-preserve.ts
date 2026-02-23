@@ -1,4 +1,3 @@
-import { pdf } from 'pdf-to-img';
 import { Slide } from '@/types/pdf-to-ppt';
 
 const MAX_VISUAL_PAGES = 40;
@@ -7,6 +6,7 @@ export async function buildVisualPreserveSlides(
   pdfBuffer: Buffer,
   options?: { maxPages?: number }
 ): Promise<Slide[]> {
+  const { pdf } = await import('pdf-to-img');
   const maxPages = Math.min(options?.maxPages || MAX_VISUAL_PAGES, MAX_VISUAL_PAGES);
   const doc = await pdf(pdfBuffer, { scale: 2 });
   const pageCount = Math.min(doc.length, maxPages);
@@ -37,4 +37,3 @@ export async function buildVisualPreserveSlides(
 
   return slides;
 }
-
