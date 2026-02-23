@@ -1,4 +1,11 @@
-export type SlideType = 'title' | 'content' | 'quote' | 'two-column' | 'highlight' | 'section-divider';
+export type SlideType =
+  | 'title'
+  | 'content'
+  | 'quote'
+  | 'two-column'
+  | 'highlight'
+  | 'section-divider'
+  | 'full-image';
 
 export type TemplateType = 'trianz' | 'professional' | 'modern' | 'creative' | 'executive';
 

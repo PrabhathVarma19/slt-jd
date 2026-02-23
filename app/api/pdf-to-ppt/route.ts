@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { processPdf, extractTitleFromPdf } from '@/lib/pdf-to-ppt/pdf-processor';
 import { generatePptx } from '@/lib/pdf-to-ppt/pptx-generator';
 import { generateHtmlPreview } from '@/lib/pdf-to-ppt/html-generator';
+import { buildVisualPreserveSlides } from '@/lib/pdf-to-ppt/visual-preserve';
 
 const MAX_FILE_SIZE = 25 * 1024 * 1024; // 25MB
 
@@ -19,7 +20,10 @@ export async function POST(req: NextRequest) {
     const numSlidesParam = formData.get('numSlides') as string | null;
     const numSlides = numSlidesParam ? parseInt(numSlidesParam, 10) : undefined;
     const extractionModeParam = formData.get('extractionMode') as string | null;
-    const extractionMode = (extractionModeParam === 'extract' || extractionModeParam === 'ai') ? extractionModeParam : 'ai';
+    const extractionMode =
+      extractionModeParam === 'extract' || extractionModeParam === 'ai' || extractionModeParam === 'visual'
+        ? extractionModeParam
+        : 'ai';
     const template = (formData.get('template') as string) || 'trianz';
     // #region agent log
     fetch('http://127.0.0.1:7243/ingest/7f74fb16-5e81-4704-9c2c-1a3dd73f3bf3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'route.ts:11',message:'File received',data:{fileName:file?.name||'none',fileSize:file?.size||0,fileType:file?.type||'none',numSlides},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
@@ -59,8 +63,10 @@ export async function POST(req: NextRequest) {
     // #region agent log
     fetch('http://127.0.0.1:7243/ingest/7f74fb16-5e81-4704-9c2c-1a3dd73f3bf3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'route.ts:38',message:'Before processPdf call',data:{bufferSize:buffer.length,fileName:file.name},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
     // #endregion
-    const useAI = extractionMode !== 'extract';
-    const slides = await processPdf(buffer, file.name, useAI, numSlides);
+    const slides =
+      extractionMode === 'visual'
+        ? await buildVisualPreserveSlides(buffer, { maxPages: numSlides })
+        : await processPdf(buffer, file.name, extractionMode !== 'extract', numSlides);
 
     // Generate PPTX with extracted title
     // #region agent log

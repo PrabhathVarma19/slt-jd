@@ -66,6 +66,9 @@ async function generatePptxDefault(slides: Slide[], filename: string, extractedT
     console.log(`[PPTX Generator] Processing slide ${index + 1}: "${slide.title}", type: ${slideType}, images: ${slide.images?.length || 0}`);
     
     switch (slideType) {
+      case 'full-image':
+        createFullImageSlide(pptx, slide);
+        break;
       case 'quote':
         createQuoteSlide(pptx, slide);
         break;
@@ -560,4 +563,45 @@ function createSectionDividerSlide(pptx: any, slide: Slide) {
 
   // Add logo to section divider slide
   addLogoToSlide(dividerSlide);
+}
+
+function createFullImageSlide(pptx: any, slide: Slide) {
+  const imageSlide = pptx.addSlide();
+  imageSlide.background = { color: 'FFFFFF' };
+
+  const image = slide.images?.[0];
+  if (!image?.data) return;
+
+  let imageDataString = image.data;
+  if (imageDataString.startsWith('data:')) {
+    imageDataString = imageDataString.substring(5);
+  }
+
+  const slideW = 10;
+  const slideH = 5.625;
+  const margin = 0.2;
+  const maxW = slideW - margin * 2;
+  const maxH = slideH - margin * 2;
+
+  const imgW = Math.max(image.width || 1920, 1);
+  const imgH = Math.max(image.height || 1080, 1);
+  const ratio = imgW / imgH;
+
+  let w = maxW;
+  let h = w / ratio;
+  if (h > maxH) {
+    h = maxH;
+    w = h * ratio;
+  }
+
+  const x = (slideW - w) / 2;
+  const y = (slideH - h) / 2;
+
+  imageSlide.addImage({
+    data: imageDataString,
+    x,
+    y,
+    w,
+    h,
+  });
 }

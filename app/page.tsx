@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 import Button from '@/components/ui/button';
@@ -315,8 +315,10 @@ export default function Home() {
   const [homePdfProgress, setHomePdfProgress] = useState(0);
   const [homePdfStage, setHomePdfStage] = useState<'idle' | 'uploading' | 'processing' | 'ready'>('idle');
   const [homePdfLocalError, setHomePdfLocalError] = useState<string | null>(null);
-  const [homePdfMode, setHomePdfMode] = useState<'extract' | 'ai'>('ai');
+  const [homePdfMode, setHomePdfMode] = useState<'extract' | 'ai' | 'visual'>('ai');
   const [isHomePdfDragging, setIsHomePdfDragging] = useState(false);
+  const homePdfGlobalInputRef = useRef<HTMLInputElement | null>(null);
+  const homePdfCardInputRef = useRef<HTMLInputElement | null>(null);
   const [homePdfResult, setHomePdfResult] = useState<{
     filename: string;
     pptxBase64: string;
@@ -1189,10 +1191,6 @@ export default function Home() {
                 : 'border-slate-300/80'
             }`}
             onDragOver={(e) => {
-              const hasPdf = Array.from(e.dataTransfer?.items || []).some(
-                (item) => item.kind === 'file' && item.type === 'application/pdf'
-              );
-              if (!hasPdf) return;
               e.preventDefault();
               setIsHomePdfDragging(true);
             }}
@@ -1214,10 +1212,13 @@ export default function Home() {
             </div>
             <div className="mt-2 flex flex-col gap-2 sm:flex-row">
               <input
-                id="home-pdf-input-global"
+                ref={homePdfGlobalInputRef}
                 type="file"
                 accept=".pdf,application/pdf"
-                onChange={(e) => selectHomePdfFile(e.target.files?.[0] || null)}
+                onChange={(e) => {
+                  selectHomePdfFile(e.target.files?.[0] || null);
+                  e.currentTarget.value = '';
+                }}
                 className="hidden"
                 disabled={homePdfLoading || homeLoading || homeConfirmLoading}
               />
@@ -1248,8 +1249,9 @@ export default function Home() {
                 variant="outline"
                 className="rounded-xl px-3"
                 onClick={() => {
-                  const input = document.getElementById('home-pdf-input-global') as HTMLInputElement | null;
-                  input?.click();
+                  if (!homePdfGlobalInputRef.current) return;
+                  homePdfGlobalInputRef.current.value = '';
+                  homePdfGlobalInputRef.current.click();
                 }}
                 disabled={homePdfLoading || homeLoading || homeConfirmLoading}
               >
@@ -1493,6 +1495,18 @@ export default function Home() {
                         >
                           AI polished
                         </button>
+                        <button
+                          type="button"
+                          className={`rounded-full border px-3 py-1 text-xs ${
+                            homePdfMode === 'visual'
+                              ? 'border-slate-900 bg-slate-900 text-white'
+                              : 'border-slate-300 bg-white text-slate-700'
+                          }`}
+                          onClick={() => setHomePdfMode('visual')}
+                          disabled={homePdfLoading}
+                        >
+                          Visual preserve
+                        </button>
                       </div>
                     </div>
                     <div className="space-y-1">
@@ -1517,8 +1531,7 @@ export default function Home() {
                         }}
                         onKeyDown={(e) => {
                           if (e.key === 'Enter' || e.key === ' ') {
-                            const input = document.getElementById('home-pdf-input') as HTMLInputElement | null;
-                            input?.click();
+                            homePdfCardInputRef.current?.click();
                           }
                         }}
                         className={`rounded-md border border-dashed p-3 text-center transition ${
@@ -1528,10 +1541,13 @@ export default function Home() {
                         }`}
                       >
                         <input
-                          id="home-pdf-input"
+                          ref={homePdfCardInputRef}
                           type="file"
                           accept=".pdf,application/pdf"
-                          onChange={(e) => selectHomePdfFile(e.target.files?.[0] || null)}
+                          onChange={(e) => {
+                            selectHomePdfFile(e.target.files?.[0] || null);
+                            e.currentTarget.value = '';
+                          }}
                           className="hidden"
                           disabled={homePdfLoading}
                         />
@@ -1541,8 +1557,9 @@ export default function Home() {
                             type="button"
                             className="font-semibold text-blue-700 underline underline-offset-2"
                             onClick={() => {
-                              const input = document.getElementById('home-pdf-input') as HTMLInputElement | null;
-                              input?.click();
+                              if (!homePdfCardInputRef.current) return;
+                              homePdfCardInputRef.current.value = '';
+                              homePdfCardInputRef.current.click();
                             }}
                             disabled={homePdfLoading}
                           >
@@ -1598,7 +1615,12 @@ export default function Home() {
                         </p>
                         <p className="text-xs text-emerald-700">{homePdfResult.filename}</p>
                         <p className="text-xs text-emerald-700">
-                          Mode: {homePdfMode === 'extract' ? 'As-is (faithful)' : 'AI polished'}
+                          Mode:{' '}
+                          {homePdfMode === 'extract'
+                            ? 'As-is (faithful)'
+                            : homePdfMode === 'visual'
+                              ? 'Visual preserve'
+                              : 'AI polished'}
                         </p>
                       </div>
                     )}

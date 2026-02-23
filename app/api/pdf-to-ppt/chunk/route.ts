@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { processPdf, extractTitleFromPdf } from '@/lib/pdf-to-ppt/pdf-processor';
 import { generatePptx } from '@/lib/pdf-to-ppt/pptx-generator';
 import { generateHtmlPreview } from '@/lib/pdf-to-ppt/html-generator';
+import { buildVisualPreserveSlides } from '@/lib/pdf-to-ppt/visual-preserve';
 
 // Required for Next.js App Router
 export const dynamic = 'force-dynamic';
@@ -13,7 +14,7 @@ interface ChunkSession {
   receivedChunks: number;
   filename: string;
   numSlides?: number;
-  extractionMode?: 'extract' | 'ai';
+  extractionMode?: 'extract' | 'ai' | 'visual';
   createdAt: number;
 }
 
@@ -52,7 +53,10 @@ export async function POST(req: NextRequest) {
     const numSlidesParam = formData.get('numSlides') as string | null;
     const numSlides = numSlidesParam ? parseInt(numSlidesParam, 10) : undefined;
     const extractionModeParam = formData.get('extractionMode') as string | null;
-    const extractionMode = (extractionModeParam === 'extract' || extractionModeParam === 'ai') ? extractionModeParam : 'ai';
+    const extractionMode =
+      extractionModeParam === 'extract' || extractionModeParam === 'ai' || extractionModeParam === 'visual'
+        ? extractionModeParam
+        : 'ai';
 
     // Validate required fields
     if (!chunk || !sessionId || isNaN(chunkIndex) || isNaN(totalChunks) || !filename) {
@@ -147,8 +151,10 @@ export async function POST(req: NextRequest) {
       const extractedTitle = await extractTitleFromPdf(fullBuffer, filename);
 
       // Process PDF
-      const useAI = session.extractionMode !== 'extract';
-      const slides = await processPdf(fullBuffer, filename, useAI, session.numSlides);
+      const slides =
+        session.extractionMode === 'visual'
+          ? await buildVisualPreserveSlides(fullBuffer, { maxPages: session.numSlides })
+          : await processPdf(fullBuffer, filename, session.extractionMode !== 'extract', session.numSlides);
 
       // Generate PPTX with extracted title
       const pptxBuffer = await generatePptx(slides, filename, extractedTitle);
