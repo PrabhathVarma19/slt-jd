@@ -315,6 +315,7 @@ export default function Home() {
   const [homePdfProgress, setHomePdfProgress] = useState(0);
   const [homePdfStage, setHomePdfStage] = useState<'idle' | 'uploading' | 'processing' | 'ready'>('idle');
   const [homePdfLocalError, setHomePdfLocalError] = useState<string | null>(null);
+  const [homePdfMode, setHomePdfMode] = useState<'extract' | 'ai'>('ai');
   const [isHomePdfDragging, setIsHomePdfDragging] = useState(false);
   const [homePdfResult, setHomePdfResult] = useState<{
     filename: string;
@@ -768,7 +769,7 @@ export default function Home() {
       formData.append('chunkIndex', i.toString());
       formData.append('totalChunks', chunks.length.toString());
       formData.append('filename', file.name);
-      formData.append('extractionMode', 'ai');
+      formData.append('extractionMode', homePdfMode);
       formData.append('numSlides', '10');
 
       const res = await fetch('/api/pdf-to-ppt/chunk', {
@@ -793,7 +794,7 @@ export default function Home() {
   const uploadHomePdfDirect = async (file: File) => {
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('extractionMode', 'ai');
+    formData.append('extractionMode', homePdfMode);
     formData.append('numSlides', '10');
 
     const res = await fetch('/api/pdf-to-ppt', {
@@ -1465,6 +1466,37 @@ export default function Home() {
                   <div className="mt-3 grid gap-3 rounded-lg border border-slate-200 bg-white p-3">
                     <div className="space-y-1">
                       <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                        Conversion Mode
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        <button
+                          type="button"
+                          className={`rounded-full border px-3 py-1 text-xs ${
+                            homePdfMode === 'extract'
+                              ? 'border-slate-900 bg-slate-900 text-white'
+                              : 'border-slate-300 bg-white text-slate-700'
+                          }`}
+                          onClick={() => setHomePdfMode('extract')}
+                          disabled={homePdfLoading}
+                        >
+                          As-is (faithful)
+                        </button>
+                        <button
+                          type="button"
+                          className={`rounded-full border px-3 py-1 text-xs ${
+                            homePdfMode === 'ai'
+                              ? 'border-slate-900 bg-slate-900 text-white'
+                              : 'border-slate-300 bg-white text-slate-700'
+                          }`}
+                          onClick={() => setHomePdfMode('ai')}
+                          disabled={homePdfLoading}
+                        >
+                          AI polished
+                        </button>
+                      </div>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
                         Upload PDF
                       </p>
                       <div
@@ -1565,6 +1597,9 @@ export default function Home() {
                             : ''}
                         </p>
                         <p className="text-xs text-emerald-700">{homePdfResult.filename}</p>
+                        <p className="text-xs text-emerald-700">
+                          Mode: {homePdfMode === 'extract' ? 'As-is (faithful)' : 'AI polished'}
+                        </p>
                       </div>
                     )}
                     <div className="flex flex-wrap gap-2">
