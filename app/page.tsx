@@ -903,12 +903,18 @@ export default function Home() {
       if (!data?.pptxBase64) {
         throw new Error('Conversion succeeded but PPT file is missing.');
       }
+      if (data?.modeUsed && ['extract', 'ai', 'visual'].includes(String(data.modeUsed))) {
+        setHomePdfMode(data.modeUsed as 'extract' | 'ai' | 'visual');
+      }
       setHomePdfResult({
         filename: data.filename || homePdfFile.name.replace(/\.pdf$/i, '.pptx'),
         pptxBase64: data.pptxBase64,
         totalSlides: data.totalSlides,
       });
       setHomePdfStage('ready');
+      if (data?.warning) {
+        showToast(String(data.warning), 'info');
+      }
       pushHomeThreadAssistant({
         text: `Converted ${homePdfFile.name} successfully.`,
         intent: 'pdf_to_ppt_convert',

@@ -151,10 +151,27 @@ export async function POST(req: NextRequest) {
       const extractedTitle = await extractTitleFromPdf(fullBuffer, filename);
 
       // Process PDF
-      const slides =
-        session.extractionMode === 'visual'
-          ? await buildVisualPreserveSlides(fullBuffer, { maxPages: session.numSlides })
-          : await processPdf(fullBuffer, filename, session.extractionMode !== 'extract', session.numSlides);
+      let slides;
+      let modeUsed: 'extract' | 'ai' | 'visual' = session.extractionMode || 'ai';
+      let warning: string | null = null;
+      if (session.extractionMode === 'visual') {
+        try {
+          slides = await buildVisualPreserveSlides(fullBuffer, { maxPages: session.numSlides });
+        } catch (visualError: any) {
+          console.warn('[PDF Visual Preserve Chunk] Falling back to extract mode:', visualError?.message);
+          slides = await processPdf(fullBuffer, filename, false, session.numSlides);
+          modeUsed = 'extract';
+          warning =
+            'Visual preserve is not available on this server runtime. Used As-is mode instead.';
+        }
+      } else {
+        slides = await processPdf(
+          fullBuffer,
+          filename,
+          session.extractionMode !== 'extract',
+          session.numSlides
+        );
+      }
 
       // Generate PPTX with extracted title
       const pptxBuffer = await generatePptx(slides, filename, extractedTitle);
@@ -172,6 +189,8 @@ export async function POST(req: NextRequest) {
         htmlPreview,
         filename: filename.replace(/\.pdf$/i, '.pptx'),
         totalSlides: slides.length + 1, // Include title slide
+        modeUsed,
+        warning,
       });
     }
 

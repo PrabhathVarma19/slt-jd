@@ -63,10 +63,22 @@ export async function POST(req: NextRequest) {
     // #region agent log
     fetch('http://127.0.0.1:7243/ingest/7f74fb16-5e81-4704-9c2c-1a3dd73f3bf3',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'route.ts:38',message:'Before processPdf call',data:{bufferSize:buffer.length,fileName:file.name},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
     // #endregion
-    const slides =
-      extractionMode === 'visual'
-        ? await buildVisualPreserveSlides(buffer, { maxPages: numSlides })
-        : await processPdf(buffer, file.name, extractionMode !== 'extract', numSlides);
+    let slides;
+    let modeUsed: 'extract' | 'ai' | 'visual' = extractionMode;
+    let warning: string | null = null;
+    if (extractionMode === 'visual') {
+      try {
+        slides = await buildVisualPreserveSlides(buffer, { maxPages: numSlides });
+      } catch (visualError: any) {
+        console.warn('[PDF Visual Preserve] Falling back to extract mode:', visualError?.message);
+        slides = await processPdf(buffer, file.name, false, numSlides);
+        modeUsed = 'extract';
+        warning =
+          'Visual preserve is not available on this server runtime. Used As-is mode instead.';
+      }
+    } else {
+      slides = await processPdf(buffer, file.name, extractionMode !== 'extract', numSlides);
+    }
 
     // Generate PPTX with extracted title
     // #region agent log
@@ -89,6 +101,8 @@ export async function POST(req: NextRequest) {
       htmlPreview,
       filename: file.name.replace(/\.pdf$/i, '.pptx'),
       totalSlides: slides.length + 1, // Include title slide
+      modeUsed,
+      warning,
     });
   } catch (error: any) {
     // #region agent log
