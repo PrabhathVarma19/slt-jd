@@ -550,10 +550,10 @@ export async function POST(req: NextRequest) {
     const cookie = req.headers.get('cookie') || '';
 
     const pendingCtx = await getLatestPendingHomeApprovalForUser(auth.userId);
-    if (
-      pendingCtx &&
-      (isLikelyDraftFollowup(message) || intent === 'create_it_ticket' || intent === 'unknown')
-    ) {
+    const shouldApplyPendingItDraftFollowup =
+      !!pendingCtx &&
+      (intent === 'create_it_ticket' || (intent === 'unknown' && isLikelyDraftFollowup(message)));
+    if (shouldApplyPendingItDraftFollowup) {
       const draft = (pendingCtx.approval?.metadata?.draft || {}) as CreateTicketDraft & Record<string, any>;
       const { nextDraft, changed } = applyFollowupToDraft(draft, message);
     if (changed) {
