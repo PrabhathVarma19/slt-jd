@@ -24,6 +24,23 @@ interface Tool {
   accent: string;
 }
 
+type HomeThreadItem = {
+  id: string;
+  role: 'user' | 'assistant';
+  text: string;
+  createdAt: string;
+  runId?: string | null;
+  intent?: string;
+  status?: string;
+  actionCard?: {
+    type: 'confirm' | 'info' | 'result' | 'error';
+    title: string;
+    description: string;
+    data?: Record<string, any>;
+  };
+  requiresConfirmation?: boolean;
+};
+
 const TOOLS: Tool[] = [
   {
     title: 'Ask Beacon',
@@ -315,6 +332,7 @@ export default function Home() {
       data?: Record<string, any>;
     };
   } | null>(null);
+  const [homeThread, setHomeThread] = useState<HomeThreadItem[]>([]);
   type ToolCategory = 'All' | ToolBucket;
   const TOOL_CATEGORIES: ToolCategory[] = ['All', 'Ask', 'Requests', 'Outputs'];
   const [activeToolCategory, setActiveToolCategory] = useState<ToolCategory>('All');
@@ -474,6 +492,42 @@ export default function Home() {
     fetchRecentTickets();
   }, []);
 
+  const pushHomeThreadUser = (text: string) => {
+    setHomeThread((prev) => [
+      ...prev,
+      {
+        id: crypto.randomUUID(),
+        role: 'user',
+        text,
+        createdAt: new Date().toISOString(),
+      },
+    ]);
+  };
+
+  const pushHomeThreadAssistant = (payload: {
+    text: string;
+    runId?: string | null;
+    intent?: string;
+    status?: string;
+    actionCard?: HomeThreadItem['actionCard'];
+    requiresConfirmation?: boolean;
+  }) => {
+    setHomeThread((prev) => [
+      ...prev,
+      {
+        id: crypto.randomUUID(),
+        role: 'assistant',
+        text: payload.text,
+        createdAt: new Date().toISOString(),
+        runId: payload.runId || null,
+        intent: payload.intent,
+        status: payload.status,
+        actionCard: payload.actionCard,
+        requiresConfirmation: payload.requiresConfirmation,
+      },
+    ]);
+  };
+
   const submitHomeCommand = async (messageOverride?: string) => {
     const message = (messageOverride ?? homeMessage).trim();
     if (!message) return;
@@ -482,6 +536,7 @@ export default function Home() {
       setHomeLoading(true);
       setHomeError(null);
       setLastHomeCommand(message);
+      pushHomeThreadUser(message);
 
       const res = await fetch('/api/home/command', {
         method: 'POST',
@@ -504,6 +559,14 @@ export default function Home() {
       setHomePdfProgress(0);
       setHomePdfStage('idle');
       setHomePdfLocalError(null);
+      pushHomeThreadAssistant({
+        text: data?.actionCard?.description || 'Request processed.',
+        runId: nextRunId,
+        intent: data?.intent,
+        status: data?.status,
+        actionCard: data?.actionCard,
+        requiresConfirmation: data?.requiresConfirmation,
+      });
       if (nextRunId) {
         setHomeRunDetailsLoading(true);
         try {
@@ -524,6 +587,15 @@ export default function Home() {
       setHomeMessage('');
     } catch (error: any) {
       setHomeError(error?.message || 'Failed to process command');
+      pushHomeThreadAssistant({
+        text: error?.message || 'Failed to process command',
+        status: 'FAILED',
+        actionCard: {
+          type: 'error',
+          title: 'Home Command Failed',
+          description: error?.message || 'Failed to process command',
+        },
+      });
     } finally {
       setHomeLoading(false);
     }
@@ -584,6 +656,16 @@ export default function Home() {
         }
         if (isDuplicateConflict) {
           setHomeError(null);
+          pushHomeThreadAssistant({
+            text:
+              data?.actionCard?.description ||
+              'Possible duplicate found. Review existing ticket before submitting.',
+            runId: homeRunId,
+            intent: homeResult?.intent,
+            status: 'COMPLETED',
+            actionCard: data?.actionCard,
+            requiresConfirmation: false,
+          });
           showToast(
             data?.actionCard?.description || 'Possible duplicate found. Review existing ticket first.',
             'info'
@@ -607,6 +689,20 @@ export default function Home() {
       }));
       setShowHomeDetails(false);
       setShowRunAuditDetails(false);
+      pushHomeThreadAssistant({
+        text:
+          data?.actionCard?.description ||
+          (approve ? 'Your request was submitted.' : 'Your request was not submitted.'),
+        runId: homeRunId,
+        intent: homeResult?.intent || 'create_it_ticket',
+        status: data?.status || 'COMPLETED',
+        actionCard: data?.actionCard || {
+          type: 'result',
+          title: approve ? 'Action completed' : 'Action cancelled',
+          description: approve ? 'Your request was submitted.' : 'Your request was not submitted.',
+        },
+        requiresConfirmation: false,
+      });
       showToast(
         approve
           ? data?.actionCard?.description || 'Request submitted successfully.'
@@ -632,6 +728,17 @@ export default function Home() {
       }
     } catch (error: any) {
       setHomeError(error?.message || 'Failed to process approval');
+      pushHomeThreadAssistant({
+        text: error?.message || 'Failed to process approval',
+        runId: homeRunId,
+        intent: homeResult?.intent,
+        status: 'FAILED',
+        actionCard: {
+          type: 'error',
+          title: 'Approval Failed',
+          description: error?.message || 'Failed to process approval',
+        },
+      });
       showToast(error?.message || 'Failed to process approval', 'error');
     } finally {
       setHomeConfirmLoading(false);
@@ -746,6 +853,18 @@ export default function Home() {
       return;
     }
     setHomePdfFile(file);
+    pushHomeThreadUser(`Attached PDF: ${file.name}`);
+    pushHomeThreadAssistant({
+      text: 'PDF attached. Click Convert to generate PowerPoint.',
+      intent: 'pdf_to_ppt_convert',
+      status: 'COMPLETED',
+      actionCard: {
+        type: 'info',
+        title: 'PDF Ready',
+        description: 'PDF attached. Click Convert to generate PowerPoint.',
+      },
+      requiresConfirmation: false,
+    });
     showHomePdfConvertCard();
   };
 
@@ -787,10 +906,30 @@ export default function Home() {
         totalSlides: data.totalSlides,
       });
       setHomePdfStage('ready');
+      pushHomeThreadAssistant({
+        text: `Converted ${homePdfFile.name} successfully.`,
+        intent: 'pdf_to_ppt_convert',
+        status: 'COMPLETED',
+        actionCard: {
+          type: 'result',
+          title: 'PDF Conversion Complete',
+          description: `Converted ${homePdfFile.name} successfully.`,
+        },
+      });
       showToast('PDF converted successfully.', 'success');
     } catch (error: any) {
       setHomePdfLocalError(error?.message || 'Failed to convert PDF.');
       setHomePdfStage('idle');
+      pushHomeThreadAssistant({
+        text: error?.message || 'Failed to convert PDF.',
+        intent: 'pdf_to_ppt_convert',
+        status: 'FAILED',
+        actionCard: {
+          type: 'error',
+          title: 'PDF Conversion Failed',
+          description: error?.message || 'Failed to convert PDF.',
+        },
+      });
       showToast(error?.message || 'Failed to convert PDF.', 'error');
     } finally {
       setHomePdfLoading(false);
@@ -1159,6 +1298,62 @@ export default function Home() {
                 </button>
               ))}
             </div>
+            {homeThread.length > 0 && (
+              <div className="mt-2 rounded-lg border border-slate-200 bg-white p-2">
+                <div className="mb-2 flex items-center justify-between">
+                  <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+                    Conversation
+                  </p>
+                  <button
+                    type="button"
+                    className="text-[11px] text-slate-500 underline underline-offset-2"
+                    onClick={() => setHomeThread([])}
+                    disabled={homeLoading || homeConfirmLoading}
+                  >
+                    Clear
+                  </button>
+                </div>
+                <div className="max-h-72 space-y-2 overflow-y-auto pr-1">
+                  {homeThread.map((entry) => (
+                    <div
+                      key={entry.id}
+                      className={`rounded-lg border px-2.5 py-2 text-xs ${
+                        entry.role === 'user'
+                          ? 'border-slate-300 bg-slate-50'
+                          : 'border-blue-100 bg-blue-50/40'
+                      }`}
+                    >
+                      <div className="mb-1 flex items-center justify-between gap-2">
+                        <p className="font-semibold text-slate-700">
+                          {entry.role === 'user' ? 'You' : 'Beacon'}
+                        </p>
+                        <div className="flex items-center gap-1">
+                          {entry.intent && (
+                            <span className="rounded-full bg-white px-2 py-0.5 text-[10px] uppercase tracking-wide text-slate-600">
+                              {entry.intent.replace(/_/g, ' ')}
+                            </span>
+                          )}
+                          {entry.requiresConfirmation && (
+                            <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-800">
+                              Approval
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      {entry.actionCard?.title && entry.role === 'assistant' && (
+                        <p className="font-medium text-slate-800">{entry.actionCard.title}</p>
+                      )}
+                      <p className="mt-0.5 whitespace-pre-wrap text-slate-700">{entry.text}</p>
+                      {entry.runId && (
+                        <p className="mt-1 text-[10px] text-slate-500">
+                          Run: <span className="font-mono">{entry.runId}</span>
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
             {!homeResult && !homeLoading && !homeConfirmLoading && (
               <div className="mt-2 rounded-lg border border-slate-200 bg-white p-2">
                 <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">
