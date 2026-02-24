@@ -199,7 +199,7 @@ export default function WeeklyBriefPage() {
       <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm space-y-6">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-1">
-            <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Beacon · Weekly Initiatives</p>
+            <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Beacon Â· Weekly Initiatives</p>
             <h1 className="text-2xl font-semibold text-gray-900 mt-1">Prep and publish the weekly initiatives.</h1>
             <p className="text-sm text-gray-600">Paste updates, set the week, generate the draft, then save or publish.</p>
           </div>
@@ -225,7 +225,7 @@ export default function WeeklyBriefPage() {
           </Button>
           {selectedHistoryItem && (
             <span className="rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-700">
-              {selectedHistoryItem.status.toUpperCase()} · last updated{' '}
+              {selectedHistoryItem.status.toUpperCase()} Â· last updated{' '}
               {new Date(selectedHistoryItem.updatedAt).toLocaleDateString()}
             </span>
           )}
@@ -327,7 +327,7 @@ export default function WeeklyBriefPage() {
               <div key={action.id} className="rounded-md border border-gray-200 p-4">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div className="text-sm font-semibold text-gray-900">
-                    {action.id} · {action.team || 'General'}
+                    {action.id} Â· {action.team || 'General'}
                   </div>
                   <Button
                     size="sm"
@@ -339,7 +339,7 @@ export default function WeeklyBriefPage() {
                 </div>
                 <p className="mt-1 text-sm text-gray-700">{action.description}</p>
                 <p className="mt-1 text-xs text-gray-500">
-                  Owner: {action.owner || 'Unassigned'} · Due: {action.due_date || 'TBD'} · Status: {action.status}
+                  Owner: {action.owner || 'Unassigned'} Â· Due: {action.due_date || 'TBD'} Â· Status: {action.status}
                 </p>
               </div>
             ))}
@@ -369,7 +369,7 @@ export default function WeeklyBriefPage() {
               >
                 <div className="flex items-center justify-between gap-2">
                   <span className="font-medium">
-                    {item.weekStart} · {item.mode.toUpperCase()} · {item.status.toUpperCase()}
+                    {item.weekStart} Â· {item.mode.toUpperCase()} Â· {item.status.toUpperCase()}
                   </span>
                   <span className="text-xs text-gray-500">
                     {new Date(item.updatedAt).toLocaleString()}
