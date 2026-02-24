@@ -1,49 +1,104 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import Button from '@/components/ui/button';
 import Input from '@/components/ui/input';
 import Textarea from '@/components/ui/textarea';
-import { WeeklyBrief } from '@/types/weekly';
+import {
+  WeeklyAction,
+  WeeklyBrief,
+  WeeklyBriefHistoryItem,
+  WeeklyBriefMode,
+  WeeklyBriefSection,
+  WeeklyBriefStatus,
+} from '@/types/weekly';
 
-type BriefSection = { title: string; body: string };
-type ActionItem = { id: string; team?: string; description: string; owner?: string; due?: string; status: 'open' | 'closed' };
+type SaveResponse = { item: WeeklyBriefHistoryItem };
 
-const sampleDigest: BriefSection[] = [
-  { title: 'Top Wins', body: 'IT: Completed SSO rollout for finance apps. Infosec: Closed 3 high-risk findings.' },
-  { title: 'Top Risks', body: 'Apps: Payment gateway latency risk; Infosec: phishing attempts targeting execs.' },
-  { title: 'Asks / Decisions', body: 'Approve pilot budget for observability; confirm scope freeze for payroll migration.' },
-];
-
-const sampleRunOfShow: BriefSection[] = [
-  { title: 'IT (5 min)', body: 'SSO rollout status; next milestone; risk/ask.' },
-  { title: 'Infosec (5 min)', body: 'Phishing defense; mandatory actions; verification protocol.' },
-  { title: 'Internal Apps (5 min)', body: 'Payment gateway latency mitigation; timeline.' },
-];
-
-const sampleActions: ActionItem[] = [
-  { id: 'A-1', team: 'IT', description: 'Confirm SSO cutover sign-off with Finance', owner: 'Anita', due: '2025-12-15', status: 'open' },
-  { id: 'A-2', team: 'Infosec', description: 'Send executive impersonation alert to all associates', owner: 'Ravi', due: '2025-12-09', status: 'open' },
-  { id: 'A-3', team: 'Apps', description: 'Share latency RCA and mitigation plan', owner: 'Priya', due: '2025-12-12', status: 'closed' },
-];
+type HistoryResponse = { items: WeeklyBriefHistoryItem[]; error?: string };
 
 export default function WeeklyBriefPage() {
-  const [mode, setMode] = useState<'prep' | 'publish'>('prep');
+  const [mode, setMode] = useState<WeeklyBriefMode>('prep');
   const [weekStart, setWeekStart] = useState('');
   const [agenda, setAgenda] = useState('');
   const [rawUpdates, setRawUpdates] = useState('');
-  const [lastWeekSummary] = useState('Last week: published digest/actions will appear here (placeholder).');
-  const [digest, setDigest] = useState<BriefSection[] | null>(null);
-  const [runOfShow, setRunOfShow] = useState<BriefSection[] | null>(null);
-  const [actions, setActions] = useState<ActionItem[] | null>(null);
-  const [message, setMessage] = useState<string | null>('Generation and persistence are in progress. This is a UI scaffold.');
+  const [digest, setDigest] = useState<WeeklyBriefSection[] | null>(null);
+  const [runOfShow, setRunOfShow] = useState<WeeklyBriefSection[] | null>(null);
+  const [actions, setActions] = useState<WeeklyAction[] | null>(null);
+  const [historyItems, setHistoryItems] = useState<WeeklyBriefHistoryItem[]>([]);
+  const [selectedHistoryId, setSelectedHistoryId] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+
+  const selectedHistoryItem = useMemo(
+    () => historyItems.find((item) => item.id === selectedHistoryId) || null,
+    [historyItems, selectedHistoryId]
+  );
+
+  const lastPublished = useMemo(
+    () => historyItems.find((item) => item.status === 'published') || null,
+    [historyItems]
+  );
+
+  const lastWeekSummary = useMemo(() => {
+    if (!lastPublished) return 'No published weekly brief yet.';
+    const firstDigest = lastPublished.digest[0]?.body || 'No digest summary.';
+    const trimmed = firstDigest.length > 150 ? `${firstDigest.slice(0, 147)}...` : firstDigest;
+    return `Week of ${lastPublished.weekStart}: ${trimmed}`;
+  }, [lastPublished]);
+
+  const canSave =
+    !isSaving &&
+    !isGenerating &&
+    !!rawUpdates.trim() &&
+    ((digest?.length || 0) > 0 || (runOfShow?.length || 0) > 0 || (actions?.length || 0) > 0);
+
+  const loadHistory = async () => {
+    try {
+      const res = await fetch('/api/weekly-brief', { cache: 'no-store' });
+      const data = (await res.json()) as HistoryResponse;
+      if (!res.ok || data.error) {
+        throw new Error(data.error || 'Failed to load history');
+      }
+      setHistoryItems(data.items || []);
+    } catch (err: any) {
+      setMessage(err.message || 'Failed to load history.');
+    }
+  };
+
+  useEffect(() => {
+    loadHistory();
+  }, []);
+
+  const upsertHistoryItem = (item: WeeklyBriefHistoryItem) => {
+    setHistoryItems((prev) => {
+      const next = [item, ...prev.filter((existing) => existing.id !== item.id)];
+      return next.sort(
+        (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+      );
+    });
+  };
+
+  const hydrateFromHistory = (item: WeeklyBriefHistoryItem) => {
+    setSelectedHistoryId(item.id);
+    setMode(item.mode);
+    setWeekStart(item.weekStart || '');
+    setAgenda(item.agenda || '');
+    setRawUpdates(item.rawUpdates || '');
+    setDigest(item.digest || []);
+    setRunOfShow(item.runOfShow || []);
+    setActions(item.actions || []);
+    setMessage(`Loaded ${item.status} brief from ${new Date(item.updatedAt).toLocaleString()}.`);
+  };
 
   const generateDraft = async () => {
     if (!rawUpdates.trim()) return;
+
     setIsGenerating(true);
     setMessage(null);
+
     try {
       const res = await fetch('/api/weekly-brief', {
         method: 'POST',
@@ -56,19 +111,21 @@ export default function WeeklyBriefPage() {
       });
       const data: WeeklyBrief | { error: string } = await res.json();
       if (!res.ok || (data as any).error) {
-        throw new Error((data as any).error || 'Failed to generate weekly initiatives');
+        throw new Error((data as any).error || 'Failed to generate weekly brief');
       }
+
       const brief = data as WeeklyBrief;
-      setDigest(brief.digest);
-      setRunOfShow(brief.run_of_show);
+      setSelectedHistoryId(null);
+      setDigest(brief.digest || []);
+      setRunOfShow(brief.run_of_show || []);
       setActions(
-        brief.action_register.map((a, idx) => ({
+        (brief.action_register || []).map((a, idx) => ({
           id: a.id || `A-${idx + 1}`,
           team: a.team,
           description: a.description,
           owner: a.owner,
-          due: a.due_date,
-          status: a.status as 'open' | 'closed',
+          due_date: a.due_date,
+          status: a.status === 'closed' ? 'closed' : 'open',
         }))
       );
       setMessage(mode === 'prep' ? 'Prep draft generated.' : 'Publish draft generated.');
@@ -82,9 +139,50 @@ export default function WeeklyBriefPage() {
     }
   };
 
+  const saveBrief = async (status: WeeklyBriefStatus) => {
+    if (!canSave) return;
+
+    setIsSaving(true);
+    setMessage(null);
+
+    try {
+      const res = await fetch('/api/weekly-brief', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          save: true,
+          id: selectedHistoryId || undefined,
+          mode,
+          status,
+          week_start: weekStart || undefined,
+          agenda,
+          raw_updates: rawUpdates,
+          digest: digest || [],
+          run_of_show: runOfShow || [],
+          action_register: actions || [],
+        }),
+      });
+
+      const data = (await res.json()) as SaveResponse & { error?: string };
+      if (!res.ok || data.error || !data.item) {
+        throw new Error(data.error || 'Failed to save weekly brief');
+      }
+
+      upsertHistoryItem(data.item);
+      setSelectedHistoryId(data.item.id);
+      setMessage(status === 'published' ? 'Weekly brief published.' : 'Weekly brief saved as draft.');
+    } catch (err: any) {
+      setMessage(err.message || 'Failed to save weekly brief.');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   const toggleAction = (id: string) => {
     if (!actions) return;
-    setActions(actions.map((a) => (a.id === id ? { ...a, status: a.status === 'open' ? 'closed' : 'open' } : a)));
+    setActions(
+      actions.map((a) => (a.id === id ? { ...a, status: a.status === 'open' ? 'closed' : 'open' } : a))
+    );
   };
 
   return (
@@ -94,21 +192,17 @@ export default function WeeklyBriefPage() {
           href="/"
           className="inline-flex items-center text-xs font-medium text-blue-700 hover:underline"
         >
-          ‚Üê Back to Home
+          ? Back to Home
         </Link>
-      </div>
-      <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-4 text-sm text-yellow-900">
-        <div className="font-semibold">Under progress</div>
-        <p>Weekly Brief UI scaffolded. LLM generation, persistence, and history will be wired next.</p>
       </div>
 
       <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm space-y-6">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-1">
-          <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Beacon ¬∑ Weekly Initiatives</p>
-          <h1 className="text-2xl font-semibold text-gray-900 mt-1">Prep and publish the weekly initiatives.</h1>
-          <p className="text-sm text-gray-600">Paste updates, set the week, and generate digest/run-of-show/actions.</p>
-        </div>
+            <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Beacon ∑ Weekly Initiatives</p>
+            <h1 className="text-2xl font-semibold text-gray-900 mt-1">Prep and publish the weekly initiatives.</h1>
+            <p className="text-sm text-gray-600">Paste updates, set the week, generate the draft, then save or publish.</p>
+          </div>
           <Link href="/">
             <Button variant="secondary" size="sm">Back to Home</Button>
           </Link>
@@ -129,6 +223,12 @@ export default function WeeklyBriefPage() {
           >
             Publish (after call)
           </Button>
+          {selectedHistoryItem && (
+            <span className="rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-700">
+              {selectedHistoryItem.status.toUpperCase()} ∑ last updated{' '}
+              {new Date(selectedHistoryItem.updatedAt).toLocaleDateString()}
+            </span>
+          )}
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
@@ -148,9 +248,8 @@ export default function WeeklyBriefPage() {
 
         {mode === 'prep' && (
           <div className="space-y-2 rounded-md border border-gray-100 bg-gray-50 p-4">
-            <div className="text-sm font-semibold text-gray-900">Last week (published)</div>
+            <div className="text-sm font-semibold text-gray-900">Last published week</div>
             <p className="text-sm text-gray-700">{lastWeekSummary}</p>
-            <p className="text-xs text-gray-500">When wired, this will load last week‚Äôs published digest/actions to inform prep.</p>
           </div>
         )}
 
@@ -166,15 +265,20 @@ export default function WeeklyBriefPage() {
           />
         </div>
 
-        <div className="flex items-center gap-3">
-          <Button onClick={generateDraft} disabled={!rawUpdates.trim() || isGenerating}>
+        <div className="flex flex-wrap items-center gap-3">
+          <Button onClick={generateDraft} disabled={!rawUpdates.trim() || isGenerating || isSaving}>
             {isGenerating
               ? 'Generating...'
               : mode === 'prep'
               ? 'Generate prep draft'
               : 'Generate publish draft'}
           </Button>
-          <Button variant="secondary" disabled>Save/Publish (pending wiring)</Button>
+          <Button variant="secondary" onClick={() => saveBrief('draft')} disabled={!canSave}>
+            {isSaving ? 'Saving...' : 'Save Draft'}
+          </Button>
+          <Button onClick={() => saveBrief('published')} disabled={!canSave}>
+            {isSaving ? 'Publishing...' : 'Mark Published'}
+          </Button>
         </div>
 
         {message && (
@@ -188,7 +292,6 @@ export default function WeeklyBriefPage() {
         <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold text-gray-900">Digest (prep view)</h2>
-            <Button variant="secondary" size="sm" disabled={!digest}>Copy digest</Button>
           </div>
           {!digest && <p className="text-sm text-gray-600">Generate a draft to see the digest.</p>}
           {digest && digest.map((sec, idx) => (
@@ -202,7 +305,6 @@ export default function WeeklyBriefPage() {
         <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold text-gray-900">Run of show</h2>
-            <Button variant="secondary" size="sm" disabled={!runOfShow}>Copy run-of-show</Button>
           </div>
           {!runOfShow && <p className="text-sm text-gray-600">Generate a draft to see the run-of-show.</p>}
           {runOfShow && runOfShow.map((sec, idx) => (
@@ -217,7 +319,6 @@ export default function WeeklyBriefPage() {
       <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold text-gray-900">Action register</h2>
-          <Button variant="secondary" size="sm" disabled={!actions}>Export (pending)</Button>
         </div>
         {!actions && <p className="text-sm text-gray-600">Generate a draft to see actions.</p>}
         {actions && (
@@ -226,7 +327,7 @@ export default function WeeklyBriefPage() {
               <div key={action.id} className="rounded-md border border-gray-200 p-4">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div className="text-sm font-semibold text-gray-900">
-                    {action.id} ¬∑ {action.team || 'General'}
+                    {action.id} ∑ {action.team || 'General'}
                   </div>
                   <Button
                     size="sm"
@@ -238,7 +339,7 @@ export default function WeeklyBriefPage() {
                 </div>
                 <p className="mt-1 text-sm text-gray-700">{action.description}</p>
                 <p className="mt-1 text-xs text-gray-500">
-                  Owner: {action.owner || 'Unassigned'} ¬∑ Due: {action.due || 'TBD'} ¬∑ Status: {action.status}
+                  Owner: {action.owner || 'Unassigned'} ∑ Due: {action.due_date || 'TBD'} ∑ Status: {action.status}
                 </p>
               </div>
             ))}
@@ -249,9 +350,35 @@ export default function WeeklyBriefPage() {
       <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm space-y-3">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold text-gray-900">History</h2>
-          <Button variant="secondary" size="sm" disabled>Refresh (pending)</Button>
+          <Button variant="secondary" size="sm" onClick={loadHistory}>Refresh</Button>
         </div>
-        <p className="text-sm text-gray-600">History listing will appear here once persistence is wired.</p>
+        {historyItems.length === 0 ? (
+          <p className="text-sm text-gray-600">No saved briefs yet.</p>
+        ) : (
+          <div className="space-y-2">
+            {historyItems.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => hydrateFromHistory(item)}
+                className={`w-full rounded-md border px-3 py-2 text-left text-sm transition ${
+                  selectedHistoryId === item.id
+                    ? 'border-blue-300 bg-blue-50 text-blue-900'
+                    : 'border-gray-200 bg-white text-gray-700 hover:bg-gray-50'
+                }`}
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <span className="font-medium">
+                    {item.weekStart} ∑ {item.mode.toUpperCase()} ∑ {item.status.toUpperCase()}
+                  </span>
+                  <span className="text-xs text-gray-500">
+                    {new Date(item.updatedAt).toLocaleString()}
+                  </span>
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

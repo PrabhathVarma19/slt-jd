@@ -280,12 +280,6 @@ export default function PolicyAgentPage() {
       setSources(data.sources || []);
       setKeyRules((data as any).keyRules || null);
 
-      if (lastUserMessage) {
-        console.log('Ask Beacon answer', {
-          question: lastUserMessage.content,
-          answerPreview: answerText.slice(0, 160),
-        });
-      }
     } catch (err: any) {
       setError(err.message || 'Failed to get answer');
     } finally {
@@ -304,13 +298,6 @@ export default function PolicyAgentPage() {
 
   const handleFeedback = (value: Feedback) => {
     setFeedback(value);
-    if (lastUserMessage && lastAssistantMessage) {
-      console.log('Ask Beacon feedback', {
-        question: lastUserMessage.content,
-        answerPreview: lastAssistantMessage.content.slice(0, 160),
-        feedback: value,
-      });
-    }
   };
 
   const handleResetConversation = () => {

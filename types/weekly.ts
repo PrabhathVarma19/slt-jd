@@ -4,6 +4,14 @@ export interface WeeklyBriefRequest {
   raw_updates: string;
 }
 
+export type WeeklyBriefMode = 'prep' | 'publish';
+export type WeeklyBriefStatus = 'draft' | 'published';
+
+export interface WeeklyBriefSection {
+  title: string;
+  body: string;
+}
+
 export interface WeeklyAction {
   id: string;
   team?: string;
@@ -21,9 +29,23 @@ export interface WeeklyBrief {
   week_start: string;
   agenda?: string;
   raw_updates: string;
-  digest: { title: string; body: string }[];
-  run_of_show: { title: string; body: string }[];
+  digest: WeeklyBriefSection[];
+  run_of_show: WeeklyBriefSection[];
   action_register: WeeklyAction[];
   created_at: string;
   updated_at: string;
+}
+
+export interface WeeklyBriefHistoryItem {
+  id: string;
+  mode: WeeklyBriefMode;
+  status: WeeklyBriefStatus;
+  weekStart: string;
+  agenda?: string;
+  rawUpdates: string;
+  digest: WeeklyBriefSection[];
+  runOfShow: WeeklyBriefSection[];
+  actions: WeeklyAction[];
+  createdAt: string;
+  updatedAt: string;
 }

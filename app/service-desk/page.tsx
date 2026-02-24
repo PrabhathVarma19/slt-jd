@@ -352,9 +352,6 @@ export default function ServiceDeskPage() {
               ? 'Chat with Beacon to submit IT requests or get help with self-service actions.'
               : 'Raise structured IT and access requests. Beacon can suggest category, system and impact.'}
           </p>
-          <p className="col-start-2 text-sm text-slate-600">
-            Inputs, Submit Request, Output
-          </p>
         </div>
         <ViewToggle value={viewMode} onChange={setViewMode} />
       </div>

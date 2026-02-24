@@ -245,9 +245,7 @@ export default function Home() {
           
           setIsSuperAdmin(roles.includes('SUPER_ADMIN'));
           
-          console.log('Session check:', { roles, hasAdminRole, hasEngineerRole, hasTravelAdminRole, data });
         } else {
-          console.log('No admin roles found:', data);
         }
       })
       .catch((err) => {
