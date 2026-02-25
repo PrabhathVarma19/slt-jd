@@ -335,6 +335,7 @@ export default function Home() {
   } | null>(null);
   const [homeThread, setHomeThread] = useState<HomeThreadItem[]>([]);
   const [showHomeSessionConversation, setShowHomeSessionConversation] = useState(false);
+  const [homeInputFocused, setHomeInputFocused] = useState(false);
   type ToolCategory = 'All' | ToolBucket;
   const TOOL_CATEGORIES: ToolCategory[] = ['All', 'Ask', 'Requests', 'Outputs'];
   const [activeToolCategory, setActiveToolCategory] = useState<ToolCategory>('All');
@@ -366,6 +367,10 @@ export default function Home() {
       })
       .slice(0, 5);
   }, [homeMessage, recentItTickets]);
+  const shouldShowTicketSuggestions =
+    recentItTickets.length > 0 && (homeInputFocused || /\b(ticket|\d{2,})\b/i.test(homeMessage));
+  const ticketSuggestionCandidates =
+    ticketAutocompleteSuggestions.length > 0 ? ticketAutocompleteSuggestions : recentItTickets;
   const isItApprovalCard =
     homeResult?.intent === 'create_it_ticket' &&
     homeResult?.requiresConfirmation &&
@@ -1252,6 +1257,8 @@ export default function Home() {
                   }
                   setHomeMessage(nextValue);
                 }}
+                onFocus={() => setHomeInputFocused(true)}
+                onBlur={() => setHomeInputFocused(false)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && !homeLoading && !homeConfirmLoading) {
                     e.preventDefault();
@@ -1409,39 +1416,26 @@ export default function Home() {
                 ))}
               </div>
             )}
-            {recentItTickets.length > 0 && (
+            {shouldShowTicketSuggestions && (
               <div className="mt-2 flex flex-wrap gap-2">
-                {recentItTickets.map((ticketNumber) => (
-                  <button
-                    key={ticketNumber}
-                    type="button"
-                    className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300"
-                    disabled={homeLoading || homeConfirmLoading}
-                    onClick={() => runTicketStatusCheck(ticketNumber)}
-                  >
-                    {ticketNumber}
-                  </button>
-                ))}
-              </div>
-            )}
-            {ticketAutocompleteSuggestions.length > 0 && (
-              <div className="mt-2">
-                <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">
-                  Ticket Suggestions
-                </p>
-                <div className="mt-1 flex flex-wrap gap-2">
-                  {ticketAutocompleteSuggestions.map((ticketNumber: string) => (
+                {ticketSuggestionCandidates.map((ticketNumber) => {
+                  const isSuggested = ticketAutocompleteSuggestions.includes(ticketNumber);
+                  return (
                     <button
-                      key={`suggestion-${ticketNumber}`}
+                      key={`ticket-${ticketNumber}`}
                       type="button"
-                      className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs text-emerald-800 hover:bg-emerald-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200"
+                      className={`rounded-full border px-3 py-1 text-xs focus-visible:outline-none focus-visible:ring-2 ${
+                        isSuggested
+                          ? 'border-emerald-200 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 focus-visible:ring-emerald-200'
+                          : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-100 focus-visible:ring-slate-300'
+                      }`}
                       disabled={homeLoading || homeConfirmLoading}
                       onClick={() => runTicketStatusCheck(ticketNumber)}
                     >
                       {ticketNumber}
                     </button>
-                  ))}
-                </div>
+                  );
+                })}
               </div>
             )}
 
