@@ -376,6 +376,13 @@ export default function Home() {
     () => [...homeThread].reverse().find((entry) => entry.role === 'assistant') || null,
     [homeThread]
   );
+  const latestAssistantRouteTo =
+    typeof latestAssistantEntry?.actionCard?.data?.routeTo === 'string'
+      ? latestAssistantEntry.actionCard.data.routeTo
+      : latestAssistantEntry?.intent === 'check_ticket_status' &&
+          typeof latestAssistantEntry?.actionCard?.data?.ticket?.id === 'string'
+        ? `/tickets/${latestAssistantEntry.actionCard.data.ticket.id}`
+        : null;
   const itMissingFields =
     Array.isArray(homeResult?.actionCard?.data?.missingFields) &&
     homeResult?.actionCard?.data?.missingFields?.length
@@ -1400,6 +1407,16 @@ export default function Home() {
                       )}
                     </div>
                     <p className="mt-0.5 whitespace-pre-wrap text-slate-700">{latestAssistantEntry.text}</p>
+                    {latestAssistantRouteTo && (
+                      <div className="mt-2">
+                        <Link
+                          href={latestAssistantRouteTo}
+                          className="inline-flex items-center rounded-md border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-medium text-slate-700 hover:bg-slate-100"
+                        >
+                          Open ticket details
+                        </Link>
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <p className="text-xs text-slate-500">No assistant response yet.</p>

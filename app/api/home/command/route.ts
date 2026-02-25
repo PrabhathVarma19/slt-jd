@@ -872,7 +872,13 @@ export async function POST(req: NextRequest) {
               type: 'result',
               title: `Ticket ${ticketNumber}`,
               description: data?.message || 'Ticket status retrieved.',
-              data,
+              data: {
+                ...data,
+                routeTo:
+                  typeof data?.ticket?.id === 'string' && data.ticket.id
+                    ? `/tickets/${data.ticket.id}`
+                    : undefined,
+              },
             }
           : {
               type: 'error',

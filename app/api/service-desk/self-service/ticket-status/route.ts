@@ -64,6 +64,7 @@ export async function GET(req: NextRequest) {
       message: `Ticket ${ticketNumber} Status: ${ticket.status.replace(/_/g, ' ')}. ${statusMessages[ticket.status] || ''}`,
       found: true,
       ticket: {
+        id: ticket.id,
         number: ticket.ticketNumber,
         status: ticket.status,
         title: ticket.title,
