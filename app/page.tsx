@@ -1201,18 +1201,6 @@ export default function Home() {
             <Button asChild variant="outline" className="rounded-full px-5">
               <Link href="/service-desk">Raise IT request</Link>
             </Button>
-            <button
-              type="button"
-              onClick={() => {
-                const el = document.getElementById('tools-hub');
-                if (el) {
-                  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-              }}
-              className="text-sm text-slate-500 underline-offset-4 hover:text-slate-700 hover:underline"
-            >
-              Open tools hub
-            </button>
           </div>
 
           <div
@@ -1234,14 +1222,6 @@ export default function Home() {
               selectHomePdfFile(file);
             }}
           >
-            <div className="flex items-center justify-between gap-2">
-              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                Home Command Bar
-              </p>
-              <span className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ${homeStatusClass}`}>
-                {homeStatusLabel}
-              </span>
-            </div>
             <div className="mt-2 flex flex-col gap-2 sm:flex-row">
               <input
                 ref={homePdfGlobalInputRef}
@@ -1300,11 +1280,6 @@ export default function Home() {
             {isHomePdfDragging && (
               <p className="mt-1 text-[11px] text-blue-700">Drop PDF to start conversion</p>
             )}
-            {!homeLoading && !homeConfirmLoading && !homeResult && (
-              <p className="mt-1 text-[11px] text-slate-500">
-                Use plain language. Example: <span className="font-mono">Install Jira for QA team</span>.
-              </p>
-            )}
             {homeResult?.requiresConfirmation && (
               <p className="mt-1 text-[11px] text-slate-500">
                 Tip: You can type follow-ups like <span className="font-mono">for 2 weeks</span> or{' '}
@@ -1320,19 +1295,6 @@ export default function Home() {
               </div>
             )}
 
-            <div className="mt-2 flex flex-wrap gap-2">
-              {quickPrompts.map((preset) => (
-                <button
-                  key={preset.label}
-                  type="button"
-                  className="rounded-full border border-transparent bg-slate-100 px-3 py-1 text-xs text-slate-700 hover:bg-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300"
-                  disabled={homeLoading || homeConfirmLoading}
-                  onClick={() => setHomeMessage(preset.value)}
-                >
-                  {preset.label}
-                </button>
-              ))}
-            </div>
             {homeThread.length > 0 && (
               <div className="mt-2 rounded-lg border border-slate-200 bg-white p-2">
                 <div className="mb-2 flex items-center justify-between">
@@ -1424,47 +1386,37 @@ export default function Home() {
               </div>
             )}
             {!homeResult && !homeLoading && !homeConfirmLoading && (
-              <div className="mt-2 rounded-lg border border-slate-200 bg-white p-2">
-                <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">
-                  Try one
-                </p>
-                <div className="mt-1 flex flex-wrap gap-2">
-                  {[
-                    'Need VPN access for ABC UAT for 2 weeks',
-                    'Install Cursor for QA team',
-                    'What is the RTO policy for India?',
-                  ].map((example) => (
-                    <button
-                      key={example}
-                      type="button"
-                      className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300"
-                      disabled={homeLoading || homeConfirmLoading}
-                      onClick={() => setHomeMessage(example)}
-                    >
-                      {example}
-                    </button>
-                  ))}
-                </div>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {[
+                  'Need VPN access for ABC UAT for 2 weeks',
+                  'Install Cursor for QA team',
+                  'What is the RTO policy for India?',
+                ].map((example) => (
+                  <button
+                    key={example}
+                    type="button"
+                    className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300"
+                    disabled={homeLoading || homeConfirmLoading}
+                    onClick={() => setHomeMessage(example)}
+                  >
+                    {example}
+                  </button>
+                ))}
               </div>
             )}
             {recentItTickets.length > 0 && (
-              <div className="mt-2">
-                <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">
-                  My Recent IT Tickets
-                </p>
-                <div className="mt-1 flex flex-wrap gap-2">
-                  {recentItTickets.map((ticketNumber) => (
-                    <button
-                      key={ticketNumber}
-                      type="button"
-                      className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300"
-                      disabled={homeLoading || homeConfirmLoading}
-                      onClick={() => runTicketStatusCheck(ticketNumber)}
-                    >
-                      {ticketNumber}
-                    </button>
-                  ))}
-                </div>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {recentItTickets.map((ticketNumber) => (
+                  <button
+                    key={ticketNumber}
+                    type="button"
+                    className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300"
+                    disabled={homeLoading || homeConfirmLoading}
+                    onClick={() => runTicketStatusCheck(ticketNumber)}
+                  >
+                    {ticketNumber}
+                  </button>
+                ))}
               </div>
             )}
             {ticketAutocompleteSuggestions.length > 0 && homeMessage.toLowerCase().includes('ticket') && (
@@ -2103,9 +2055,8 @@ export default function Home() {
             </button>
           )}
           <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3">
-            <p className="text-sm font-semibold text-slate-900">My Recent IT Tickets</p>
             {recentItTickets.length > 0 ? (
-              <div className="mt-2 flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2">
                 {recentItTickets.slice(0, 4).map((ticketNumber) => (
                   <button
                     key={`recent-actions-${ticketNumber}`}
@@ -2119,7 +2070,7 @@ export default function Home() {
                 ))}
               </div>
             ) : (
-              <p className="mt-2 text-xs text-slate-600">No recent IT tickets yet.</p>
+              <p className="text-xs text-slate-600">No recent IT tickets yet.</p>
             )}
           </div>
         </div>
