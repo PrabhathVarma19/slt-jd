@@ -368,6 +368,8 @@ export default function Home() {
     !!homeResult?.actionCard?.data?.duplicateTicketNumber &&
     homeResult?.actionCard?.type === 'info';
   const isPdfConvertCard = homeResult?.intent === 'pdf_to_ppt_convert';
+  const shouldShowActiveActionCard =
+    !!homeResult?.actionCard && (isItApprovalCard || isPdfConvertCard || isDuplicateWarningCard);
   const isNeedsReviewStatus = isDuplicateWarningCard;
   const itMissingFields =
     Array.isArray(homeResult?.actionCard?.data?.missingFields) &&
@@ -1426,7 +1428,7 @@ export default function Home() {
               </div>
             )}
 
-            {homeResult?.actionCard && (
+            {shouldShowActiveActionCard && (
               <div className="mt-3 rounded-xl border border-slate-200 bg-slate-50/80 p-3.5">
                 <div className="mb-2 flex justify-end">
                   <Button
@@ -1440,11 +1442,6 @@ export default function Home() {
                 </div>
                 <p className="text-sm font-semibold text-slate-900">{homeResult.actionCard.title}</p>
                 <p className="mt-1 text-sm text-slate-700">{homeResult.actionCard.description}</p>
-                {homeResult.actionCard.type === 'result' && (
-                  <p className="mt-1 text-xs font-medium text-emerald-700">
-                    Completed. You can track this in the relevant tool.
-                  </p>
-                )}
                 {homeResult.actionCard.data?.lastFollowupMessage && (
                   <p className="mt-1 text-xs text-slate-500">
                     Last update:
