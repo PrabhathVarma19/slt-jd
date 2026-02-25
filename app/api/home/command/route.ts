@@ -940,6 +940,7 @@ export async function POST(req: NextRequest) {
               data: {
                 keyRules: data?.keyRules || null,
                 sources: data?.sources || [],
+                routeTo: '/policy-agent',
               },
             }
           : {
@@ -1295,12 +1296,11 @@ export async function POST(req: NextRequest) {
     });
 
     const suggestions = llmIntent?.suggestedActions?.length
-      ? llmIntent.suggestedActions
+      ? llmIntent.suggestedActions.slice(0, 3)
       : [
-          'Reset my password',
-          'Check status of ticket IT-000123',
-          'Convert this PDF to PowerPoint',
-          'Create a newsletter update for my team',
+          'Raise IT request for software access',
+          'Ask a policy question: WFH policy',
+          'Generate release notes for last sprint',
         ];
 
     return NextResponse.json({
@@ -1310,9 +1310,8 @@ export async function POST(req: NextRequest) {
       requiresConfirmation: false,
       actionCard: {
         type: 'info',
-        title: 'Need More Context',
-        description:
-          'I can help with IT requests, ticket status checks, password reset, policy questions, comms drafts, engineering drafts, JD generation, or PDF to PowerPoint conversion.',
+        title: 'Quick clarification',
+        description: 'What would you like to do?',
         data: {
           suggestions,
           reason: llmIntent?.reason || 'low_confidence_or_no_match',

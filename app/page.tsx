@@ -1388,6 +1388,22 @@ export default function Home() {
                         </Link>
                       </div>
                     )}
+                    {Array.isArray(latestAssistantEntry.actionCard?.data?.suggestions) &&
+                      latestAssistantEntry.actionCard.data.suggestions.length > 0 && (
+                        <div className="mt-2 flex flex-wrap gap-2">
+                          {latestAssistantEntry.actionCard.data.suggestions.map((suggestion: string) => (
+                            <button
+                              key={`latest-suggestion-${suggestion}`}
+                              type="button"
+                              className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-700 hover:bg-slate-100"
+                              onClick={() => submitHomeCommand(suggestion)}
+                              disabled={homeLoading || homeConfirmLoading}
+                            >
+                              {suggestion}
+                            </button>
+                          ))}
+                        </div>
+                      )}
                   </div>
                 ) : (
                   <p className="text-xs text-slate-500">No assistant response yet.</p>
@@ -1655,6 +1671,63 @@ export default function Home() {
                       <p className="text-xs font-semibold text-amber-700">
                         Required before submit: {itMissingFields.join(', ')}
                       </p>
+                    )}
+                    {itMissingFields.length > 0 && (
+                      <div className="flex flex-wrap gap-2">
+                        {itMissingFields.includes('reason') && (
+                          <>
+                            {['for QA team', 'for ABC UAT', 'for client reporting'].map((value) => (
+                              <button
+                                key={`reason-${value}`}
+                                type="button"
+                                className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-700 hover:bg-slate-100"
+                                onClick={() =>
+                                  setHomeDraftPatch((prev) => ({
+                                    ...prev,
+                                    reason: value.replace(/^for\s+/i, ''),
+                                  }))
+                                }
+                              >
+                                {value}
+                              </button>
+                            ))}
+                          </>
+                        )}
+                        {itMissingFields.includes('durationType') && (
+                          <>
+                            {['for 2 weeks', 'permanent', 'temporary until 2026-03-31'].map((value) => (
+                              <button
+                                key={`duration-${value}`}
+                                type="button"
+                                className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-700 hover:bg-slate-100"
+                                onClick={() =>
+                                  setHomeDraftPatch((prev) => ({
+                                    ...prev,
+                                    durationType: value.includes('temporary') ? 'temporary' : value,
+                                    durationUntil: value.includes('until') ? '2026-03-31' : '',
+                                  }))
+                                }
+                              >
+                                {value}
+                              </button>
+                            ))}
+                          </>
+                        )}
+                        {itMissingFields.includes('system') && (
+                          <>
+                            {['Cursor', 'Power BI', 'Jira'].map((value) => (
+                              <button
+                                key={`system-${value}`}
+                                type="button"
+                                className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-700 hover:bg-slate-100"
+                                onClick={() => setHomeDraftPatch((prev) => ({ ...prev, system: value }))}
+                              >
+                                {value}
+                              </button>
+                            ))}
+                          </>
+                        )}
+                      </div>
                     )}
 
                     <div className="grid gap-2 sm:grid-cols-3">
