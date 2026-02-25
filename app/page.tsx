@@ -367,10 +367,7 @@ export default function Home() {
       })
       .slice(0, 5);
   }, [homeMessage, recentItTickets]);
-  const shouldShowTicketSuggestions =
-    recentItTickets.length > 0 && (homeInputFocused || /\b(ticket|\d{2,})\b/i.test(homeMessage));
-  const ticketSuggestionCandidates =
-    ticketAutocompleteSuggestions.length > 0 ? ticketAutocompleteSuggestions : recentItTickets;
+  const hasTicketSignal = homeInputFocused || /\b(ticket|\d{2,})\b/i.test(homeMessage);
   const isItApprovalCard =
     homeResult?.intent === 'create_it_ticket' &&
     homeResult?.requiresConfirmation &&
@@ -1416,17 +1413,17 @@ export default function Home() {
                 ))}
               </div>
             )}
-            {shouldShowTicketSuggestions && (
+            {recentItTickets.length > 0 && (
               <div className="mt-2 flex flex-wrap gap-2">
-                {ticketSuggestionCandidates.map((ticketNumber) => {
-                  const isSuggested = ticketAutocompleteSuggestions.includes(ticketNumber);
+                {recentItTickets.map((ticketNumber) => {
+                  const isSuggested = hasTicketSignal && ticketAutocompleteSuggestions.includes(ticketNumber);
                   return (
                     <button
                       key={`ticket-${ticketNumber}`}
                       type="button"
                       className={`rounded-full border px-3 py-1 text-xs focus-visible:outline-none focus-visible:ring-2 ${
                         isSuggested
-                          ? 'border-emerald-200 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 focus-visible:ring-emerald-200'
+                          ? 'border-sky-200 bg-sky-50 text-sky-800 hover:bg-sky-100 focus-visible:ring-sky-200'
                           : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-100 focus-visible:ring-slate-300'
                       }`}
                       disabled={homeLoading || homeConfirmLoading}
