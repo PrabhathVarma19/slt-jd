@@ -408,6 +408,19 @@ export default function Home() {
       .replace(/^./, (str) => str.toUpperCase())
       .trim();
 
+  const getHomeIntentLabel = (intent?: string) => {
+    const normalized = (intent || '').toLowerCase();
+    if (normalized === 'policy_question') return 'Policy';
+    if (normalized === 'check_ticket_status') return 'Ticket Status';
+    if (normalized === 'create_it_ticket') return 'IT Request';
+    if (normalized === 'password_reset') return 'Password Reset';
+    if (normalized === 'pdf_to_ppt_convert') return 'PDF to PPT';
+    if (normalized === 'comms_generate') return 'Comms';
+    if (normalized === 'engineering_generate') return 'Engineering';
+    if (normalized === 'jd_generate') return 'JD';
+    return intent ? intent.replace(/_/g, ' ') : 'Response';
+  };
+
   const renderHomeActionDetails = () => {
     const data = homeResult?.actionCard?.data;
     if (!data) return null;
@@ -1350,16 +1363,14 @@ export default function Home() {
                           entry.role === 'user'
                             ? 'border-slate-300 bg-slate-50'
                             : 'border-blue-100 bg-blue-50/40'
-                        }`}
-                      >
-                        <div className="mb-1 flex items-center justify-between gap-2">
-                          <p className="font-semibold text-slate-700">
-                            {entry.role === 'user' ? 'You' : 'Beacon'}
-                          </p>
+                      }`}
+                    >
+                      <div className="mb-1 flex items-center justify-between gap-2">
+                          <p className="font-semibold text-slate-700">{entry.role === 'user' ? 'You' : ''}</p>
                           <div className="flex items-center gap-1">
                             {entry.intent && (
                               <span className="rounded-full bg-white px-2 py-0.5 text-[10px] uppercase tracking-wide text-slate-600">
-                                {entry.intent.replace(/_/g, ' ')}
+                                {getHomeIntentLabel(entry.intent)}
                               </span>
                             )}
                             {entry.requiresConfirmation && (
@@ -1369,15 +1380,7 @@ export default function Home() {
                             )}
                           </div>
                         </div>
-                        {entry.actionCard?.title && entry.role === 'assistant' && (
-                          <p className="font-medium text-slate-800">{entry.actionCard.title}</p>
-                        )}
                         <p className="mt-0.5 whitespace-pre-wrap text-slate-700">{entry.text}</p>
-                        {entry.runId && (
-                          <p className="mt-1 text-[10px] text-slate-500">
-                            Run: <span className="font-mono">{entry.runId}</span>
-                          </p>
-                        )}
                       </div>
                     ))}
                   </div>
@@ -1390,22 +1393,13 @@ export default function Home() {
                     }`}
                   >
                     <div className="mb-1 flex items-center justify-between gap-2">
-                      <p className="font-semibold text-slate-700">Beacon</p>
                       {latestAssistantEntry.intent && (
                         <span className="rounded-full bg-white px-2 py-0.5 text-[10px] uppercase tracking-wide text-slate-600">
-                          {latestAssistantEntry.intent.replace(/_/g, ' ')}
+                          {getHomeIntentLabel(latestAssistantEntry.intent)}
                         </span>
                       )}
                     </div>
-                    {latestAssistantEntry.actionCard?.title && (
-                      <p className="font-medium text-slate-800">{latestAssistantEntry.actionCard.title}</p>
-                    )}
                     <p className="mt-0.5 whitespace-pre-wrap text-slate-700">{latestAssistantEntry.text}</p>
-                    {latestAssistantEntry.runId && (
-                      <p className="mt-1 text-[10px] text-slate-500">
-                        Run: <span className="font-mono">{latestAssistantEntry.runId}</span>
-                      </p>
-                    )}
                   </div>
                 ) : (
                   <p className="text-xs text-slate-500">No assistant response yet.</p>
@@ -1928,69 +1922,6 @@ export default function Home() {
               </div>
             )}
 
-            {homeRunId && (
-              <p className="mt-2 text-xs text-slate-500">
-                Run ID: <span className="font-mono">{homeRunId}</span>
-              </p>
-            )}
-            {(homeRunDetailsLoading || homeRunDetails) && (
-              <div className="mt-2 rounded-lg border border-slate-200 bg-white p-2">
-                <button
-                  type="button"
-                  className="text-xs font-semibold uppercase tracking-wide text-slate-500 underline underline-offset-2"
-                  onClick={() => setShowRunAuditDetails((prev) => !prev)}
-                >
-                  {showRunAuditDetails ? 'Hide audit details' : 'View audit details'}
-                </button>
-                {showRunAuditDetails && (
-                  <>
-                    <p className="mt-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
-                      Run Timeline
-                    </p>
-                    {homeRunDetailsLoading && (
-                      <p className="mt-1 text-xs text-slate-500">Loading timeline...</p>
-                    )}
-                    {!homeRunDetailsLoading && homeRunDetails?.steps?.length === 0 && (
-                      <p className="mt-1 text-xs text-slate-500">No steps recorded yet.</p>
-                    )}
-                    {!homeRunDetailsLoading && homeRunDetails?.steps?.length ? (
-                      <div className="mt-2 space-y-1">
-                        {homeRunDetails.steps.map((step) => (
-                          <div
-                            key={step.id}
-                            className="rounded-md border border-slate-100 bg-slate-50 px-2 py-1 text-xs"
-                          >
-                            <p className="font-medium text-slate-700">
-                              Step {step.stepNo}: {step.phase}
-                            </p>
-                            <p className="text-slate-600">
-                              Status: {step.status}
-                              {step.tool ? ` | Tool: ${step.tool}` : ''}
-                              {step.requiresApproval ? ' | Approval required' : ''}
-                            </p>
-                          </div>
-                        ))}
-                      </div>
-                    ) : null}
-                    {!homeRunDetailsLoading && homeRunDetails?.approvals?.length ? (
-                      <div className="mt-2 border-t border-slate-100 pt-2">
-                        <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                          Approvals
-                        </p>
-                        <div className="mt-1 space-y-1">
-                          {homeRunDetails.approvals.map((approval) => (
-                            <div key={approval.id} className="text-xs text-slate-600">
-                              Decision: {approval.decision}
-                              {approval.reason ? ` | Reason: ${approval.reason}` : ''}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ) : null}
-                  </>
-                )}
-              </div>
-            )}
             {homeError && !isDuplicateWarningCard && (
               <div className="mt-2 rounded-lg border border-red-200 bg-red-50 p-2">
                 <p className="text-xs font-medium text-red-700">{homeError}</p>
