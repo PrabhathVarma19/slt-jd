@@ -346,11 +346,16 @@ export default function Home() {
     { label: 'Convert PDF to PPT', value: 'Convert this PDF to PowerPoint' },
   ];
   const ticketAutocompleteSuggestions = useMemo(() => {
+    if (recentItTickets.length === 0) return [];
+
     const text = homeMessage.trim().toLowerCase();
-    if (!text.includes('ticket')) return [];
+    const hasTicketKeyword = text.includes('ticket');
+    if (!text) return recentItTickets.slice(0, 5);
 
     const ticketLike = text.match(/(it[-_ ]?\d{0,6}|tr[-_ ]?\d{0,6}|\d{1,6})$/i)?.[0] || '';
-    if (!ticketLike) return recentItTickets.slice(0, 5);
+    if (!ticketLike) {
+      return hasTicketKeyword ? recentItTickets.slice(0, 5) : [];
+    }
 
     const normalized = ticketLike.toUpperCase().replace(/[_ ]/g, '-');
     const digitOnly = normalized.replace(/[^0-9]/g, '');
@@ -1419,7 +1424,7 @@ export default function Home() {
                 ))}
               </div>
             )}
-            {ticketAutocompleteSuggestions.length > 0 && homeMessage.toLowerCase().includes('ticket') && (
+            {ticketAutocompleteSuggestions.length > 0 && (
               <div className="mt-2">
                 <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">
                   Ticket Suggestions
