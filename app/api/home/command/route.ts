@@ -419,9 +419,7 @@ function isLikelyDraftFollowup(message: string) {
   ];
   if (explicitNewIntentSignals.some((signal) => text.includes(signal))) return false;
 
-  // Short contextual fragments are usually follow-ups while a draft is pending.
-  const words = text.split(/\s+/).filter(Boolean);
-  return words.length <= 8;
+  return false;
 }
 
 async function classifyIntentWithLlm(message: string): Promise<LlmIntentResult> {
@@ -549,7 +547,7 @@ export async function POST(req: NextRequest) {
     const origin = new URL(req.url).origin;
     const cookie = req.headers.get('cookie') || '';
 
-    const pendingCtx = await getLatestPendingHomeApprovalForUser(auth.userId);
+    const pendingCtx = await getLatestPendingHomeApprovalForUser(auth.userId, sessionId);
     const shouldApplyPendingItDraftFollowup =
       !!pendingCtx &&
       (intent === 'create_it_ticket' || (intent === 'unknown' && isLikelyDraftFollowup(message)));

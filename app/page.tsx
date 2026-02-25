@@ -334,6 +334,7 @@ export default function Home() {
     };
   } | null>(null);
   const [homeThread, setHomeThread] = useState<HomeThreadItem[]>([]);
+  const homeSessionIdRef = useRef(crypto.randomUUID());
   const [showHomeSessionConversation, setShowHomeSessionConversation] = useState(false);
   const [homeInputFocused, setHomeInputFocused] = useState(false);
   type ToolCategory = 'All' | ToolBucket;
@@ -576,7 +577,7 @@ export default function Home() {
       const res = await fetch('/api/home/command', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message }),
+        body: JSON.stringify({ message, sessionId: homeSessionIdRef.current }),
       });
       const data = await res.json();
       if (!res.ok || data.error) {
@@ -655,6 +656,7 @@ export default function Home() {
     setHomePdfProgress(0);
     setHomePdfStage('idle');
     setHomePdfLocalError(null);
+    homeSessionIdRef.current = crypto.randomUUID();
     setHomeDraftPatch({
       system: '',
       reason: '',

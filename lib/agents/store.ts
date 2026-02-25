@@ -231,13 +231,15 @@ export async function getPendingApprovalForRun(runId: string) {
   return data;
 }
 
-export async function getLatestPendingHomeApprovalForUser(userId: string) {
+export async function getLatestPendingHomeApprovalForUser(userId: string, sessionId?: string | null) {
+  if (!sessionId) return null;
   const { data: run, error: runError } = await supabaseServer
     .from('AgentRun')
     .select('*')
     .eq('userId', userId)
     .eq('agent', 'home-orchestrator')
     .eq('status', 'WAITING_APPROVAL')
+    .eq('sessionId', sessionId)
     .order('createdAt', { ascending: false })
     .limit(1)
     .maybeSingle();
