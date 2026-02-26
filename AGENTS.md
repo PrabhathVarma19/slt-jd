@@ -42,6 +42,15 @@ See `package.json` scripts. Standard commands:
 - `npm run build` — production build
 - `npm run lint` — ESLint (warnings only, no errors expected)
 
+### Environment variables / secrets
+
+`OPENAI_API_KEY` and `ANTHROPIC_API_KEY` are injected as environment variables by the Cloud Agent VM. The `.env` file must reference them (not hardcode placeholders). When creating or updating `.env`, write the actual values from the shell environment, e.g.:
+
+```bash
+sed -i "s|^OPENAI_API_KEY=.*|OPENAI_API_KEY=$OPENAI_API_KEY|" .env
+sed -i "s|^ANTHROPIC_API_KEY=.*|ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY|" .env
+```
+
 ### Gotchas
 
 - `.npmrc` sets `legacy-peer-deps=true` which is required for `npm install` to succeed.
@@ -50,3 +59,4 @@ See `package.json` scripts. Standard commands:
 - AI features (JD generation, policy Q&A, comms drafting, etc.) require valid `OPENAI_API_KEY` or `ANTHROPIC_API_KEY`. Without them, the app runs but AI routes return errors.
 - Email features (ticket notifications) require Azure/Graph API credentials. Without them, tickets are created but no emails are sent.
 - Build output shows "DYNAMIC_SERVER_USAGE" errors during static generation — these are expected and not failures (API routes use cookies so they're rendered dynamically).
+- When restarting the dev server, kill existing `next-server` processes first to avoid port conflicts. Use `fuser -k 3000/tcp` before `npm run dev`.
