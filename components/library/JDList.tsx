@@ -9,12 +9,14 @@ interface JDListProps {
   onOpenJD: (id: string) => void;
   onCopyJD: (id: string) => void;
   onDeleteJD: (id: string) => void;
+  hiddenIds?: string[];
 }
 
-export default function JDList({ onOpenJD, onCopyJD, onDeleteJD }: JDListProps) {
+export default function JDList({ onOpenJD, onCopyJD, onDeleteJD, hiddenIds = [] }: JDListProps) {
   const [jds, setJds] = useState<JDSummary[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const visibleJds = jds.filter((jd) => !hiddenIds.includes(jd.jd_id));
 
   const fetchJDs = async (query?: string) => {
     setIsLoading(true);
@@ -68,7 +70,7 @@ export default function JDList({ onOpenJD, onCopyJD, onDeleteJD }: JDListProps) 
             />
           ))}
         </div>
-      ) : jds.length === 0 ? (
+      ) : visibleJds.length === 0 ? (
         <div className="rounded-lg border-2 border-dashed border-gray-200 bg-gray-50 p-12 text-center">
           <p className="text-sm text-gray-600">
             {searchQuery ? 'No JDs found matching your search' : 'No JDs yet. Generate your first JD!'}
@@ -76,7 +78,7 @@ export default function JDList({ onOpenJD, onCopyJD, onDeleteJD }: JDListProps) 
         </div>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {jds.map((jd) => (
+          {visibleJds.map((jd) => (
             <JDCard
               key={jd.jd_id}
               jd={jd}

@@ -1,7 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
-import Link from 'next/link';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
 import Button from '@/components/ui/button';
 import { BackToHome } from '@/components/ui/back-to-home';
 import Input from '@/components/ui/input';
@@ -18,6 +17,70 @@ import {
 type SaveResponse = { item: WeeklyBriefHistoryItem };
 
 type HistoryResponse = { items: WeeklyBriefHistoryItem[]; error?: string };
+
+function formatWeekLabel(value: string | null | undefined) {
+  if (!value) return 'Week not set';
+  const parsed = new Date(`${value}T00:00:00`);
+  if (Number.isNaN(parsed.getTime())) return value;
+  return `Week of ${parsed.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
+}
+
+function renderFormattedText(content: string) {
+  const lines = content
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  if (lines.length === 0) {
+    return <p className="text-sm text-gray-600">No content</p>;
+  }
+
+  const nodes: ReactNode[] = [];
+  let pendingList: string[] = [];
+  let keyIndex = 0;
+
+  const flushList = () => {
+    if (pendingList.length === 0) return;
+    const listItems = pendingList;
+    pendingList = [];
+    nodes.push(
+      <ul key={`list-${keyIndex++}`} className="list-disc space-y-1 pl-5 text-sm text-gray-700">
+        {listItems.map((item, idx) => (
+          <li key={`${idx}-${item}`}>{item}</li>
+        ))}
+      </ul>
+    );
+  };
+
+  lines.forEach((line) => {
+    const bulletMatch = line.match(/^[-*]\s+(.+)/);
+    const orderedMatch = line.match(/^\d+\.\s+(.+)/);
+    if (bulletMatch || orderedMatch) {
+      pendingList.push((bulletMatch?.[1] || orderedMatch?.[1] || '').trim());
+      return;
+    }
+
+    flushList();
+    const headingMatch = line.match(/^(.+):$/);
+    if (headingMatch) {
+      nodes.push(
+        <p key={`heading-${keyIndex++}`} className="text-sm font-semibold text-gray-900">
+          {headingMatch[1]}
+        </p>
+      );
+      return;
+    }
+
+    nodes.push(
+      <p key={`para-${keyIndex++}`} className="text-sm text-gray-700">
+        {line}
+      </p>
+    );
+  });
+
+  flushList();
+  return <div className="space-y-2">{nodes}</div>;
+}
 
 export default function WeeklyBriefPage() {
   const [mode, setMode] = useState<WeeklyBriefMode>('prep');
@@ -195,7 +258,7 @@ export default function WeeklyBriefPage() {
       <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm space-y-6">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-1">
-            <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Beacon · Weekly Initiatives</p>
+            <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Beacon - Weekly Initiatives</p>
             <h1 className="text-2xl font-semibold text-gray-900 mt-1">Prep and publish the weekly initiatives.</h1>
             <p className="text-sm text-gray-600">Paste updates, set the week, generate the draft, then save or publish.</p>
           </div>
@@ -218,7 +281,7 @@ export default function WeeklyBriefPage() {
           </Button>
           {selectedHistoryItem && (
             <span className="rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-700">
-              {selectedHistoryItem.status.toUpperCase()} · last updated{' '}
+              {selectedHistoryItem.status.toUpperCase()} - last updated{' '}
               {new Date(selectedHistoryItem.updatedAt).toLocaleDateString()}
             </span>
           )}
@@ -285,12 +348,15 @@ export default function WeeklyBriefPage() {
         <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold text-gray-900">Digest (prep view)</h2>
+            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
+              {formatWeekLabel(weekStart || selectedHistoryItem?.weekStart)}
+            </span>
           </div>
           {!digest && <p className="text-sm text-gray-600">Generate a draft to see the digest.</p>}
           {digest && digest.map((sec, idx) => (
             <div key={idx} className="rounded-md border border-gray-200 p-4">
               <h3 className="text-sm font-semibold text-gray-900">{sec.title}</h3>
-              <p className="mt-1 text-sm text-gray-700 whitespace-pre-wrap">{sec.body}</p>
+              <div className="mt-2">{renderFormattedText(sec.body)}</div>
             </div>
           ))}
         </div>
@@ -298,12 +364,15 @@ export default function WeeklyBriefPage() {
         <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold text-gray-900">Run of show</h2>
+            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
+              {formatWeekLabel(weekStart || selectedHistoryItem?.weekStart)}
+            </span>
           </div>
           {!runOfShow && <p className="text-sm text-gray-600">Generate a draft to see the run-of-show.</p>}
           {runOfShow && runOfShow.map((sec, idx) => (
             <div key={idx} className="rounded-md border border-gray-200 p-4">
               <h3 className="text-sm font-semibold text-gray-900">{sec.title}</h3>
-              <p className="mt-1 text-sm text-gray-700 whitespace-pre-wrap">{sec.body}</p>
+              <div className="mt-2">{renderFormattedText(sec.body)}</div>
             </div>
           ))}
         </div>
@@ -320,7 +389,7 @@ export default function WeeklyBriefPage() {
               <div key={action.id} className="rounded-md border border-gray-200 p-4">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div className="text-sm font-semibold text-gray-900">
-                    {action.id} · {action.team || 'General'}
+                    {action.id} - {action.team || 'General'}
                   </div>
                   <Button
                     size="sm"
@@ -330,9 +399,9 @@ export default function WeeklyBriefPage() {
                     {action.status === 'open' ? 'Mark Closed' : 'Reopen'}
                   </Button>
                 </div>
-                <p className="mt-1 text-sm text-gray-700">{action.description}</p>
+                <div className="mt-2">{renderFormattedText(action.description)}</div>
                 <p className="mt-1 text-xs text-gray-500">
-                  Owner: {action.owner || 'Unassigned'} · Due: {action.due_date || 'TBD'} · Status: {action.status}
+                  Owner: {action.owner || 'Unassigned'} - Due: {action.due_date || 'TBD'} - Status: {action.status}
                 </p>
               </div>
             ))}
@@ -362,7 +431,7 @@ export default function WeeklyBriefPage() {
               >
                 <div className="flex items-center justify-between gap-2">
                   <span className="font-medium">
-                    {item.weekStart} · {item.mode.toUpperCase()} · {item.status.toUpperCase()}
+                    {item.weekStart} - {item.mode.toUpperCase()} - {item.status.toUpperCase()}
                   </span>
                   <span className="text-xs text-gray-500">
                     {new Date(item.updatedAt).toLocaleString()}

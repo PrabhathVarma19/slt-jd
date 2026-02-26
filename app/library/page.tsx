@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import JDList from '@/components/library/JDList';
 import ConfirmDialog from '@/components/ui/confirm-dialog';
+import { BackToHome } from '@/components/ui/back-to-home';
 import { formatJDText } from '@/lib/utils';
 import { useToast } from '@/lib/hooks/useToast';
 
@@ -12,6 +13,7 @@ export default function LibraryPage() {
   const { showToast, ToastContainer } = useToast();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [jdToDelete, setJdToDelete] = useState<string | null>(null);
+  const [deletedJdIds, setDeletedJdIds] = useState<string[]>([]);
 
   const handleOpenJD = (id: string) => {
     router.push(`/?jd=${id}`);
@@ -50,9 +52,8 @@ export default function LibraryPage() {
       if (response.ok) {
         showToast('JD deleted successfully', 'success');
         setDeleteDialogOpen(false);
+        setDeletedJdIds((prev) => (jdToDelete && !prev.includes(jdToDelete) ? [...prev, jdToDelete] : prev));
         setJdToDelete(null);
-        // Refresh the list by reloading the page or refetching
-        window.location.reload();
       } else {
         const errorData = await response.json();
         showToast(errorData.error || 'Failed to delete JD', 'error');
@@ -75,13 +76,21 @@ export default function LibraryPage() {
   return (
     <>
       <div className="space-y-6">
+        <div className="mb-2">
+          <BackToHome label="" className="mt-1 text-xs" />
+        </div>
         <div>
           <h1 className="text-2xl font-semibold text-gray-900">My JDs</h1>
           <p className="mt-1 text-sm text-gray-600">
             Reuse, edit, or share any JD you&apos;ve generated.
           </p>
         </div>
-        <JDList onOpenJD={handleOpenJD} onCopyJD={handleCopyJD} onDeleteJD={handleDeleteJD} />
+        <JDList
+          onOpenJD={handleOpenJD}
+          onCopyJD={handleCopyJD}
+          onDeleteJD={handleDeleteJD}
+          hiddenIds={deletedJdIds}
+        />
       </div>
       
       <ConfirmDialog
