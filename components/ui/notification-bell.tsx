@@ -165,6 +165,13 @@ export function NotificationBell() {
                     </Link>
                   ))}
                 </div>
+                <Link
+                  href="/my-tickets"
+                  className="mt-1 block text-right text-[11px] font-medium text-blue-600 hover:underline"
+                  onClick={() => setOpen(false)}
+                >
+                  View all my tickets →
+                </Link>
               </div>
             )}
 
