@@ -238,12 +238,6 @@ export default function NewJoinerBuddyPage() {
       ]);
       setSources(data.sources || []);
 
-      if (lastUserMessage) {
-        console.log('New Joiner Buddy answer', {
-          question: lastUserMessage.content,
-          answerPreview: answerText.slice(0, 160),
-        });
-      }
     } catch (err: any) {
       setError(err.message || 'Failed to get answer');
     } finally {
@@ -263,13 +257,6 @@ export default function NewJoinerBuddyPage() {
   const handleFeedback = (value: Feedback) => {
     setFeedback(value);
     setShowHrLink(value === 'down');
-    if (lastUserMessage && lastAssistantMessage) {
-      console.log('New Joiner Buddy feedback', {
-        question: lastUserMessage.content,
-        answerPreview: lastAssistantMessage.content.slice(0, 160),
-        feedback: value,
-      });
-    }
   };
 
   const handleResetConversation = () => {

@@ -92,7 +92,7 @@ const TOOLS: Tool[] = [
   },
   {
     title: 'Weekly Initiatives',
-    description: 'Turn weekly updates into a CIO / SLT brief.',
+    description: 'Turn weekly updates into a concise weekly brief.',
     href: '/weekly-brief',
     bucket: 'Outputs',
     initials: 'WI',
@@ -234,9 +234,21 @@ export default function Home() {
           const hasEngineerRole = roles.some((role: string) => engineerRoles.includes(role));
           setIsEngineer(hasEngineerRole);
           
-          // Check if user is a supervisor (anyone can be a supervisor if they have approvals pending)
-          // We'll show the link if they're logged in - the API will handle authorization
-          setIsSupervisor(true); // Show to all logged-in users, API handles auth
+          // Show supervisor approvals link only when user has pending supervisor approvals.
+          fetch('/api/approvals/supervisor')
+            .then(async (res) => {
+              if (!res.ok) return { approvals: [] };
+              return res.json();
+            })
+            .then((approvalData) => {
+              const pendingApprovals = Array.isArray(approvalData?.approvals)
+                ? approvalData.approvals
+                : [];
+              setIsSupervisor(pendingApprovals.length > 0);
+            })
+            .catch(() => {
+              setIsSupervisor(false);
+            });
           
           // Check if user has travel admin role
           const travelAdminRoles = ['ADMIN_TRAVEL', 'SUPER_ADMIN'];
@@ -341,6 +353,15 @@ export default function Home() {
   const TOOL_CATEGORIES: ToolCategory[] = ['All', 'Ask', 'Requests', 'Outputs'];
   const [activeToolCategory, setActiveToolCategory] = useState<ToolCategory>('All');
   const [recentItTickets, setRecentItTickets] = useState<string[]>([]);
+  const temporaryAccessUntilDate = useMemo(() => {
+    const now = new Date();
+    const quarterEndMonth = Math.floor(now.getMonth() / 3) * 3 + 2;
+    const quarterEndDate = new Date(now.getFullYear(), quarterEndMonth + 1, 0);
+    const yyyy = quarterEndDate.getFullYear();
+    const mm = String(quarterEndDate.getMonth() + 1).padStart(2, '0');
+    const dd = String(quarterEndDate.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  }, []);
   const quickPrompts = [
     { label: 'Raise a request', value: 'Raise a request for ' },
     { label: 'Check ticket status', value: 'Check status of ticket ' },
@@ -1016,7 +1037,7 @@ export default function Home() {
       {
         title: 'Catch up on weekly initiatives',
         description:
-          'Turn team updates into a concise CIO / SLT brief, week over week.',
+          'Turn team updates into a concise weekly brief, week over week.',
         href: '/weekly-brief',
         accent: 'bg-amber-100 text-amber-700',
       },
@@ -1099,7 +1120,7 @@ export default function Home() {
       {
         title: 'Create a weekly brief',
         description:
-          'Summarize initiatives into leadership-ready bullets with consistent format.',
+          'Summarize initiatives into clear, action-ready bullets with consistent format.',
         href: '/weekly-brief',
         accent: 'bg-amber-100 text-amber-700',
       },
@@ -1108,7 +1129,7 @@ export default function Home() {
       {
         title: 'Summarize weekly updates',
         description:
-          'Convert updates into a concise CIO / SLT brief with consistent headings.',
+          'Convert updates into a concise weekly brief with consistent headings.',
         href: '/weekly-brief',
         accent: 'bg-amber-100 text-amber-700',
       },
@@ -1200,7 +1221,7 @@ export default function Home() {
 
           <p className="max-w-xl text-base leading-relaxed text-slate-600">
             Ask policy questions with citations, raise IT and travel requests, and generate
-            leadership-ready drafts from one place.
+            ready-to-share drafts from one place.
           </p>
 
           <div className="flex flex-wrap items-center gap-3">
@@ -1697,20 +1718,28 @@ export default function Home() {
                         )}
                         {itMissingFields.includes('durationType') && (
                           <>
-                            {['for 2 weeks', 'permanent', 'temporary until 2026-03-31'].map((value) => (
+                            {[
+                              { label: 'for 2 weeks', durationType: 'for 2 weeks', durationUntil: '' },
+                              { label: 'permanent', durationType: 'permanent', durationUntil: '' },
+                              {
+                                label: 'temporary until end of quarter',
+                                durationType: 'temporary',
+                                durationUntil: temporaryAccessUntilDate,
+                              },
+                            ].map((option) => (
                               <button
-                                key={`duration-${value}`}
+                                key={`duration-${option.label}`}
                                 type="button"
                                 className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-700 hover:bg-slate-100"
                                 onClick={() =>
                                   setHomeDraftPatch((prev) => ({
                                     ...prev,
-                                    durationType: value.includes('temporary') ? 'temporary' : value,
-                                    durationUntil: value.includes('until') ? '2026-03-31' : '',
+                                    durationType: option.durationType,
+                                    durationUntil: option.durationUntil,
                                   }))
                                 }
                               >
-                                {value}
+                                {option.label}
                               </button>
                             ))}
                           </>
@@ -1979,7 +2008,7 @@ export default function Home() {
             )}
           </div>
 
-          <p className="text-xs text-slate-400">Built for Trianz. Content updated Dec 2025.</p>
+          <p className="text-xs text-slate-400">Built for Trianz.</p>
         </div>
 
         {/* Preview cluster */}

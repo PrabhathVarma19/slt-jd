@@ -13,7 +13,7 @@ const sora = Sora({
 
 export const metadata: Metadata = {
   title: 'Beacon',
-  description: 'Leadership hub for JDs, initiatives, and comms',
+  description: 'Command center for work requests and policy answers',
 };
 
 export default function RootLayout({

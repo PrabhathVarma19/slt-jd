@@ -105,13 +105,6 @@ function JDContent() {
         params.edited_responsibilities = editedSections.responsibilities;
         params.edited_required_skills = editedSections.requiredSkills;
         params.edited_preferred_skills = editedSections.preferredSkills;
-        console.log('Regenerating with edited content:', {
-          responsibilities: editedSections.responsibilities.length,
-          skills: editedSections.requiredSkills.length,
-          preferredSkills: editedSections.preferredSkills.length
-        });
-      } else {
-        console.log('Regenerating without edited content');
       }
 
       // Generate new JD content
@@ -156,12 +149,6 @@ function JDContent() {
           // Non-critical error, continue
         }
       }
-      
-      console.log('Updated existing JD:', {
-        jd_id: updatedJd.id,
-        respCount: updatedJd.sections.key_responsibilities.length,
-        skillsCount: updatedJd.sections.required_skills.length,
-      });
       
       // Update the JD state with the updated data
       setJd(updatedJd);
