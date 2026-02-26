@@ -1314,11 +1314,11 @@ export default function Home() {
               <Button
                 type="button"
                 variant="outline"
-                className="rounded-xl px-3"
+                className="rounded-xl px-2"
                 onClick={() => setHistoryOpen(true)}
+                aria-label="View history"
               >
-                <Clock3 className="mr-1.5 h-4 w-4" />
-                History
+                <Clock3 className="h-4 w-4" />
               </Button>
             </div>
             {isHomePdfDragging && (
