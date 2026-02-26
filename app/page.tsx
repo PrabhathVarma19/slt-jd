@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ChevronRight, Clock3, Ticket, Sparkles, X } from 'lucide-react';
 import Button from '@/components/ui/button';
@@ -241,6 +242,7 @@ function toFirstName(raw: string) {
 }
 
 export default function Home() {
+  const router = useRouter();
   const { showToast, ToastContainer } = useToast();
   const [isAdmin, setIsAdmin] = useState(false);
   const [isEngineer, setIsEngineer] = useState(false);
