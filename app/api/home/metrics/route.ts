@@ -51,7 +51,7 @@ export async function GET(req: NextRequest) {
 
     const { data: runs, error: runsError } = await supabaseServer
       .from('AgentRun')
-      .select('id,status,error,startedAt,endedAt,input,output')
+      .select('id,userId,status,error,startedAt,endedAt,input,output')
       .eq('agent', 'home-orchestrator')
       .gte('createdAt', sinceIso)
       .order('createdAt', { ascending: false });
@@ -62,6 +62,34 @@ export async function GET(req: NextRequest) {
 
     const runRows = runs || [];
     const runIds = runRows.map((row: any) => row.id).filter(Boolean);
+    const activeUsers = new Set(
+      runRows.map((row: any) => row?.userId).filter((userId: unknown) => typeof userId === 'string' && userId)
+    ).size;
+
+    let topTools: Array<{ tool: string; count: number }> = [];
+    if (runIds.length > 0) {
+      const { data: steps, error: stepsError } = await supabaseServer
+        .from('AgentRunStep')
+        .select('tool')
+        .in('runId', runIds)
+        .not('tool', 'is', null);
+
+      if (stepsError) {
+        throw new Error(stepsError.message);
+      }
+
+      const toolCounts: Record<string, number> = {};
+      (steps || []).forEach((step: any) => {
+        const tool = (step?.tool || '').toString().trim();
+        if (!tool || tool === 'intent_router') return;
+        incrementCount(toolCounts, tool);
+      });
+
+      topTools = Object.entries(toolCounts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 8)
+        .map(([tool, count]) => ({ tool, count }));
+    }
 
     const approvalCounts: Record<string, number> = {
       APPROVED: 0,
@@ -149,14 +177,29 @@ export async function GET(req: NextRequest) {
       .slice(0, 5)
       .map(([message, count]) => ({ message, count }));
 
+    const completedRuns = statusCounts.COMPLETED || 0;
+    const failedRuns = statusCounts.FAILED || 0;
+    const waitingApprovalRuns = statusCounts.WAITING_APPROVAL || 0;
+    const completionRatePercent =
+      runRows.length > 0 ? Math.round((completedRuns / runRows.length) * 100) : 0;
+    const failureRatePercent =
+      runRows.length > 0 ? Math.round((failedRuns / runRows.length) * 100) : 0;
+
     return NextResponse.json({
       periodDays,
       generatedAt: new Date().toISOString(),
       summary: {
         totalRuns: runRows.length,
+        completedRuns,
+        failedRuns,
+        waitingApprovalRuns,
+        activeUsers,
+        completionRatePercent,
+        failureRatePercent,
         avgCompletionMs: completedCount > 0 ? Math.round(totalCompletionMs / completedCount) : null,
       },
       byIntent,
+      topTools,
       approval: approvalCounts,
       status: statusCounts,
       topMissingFields,

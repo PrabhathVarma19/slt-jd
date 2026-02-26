@@ -206,6 +206,19 @@ const ENGINEER_TOOLS: Tool[] = [
   },
 ];
 
+function getDayGreeting(date = new Date()) {
+  const hour = date.getHours();
+  if (hour < 12) return 'Good morning';
+  if (hour < 18) return 'Good afternoon';
+  return 'Good evening';
+}
+
+function toFirstName(raw: string) {
+  const normalized = raw.replace(/\./g, ' ').trim();
+  if (!normalized) return '';
+  return normalized.split(/\s+/)[0] || '';
+}
+
 export default function Home() {
   const { showToast, ToastContainer } = useToast();
   const [isAdmin, setIsAdmin] = useState(false);
@@ -214,6 +227,24 @@ export default function Home() {
   const [isTravelAdmin, setIsTravelAdmin] = useState(false);
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
   const [userRoles, setUserRoles] = useState<string[]>([]);
+  const [heroGreetingPrefix, setHeroGreetingPrefix] = useState('Hello');
+  const [heroGreetingName, setHeroGreetingName] = useState('');
+
+  useEffect(() => {
+    setHeroGreetingPrefix(getDayGreeting());
+    if (typeof window === 'undefined') return;
+    try {
+      const cachedUser = window.localStorage.getItem('beacon:user');
+      if (!cachedUser) return;
+      const parsed = JSON.parse(cachedUser);
+      const name = typeof parsed?.name === 'string' ? parsed.name : '';
+      const email = typeof parsed?.email === 'string' ? parsed.email : '';
+      const derivedName = name || (email ? email.split('@')[0] : '');
+      setHeroGreetingName(toFirstName(derivedName));
+    } catch {
+      // Ignore malformed local cache
+    }
+  }, []);
 
   useEffect(() => {
     // Check if user is admin
@@ -1215,6 +1246,11 @@ export default function Home() {
       <section className="grid items-center gap-12 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
         {/* Text column */}
         <div className="space-y-7">
+          <p className="text-sm font-semibold tracking-wide text-slate-500">
+            {heroGreetingPrefix}
+            {heroGreetingName ? `, ${heroGreetingName}` : ''}
+          </p>
+
           <h1 className="text-3xl font-semibold leading-tight text-slate-900 sm:text-4xl">
             Beacon is your command center for work requests and policy answers.
           </h1>

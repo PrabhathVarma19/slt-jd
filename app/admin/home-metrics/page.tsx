@@ -11,9 +11,16 @@ type MetricsResponse = {
   generatedAt: string;
   summary: {
     totalRuns: number;
+    completedRuns: number;
+    failedRuns: number;
+    waitingApprovalRuns: number;
+    activeUsers: number;
+    completionRatePercent: number;
+    failureRatePercent: number;
     avgCompletionMs: number | null;
   };
   byIntent: Record<string, number>;
+  topTools: Array<{ tool: string; count: number }>;
   approval: Record<string, number>;
   status: Record<string, number>;
   topMissingFields: Array<{ field: string; count: number }>;
@@ -59,6 +66,11 @@ export default function HomeMetricsPage() {
     return entries.sort((a, b) => b[1] - a[1]);
   }, [metrics]);
 
+  const avgRunsPerDay = useMemo(() => {
+    if (!metrics?.summary?.totalRuns || !metrics?.periodDays) return 0;
+    return Math.round((metrics.summary.totalRuns / metrics.periodDays) * 10) / 10;
+  }, [metrics]);
+
   return (
     <div className="space-y-6">
       <BackToHome />
@@ -66,9 +78,9 @@ export default function HomeMetricsPage() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Beacon - Admin</p>
-          <h1 className="text-2xl font-bold text-slate-900">Home Command Metrics</h1>
+          <h1 className="text-2xl font-bold text-slate-900">Beacon at a glance</h1>
           <p className="text-sm text-slate-600">
-            Super Admin view of home orchestrator usage and reliability.
+            Adoption and reliability snapshot for Beacon usage.
           </p>
           {metrics?.generatedAt && (
             <p className="mt-1 text-xs text-slate-500">
@@ -107,12 +119,28 @@ export default function HomeMetricsPage() {
 
       {!loading && !error && metrics && (
         <>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm text-slate-600">Total Runs</CardTitle>
+                <CardTitle className="text-sm text-slate-600">Home Commands Run</CardTitle>
               </CardHeader>
               <CardContent className="text-2xl font-semibold">{metrics.summary.totalRuns}</CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm text-slate-600">Active Users</CardTitle>
+              </CardHeader>
+              <CardContent className="text-2xl font-semibold">
+                {metrics.summary.activeUsers}
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm text-slate-600">Requests Processed</CardTitle>
+              </CardHeader>
+              <CardContent className="text-2xl font-semibold">
+                {metrics.summary.completedRuns}
+              </CardContent>
             </Card>
             <Card>
               <CardHeader className="pb-2">
@@ -124,27 +152,39 @@ export default function HomeMetricsPage() {
             </Card>
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm text-slate-600">Approvals</CardTitle>
+                <CardTitle className="text-sm text-slate-600">Failure Rate</CardTitle>
               </CardHeader>
-              <CardContent className="text-sm text-slate-700 space-y-1">
-                <p>Approved: {metrics.approval.APPROVED || 0}</p>
-                <p>Rejected: {metrics.approval.REJECTED || 0}</p>
-                <p>Pending: {metrics.approval.PENDING || 0}</p>
+              <CardContent className="text-2xl font-semibold">
+                {metrics.summary.failureRatePercent}%
               </CardContent>
             </Card>
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm text-slate-600">Run Status</CardTitle>
+                <CardTitle className="text-sm text-slate-600">Commands / Day</CardTitle>
               </CardHeader>
-              <CardContent className="text-sm text-slate-700 space-y-1">
-                <p>Completed: {metrics.status.COMPLETED || 0}</p>
-                <p>Failed: {metrics.status.FAILED || 0}</p>
-                <p>Cancelled: {metrics.status.CANCELLED || 0}</p>
-              </CardContent>
+              <CardContent className="text-2xl font-semibold">{avgRunsPerDay}</CardContent>
             </Card>
           </div>
 
           <div className="grid gap-4 lg:grid-cols-2">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">Top Tools Used</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2 text-sm">
+                {metrics.topTools.length === 0 ? (
+                  <p className="text-slate-500">No tool calls in this window.</p>
+                ) : (
+                  metrics.topTools.map((item) => (
+                    <div key={item.tool} className="flex items-center justify-between rounded-md bg-slate-50 px-3 py-2">
+                      <span className="font-medium text-slate-700">{item.tool}</span>
+                      <span className="text-slate-900">{item.count}</span>
+                    </div>
+                  ))
+                )}
+              </CardContent>
+            </Card>
+
             <Card>
               <CardHeader>
                 <CardTitle className="text-base">Intent Distribution</CardTitle>
@@ -158,7 +198,9 @@ export default function HomeMetricsPage() {
                 ))}
               </CardContent>
             </Card>
+          </div>
 
+          <div className="grid gap-4 lg:grid-cols-2">
             <Card>
               <CardHeader>
                 <CardTitle className="text-base">Top Missing Fields</CardTitle>
@@ -177,6 +219,26 @@ export default function HomeMetricsPage() {
                     </div>
                   ))
                 )}
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">Approvals</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-slate-700 space-y-2">
+                <div className="flex items-center justify-between rounded-md bg-slate-50 px-3 py-2">
+                  <span>Approved</span>
+                  <span className="font-semibold">{metrics.approval.APPROVED || 0}</span>
+                </div>
+                <div className="flex items-center justify-between rounded-md bg-slate-50 px-3 py-2">
+                  <span>Rejected</span>
+                  <span className="font-semibold">{metrics.approval.REJECTED || 0}</span>
+                </div>
+                <div className="flex items-center justify-between rounded-md bg-slate-50 px-3 py-2">
+                  <span>Pending</span>
+                  <span className="font-semibold">{metrics.approval.PENDING || 0}</span>
+                </div>
               </CardContent>
             </Card>
           </div>

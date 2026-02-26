@@ -145,6 +145,30 @@ const STATUS_DESCRIPTIONS: Record<TicketStatus, string> = {
   PENDING_APPROVAL: 'Your request is pending approval from your supervisor and/or travel admin.',
 };
 
+const STATUS_STEPS = [
+  { key: 'OPEN', label: 'Open' },
+  { key: 'IN_PROGRESS', label: 'In Progress' },
+  { key: 'RESOLVED', label: 'Resolved' },
+  { key: 'CLOSED', label: 'Closed' },
+] as const;
+
+function getStatusStepIndex(status: TicketStatus) {
+  switch (status) {
+    case 'OPEN':
+    case 'PENDING_APPROVAL':
+      return 0;
+    case 'IN_PROGRESS':
+    case 'WAITING_ON_REQUESTER':
+      return 1;
+    case 'RESOLVED':
+      return 2;
+    case 'CLOSED':
+      return 3;
+    default:
+      return 0;
+  }
+}
+
 export default function TicketDetailsPage() {
   const router = useRouter();
   const params = useParams();
@@ -370,18 +394,68 @@ export default function TicketDetailsPage() {
         ? 'Your ticket is open and has been assigned to an engineer.'
         : STATUS_DESCRIPTIONS.OPEN
       : STATUS_DESCRIPTIONS[ticket.status];
+  const statusStepIndex = getStatusStepIndex(ticket.status);
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-semibold text-gray-900">Ticket Details</h1>
+          <h1 className="text-3xl font-semibold text-gray-900">{ticket.ticketNumber}</h1>
           <p className="mt-1 text-sm text-gray-600">
-            View complete ticket information and history
+            {ticket.title}
           </p>
         </div>
         <BackToHome />
       </div>
+
+      <Card>
+        <CardContent className="pt-6">
+          <div className="space-y-3">
+            <div className="flex flex-wrap items-center gap-2 text-xs text-gray-600">
+              <span className="font-semibold uppercase tracking-wide text-gray-700">Ticket lifecycle</span>
+              <Badge className={STATUS_COLORS[ticket.status]}>{ticket.status.replace(/_/g, ' ')}</Badge>
+            </div>
+            <div className="flex flex-nowrap items-center overflow-x-auto pb-1">
+              {STATUS_STEPS.map((step, index) => {
+                const reached = index <= statusStepIndex;
+                const active = index === statusStepIndex;
+                return (
+                  <div key={step.key} className="flex min-w-[160px] items-center">
+                    <div
+                      className={`flex h-8 w-8 items-center justify-center rounded-full border text-xs font-semibold ${
+                        reached
+                          ? 'border-blue-600 bg-blue-600 text-white'
+                          : 'border-gray-300 bg-white text-gray-500'
+                      }`}
+                    >
+                      {reached ? <CheckCircle className="h-4 w-4" /> : index + 1}
+                    </div>
+                    <span
+                      className={`ml-2 text-xs font-medium ${
+                        active ? 'text-gray-900' : reached ? 'text-gray-700' : 'text-gray-500'
+                      }`}
+                    >
+                      {step.label}
+                    </span>
+                    {index < STATUS_STEPS.length - 1 && (
+                      <div
+                        className={`ml-3 h-0.5 w-10 ${
+                          index < statusStepIndex ? 'bg-blue-600' : 'bg-gray-300'
+                        }`}
+                      />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+            {ticket.status === 'PENDING_APPROVAL' && (
+              <p className="text-xs text-purple-700">
+                This request is currently pending approval before engineering work starts.
+              </p>
+            )}
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Ticket Header */}
       <Card>
@@ -390,7 +464,7 @@ export default function TicketDetailsPage() {
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-2">
                 <Ticket className="h-6 w-6 text-blue-600" />
-                <CardTitle className="text-xl">{ticket.ticketNumber}</CardTitle>
+                <CardTitle className="text-xl">Ticket Summary</CardTitle>
                 <Badge className={STATUS_COLORS[ticket.status]}>
                   <span className="flex items-center gap-1">
                     {STATUS_ICONS[ticket.status]}
@@ -407,7 +481,6 @@ export default function TicketDetailsPage() {
                   </Badge>
                 )}
               </div>
-              <h2 className="text-lg font-semibold text-gray-900 mt-2">{ticket.title}</h2>
               
               {/* Status Description for Regular Users */}
               {ticket.isRequester && !ticket.isAdmin && (
