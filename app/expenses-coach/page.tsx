@@ -4,6 +4,7 @@ import { useRef, useState, useEffect } from 'react';
 import { RotateCcw } from 'lucide-react';
 import Link from 'next/link';
 import Button from '@/components/ui/button';
+import { BackToHome } from '@/components/ui/back-to-home';
 import Textarea from '@/components/ui/textarea';
 
 interface BeaconMessage {
@@ -102,12 +103,7 @@ export default function ExpensesCoachPage() {
   return (
     <div className="space-y-6">
       <div className="mb-2">
-        <Link
-          href="/"
-          className="inline-flex items-center text-xs font-medium text-blue-700 hover:underline"
-        >
-          ← Back to Home
-        </Link>
+        <BackToHome label="" className="mt-1 text-xs" />
       </div>
 
       <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">

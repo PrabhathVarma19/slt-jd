@@ -387,7 +387,11 @@ export default function ServiceDeskPage() {
               onClick={handleSuggestFromDetails}
               disabled={isSuggesting || !form.details.trim()}
             >
-                {isSuggesting ? 'Let Beacon suggest fields...' : 'Let Beacon suggest fields'}
+                {isSuggesting ? (
+                  <span className="inline-flex items-center gap-2"><Spinner />Suggesting...</span>
+                ) : (
+                  'Let Beacon suggest fields'
+                )}
             </Button>
           </div>
 

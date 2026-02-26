@@ -3,6 +3,7 @@
 import { useState, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import Button from '@/components/ui/button';
+import { BackToHome } from '@/components/ui/back-to-home';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Spinner } from '@/components/ui/spinner';
 import { Slide } from '@/types/pdf-to-ppt';
@@ -257,12 +258,7 @@ export default function PdfToPptPage() {
 
       <div className="space-y-6">
         <div className="mb-2">
-          <Link
-            href="/"
-            className="inline-flex items-center text-xs font-medium text-blue-700 hover:underline"
-          >
-            ← Back to Home
-          </Link>
+          <BackToHome label="" className="mt-1 text-xs" />
         </div>
 
         <Card className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">

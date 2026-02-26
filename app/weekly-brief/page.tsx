@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import Button from '@/components/ui/button';
+import { BackToHome } from '@/components/ui/back-to-home';
 import Input from '@/components/ui/input';
 import Textarea from '@/components/ui/textarea';
 import {
@@ -188,12 +189,7 @@ export default function WeeklyBriefPage() {
   return (
     <div className="space-y-6">
       <div className="mb-2">
-        <Link
-          href="/"
-          className="inline-flex items-center text-xs font-medium text-blue-700 hover:underline"
-        >
-          ? Back to Home
-        </Link>
+        <BackToHome label="" className="mt-1 text-xs" />
       </div>
 
       <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm space-y-6">
@@ -203,9 +199,6 @@ export default function WeeklyBriefPage() {
             <h1 className="text-2xl font-semibold text-gray-900 mt-1">Prep and publish the weekly initiatives.</h1>
             <p className="text-sm text-gray-600">Paste updates, set the week, generate the draft, then save or publish.</p>
           </div>
-          <Link href="/">
-            <Button variant="secondary" size="sm">Back to Home</Button>
-          </Link>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">

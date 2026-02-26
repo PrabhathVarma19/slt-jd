@@ -4,6 +4,7 @@ import { Suspense, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import Button from '@/components/ui/button';
+import { BackToHome } from '@/components/ui/back-to-home';
 import Input from '@/components/ui/input';
 import Textarea from '@/components/ui/textarea';
 import { CommsMode, CommsAudience, Formality, CommsTemplate } from '@/types/comms';
@@ -414,12 +415,7 @@ function CommsHubContent() {
 
       <div className="space-y-6">
         <div className="mb-2">
-          <Link
-            href="/"
-            className="inline-flex items-center text-xs font-medium text-blue-700 hover:underline"
-          >
-            Back to Home
-          </Link>
+          <BackToHome label="" className="mt-1 text-xs" />
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <Button
@@ -949,7 +945,7 @@ function CommsHubContent() {
 
 export default function CommsHubPage() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div className="flex items-center justify-center py-12"><Spinner /></div>}>
       <CommsHubContent />
     </Suspense>
   );

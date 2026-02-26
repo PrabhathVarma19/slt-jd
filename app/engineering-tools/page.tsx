@@ -4,6 +4,7 @@ import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import Button from '@/components/ui/button';
+import { BackToHome } from '@/components/ui/back-to-home';
 import Input from '@/components/ui/input';
 import Textarea from '@/components/ui/textarea';
 import { Spinner } from '@/components/ui/spinner';
@@ -621,10 +622,8 @@ function EngineeringToolsContent() {
         </p>
       </div>
 
-      <div>
-        <Link href="/" className="text-xs text-blue-600 hover:underline">
-          Back to Home
-        </Link>
+      <div className="mb-2">
+        <BackToHome label="" className="mt-1 text-xs" />
       </div>
 
       <div className="flex flex-wrap gap-2">
@@ -1459,7 +1458,7 @@ function EngineeringToolsContent() {
 
 export default function EngineeringToolsPage() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div className="flex items-center justify-center py-12"><Spinner /></div>}>
       <EngineeringToolsContent />
     </Suspense>
   );

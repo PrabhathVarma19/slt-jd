@@ -3,6 +3,8 @@
 import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { BackToHome } from '@/components/ui/back-to-home';
+import { Spinner } from '@/components/ui/spinner';
 import RoleBriefPanel from '@/components/jd-creator/RoleBriefPanel';
 import JDPreview from '@/components/jd-creator/JDPreview';
 import { JDRecord, GenerateJDRequest } from '@/types/jd';
@@ -165,12 +167,7 @@ function JDContent() {
   return (
     <>
       <div className="mb-2">
-        <Link
-          href="/"
-          className="inline-flex items-center text-xs font-medium text-blue-700 hover:underline"
-        >
-          Back to Home
-        </Link>
+        <BackToHome label="" className="mt-1 text-xs" />
       </div>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
@@ -208,7 +205,7 @@ function JDContent() {
 
 export default function JDPage() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div className="flex items-center justify-center py-12"><Spinner /></div>}>
       <JDContent />
     </Suspense>
   );
