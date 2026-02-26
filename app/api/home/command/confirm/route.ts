@@ -420,7 +420,18 @@ export async function POST(req: NextRequest) {
           (result?.ticketNumber
             ? `Created ticket ${result.ticketNumber}.`
             : 'Ticket request submitted successfully.'),
-        data: { ticketNumber: result?.ticketNumber || null },
+        data: {
+          ticketNumber: result?.ticketNumber || null,
+          ticketId: result?.ticketId || null,
+          routeTo: result?.ticketId ? `/tickets/${result.ticketId}` : null,
+          ticket:
+            result?.ticketId || result?.ticketNumber
+              ? {
+                  id: result?.ticketId || null,
+                  ticketNumber: result?.ticketNumber || null,
+                }
+              : null,
+        },
       },
     });
   } catch (error: any) {

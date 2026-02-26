@@ -378,6 +378,7 @@ Respond with JSON only, no explanation.`;
         ? `IT service request created (${ticketNumber}) and emailed to the IT Service Desk.`
         : 'IT service request emailed to the IT Service Desk.',
       ticketNumber,
+      ticketId,
     });
   } catch (error: any) {
     console.error('IT service-desk action error:', error);

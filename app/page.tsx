@@ -89,6 +89,14 @@ const TOOLS: Tool[] = [
     accent: 'bg-slate-100 text-slate-700',
   },
   {
+    title: 'My Tickets',
+    description: 'Track requests you have raised and open ticket details.',
+    href: '/my-tickets',
+    bucket: 'Requests',
+    initials: 'MT',
+    accent: 'bg-blue-100 text-blue-700',
+  },
+  {
     title: 'Travel Desk',
     description: 'Create travel request emails with all required details.',
     href: '/travel-desk',
@@ -454,6 +462,25 @@ export default function Home() {
           typeof latestAssistantEntry?.actionCard?.data?.ticket?.id === 'string'
         ? `/tickets/${latestAssistantEntry.actionCard.data.ticket.id}`
         : null;
+  const isCreateTicketCompleted =
+    homeResult?.intent === 'create_it_ticket' &&
+    String(homeResult?.status || '').toUpperCase() === 'COMPLETED' &&
+    !homeResult?.requiresConfirmation;
+  const homeViewTicketRoute =
+    isCreateTicketCompleted &&
+    typeof homeResult?.actionCard?.data?.routeTo === 'string' &&
+    homeResult.actionCard.data.routeTo.trim().length > 0
+      ? homeResult.actionCard.data.routeTo
+      : isCreateTicketCompleted &&
+          typeof homeResult?.actionCard?.data?.ticket?.id === 'string' &&
+          homeResult.actionCard.data.ticket.id.trim().length > 0
+        ? `/tickets/${homeResult.actionCard.data.ticket.id}`
+        : isCreateTicketCompleted &&
+            typeof homeResult?.actionCard?.data?.ticketId === 'string' &&
+            homeResult.actionCard.data.ticketId.trim().length > 0
+          ? `/tickets/${homeResult.actionCard.data.ticketId}`
+          : null;
+  const shouldShowViewTicketCta = Boolean(homeViewTicketRoute);
   const itMissingFields =
     Array.isArray(homeResult?.actionCard?.data?.missingFields) &&
     homeResult?.actionCard?.data?.missingFields?.length
@@ -1990,7 +2017,16 @@ export default function Home() {
                     )}
                   </div>
                 )}
-                {typeof homeResult.actionCard.data?.routeTo === 'string' && !isDuplicateWarningCard && (
+                {shouldShowViewTicketCta && (
+                  <div className="mt-2">
+                    <Button asChild size="sm" className="bg-blue-600 text-white hover:bg-blue-700">
+                      <Link href={homeViewTicketRoute as string}>View ticket {'->'}</Link>
+                    </Button>
+                  </div>
+                )}
+                {typeof homeResult.actionCard.data?.routeTo === 'string' &&
+                  !isDuplicateWarningCard &&
+                  !shouldShowViewTicketCta && (
                   <div className="mt-2">
                     <Button asChild size="sm" variant="outline">
                       <Link href={homeResult.actionCard.data.routeTo}>Open in Tool</Link>
@@ -2011,7 +2047,7 @@ export default function Home() {
                     </Button>
                   </div>
                 )}
-                {homeResult.actionCard.data?.ticketNumber && (
+                {homeResult.actionCard.data?.ticketNumber && !shouldShowViewTicketCta && (
                   <div className="mt-2">
                     <Button
                       size="sm"
