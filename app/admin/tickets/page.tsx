@@ -16,6 +16,13 @@ import {
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Search, Shield, Clock, CheckCircle, XCircle } from 'lucide-react';
 
 type TicketStatus = 'OPEN' | 'IN_PROGRESS' | 'WAITING_ON_REQUESTER' | 'RESOLVED' | 'CLOSED' | 'PENDING_APPROVAL';
@@ -479,39 +486,102 @@ export default function AdminTicketsPage() {
                       )}
                     </div>
                   </div>
-                  <div className="flex flex-col gap-2 min-w-[200px]">
-                    <div className="mb-2">
-                      <Input
-                        value={assignmentReasons[ticket.id] || ''}
-                        onChange={(e) =>
-                          setAssignmentReasons((prev) => ({
-                            ...prev,
-                            [ticket.id]: e.target.value,
-                          }))
-                        }
-                        placeholder="Reason for assign/remove (required)"
-                        className="mb-1"
-                        disabled={updating === ticket.id}
-                      />
-                      {(() => {
-                        const assignedEngineerIds = new Set(
-                          ticket.assignments.map((assignment) => assignment.engineer.id)
-                        );
-                        const availableEngineers = engineers.filter(
-                          (eng) => !assignedEngineerIds.has(eng.id)
-                        );
-                        return (
-                          <>
+                  <div className="flex min-w-[220px] flex-col gap-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => setSelectedTicket(ticket)}
+                      disabled={updating === ticket.id}
+                    >
+                      Manage Assignment
+                    </Button>
+                    <div className="grid grid-cols-2 gap-2">
                       <select
-                        value={assignEngineerIds[ticket.id] || ''}
+                        value={ticket.status}
                         onChange={(e) =>
-                          setAssignEngineerIds((prev) => ({
-                            ...prev,
-                            [ticket.id]: e.target.value,
-                          }))
+                          updateTicketStatus(ticket.id, e.target.value as TicketStatus)
                         }
                         className="w-full px-3 py-1.5 text-sm border rounded-md"
                         disabled={updating === ticket.id}
+                      >
+                        <option value="OPEN">Open</option>
+                        <option value="IN_PROGRESS">In Progress</option>
+                        <option value="WAITING_ON_REQUESTER">
+                          Waiting on Requester
+                        </option>
+                        <option value="RESOLVED">Resolved</option>
+                        <option value="CLOSED">Closed</option>
+                      </select>
+                      <select
+                        value={ticket.priority}
+                        onChange={(e) =>
+                          updateTicketPriority(ticket.id, e.target.value as TicketPriority)
+                        }
+                        className="w-full px-3 py-1.5 text-sm border rounded-md"
+                        disabled={updating === ticket.id}
+                      >
+                        <option value="LOW">Low</option>
+                        <option value="MEDIUM">Medium</option>
+                        <option value="HIGH">High</option>
+                        <option value="URGENT">Urgent</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
+
+      <Dialog
+        open={!!selectedTicket}
+        onOpenChange={(open) => {
+          if (!open) setSelectedTicket(null);
+        }}
+      >
+        <DialogContent className="max-w-xl">
+          {selectedTicket && (
+            <>
+              <DialogHeader>
+                <DialogTitle>Manage Assignment</DialogTitle>
+                <DialogDescription>
+                  {selectedTicket.ticketNumber} - {selectedTicket.title}
+                </DialogDescription>
+              </DialogHeader>
+
+              <div className="space-y-3">
+                <Input
+                  value={assignmentReasons[selectedTicket.id] || ''}
+                  onChange={(e) =>
+                    setAssignmentReasons((prev) => ({
+                      ...prev,
+                      [selectedTicket.id]: e.target.value,
+                    }))
+                  }
+                  placeholder="Reason for assign/remove (required)"
+                  disabled={updating === selectedTicket.id}
+                />
+
+                {(() => {
+                  const assignedEngineerIds = new Set(
+                    selectedTicket.assignments.map((assignment) => assignment.engineer.id)
+                  );
+                  const availableEngineers = engineers.filter(
+                    (eng) => !assignedEngineerIds.has(eng.id)
+                  );
+                  return (
+                    <div className="flex gap-2">
+                      <select
+                        value={assignEngineerIds[selectedTicket.id] || ''}
+                        onChange={(e) =>
+                          setAssignEngineerIds((prev) => ({
+                            ...prev,
+                            [selectedTicket.id]: e.target.value,
+                          }))
+                        }
+                        className="flex-1 px-3 py-1.5 text-sm border rounded-md"
+                        disabled={updating === selectedTicket.id}
                       >
                         <option value="">
                           {availableEngineers.length > 0
@@ -526,80 +596,44 @@ export default function AdminTicketsPage() {
                       </select>
                       <Button
                         size="sm"
-                        className="w-full mt-1"
-                        onClick={() => assignEngineer(ticket.id)}
-                        disabled={updating === ticket.id || !assignEngineerIds[ticket.id]}
+                        onClick={() => assignEngineer(selectedTicket.id)}
+                        disabled={updating === selectedTicket.id || !assignEngineerIds[selectedTicket.id]}
                       >
-                        {updating === ticket.id ? (
-                          <Spinner className="w-4 h-4" />
-                        ) : ticket.assignments.length > 0 ? (
-                          'Reassign'
-                        ) : (
-                          'Assign'
-                        )}
+                        {updating === selectedTicket.id ? <Spinner className="w-4 h-4" /> : 'Add Engineer'}
                       </Button>
-                          </>
-                        );
-                      })()}
                     </div>
-                    {ticket.assignments.length > 0 && (
-                      <div className="rounded-md border border-slate-200 p-2">
-                        <p className="mb-2 text-xs font-medium text-slate-600">Assigned engineers</p>
-                        <div className="space-y-2">
-                          {ticket.assignments.map((assignment) => (
-                            <div key={assignment.id} className="flex items-center justify-between gap-2">
-                              <p className="text-xs text-slate-700">
-                                {assignment.engineer.profile?.empName || assignment.engineer.email}
-                              </p>
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                onClick={() => unassignEngineer(ticket.id, assignment.engineer.id)}
-                                disabled={updating === ticket.id}
-                              >
-                                {updating === ticket.id ? <Spinner className="w-4 h-4" /> : 'Remove'}
-                              </Button>
-                            </div>
-                          ))}
+                  );
+                })()}
+
+                <div className="rounded-md border border-slate-200 p-3">
+                  <p className="mb-2 text-xs font-medium text-slate-600">Assigned engineers</p>
+                  {selectedTicket.assignments.length === 0 ? (
+                    <p className="text-xs text-slate-500">No active assignees</p>
+                  ) : (
+                    <div className="space-y-2">
+                      {selectedTicket.assignments.map((assignment) => (
+                        <div key={assignment.id} className="flex items-center justify-between gap-2">
+                          <p className="text-sm text-slate-700">
+                            {assignment.engineer.profile?.empName || assignment.engineer.email}
+                          </p>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => unassignEngineer(selectedTicket.id, assignment.engineer.id)}
+                            disabled={updating === selectedTicket.id}
+                          >
+                            {updating === selectedTicket.id ? <Spinner className="w-4 h-4" /> : 'Remove'}
+                          </Button>
                         </div>
-                      </div>
-                    )}
-                    <select
-                      value={ticket.status}
-                      onChange={(e) =>
-                        updateTicketStatus(ticket.id, e.target.value as TicketStatus)
-                      }
-                      className="w-full px-3 py-1.5 text-sm border rounded-md"
-                      disabled={updating === ticket.id}
-                    >
-                      <option value="OPEN">Open</option>
-                      <option value="IN_PROGRESS">In Progress</option>
-                      <option value="WAITING_ON_REQUESTER">
-                        Waiting on Requester
-                      </option>
-                      <option value="RESOLVED">Resolved</option>
-                      <option value="CLOSED">Closed</option>
-                    </select>
-                    <select
-                      value={ticket.priority}
-                      onChange={(e) =>
-                        updateTicketPriority(ticket.id, e.target.value as TicketPriority)
-                      }
-                      className="w-full px-3 py-1.5 text-sm border rounded-md"
-                      disabled={updating === ticket.id}
-                    >
-                      <option value="LOW">Low</option>
-                      <option value="MEDIUM">Medium</option>
-                      <option value="HIGH">High</option>
-                      <option value="URGENT">Urgent</option>
-                    </select>
-                  </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      )}
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
 
       <ToastContainer />
     </div>
