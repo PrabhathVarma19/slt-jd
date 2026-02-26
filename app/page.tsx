@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import Link from 'next/link';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Clock3, Ticket, Sparkles, X } from 'lucide-react';
 import Button from '@/components/ui/button';
 import { useToast } from '@/lib/hooks/useToast';
 import {
@@ -39,6 +39,27 @@ type HomeThreadItem = {
     data?: Record<string, any>;
   };
   requiresConfirmation?: boolean;
+};
+
+type HistoryTicketItem = {
+  id: string;
+  ticketNumber: string;
+  title: string;
+  status: string;
+  type: string;
+  createdAt: string;
+};
+
+type HomeHistoryRunItem = {
+  id: string;
+  createdAt: string;
+  status: string;
+  intent: string;
+  message: string;
+  description: string;
+  routeTo?: string | null;
+  ticketId?: string | null;
+  ticketNumber?: string | null;
 };
 
 const TOOLS: Tool[] = [
@@ -297,26 +318,6 @@ export default function Home() {
       });
   }, []);
 
-  const buckets: ToolBucket[] = ['Ask', 'Requests', 'Outputs'];
-
-  type PromptCategory =
-    | 'Catch Up'
-    | 'Ask'
-    | 'Requests'
-    | 'Create'
-    | 'Summarize'
-    | 'Onboard';
-
-  const PROMPT_CATEGORIES: PromptCategory[] = [
-    'Catch Up',
-    'Ask',
-    'Requests',
-    'Create',
-    'Summarize',
-    'Onboard',
-  ];
-
-  const [activePromptCategory, setActivePromptCategory] = useState<PromptCategory>('Catch Up');
   const [homeMessage, setHomeMessage] = useState('');
   const [lastHomeCommand, setLastHomeCommand] = useState('');
   const [homeLoading, setHomeLoading] = useState(false);
@@ -384,6 +385,12 @@ export default function Home() {
   const TOOL_CATEGORIES: ToolCategory[] = ['All', 'Ask', 'Requests', 'Outputs'];
   const [activeToolCategory, setActiveToolCategory] = useState<ToolCategory>('All');
   const [recentItTickets, setRecentItTickets] = useState<string[]>([]);
+  const [historyOpen, setHistoryOpen] = useState(false);
+  const [historyLoading, setHistoryLoading] = useState(false);
+  const [historyLoaded, setHistoryLoaded] = useState(false);
+  const [historyError, setHistoryError] = useState<string | null>(null);
+  const [historyTickets, setHistoryTickets] = useState<HistoryTicketItem[]>([]);
+  const [historyRuns, setHistoryRuns] = useState<HomeHistoryRunItem[]>([]);
   const temporaryAccessUntilDate = useMemo(() => {
     const now = new Date();
     const quarterEndMonth = Math.floor(now.getMonth() / 3) * 3 + 2;
@@ -469,6 +476,51 @@ export default function Home() {
         ? 'bg-emerald-100 text-emerald-800'
         : 'bg-slate-100 text-slate-700';
 
+  const historyTimeline = useMemo(() => {
+    const ticketEntries = historyTickets.map((ticket) => ({
+      key: `ticket-${ticket.id}`,
+      createdAt: ticket.createdAt,
+      type: 'ticket' as const,
+      ticket,
+    }));
+    const commandEntries = historyRuns.map((run) => ({
+      key: `run-${run.id}`,
+      createdAt: run.createdAt,
+      type: 'command' as const,
+      run,
+    }));
+    return [...ticketEntries, ...commandEntries].sort(
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+  }, [historyRuns, historyTickets]);
+
+  const groupedHistory = useMemo(() => {
+    const groups = {
+      Today: [] as typeof historyTimeline,
+      'This week': [] as typeof historyTimeline,
+      Earlier: [] as typeof historyTimeline,
+    };
+    const now = new Date();
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const weekStart = new Date(todayStart);
+    weekStart.setDate(todayStart.getDate() - 7);
+
+    historyTimeline.forEach((entry) => {
+      const when = new Date(entry.createdAt);
+      if (Number.isNaN(when.getTime())) {
+        groups.Earlier.push(entry);
+      } else if (when >= todayStart) {
+        groups.Today.push(entry);
+      } else if (when >= weekStart) {
+        groups['This week'].push(entry);
+      } else {
+        groups.Earlier.push(entry);
+      }
+    });
+
+    return groups;
+  }, [historyTimeline]);
+
   const formatHomeFieldLabel = (key: string) =>
     key
       .replace(/([A-Z])/g, ' $1')
@@ -486,6 +538,28 @@ export default function Home() {
     if (normalized === 'engineering_generate') return 'Engineering';
     if (normalized === 'jd_generate') return 'JD';
     return intent ? intent.replace(/_/g, ' ') : 'Response';
+  };
+
+  const formatStatusLabel = (status?: string) => {
+    if (!status) return 'Unknown';
+    return status.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, (ch) => ch.toUpperCase());
+  };
+
+  const historyStatusClass = (status?: string) => {
+    const normalized = (status || '').toUpperCase();
+    if (['OPEN', 'IN_PROGRESS', 'WAITING_ON_REQUESTER', 'RUNNING'].includes(normalized)) {
+      return 'bg-blue-100 text-blue-800';
+    }
+    if (['RESOLVED', 'COMPLETED'].includes(normalized)) {
+      return 'bg-emerald-100 text-emerald-800';
+    }
+    if (['CLOSED', 'CANCELLED'].includes(normalized)) {
+      return 'bg-slate-100 text-slate-700';
+    }
+    if (['FAILED', 'REJECTED'].includes(normalized)) {
+      return 'bg-rose-100 text-rose-800';
+    }
+    return 'bg-slate-100 text-slate-700';
   };
 
   const renderHomeActionDetails = () => {
@@ -579,6 +653,73 @@ export default function Home() {
 
     fetchRecentTickets();
   }, []);
+
+  const fetchHistoryData = useCallback(async (force = false) => {
+    if (historyLoading) return;
+    if (historyLoaded && !force) return;
+
+    try {
+      setHistoryLoading(true);
+      setHistoryError(null);
+
+      const [ticketRes, runRes] = await Promise.all([
+        fetch('/api/profile/tickets?limit=25'),
+        fetch('/api/home/history?limit=25'),
+      ]);
+
+      const ticketData = await ticketRes.json();
+      const runData = await runRes.json();
+
+      if (!ticketRes.ok || ticketData?.error) {
+        throw new Error(ticketData?.error || 'Failed to load ticket history');
+      }
+      if (!runRes.ok || runData?.error) {
+        throw new Error(runData?.error || 'Failed to load command history');
+      }
+
+      const nextTickets: HistoryTicketItem[] = Array.isArray(ticketData?.tickets)
+        ? ticketData.tickets
+            .filter((ticket: any) => typeof ticket?.id === 'string')
+            .map((ticket: any) => ({
+              id: ticket.id,
+              ticketNumber: ticket.ticketNumber || ticket.id,
+              title: ticket.title || 'Ticket',
+              status: ticket.status || 'OPEN',
+              type: ticket.type || 'IT',
+              createdAt: ticket.createdAt || ticket.updatedAt || new Date().toISOString(),
+            }))
+        : [];
+
+      const nextRuns: HomeHistoryRunItem[] = Array.isArray(runData?.runs)
+        ? runData.runs
+            .filter((run: any) => typeof run?.id === 'string')
+            .map((run: any) => ({
+              id: run.id,
+              createdAt: run.createdAt || new Date().toISOString(),
+              status: run.status || 'COMPLETED',
+              intent: run.intent || 'unknown',
+              message: typeof run.message === 'string' ? run.message : '',
+              description: typeof run.description === 'string' ? run.description : '',
+              routeTo: typeof run.routeTo === 'string' ? run.routeTo : null,
+              ticketId: typeof run.ticketId === 'string' ? run.ticketId : null,
+              ticketNumber: typeof run.ticketNumber === 'string' ? run.ticketNumber : null,
+            }))
+        : [];
+
+      setHistoryTickets(nextTickets);
+      setHistoryRuns(nextRuns);
+      setHistoryLoaded(true);
+    } catch (error: any) {
+      setHistoryError(error?.message || 'Failed to load history');
+    } finally {
+      setHistoryLoading(false);
+    }
+  }, [historyLoaded, historyLoading]);
+
+  useEffect(() => {
+    if (!historyOpen) return;
+    fetchHistoryData();
+  }, [historyOpen, fetchHistoryData]);
 
   const pushHomeThreadUser = (text: string) => {
     setHomeThread((prev) => [
@@ -1056,154 +1197,6 @@ export default function Home() {
     }
   };
 
-  type PromptCard = {
-    title: string;
-    description: string;
-    href: string;
-    accent: string;
-  };
-
-  const PROMPTS: Record<PromptCategory, PromptCard[]> = {
-    'Catch Up': [
-      {
-        title: 'Catch up on weekly initiatives',
-        description:
-          'Turn team updates into a concise weekly brief, week over week.',
-        href: '/weekly-brief',
-        accent: 'bg-amber-100 text-amber-700',
-      },
-      {
-        title: 'Stay informed on policy changes',
-        description:
-          'Ask Beacon for the latest policy guidance with citations from internal docs.',
-        href: '/policy-agent',
-        accent: 'bg-sky-100 text-sky-700',
-      },
-      {
-        title: 'Get the gist of an email or document',
-        description:
-          'Ask a focused question and use sources to verify the answer quickly.',
-        href: '/policy-agent',
-        accent: 'bg-indigo-100 text-indigo-700',
-      },
-    ],
-    Ask: [
-      {
-        title: 'Ask a policy question',
-        description:
-          'Get grounded answers with citations from internal policies and guidelines.',
-        href: '/policy-agent',
-        accent: 'bg-sky-100 text-sky-700',
-      },
-      {
-        title: 'Help a new joiner',
-        description:
-          'Answer first-90-days questions and point new joiners to the right policies.',
-        href: '/new-joiner',
-        accent: 'bg-emerald-100 text-emerald-700',
-      },
-      {
-        title: 'Expenses and Fusion help',
-        description:
-          'Explain reimbursable expenses and Fusion steps in clear actions.',
-        href: '/expenses-coach',
-        accent: 'bg-teal-100 text-teal-700',
-      },
-    ],
-    Requests: [
-      {
-        title: 'Raise an IT / access request',
-        description:
-          'Turn free text into a structured Service Desk email routed to the right queue.',
-        href: '/service-desk',
-        accent: 'bg-slate-100 text-slate-700',
-      },
-      {
-        title: 'Raise a travel request',
-        description:
-          'Create ready-to-send travel requests with dates, routes and approvals captured.',
-        href: '/travel-desk',
-        accent: 'bg-cyan-100 text-cyan-700',
-      },
-      {
-        title: 'Ask before you submit',
-        description:
-          'Use Ask Beacon to check policy limits (travel grade, hotel caps, per diem) first.',
-        href: '/policy-agent',
-        accent: 'bg-sky-100 text-sky-700',
-      },
-    ],
-    Create: [
-      {
-        title: 'Draft a comms update',
-        description:
-          'Turn raw updates into newsletters and change notices with clear structure.',
-        href: '/comms-hub',
-        accent: 'bg-fuchsia-100 text-fuchsia-700',
-      },
-      {
-        title: 'Create a Job Description',
-        description:
-          'Generate structured role descriptions and skill requirements in minutes.',
-        href: '/jd',
-        accent: 'bg-indigo-100 text-indigo-700',
-      },
-      {
-        title: 'Create a weekly brief',
-        description:
-          'Summarize initiatives into clear, action-ready bullets with consistent format.',
-        href: '/weekly-brief',
-        accent: 'bg-amber-100 text-amber-700',
-      },
-    ],
-    Summarize: [
-      {
-        title: 'Summarize weekly updates',
-        description:
-          'Convert updates into a concise weekly brief with consistent headings.',
-        href: '/weekly-brief',
-        accent: 'bg-amber-100 text-amber-700',
-      },
-      {
-        title: 'Summarize policy guidance',
-        description:
-          'Ask Beacon for key rules and what-to-do-next, grounded with citations.',
-        href: '/policy-agent',
-        accent: 'bg-sky-100 text-sky-700',
-      },
-      {
-        title: 'Summarize comms into an announcement',
-        description:
-          'Turn notes into a clear announcement with audience, timing and action items.',
-        href: '/comms-hub',
-        accent: 'bg-fuchsia-100 text-fuchsia-700',
-      },
-    ],
-    Onboard: [
-      {
-        title: 'Day 1 checklist',
-        description:
-          'Get onboarding steps for access, policies and first-week expectations.',
-        href: '/new-joiner',
-        accent: 'bg-emerald-100 text-emerald-700',
-      },
-      {
-        title: 'IT setup help',
-        description:
-          'Get guidance for VPN, email, and tool access, or route to Service Desk if needed.',
-        href: '/new-joiner',
-        accent: 'bg-slate-100 text-slate-700',
-      },
-      {
-        title: 'RTO and leave basics',
-        description:
-          'Ask the buddy about RTO expectations, probation, and leave policies.',
-        href: '/new-joiner',
-        accent: 'bg-emerald-100 text-emerald-700',
-      },
-    ],
-  };
-
   const TOOL_GROUPS: Record<ToolCategory, Tool[]> = {
     All: TOOLS,
     Ask: TOOLS.filter((t) => t.bucket === 'Ask'),
@@ -1211,34 +1204,6 @@ export default function Home() {
     Outputs: TOOLS.filter((t) => t.bucket === 'Outputs'),
     Admin: [], // Admin tools shown separately below
   };
-
-  const QUICK_ACCESS_LINKS = [
-    {
-      title: 'Ask a policy question',
-      hint: 'Get grounded answers with citations',
-      href: '/policy-agent',
-    },
-    {
-      title: 'Raise IT request',
-      hint: 'Create and submit structured IT requests',
-      href: '/service-desk',
-    },
-    {
-      title: 'Create comms draft',
-      hint: 'Generate team newsletters and updates',
-      href: '/comms-hub',
-    },
-    {
-      title: 'Draft engineering update',
-      hint: 'Release notes, PR summary, post-mortem',
-      href: '/engineering-tools',
-    },
-    {
-      title: 'Convert PDF to PowerPoint',
-      hint: 'Upload PDF and generate Trianz PPT output',
-      href: '/pdf-to-ppt',
-    },
-  ];
 
   return (
     <div className="space-y-12">
@@ -1343,6 +1308,15 @@ export default function Home() {
                 className="rounded-xl px-4"
               >
                 {homeLoading ? 'Running...' : homeConfirmLoading ? 'Please wait...' : 'Run'}
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                className="rounded-xl px-3"
+                onClick={() => setHistoryOpen(true)}
+              >
+                <Clock3 className="mr-1.5 h-4 w-4" />
+                History
               </Button>
             </div>
             {isHomePdfDragging && (
@@ -2091,214 +2065,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* What Beacon helps with */}
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold text-slate-900">What Beacon helps you do</h2>
-        <div className="grid gap-6 md:grid-cols-3">
-          <Card className="rounded-2xl border border-slate-200 bg-card shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md">
-            <CardHeader className="space-y-2">
-              <CardTitle className="flex items-center gap-2 text-sm font-semibold">
-                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-sky-100 text-xs font-semibold text-sky-700">
-                  Q
-                </span>
-                Ask Beacon
-              </CardTitle>
-              <CardDescription className="text-sm text-slate-600">
-                Get policy and &quot;how do I...&quot; answers with citations from internal docs.
-              </CardDescription>
-            </CardHeader>
-          </Card>
-
-          <Card className="rounded-2xl border border-slate-200 bg-card shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md">
-            <CardHeader className="space-y-2">
-              <CardTitle className="flex items-center gap-2 text-sm font-semibold">
-                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-xs font-semibold text-slate-700">
-                  IT
-                </span>
-                Service Desk &amp; Travel Desk
-              </CardTitle>
-              <CardDescription className="text-sm text-slate-600">
-                Turn plain language into structured IT and travel requests, emailed to the right
-                queues.
-              </CardDescription>
-            </CardHeader>
-          </Card>
-
-          <Card className="rounded-2xl border border-slate-200 bg-card shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md">
-            <CardHeader className="space-y-2">
-              <CardTitle className="flex items-center gap-2 text-sm font-semibold">
-                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-indigo-100 text-xs font-semibold text-indigo-700">
-                  C
-                </span>
-                Comms &amp; updates
-              </CardTitle>
-              <CardDescription className="text-sm text-slate-600">
-                Turn weekly updates into briefs, newsletters and change notices for teams.
-              </CardDescription>
-            </CardHeader>
-          </Card>
-        </div>
-      </section>
-
-      {/* Recent actions + quick access */}
-      <section id="recent-actions" className="space-y-5">
-        <div className="space-y-2">
-          <h2 className="text-2xl font-semibold tracking-tight text-slate-900">
-            Recent Actions
-          </h2>
-          <p className="text-sm text-slate-600">
-            Resume active work or jump straight into a common workflow.
-          </p>
-        </div>
-        <div className="grid gap-3 md:grid-cols-2">
-          {homeResult?.requiresConfirmation ? (
-            <button
-              type="button"
-              onClick={() => {
-                const el = document.getElementById('home-command-bar');
-                if (el) {
-                  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-              }}
-              className="flex items-center justify-between gap-4 rounded-2xl border border-blue-200 bg-blue-50 px-4 py-3 text-left transition hover:border-blue-300"
-            >
-              <div>
-                <p className="text-sm font-semibold text-slate-900">Resume Pending IT Draft</p>
-                <p className="text-xs text-slate-600">
-                  Complete required fields and approve submission.
-                </p>
-              </div>
-              <ChevronRight className="h-4 w-4 text-slate-400" aria-hidden="true" />
-            </button>
-          ) : (
-            <button
-              type="button"
-              onClick={() => {
-                const el = document.getElementById('home-command-bar');
-                if (el) {
-                  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-              }}
-              className="flex items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-left transition hover:border-slate-300 hover:bg-slate-50"
-            >
-              <div>
-                <p className="text-sm font-semibold text-slate-900">Start New Home Request</p>
-                <p className="text-xs text-slate-600">
-                  Use the command bar to route a new request.
-                </p>
-              </div>
-              <ChevronRight className="h-4 w-4 text-slate-400" aria-hidden="true" />
-            </button>
-          )}
-          <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3">
-            {recentItTickets.length > 0 ? (
-              <div className="flex flex-wrap gap-2">
-                {recentItTickets.slice(0, 4).map((ticketNumber) => (
-                  <button
-                    key={`recent-actions-${ticketNumber}`}
-                    type="button"
-                    className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-700 hover:bg-slate-100"
-                    onClick={() => runTicketStatusCheck(ticketNumber)}
-                    disabled={homeLoading || homeConfirmLoading}
-                  >
-                    {ticketNumber}
-                  </button>
-                ))}
-              </div>
-            ) : (
-              <p className="text-xs text-slate-600">No recent IT tickets yet.</p>
-            )}
-          </div>
-        </div>
-        <div className="grid gap-3 md:grid-cols-2">
-          {QUICK_ACCESS_LINKS.map((item) => (
-            <Link
-              key={item.title}
-              href={item.href}
-              className="flex items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-card px-4 py-3 shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50 hover:shadow-md"
-            >
-              <div>
-                <p className="text-sm font-semibold text-slate-900">{item.title}</p>
-                <p className="text-xs text-slate-600">{item.hint}</p>
-              </div>
-              <ChevronRight className="h-4 w-4 text-slate-400" aria-hidden="true" />
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* Task-based prompts */}
-      <section id="tools" className="space-y-5">
-        <div className="space-y-2">
-          <h2 className="text-3xl font-semibold tracking-tight text-slate-900">
-            Task-based prompts
-          </h2>
-          <p className="text-sm text-slate-600">
-            Choose your workflow to see prompts that help you accomplish specific tasks.
-          </p>
-        </div>
-
-        {/* Pills */}
-        <div className="flex flex-wrap gap-2">
-          {PROMPT_CATEGORIES.map((cat) => {
-            const isActive = cat === activePromptCategory;
-            return (
-              <button
-                key={cat}
-                type="button"
-                onClick={() => setActivePromptCategory(cat)}
-                className={[
-                  'rounded-full px-4 py-2 text-sm font-medium transition',
-                  isActive
-                    ? 'bg-slate-900 text-white shadow-sm'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200',
-                ].join(' ')}
-              >
-                {cat}
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Cards */}
-        <div className="grid gap-6 md:grid-cols-3">
-          {PROMPTS[activePromptCategory].map((prompt) => (
-            <Card
-              key={prompt.title}
-              className="rounded-3xl border border-slate-200 bg-card shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md"
-            >
-              <CardHeader className="space-y-3">
-                <div className="flex items-center gap-3">
-                  <div
-                    className={`inline-flex h-8 w-8 items-center justify-center rounded-full text-xs font-semibold ${prompt.accent}`}
-                  >
-                    {/* lightweight marker; keeps layout consistent */}
-                    <span aria-hidden="true">{'>'}</span>
-                  </div>
-                  <CardTitle className="text-base font-semibold text-slate-900">
-                    {prompt.title}
-                  </CardTitle>
-                </div>
-                <CardDescription className="text-sm text-slate-600">
-                  {prompt.description}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <Link
-                  href={prompt.href}
-                  className="inline-flex items-center gap-3 text-sm font-medium text-slate-900"
-                >
-                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-900 text-white">
-                    <ChevronRight className="h-4 w-4" aria-hidden="true" />
-                  </span>
-                  Try this prompt
-                </Link>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
-
       {/* Tools (categorized like prompts) */}
       <section id="tools-hub" className="space-y-5">
         <div id="all-tools" />
@@ -2505,6 +2271,148 @@ export default function Home() {
           </div>
         </section>
       )}
+
+      <div className={`fixed inset-0 z-50 ${historyOpen ? '' : 'pointer-events-none'}`}>
+        <button
+          type="button"
+          className={`absolute inset-0 bg-slate-900/35 transition-opacity ${
+            historyOpen ? 'opacity-100' : 'opacity-0'
+          }`}
+          onClick={() => setHistoryOpen(false)}
+          aria-label="Close history drawer"
+        />
+        <aside
+          className={`absolute right-0 top-0 h-full w-full max-w-xl border-l border-slate-200 bg-white shadow-2xl transition-transform ${
+            historyOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}
+          aria-label="History"
+        >
+          <div className="flex h-full flex-col">
+            <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">History</p>
+                <h3 className="text-lg font-semibold text-slate-900">Recent activity timeline</h3>
+              </div>
+              <div className="flex items-center gap-2">
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  onClick={() => fetchHistoryData(true)}
+                  disabled={historyLoading}
+                >
+                  Refresh
+                </Button>
+                <button
+                  type="button"
+                  className="rounded-md border border-slate-200 p-2 text-slate-600 hover:bg-slate-100"
+                  onClick={() => setHistoryOpen(false)}
+                  aria-label="Close history drawer"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+            <div className="flex-1 overflow-y-auto px-5 py-4">
+              {historyLoading ? (
+                <p className="text-sm text-slate-600">Loading history...</p>
+              ) : historyError ? (
+                <p className="text-sm text-rose-700">{historyError}</p>
+              ) : historyTimeline.length === 0 ? (
+                <p className="text-sm text-slate-600">No recent activity yet.</p>
+              ) : (
+                <div className="space-y-6">
+                  {(['Today', 'This week', 'Earlier'] as const).map((label) => {
+                    const items = groupedHistory[label];
+                    if (items.length === 0) return null;
+                    return (
+                      <section key={label} className="space-y-3">
+                        <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">{label}</p>
+                        <div className="space-y-2">
+                          {items.map((entry) =>
+                            entry.type === 'ticket' ? (
+                              <button
+                                key={entry.key}
+                                type="button"
+                                onClick={() => {
+                                  setHistoryOpen(false);
+                                  router.push(`/tickets/${entry.ticket.id}`);
+                                }}
+                                className="flex w-full items-center justify-between rounded-xl border border-slate-200 bg-white px-3 py-2 text-left hover:bg-slate-50"
+                              >
+                                <div className="min-w-0">
+                                  <p className="flex items-center gap-2 text-sm font-semibold text-slate-900">
+                                    <Ticket className="h-4 w-4 text-slate-500" />
+                                    <span className="truncate">
+                                      {entry.ticket.ticketNumber} - {entry.ticket.title}
+                                    </span>
+                                  </p>
+                                  <p className="mt-1 text-xs text-slate-500">
+                                    {new Date(entry.ticket.createdAt).toLocaleString()}
+                                  </p>
+                                </div>
+                                <div className="ml-3 flex items-center gap-2">
+                                  <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] text-slate-600">
+                                    {entry.ticket.type}
+                                  </span>
+                                  <span
+                                    className={`rounded-full px-2 py-0.5 text-[11px] ${historyStatusClass(entry.ticket.status)}`}
+                                  >
+                                    {formatStatusLabel(entry.ticket.status)}
+                                  </span>
+                                  <ChevronRight className="h-4 w-4 text-slate-400" />
+                                </div>
+                              </button>
+                            ) : (
+                              <button
+                                key={entry.key}
+                                type="button"
+                                onClick={() => {
+                                  setHistoryOpen(false);
+                                  if (entry.run.routeTo) {
+                                    router.push(entry.run.routeTo);
+                                    return;
+                                  }
+                                  if (entry.run.message) {
+                                    setHomeMessage(entry.run.message);
+                                    submitHomeCommand(entry.run.message);
+                                  }
+                                }}
+                                className="flex w-full items-center justify-between rounded-xl border border-slate-200 bg-white px-3 py-2 text-left hover:bg-slate-50"
+                              >
+                                <div className="min-w-0">
+                                  <p className="flex items-center gap-2 text-sm font-semibold text-slate-900">
+                                    <Sparkles className="h-4 w-4 text-slate-500" />
+                                    <span className="truncate">{entry.run.message || entry.run.description || 'Home command'}</span>
+                                  </p>
+                                  <p className="mt-1 text-xs text-slate-500">
+                                    {entry.run.description || getHomeIntentLabel(entry.run.intent)}
+                                  </p>
+                                  <p className="mt-1 text-xs text-slate-500">
+                                    {new Date(entry.run.createdAt).toLocaleString()}
+                                  </p>
+                                </div>
+                                <div className="ml-3 flex items-center gap-2">
+                                  <span
+                                    className={`rounded-full px-2 py-0.5 text-[11px] ${historyStatusClass(entry.run.status)}`}
+                                  >
+                                    {formatStatusLabel(entry.run.status)}
+                                  </span>
+                                  <ChevronRight className="h-4 w-4 text-slate-400" />
+                                </div>
+                              </button>
+                            )
+                          )}
+                        </div>
+                      </section>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          </div>
+        </aside>
+      </div>
 
       {/* Trust strip */}
       <section className="pb-4">
