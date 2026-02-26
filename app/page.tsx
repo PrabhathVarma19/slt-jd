@@ -387,6 +387,8 @@ export default function Home() {
   const TOOL_CATEGORIES: ToolCategory[] = ['All', 'Ask', 'Requests', 'Outputs'];
   const [activeToolCategory, setActiveToolCategory] = useState<ToolCategory>('All');
   const [recentItTickets, setRecentItTickets] = useState<string[]>([]);
+  const [activeNudgeTickets, setActiveNudgeTickets] = useState<HistoryTicketItem[]>([]);
+  const [activeNudgeLoaded, setActiveNudgeLoaded] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
   const [historyLoading, setHistoryLoading] = useState(false);
   const [historyLoaded, setHistoryLoaded] = useState(false);
@@ -654,6 +656,39 @@ export default function Home() {
     };
 
     fetchRecentTickets();
+  }, []);
+
+  useEffect(() => {
+    const fetchActiveNudgeTickets = async () => {
+      try {
+        const res = await fetch('/api/notifications/count', { cache: 'no-store' });
+        const data = await res.json();
+        if (!res.ok || data?.error) {
+          throw new Error(data?.error || 'Failed to load active tickets');
+        }
+
+        const nextTickets: HistoryTicketItem[] = Array.isArray(data?.activeTickets)
+          ? data.activeTickets
+              .slice(0, 3)
+              .filter((ticket: any) => typeof ticket?.id === 'string')
+              .map((ticket: any) => ({
+                id: ticket.id,
+                ticketNumber: ticket.ticketNumber || ticket.id,
+                title: ticket.title || 'Ticket',
+                status: ticket.status || 'OPEN',
+                type: 'IT',
+                createdAt: ticket.createdAt || new Date().toISOString(),
+              }))
+          : [];
+        setActiveNudgeTickets(nextTickets);
+      } catch (error) {
+        console.error('Failed to load open ticket nudge:', error);
+      } finally {
+        setActiveNudgeLoaded(true);
+      }
+    };
+
+    fetchActiveNudgeTickets();
   }, []);
 
   const fetchHistoryData = useCallback(async (force = false) => {
@@ -1217,6 +1252,25 @@ export default function Home() {
             {heroGreetingPrefix}
             {heroGreetingName ? `, ${heroGreetingName}` : ''}
           </p>
+
+          {activeNudgeLoaded && activeNudgeTickets.length > 0 && (
+            <div className="flex flex-wrap items-center gap-2 rounded-lg bg-blue-50 px-3 py-2 text-xs text-blue-900">
+              <Ticket className="h-3.5 w-3.5 text-blue-700" />
+              <span>
+                {activeNudgeTickets
+                  .slice(0, 2)
+                  .map((ticket) => `${ticket.ticketNumber} is ${formatStatusLabel(ticket.status)}`)
+                  .join(' | ')}
+              </span>
+              <button
+                type="button"
+                className="font-semibold underline underline-offset-2"
+                onClick={() => setHistoryOpen(true)}
+              >
+                View all {'->'}
+              </button>
+            </div>
+          )}
 
           <h1 className="text-3xl font-semibold leading-tight text-slate-900 sm:text-4xl">
             Beacon is your command center for work requests and policy answers.

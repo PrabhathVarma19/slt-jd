@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Sora } from 'next/font/google';
 import { UserMenu } from '@/components/auth/user-menu';
+import { NotificationBell } from '@/components/ui/notification-bell';
 import './globals.css';
 
 const sora = Sora({ 
@@ -41,7 +42,10 @@ export default function RootLayout({
                   />
                   <span>Beacon</span>
                 </Link>
-                <UserMenu />
+                <div className="flex items-center gap-2">
+                  <NotificationBell />
+                  <UserMenu />
+                </div>
               </div>
             </div>
           </header>
