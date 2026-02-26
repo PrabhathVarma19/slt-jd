@@ -133,7 +133,7 @@ export async function PATCH(
 
     const ticketId = params.id;
     const body = await req.json();
-    const { status, priority, engineerId, action } = body;
+    const { status, priority, engineerId, action, reason } = body;
 
     try {
       // Use Supabase
@@ -226,6 +226,14 @@ export async function PATCH(
 
         // Handle assignment
         if (action === 'assign' && engineerId) {
+          const actionReason = typeof reason === 'string' ? reason.trim() : '';
+          if (!actionReason) {
+            return NextResponse.json(
+              { error: 'Reason is required for assignment/reassignment' },
+              { status: 400 }
+            );
+          }
+
           // Validate engineer exists
           const { data: engineer, error: engineerError } = await supabaseServer
             .from('User')
@@ -248,19 +256,28 @@ export async function PATCH(
             );
           }
 
-          // Unassign existing
-          const { error: unassignError } = await supabaseServer
+          // Allow multiple active assignees; prevent duplicate active assignment
+          const { data: existingActiveAssignment, error: existingAssignmentError } = await supabaseServer
             .from('TicketAssignment')
-            .update({
-              unassignedAt: new Date().toISOString(),
-              unassignedBy: auth.userId,
-            })
+            .select('id')
             .eq('ticketId', ticketId)
-            .is('unassignedAt', null);
+            .eq('engineerId', engineerId)
+            .is('unassignedAt', null)
+            .maybeSingle();
 
-          if (unassignError) {
-            console.error('Error unassigning existing assignment:', unassignError);
-            // Continue anyway - might not have existing assignment
+          if (existingAssignmentError) {
+            console.error('Error checking existing assignment:', existingAssignmentError);
+            return NextResponse.json(
+              { error: existingAssignmentError?.message || 'Failed to validate assignment' },
+              { status: 500 }
+            );
+          }
+
+          if (existingActiveAssignment) {
+            return NextResponse.json(
+              { error: 'Engineer is already assigned to this ticket' },
+              { status: 409 }
+            );
           }
 
           // Create new assignment
@@ -270,6 +287,7 @@ export async function PATCH(
               ticketId,
               engineerId,
               assignedBy: auth.userId,
+              assignedReason: actionReason,
             })
             .select()
             .maybeSingle();
@@ -293,24 +311,43 @@ export async function PATCH(
 
           await createTicketEvent(ticketId, 'ASSIGNED', auth.userId, {
             engineerId,
+            reason: actionReason,
           });
           await sendItNotification({
             ticketId,
             actorId: auth.userId,
             event: 'ticket_assigned',
+            payload: { assigneeEngineerId: engineerId, note: actionReason },
           });
         } else if (action === 'unassign') {
-          await supabaseServer
+          const actionReason = typeof reason === 'string' ? reason.trim() : '';
+          if (!actionReason) {
+            return NextResponse.json(
+              { error: 'Reason is required for remove/unassign' },
+              { status: 400 }
+            );
+          }
+
+          let unassignQuery = supabaseServer
             .from('TicketAssignment')
             .update({
               unassignedAt: new Date().toISOString(),
               unassignedBy: auth.userId,
+              unassignedReason: actionReason,
             })
             .eq('ticketId', ticketId)
             .is('unassignedAt', null);
 
+          if (engineerId) {
+            unassignQuery = unassignQuery.eq('engineerId', engineerId);
+          }
+
+          await unassignQuery;
+
           await createTicketEvent(ticketId, 'ASSIGNED', auth.userId, {
             action: 'unassigned',
+            engineerId: engineerId || null,
+            reason: actionReason,
           });
         }
 

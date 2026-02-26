@@ -94,6 +94,7 @@ interface TicketDetails {
   assignments: Array<{
     id: string;
     assignedAt: string;
+    unassignedAt?: string | null;
     engineer: {
       id: string;
       email: string;
@@ -154,6 +155,8 @@ export default function TicketDetailsPage() {
   const [noteText, setNoteText] = useState('');
   const [addingNote, setAddingNote] = useState(false);
   const [actionLoading, setActionLoading] = useState<'acknowledge' | 'reopen' | null>(null);
+  const [showReopenReason, setShowReopenReason] = useState(false);
+  const [reopenReason, setReopenReason] = useState('');
 
   useEffect(() => {
     if (ticketId) {
@@ -211,12 +214,19 @@ export default function TicketDetailsPage() {
 
   const handleRequesterAction = async (action: 'acknowledge' | 'reopen') => {
     if (!ticket) return;
+    if (action === 'reopen' && !reopenReason.trim()) {
+      alert('Please provide a reason before reopening this ticket.');
+      return;
+    }
     try {
       setActionLoading(action);
       const res = await fetch(`/api/tickets/${ticketId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action }),
+        body: JSON.stringify({
+          action,
+          reason: action === 'reopen' ? reopenReason.trim() : undefined,
+        }),
       });
 
       if (!res.ok) {
@@ -225,6 +235,10 @@ export default function TicketDetailsPage() {
       }
 
       await fetchTicket();
+      if (action === 'reopen') {
+        setShowReopenReason(false);
+        setReopenReason('');
+      }
     } catch (error: any) {
       console.error('Error updating ticket:', error);
       alert(error.message || 'Failed to update ticket');
@@ -349,6 +363,13 @@ export default function TicketDetailsPage() {
 
   const canAddNotes = ticket.isAssignedEngineer || ticket.isAdmin;
   const canAddComments = ticket.isRequester || ticket.isAssignedEngineer || ticket.isAdmin;
+  const activeAssignments = ticket.assignments.filter((assignment) => !assignment.unassignedAt);
+  const statusDescription =
+    ticket.status === 'OPEN'
+      ? activeAssignments.length > 0
+        ? 'Your ticket is open and has been assigned to an engineer.'
+        : STATUS_DESCRIPTIONS.OPEN
+      : STATUS_DESCRIPTIONS[ticket.status];
 
   return (
     <div className="space-y-6">
@@ -396,7 +417,7 @@ export default function TicketDetailsPage() {
                     <div>
                       <p className="text-xs font-medium text-blue-900">Status Information</p>
                       <p className="text-xs text-blue-700 mt-0.5">
-                        {STATUS_DESCRIPTIONS[ticket.status]}
+                        {statusDescription}
                       </p>
                     </div>
                   </div>
@@ -422,20 +443,11 @@ export default function TicketDetailsPage() {
                   </Button>
                   <Button
                     variant="outline"
-                    onClick={() => handleRequesterAction('reopen')}
+                    onClick={() => setShowReopenReason(true)}
                     disabled={actionLoading !== null}
                   >
-                    {actionLoading === 'reopen' ? (
-                      <>
-                        <Spinner className="h-4 w-4 mr-2" />
-                        Reopening...
-                      </>
-                    ) : (
-                      <>
-                        <ArrowRight className="h-4 w-4 mr-2" />
-                        Reopen Ticket
-                      </>
-                    )}
+                    <ArrowRight className="h-4 w-4 mr-2" />
+                    Reopen Ticket
                   </Button>
                 </div>
               )}
@@ -443,23 +455,55 @@ export default function TicketDetailsPage() {
                 <div className="mt-4">
                   <Button
                     variant="outline"
-                    onClick={() => handleRequesterAction('reopen')}
+                    onClick={() => setShowReopenReason(true)}
                     disabled={actionLoading !== null}
                   >
-                    {actionLoading === 'reopen' ? (
-                      <>
-                        <Spinner className="h-4 w-4 mr-2" />
-                        Reopening...
-                      </>
-                    ) : (
-                      <>
-                        <ArrowRight className="h-4 w-4 mr-2" />
-                        Reopen Ticket
-                      </>
-                    )}
+                    <ArrowRight className="h-4 w-4 mr-2" />
+                    Reopen Ticket
                   </Button>
                 </div>
               )}
+              {ticket.isRequester &&
+                ['RESOLVED', 'CLOSED'].includes(ticket.status) &&
+                showReopenReason && (
+                  <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-3">
+                    <p className="mb-2 text-xs font-medium text-amber-900">Reason to reopen (required)</p>
+                    <Input
+                      value={reopenReason}
+                      onChange={(e) => setReopenReason(e.target.value)}
+                      placeholder="Describe what is still unresolved or what issue persists"
+                      disabled={actionLoading !== null}
+                    />
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      <Button
+                        onClick={() => handleRequesterAction('reopen')}
+                        disabled={actionLoading !== null || !reopenReason.trim()}
+                      >
+                        {actionLoading === 'reopen' ? (
+                          <>
+                            <Spinner className="h-4 w-4 mr-2" />
+                            Reopening...
+                          </>
+                        ) : (
+                          <>
+                            <ArrowRight className="h-4 w-4 mr-2" />
+                            Submit Reopen
+                          </>
+                        )}
+                      </Button>
+                      <Button
+                        variant="outline"
+                        onClick={() => {
+                          setShowReopenReason(false);
+                          setReopenReason('');
+                        }}
+                        disabled={actionLoading !== null}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </div>
+                )}
             </div>
           </div>
         </CardHeader>
@@ -488,12 +532,10 @@ export default function TicketDetailsPage() {
                 </div>
               </div>
 
-              {ticket.assignments.length > 0 && (
+              {activeAssignments.length > 0 && (
                 <div>
                   <p className="text-xs font-medium text-gray-500 mb-2">Assigned To</p>
-                  {ticket.assignments
-                    .filter((a) => !a.assignedAt.includes('unassigned'))
-                    .map((assignment) => (
+                  {activeAssignments.map((assignment) => (
                       <div key={assignment.id} className="flex items-center gap-2 mb-2">
                         <UserCheck className="h-4 w-4 text-green-600" />
                         <div>
@@ -603,9 +645,9 @@ export default function TicketDetailsPage() {
                   Have a question or need to provide additional information about this ticket?
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  {ticket.assignments.length > 0 && (
+                  {activeAssignments.length > 0 && (
                     <a
-                      href={`mailto:${ticket.assignments[0].engineer.email}?subject=Re: ${ticket.ticketNumber} - ${ticket.title}`}
+                      href={`mailto:${activeAssignments[0].engineer.email}?subject=Re: ${ticket.ticketNumber} - ${ticket.title}`}
                       className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-blue-300 rounded-md text-sm font-medium text-blue-700 hover:bg-blue-50 transition-colors"
                     >
                       <Mail className="h-4 w-4" />
@@ -737,6 +779,12 @@ export default function TicketDetailsPage() {
                                 Reason: {(item.data as TicketEvent).payload.note}
                               </p>
                             )}
+                            {(item.data as TicketEvent).type === 'ASSIGNED' &&
+                              (item.data as TicketEvent).payload?.reason && (
+                                <p className="text-xs text-gray-600 mt-1 italic">
+                                  Reason: {(item.data as TicketEvent).payload.reason}
+                                </p>
+                              )}
                           </>
                         ) : (
                           <>

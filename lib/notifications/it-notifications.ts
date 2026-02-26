@@ -17,6 +17,7 @@ export type ItNotificationPayload = {
   newPriority?: string;
   note?: string;
   fromRequester?: boolean;
+  assigneeEngineerId?: string;
 };
 
 type NotificationContext = {
@@ -91,15 +92,18 @@ export async function sendItNotification({
     const requesterName = displayName(requesterProfile, requesterEmail);
 
     const assignments = Array.isArray(ticket.assignments) ? ticket.assignments : [];
-    const activeAssignment = assignments.find((row) => row?.unassignedAt == null);
-    const engineer = activeAssignment?.engineer
-      ? Array.isArray(activeAssignment.engineer)
-        ? activeAssignment.engineer[0]
-        : activeAssignment.engineer
-      : null;
-    const engineerProfile = getProfile(engineer?.profile);
-    const assigneeEmail = engineer?.email || '';
-    const assigneeName = displayName(engineerProfile, assigneeEmail);
+    const activeAssignments = assignments.filter((row) => row?.unassignedAt == null);
+    const assigneeEmails = uniqueEmails(
+      activeAssignments.map((row: any) => {
+        const engineer = row?.engineer
+          ? Array.isArray(row.engineer)
+            ? row.engineer[0]
+            : row.engineer
+          : null;
+        return engineer?.email || '';
+      })
+    );
+    const assigneeEmail = assigneeEmails[0] || '';
 
     const { data: actor } = await supabaseServer
       .from('User')
@@ -131,17 +135,29 @@ export async function sendItNotification({
         return;
       }
       case 'ticket_assigned': {
-        to = uniqueEmails([assigneeEmail]);
+        let newlyAssignedEmail = '';
+        if (payload?.assigneeEngineerId) {
+          const match = activeAssignments.find((row: any) => row?.engineerId === payload.assigneeEngineerId);
+          const engineer = match?.engineer
+            ? Array.isArray(match.engineer)
+              ? match.engineer[0]
+              : match.engineer
+            : null;
+          newlyAssignedEmail = engineer?.email || '';
+        }
+
+        to = uniqueEmails([newlyAssignedEmail || assigneeEmail]);
         subject = `[Beacon] ${ticketNumber} assigned to you`;
         htmlBody = `<p>You have been assigned a new IT ticket.</p>
 <p><strong>${ticketNumber}</strong> - ${ticketTitle}</p>
-<p>Requester: ${requesterName} (${requesterEmail})</p>`;
-        textBody = `You have been assigned a new IT ticket.\n${ticketNumber} - ${ticketTitle}\nRequester: ${requesterName} (${requesterEmail})`;
+<p>Requester: ${requesterName} (${requesterEmail})</p>
+${payload?.note ? `<p><strong>Reason:</strong> ${payload.note}</p>` : ''}`;
+        textBody = `You have been assigned a new IT ticket.\n${ticketNumber} - ${ticketTitle}\nRequester: ${requesterName} (${requesterEmail})${payload?.note ? `\nReason: ${payload.note}` : ''}`;
         break;
       }
       case 'ticket_status_changed': {
         const newStatus = payload?.newStatus || ticket.status || 'updated';
-        to = uniqueEmails([requesterEmail, assigneeEmail]);
+        to = uniqueEmails([requesterEmail, ...assigneeEmails]);
         subject = `[Beacon] ${ticketNumber} status ${newStatus}`;
         htmlBody = `<p>Status update from ${actorName}.</p>
 <p><strong>${ticketNumber}</strong> - ${ticketTitle}</p>
@@ -151,7 +167,7 @@ export async function sendItNotification({
       }
       case 'ticket_priority_changed': {
         const newPriority = payload?.newPriority || ticket.priority || 'updated';
-        to = uniqueEmails([assigneeEmail, itDeskEmail]);
+        to = uniqueEmails([...assigneeEmails, itDeskEmail]);
         subject = `[Beacon] ${ticketNumber} priority ${newPriority}`;
         htmlBody = `<p>Priority updated by ${actorName}.</p>
 <p><strong>${ticketNumber}</strong> - ${ticketTitle}</p>
@@ -162,7 +178,7 @@ export async function sendItNotification({
       case 'ticket_note_added': {
         const note = payload?.note || '';
         const isRequester = payload?.fromRequester === true;
-        to = uniqueEmails([isRequester ? assigneeEmail : requesterEmail]);
+        to = uniqueEmails(isRequester ? assigneeEmails : [requesterEmail]);
         subject = `[Beacon] ${ticketNumber} new note`;
         htmlBody = `<p>${actorName} added a note.</p>
 <p><strong>${ticketNumber}</strong> - ${ticketTitle}</p>
@@ -171,11 +187,12 @@ export async function sendItNotification({
         break;
       }
       case 'ticket_reopened': {
-        to = uniqueEmails([assigneeEmail, itDeskEmail]);
+        to = uniqueEmails([...assigneeEmails, itDeskEmail]);
         subject = `[Beacon] ${ticketNumber} reopened`;
         htmlBody = `<p>${actorName} reopened this ticket.</p>
-<p><strong>${ticketNumber}</strong> - ${ticketTitle}</p>`;
-        textBody = `${actorName} reopened this ticket.\n${ticketNumber} - ${ticketTitle}`;
+<p><strong>${ticketNumber}</strong> - ${ticketTitle}</p>
+${payload?.note ? `<p><strong>Reason:</strong> ${payload.note}</p>` : ''}`;
+        textBody = `${actorName} reopened this ticket.\n${ticketNumber} - ${ticketTitle}${payload?.note ? `\nReason: ${payload.note}` : ''}`;
         break;
       }
       default:

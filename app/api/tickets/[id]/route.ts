@@ -186,7 +186,7 @@ export async function PATCH(
     }
 
  const ticketId = params.id;
-  const { comment, action } = await req.json();
+  const { comment, action, reason } = await req.json();
 
   if (action) {
     try {
@@ -248,6 +248,14 @@ export async function PATCH(
           );
         }
 
+        const reopenReason = typeof reason === 'string' ? reason.trim() : '';
+        if (!reopenReason) {
+          return NextResponse.json(
+            { error: 'Reason is required to reopen a ticket' },
+            { status: 400 }
+          );
+        }
+
         const { error: updateError } = await supabaseServer
           .from('Ticket')
           .update({
@@ -265,12 +273,13 @@ export async function PATCH(
           oldStatus: ticket.status,
           newStatus: 'OPEN',
           requesterAction: 'reopened',
+          reason: reopenReason,
         });
         await sendItNotification({
           ticketId,
           actorId: session.userId,
           event: 'ticket_reopened',
-          payload: { oldStatus: ticket.status, newStatus: 'OPEN' },
+          payload: { oldStatus: ticket.status, newStatus: 'OPEN', note: reopenReason },
         });
 
         return NextResponse.json({ success: true });

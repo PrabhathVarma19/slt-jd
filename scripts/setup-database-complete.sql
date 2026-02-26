@@ -105,9 +105,11 @@ CREATE TABLE IF NOT EXISTS "TicketAssignment" (
   "ticketId" TEXT NOT NULL REFERENCES "Ticket"(id) ON DELETE CASCADE,
   "engineerId" TEXT NOT NULL REFERENCES "User"(id),
   "assignedBy" TEXT,
+  "assignedReason" TEXT,
   "assignedAt" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   "unassignedAt" TIMESTAMPTZ,
-  "unassignedBy" TEXT
+  "unassignedBy" TEXT,
+  "unassignedReason" TEXT
 );
 
 CREATE INDEX IF NOT EXISTS idx_ticketassignment_ticketid ON "TicketAssignment"("ticketId");

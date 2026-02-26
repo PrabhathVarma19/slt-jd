@@ -44,6 +44,8 @@ interface Ticket {
   };
   assignments: Array<{
     id: string;
+    assignedAt?: string;
+    unassignedAt?: string | null;
     engineer: {
       id: string;
       email: string;
@@ -103,6 +105,7 @@ export default function AdminTicketsPage() {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
   const [assignEngineerIds, setAssignEngineerIds] = useState<Record<string, string>>({});
+  const [assignmentReasons, setAssignmentReasons] = useState<Record<string, string>>({});
 
   useEffect(() => {
     // Debounce search
@@ -204,8 +207,13 @@ export default function AdminTicketsPage() {
 
   const assignEngineer = async (ticketId: string) => {
     const engineerId = assignEngineerIds[ticketId];
+    const reason = (assignmentReasons[ticketId] || '').trim();
     if (!engineerId) {
       showToast('Please select an engineer', 'error');
+      return;
+    }
+    if (!reason) {
+      showToast('Reason is required for assignment/reassignment', 'error');
       return;
     }
 
@@ -216,6 +224,7 @@ export default function AdminTicketsPage() {
         body: JSON.stringify({
           action: 'assign',
           engineerId,
+          reason,
         }),
       });
 
@@ -229,6 +238,11 @@ export default function AdminTicketsPage() {
       if (selectedTicket?.id === ticketId) {
         setSelectedTicket(null);
       }
+      setAssignmentReasons((prev) => {
+        const next = { ...prev };
+        delete next[ticketId];
+        return next;
+      });
     } catch (error: any) {
       console.error('Error assigning engineer:', error);
       showToast(error.message || 'Failed to assign engineer', 'error');
@@ -237,13 +251,20 @@ export default function AdminTicketsPage() {
     }
   };
 
-  const unassignEngineer = async (ticketId: string) => {
+  const unassignEngineer = async (ticketId: string, engineerId?: string) => {
+    const reason = (assignmentReasons[ticketId] || '').trim();
+    if (!reason) {
+      showToast('Reason is required for remove/unassign', 'error');
+      return;
+    }
     try {
       setUpdating(ticketId);
       await authenticatedFetch(`/api/admin/tickets/${ticketId}`, {
         method: 'PATCH',
         body: JSON.stringify({
           action: 'unassign',
+          engineerId,
+          reason,
         }),
       });
 
@@ -252,6 +273,11 @@ export default function AdminTicketsPage() {
       if (selectedTicket?.id === ticketId) {
         setSelectedTicket(null);
       }
+      setAssignmentReasons((prev) => {
+        const next = { ...prev };
+        delete next[ticketId];
+        return next;
+      });
     } catch (error: any) {
       console.error('Error unassigning engineer:', error);
       showToast('Failed to unassign engineer', 'error');
@@ -446,60 +472,97 @@ export default function AdminTicketsPage() {
                       {ticket.assignments.length > 0 && (
                         <span>
                           Assigned to:{' '}
-                          {ticket.assignments[0].engineer.profile?.empName ||
-                            ticket.assignments[0].engineer.email}
+                          {ticket.assignments
+                            .map((assignment) => assignment.engineer.profile?.empName || assignment.engineer.email)
+                            .join(', ')}
                         </span>
                       )}
                     </div>
                   </div>
                   <div className="flex flex-col gap-2 min-w-[200px]">
-                    {ticket.assignments.length === 0 && (
-                      <div className="mb-2">
-                        <select
-                          value={assignEngineerIds[ticket.id] || ''}
-                          onChange={(e) =>
-                            setAssignEngineerIds((prev) => ({
-                              ...prev,
-                              [ticket.id]: e.target.value,
-                            }))
-                          }
-                          className="w-full px-3 py-1.5 text-sm border rounded-md"
-                          disabled={updating === ticket.id}
-                        >
-                          <option value="">Select engineer...</option>
-                          {engineers.map((eng) => (
-                            <option key={eng.id} value={eng.id}>
-                              {eng.profile?.empName || eng.email}
-                            </option>
-                          ))}
-                        </select>
-                        <Button
-                          size="sm"
-                          className="w-full mt-1"
-                          onClick={() => assignEngineer(ticket.id)}
-                          disabled={updating === ticket.id || !assignEngineerIds[ticket.id]}
-                        >
-                          {updating === ticket.id ? (
-                            <Spinner className="w-4 h-4" />
-                          ) : (
-                            'Assign'
-                          )}
-                        </Button>
-                      </div>
-                    )}
-                    {ticket.assignments.length > 0 && (
+                    <div className="mb-2">
+                      <Input
+                        value={assignmentReasons[ticket.id] || ''}
+                        onChange={(e) =>
+                          setAssignmentReasons((prev) => ({
+                            ...prev,
+                            [ticket.id]: e.target.value,
+                          }))
+                        }
+                        placeholder="Reason for assign/remove (required)"
+                        className="mb-1"
+                        disabled={updating === ticket.id}
+                      />
+                      {(() => {
+                        const assignedEngineerIds = new Set(
+                          ticket.assignments.map((assignment) => assignment.engineer.id)
+                        );
+                        const availableEngineers = engineers.filter(
+                          (eng) => !assignedEngineerIds.has(eng.id)
+                        );
+                        return (
+                          <>
+                      <select
+                        value={assignEngineerIds[ticket.id] || ''}
+                        onChange={(e) =>
+                          setAssignEngineerIds((prev) => ({
+                            ...prev,
+                            [ticket.id]: e.target.value,
+                          }))
+                        }
+                        className="w-full px-3 py-1.5 text-sm border rounded-md"
+                        disabled={updating === ticket.id}
+                      >
+                        <option value="">
+                          {availableEngineers.length > 0
+                            ? 'Select engineer...'
+                            : 'All engineers already assigned'}
+                        </option>
+                        {availableEngineers.map((eng) => (
+                          <option key={eng.id} value={eng.id}>
+                            {eng.profile?.empName || eng.email}
+                          </option>
+                        ))}
+                      </select>
                       <Button
                         size="sm"
-                        variant="outline"
-                        onClick={() => unassignEngineer(ticket.id)}
-                        disabled={updating === ticket.id}
+                        className="w-full mt-1"
+                        onClick={() => assignEngineer(ticket.id)}
+                        disabled={updating === ticket.id || !assignEngineerIds[ticket.id]}
                       >
                         {updating === ticket.id ? (
                           <Spinner className="w-4 h-4" />
+                        ) : ticket.assignments.length > 0 ? (
+                          'Reassign'
                         ) : (
-                          'Unassign'
+                          'Assign'
                         )}
                       </Button>
+                          </>
+                        );
+                      })()}
+                    </div>
+                    {ticket.assignments.length > 0 && (
+                      <div className="rounded-md border border-slate-200 p-2">
+                        <p className="mb-2 text-xs font-medium text-slate-600">Assigned engineers</p>
+                        <div className="space-y-2">
+                          {ticket.assignments.map((assignment) => (
+                            <div key={assignment.id} className="flex items-center justify-between gap-2">
+                              <p className="text-xs text-slate-700">
+                                {assignment.engineer.profile?.empName || assignment.engineer.email}
+                              </p>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => unassignEngineer(ticket.id, assignment.engineer.id)}
+                                disabled={updating === ticket.id}
+                              >
+                                {updating === ticket.id ? <Spinner className="w-4 h-4" /> : 'Remove'}
+                              </Button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     )}
                     <select
                       value={ticket.status}
