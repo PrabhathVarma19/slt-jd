@@ -1292,7 +1292,7 @@ export default function Home() {
               <button
                 type="button"
                 className="font-semibold underline underline-offset-2"
-                onClick={() => setHistoryOpen(true)}
+                onClick={() => router.push('/my-tickets')}
               >
                 View all {'->'}
               </button>
@@ -2523,3 +2523,6 @@ export default function Home() {
     </div>
   );
 }
+
+
+

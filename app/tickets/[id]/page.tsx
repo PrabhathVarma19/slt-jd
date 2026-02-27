@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter, useParams } from 'next/navigation';
+import { useRouter, useParams, useSearchParams } from 'next/navigation';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -172,7 +172,11 @@ function getStatusStepIndex(status: TicketStatus) {
 export default function TicketDetailsPage() {
   const router = useRouter();
   const params = useParams();
+  const searchParams = useSearchParams();
   const ticketId = params.id as string;
+  const from = searchParams?.get('from');
+  const backHref = from === 'my-tickets' ? '/my-tickets' : '/';
+  const backLabel = from === 'my-tickets' ? 'Back to My Tickets' : 'Back to Home';
 
   const [ticket, setTicket] = useState<TicketDetails | null>(null);
   const [loading, setLoading] = useState(true);
@@ -405,7 +409,7 @@ export default function TicketDetailsPage() {
             {ticket.title}
           </p>
         </div>
-        <BackToHome />
+        <BackToHome href={backHref} label={backLabel} />
       </div>
 
       <Card>
@@ -889,3 +893,4 @@ export default function TicketDetailsPage() {
     </div>
   );
 }
+

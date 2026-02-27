@@ -180,7 +180,7 @@ export default function MyTicketsPage() {
                 <button
                   key={ticket.id}
                   type="button"
-                  onClick={() => router.push(`/tickets/${ticket.id}`)}
+                  onClick={() => router.push(`/tickets/${ticket.id}?from=my-tickets`)}
                   className="w-full px-4 py-4 text-left transition hover:bg-slate-50"
                 >
                   <div className="flex flex-wrap items-center gap-2">
@@ -203,3 +203,5 @@ export default function MyTicketsPage() {
     </div>
   );
 }
+
+
