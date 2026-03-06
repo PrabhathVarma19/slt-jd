@@ -89,7 +89,9 @@ export async function getGraphAccessToken(): Promise<string> {
 }
 
 const GRAPH_RETRYABLE_STATUS = new Set([429, 503, 504]);
-const GRAPH_MAX_RETRIES = 3;
+const GRAPH_MAX_RETRIES = 2;
+const GRAPH_MAX_BACKOFF_SECONDS = 12;
+const GRAPH_MAX_RETRY_AFTER_SECONDS = 20;
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -148,7 +150,14 @@ async function graphGet<T>(url: string, token: string): Promise<T> {
     }
 
     const retryAfterSeconds = parseRetryAfterSeconds(response, body);
-    const backoffSeconds = retryAfterSeconds ?? Math.min(2 ** attempt, 30);
+    if (retryAfterSeconds && retryAfterSeconds > GRAPH_MAX_RETRY_AFTER_SECONDS) {
+      throw new Error(
+        `Graph temporarily unavailable (${response.status}) with retryAfterSeconds=${retryAfterSeconds}. Please retry in a minute.`
+      );
+    }
+
+    const fallbackBackoff = Math.min(2 ** attempt, GRAPH_MAX_BACKOFF_SECONDS);
+    const backoffSeconds = Math.min(retryAfterSeconds ?? fallbackBackoff, GRAPH_MAX_BACKOFF_SECONDS);
     await sleep(backoffSeconds * 1000);
   }
 
@@ -483,3 +492,4 @@ export async function sendMailViaGraph(options: GraphMailOptions): Promise<{ ok:
     return { ok: false, error: error?.message || 'Unknown Graph error' };
   }
 }
+
