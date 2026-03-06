@@ -1,10 +1,11 @@
-import { randomUUID } from 'crypto';
+import { randomUUID, randomBytes, createHash } from 'crypto';
 import { NextRequest, NextResponse } from 'next/server';
 import {
   getAzureSsoConfig,
   normalizeRedirectPath,
   SSO_REDIRECT_COOKIE,
   SSO_STATE_COOKIE,
+  SSO_VERIFIER_COOKIE,
 } from '@/lib/auth/sso';
 
 export async function GET(req: NextRequest) {
@@ -19,6 +20,9 @@ export async function GET(req: NextRequest) {
   }
 
   const state = randomUUID();
+  const codeVerifier = randomBytes(32).toString('base64url');
+  const codeChallenge = createHash('sha256').update(codeVerifier).digest('base64url');
+
   const params = new URLSearchParams({
     client_id: config.clientId,
     response_type: 'code',
@@ -27,12 +31,22 @@ export async function GET(req: NextRequest) {
     scope: 'openid profile email User.Read',
     state,
     prompt: 'select_account',
+    code_challenge: codeChallenge,
+    code_challenge_method: 'S256',
   });
 
   const authorizeUrl = `${config.authorizeEndpoint}?${params.toString()}`;
   const response = NextResponse.redirect(authorizeUrl);
 
   response.cookies.set(SSO_STATE_COOKIE, state, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: 60 * 10,
+    path: '/',
+  });
+
+  response.cookies.set(SSO_VERIFIER_COOKIE, codeVerifier, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',

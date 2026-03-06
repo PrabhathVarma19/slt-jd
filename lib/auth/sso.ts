@@ -2,6 +2,7 @@ import { NextRequest } from 'next/server';
 
 export const SSO_STATE_COOKIE = 'beacon_sso_state';
 export const SSO_REDIRECT_COOKIE = 'beacon_sso_redirect';
+export const SSO_VERIFIER_COOKIE = 'beacon_sso_verifier';
 
 interface AzureSsoConfig {
   tenantId: string;

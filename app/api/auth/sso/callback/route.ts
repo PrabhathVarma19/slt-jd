@@ -8,6 +8,7 @@ import {
   normalizeRedirectPath,
   SSO_REDIRECT_COOKIE,
   SSO_STATE_COOKIE,
+  SSO_VERIFIER_COOKIE,
 } from '@/lib/auth/sso';
 
 function clearSsoCookies(response: NextResponse) {
@@ -19,6 +20,13 @@ function clearSsoCookies(response: NextResponse) {
     path: '/',
   });
   response.cookies.set(SSO_REDIRECT_COOKIE, '', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: 0,
+    path: '/',
+  });
+  response.cookies.set(SSO_VERIFIER_COOKIE, '', {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
@@ -90,6 +98,7 @@ export async function GET(req: NextRequest) {
       return redirectToLogin(req, 'Invalid SSO state. Please try again.', redirectFromCookie);
     }
 
+    const codeVerifier = req.cookies.get(SSO_VERIFIER_COOKIE)?.value;
     const params = new URLSearchParams({
       client_id: config.clientId,
       client_secret: config.clientSecret,
@@ -97,6 +106,7 @@ export async function GET(req: NextRequest) {
       grant_type: 'authorization_code',
       redirect_uri: config.redirectUri,
       scope: 'openid profile email User.Read',
+      ...(codeVerifier ? { code_verifier: codeVerifier } : {}),
     });
 
     const tokenRes = await fetch(config.tokenEndpoint, {
