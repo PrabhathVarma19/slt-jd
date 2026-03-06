@@ -113,7 +113,28 @@ function encodeGraphPath(pathValue: string): string {
 
 function normalizeFolderPath(folderPath?: string | null): string | null {
   if (!folderPath) return null;
-  const normalized = folderPath.replace(/\\/g, '/').trim().replace(/^\/+|\/+$/g, '');
+  let raw = folderPath.toString().trim();
+  if (!raw) return null;
+
+  if (/^https?:\/\//i.test(raw)) {
+    try {
+      const parsed = new URL(raw);
+      raw = parsed.searchParams.get('id') || parsed.searchParams.get('RootFolder') || parsed.pathname;
+    } catch {
+      // Keep raw value when URL parsing fails.
+    }
+  }
+
+  try {
+    raw = decodeURIComponent(raw);
+  } catch {
+    // Keep raw value when decode fails.
+  }
+
+  // Graph path endpoints reject raw query/hash fragments in the path.
+  raw = raw.split('#')[0].split('?')[0];
+
+  const normalized = raw.replace(/\\/g, '/').trim().replace(/^\/+|\/+$/g, '');
   return normalized || null;
 }
 
@@ -411,5 +432,6 @@ export async function sendMailViaGraph(options: GraphMailOptions): Promise<{ ok:
     return { ok: false, error: error?.message || 'Unknown Graph error' };
   }
 }
+
 
 
