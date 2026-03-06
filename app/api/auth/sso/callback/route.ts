@@ -117,9 +117,11 @@ export async function GET(req: NextRequest) {
     });
 
     if (!tokenRes.ok) {
+      const tokenErr = await tokenRes.json().catch(() => ({}));
+      const detail = tokenErr?.error_description || tokenErr?.error || 'unknown';
       return redirectToLogin(
         req,
-        `Microsoft token exchange failed (${tokenRes.status}). Please try again.`,
+        `Microsoft token exchange failed (${tokenRes.status}): ${detail}`,
         redirectFromCookie
       );
     }
