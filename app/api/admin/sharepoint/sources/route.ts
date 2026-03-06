@@ -17,6 +17,10 @@ interface GraphShareDriveItemResponse {
   };
 }
 
+interface GraphDriveListResponse {
+  value?: Array<{ id?: string; name?: string }>;
+}
+
 function normalizeFolderPath(folderPath?: string | null): string | null {
   if (!folderPath) return null;
   const normalized = folderPath.replace(/\\/g, '/').trim().replace(/^\/+|\/+$/g, '');
@@ -54,6 +58,30 @@ function extractRelativePath(parentPath?: string): string | null {
 
   const raw = parentPath.slice(idx + marker.length);
   return normalizeFolderPath(raw);
+}
+
+async function listDriveNames(siteId: string): Promise<string[]> {
+  try {
+    const token = await getGraphAccessToken();
+    const endpoint = `https://graph.microsoft.com/v1.0/sites/${encodeURIComponent(siteId)}/drives?$select=id,name`;
+    const response = await fetch(endpoint, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      return [];
+    }
+
+    const payload = (await response.json()) as GraphDriveListResponse;
+    return (payload.value || [])
+      .map((drive) => (drive.name || '').trim())
+      .filter((name) => Boolean(name));
+  } catch {
+    return [];
+  }
 }
 
 async function resolveDriveFromShareUrl(
@@ -144,9 +172,16 @@ export async function POST(req: NextRequest) {
 
     try {
       driveId = await getSharePointDriveId(siteId, libraryName);
-    } catch (driveError) {
+    } catch (driveError: any) {
       const shareContext = await resolveDriveFromShareUrl(siteUrl);
       if (!shareContext) {
+        const availableDrives = await listDriveNames(siteId);
+        if (availableDrives.length > 0) {
+          throw new Error(
+            `Drive not found for library: ${libraryName}. Available libraries: ${availableDrives.join(', ')}`
+          );
+        }
+
         throw driveError;
       }
 
