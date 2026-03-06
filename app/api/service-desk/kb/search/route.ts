@@ -19,6 +19,10 @@ type PolicyChunk = {
 
 let cachedChunks: PolicyChunk[] | null = null;
 
+export function resetKbCache() {
+  cachedChunks = null;
+}
+
 function listPolicyFiles(dir: string): string[] {
   if (!fs.existsSync(dir)) return [];
 
@@ -253,4 +257,5 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
 
