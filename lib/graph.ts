@@ -111,6 +111,42 @@ function normalizeFolderPath(folderPath?: string | null): string | null {
   return normalized || null;
 }
 
+function extractSitePathCandidate(raw: string | null | undefined): string | null {
+  if (!raw) return null;
+
+  let decoded = raw;
+  try {
+    decoded = decodeURIComponent(raw);
+  } catch {
+    decoded = raw;
+  }
+
+  decoded = decoded.replace(/\\/g, '/').trim();
+
+  // Handle shared-link shapes like /:f:/r/sites/assurance/... or /:u:/s/... with site path in query params.
+  decoded = decoded.replace(/^\/:[^/]+:\/[a-z]\//i, '/');
+
+  const match = decoded.match(/\/(sites|teams)\/[^/?#]+/i);
+  if (!match) return null;
+
+  return match[0].replace(/\/+$/g, '');
+}
+
+function resolveSharePointSitePath(parsed: URL): string | null {
+  const candidates = [
+    parsed.pathname,
+    parsed.searchParams.get('id'),
+    parsed.searchParams.get('RootFolder'),
+  ];
+
+  for (const candidate of candidates) {
+    const sitePath = extractSitePathCandidate(candidate);
+    if (sitePath) return sitePath;
+  }
+
+  return null;
+}
+
 export async function getSharePointSiteId(siteUrl: string): Promise<string> {
   let parsed: URL;
   try {
@@ -119,9 +155,11 @@ export async function getSharePointSiteId(siteUrl: string): Promise<string> {
     throw new Error('Invalid SharePoint site URL.');
   }
 
-  const sitePath = parsed.pathname.replace(/\/+$/g, '');
-  if (!sitePath || sitePath === '/') {
-    throw new Error('SharePoint site URL must include a site path (example: /sites/assurance).');
+  const sitePath = resolveSharePointSitePath(parsed);
+  if (!sitePath) {
+    throw new Error(
+      'Unable to derive SharePoint site path from URL. Use site URL like https://<tenant>.sharepoint.com/sites/<site-name>.'
+    );
   }
 
   const token = await getGraphAccessToken();
