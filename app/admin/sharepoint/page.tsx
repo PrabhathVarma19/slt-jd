@@ -168,10 +168,12 @@ export default function AdminSharePointPage() {
 
     try {
       setSyncingId(sourceId);
-      const response = await fetch(`/api/admin/sharepoint/sources/${sourceId}/sync`, {
+      const response = await fetch('/api/admin/sharepoint/sync', {
         method: 'POST',
         credentials: 'include',
         cache: 'no-store',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sourceId }),
       });
       const payload = await parseApiResponse(response);
 
@@ -422,10 +424,3 @@ export default function AdminSharePointPage() {
     </div>
   );
 }
-
-
-
-
-
-
-
