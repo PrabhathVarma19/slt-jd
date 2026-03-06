@@ -31,6 +31,43 @@ function formatDate(value: string | null) {
   return date.toLocaleString();
 }
 
+async function parseApiResponse(response: Response): Promise<any> {
+  const bodyText = await response.text().catch(() => '');
+
+  if (!bodyText) {
+    return {};
+  }
+
+  const contentType = (response.headers.get('content-type') || '').toLowerCase();
+  const likelyHtml = bodyText.trim().startsWith('<!DOCTYPE') || bodyText.trim().startsWith('<html');
+
+  if (contentType.includes('application/json')) {
+    try {
+      return JSON.parse(bodyText);
+    } catch {
+      throw new Error('Server returned invalid JSON.');
+    }
+  }
+
+  try {
+    return JSON.parse(bodyText);
+  } catch {
+    if (likelyHtml) {
+      throw new Error(
+        response.ok
+          ? 'Server returned HTML instead of JSON. Please refresh and try again.'
+          : 'Server returned HTML error page (session/proxy error). Please refresh and retry.'
+      );
+    }
+
+    if (!response.ok) {
+      throw new Error(`Request failed (${response.status}): ${bodyText.slice(0, 220)}`);
+    }
+
+    return {};
+  }
+}
+
 export default function AdminSharePointPage() {
   const [sources, setSources] = useState<SharePointSource[]>([]);
   const [loading, setLoading] = useState(true);
@@ -61,7 +98,7 @@ export default function AdminSharePointPage() {
       setLoading(true);
       setError(null);
       const response = await fetch('/api/admin/sharepoint/sources');
-      const payload = await response.json();
+      const payload = await parseApiResponse(response);
 
       if (!response.ok) {
         throw new Error(payload?.error || 'Failed to load sources');
@@ -99,7 +136,7 @@ export default function AdminSharePointPage() {
         }),
       });
 
-      const payload = await response.json();
+      const payload = await parseApiResponse(response);
       if (!response.ok) {
         throw new Error(payload?.error || 'Failed to create source');
       }
@@ -132,7 +169,7 @@ export default function AdminSharePointPage() {
       const response = await fetch(`/api/admin/sharepoint/sources/${sourceId}/sync`, {
         method: 'POST',
       });
-      const payload = await response.json();
+      const payload = await parseApiResponse(response);
 
       if (!response.ok) {
         throw new Error(payload?.error || 'Failed to sync source');
@@ -160,7 +197,7 @@ export default function AdminSharePointPage() {
       const response = await fetch('/api/admin/sharepoint/sync-all', {
         method: 'POST',
       });
-      const payload = await response.json();
+      const payload = await parseApiResponse(response);
 
       if (!response.ok) {
         throw new Error(payload?.error || 'Failed to sync all sources');
@@ -186,7 +223,7 @@ export default function AdminSharePointPage() {
       const response = await fetch(`/api/admin/sharepoint/sources/${sourceId}`, {
         method: 'DELETE',
       });
-      const payload = await response.json();
+      const payload = await parseApiResponse(response);
 
       if (!response.ok) {
         throw new Error(payload?.error || 'Failed to delete source');
@@ -377,4 +414,3 @@ export default function AdminSharePointPage() {
     </div>
   );
 }
-
