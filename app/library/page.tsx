@@ -16,7 +16,7 @@ export default function LibraryPage() {
   const [deletedJdIds, setDeletedJdIds] = useState<string[]>([]);
 
   const handleOpenJD = (id: string) => {
-    router.push(`/?jd=${id}`);
+    router.push(`/jd?jd=${id}`);
   };
 
   const handleCopyJD = async (id: string) => {
@@ -108,4 +108,5 @@ export default function LibraryPage() {
     </>
   );
 }
+
 
