@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -10,15 +10,15 @@ import { ErrorBar } from '@/components/ui/error-bar';
 import { Spinner } from '@/components/ui/spinner';
 
 function LoginForm() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isSsoLoading, setIsSsoLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Get redirect URL from query params
   const redirectTo = searchParams.get('redirect') || '/';
+  const ssoError = searchParams.get('error');
 
   // Check if already logged in
   useEffect(() => {
@@ -26,7 +26,6 @@ function LoginForm() {
       .then((res) => res.json())
       .then((data) => {
         if (data.isAuthenticated || data.authenticated) {
-          // Already logged in, redirect with hard navigation
           window.location.href = redirectTo;
         }
       })
@@ -34,6 +33,11 @@ function LoginForm() {
         // Not logged in, stay on login page
       });
   }, [redirectTo]);
+
+  useEffect(() => {
+    if (!ssoError) return;
+    setError(ssoError);
+  }, [ssoError]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,11 +59,7 @@ function LoginForm() {
         throw new Error(data.error || 'Login failed. Please check your credentials.');
       }
 
-      // Add smooth transition
       await new Promise((resolve) => setTimeout(resolve, 150));
-      
-      // Use hard navigation to force full page reload with session cookie
-      // This ensures the layout and all components render fresh with authentication
       window.location.href = redirectTo;
     } catch (err: any) {
       setError(err.message || 'Login failed. Please check your credentials.');
@@ -69,8 +69,10 @@ function LoginForm() {
   };
 
   const handleSSO = () => {
-    // Placeholder - will be enabled when Azure AD SSO is implemented
-    setError('SSO login coming soon. Please use email and password for now.');
+    setError(null);
+    setIsSsoLoading(true);
+    const next = encodeURIComponent(redirectTo);
+    window.location.href = `/api/auth/sso/start?redirect=${next}`;
   };
 
   return (
@@ -107,7 +109,7 @@ function LoginForm() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  disabled={isLoading}
+                  disabled={isLoading || isSsoLoading}
                   autoComplete="email"
                 />
               </div>
@@ -123,7 +125,7 @@ function LoginForm() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  disabled={isLoading}
+                  disabled={isLoading || isSsoLoading}
                   autoComplete="current-password"
                 />
               </div>
@@ -131,7 +133,7 @@ function LoginForm() {
               <Button
                 type="submit"
                 className="w-full rounded-full"
-                disabled={isLoading || !email || !password}
+                disabled={isLoading || isSsoLoading || !email || !password}
               >
                 {isLoading ? (
                   <>
@@ -154,13 +156,13 @@ function LoginForm() {
               </div>
             </div>
 
-            {/* SSO Button (Placeholder) */}
+            {/* SSO Button */}
             <Button
               type="button"
               variant="outline"
               className="w-full rounded-full"
               onClick={handleSSO}
-              disabled={true}
+              disabled={isLoading || isSsoLoading}
             >
               <svg
                 className="mr-2 h-4 w-4"
@@ -189,8 +191,14 @@ function LoginForm() {
                   fill="white"
                 />
               </svg>
-              Sign in with Microsoft
-              <span className="ml-2 text-xs text-gray-400">(Coming soon)</span>
+              {isSsoLoading ? (
+                <>
+                  <Spinner className="mr-2 h-4 w-4" />
+                  Redirecting...
+                </>
+              ) : (
+                'Sign in with Microsoft'
+              )}
             </Button>
           </CardContent>
         </Card>

@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { hashPassword, verifyPassword } from '@/lib/auth/password';
+import { verifyPassword } from '@/lib/auth/password';
 import { createSession } from '@/lib/auth/session';
 import { supabaseServer } from '@/lib/supabase/server';
 import { syncUserProfile } from '@/lib/api/sync-user-profile';
+import { resolveLoginUser } from '@/lib/auth/resolve-login-user';
 
 export async function POST(req: NextRequest) {
   try {
@@ -15,111 +16,28 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Normalize email (lowercase, trim)
     const normalizedEmail = email.toLowerCase().trim();
 
-    let user: any = null;
-    let roles: string[] = [];
+    const { user } = await resolveLoginUser(normalizedEmail);
 
-    // Use Supabase direct queries
-    const { data: userData, error: userError } = await supabaseServer
+    const { data: passwordData, error: passwordError } = await supabaseServer
       .from('User')
-      .select('id, email, "passwordHash", status')
-      .eq('email', normalizedEmail)
-      .single();
+      .select('"passwordHash"')
+      .eq('id', user.id)
+      .maybeSingle();
 
-    if (!userError && userData) {
-      // Get user roles - query UserRole and join Role
-      const { data: userRoles, error: rolesError } = await supabaseServer
-        .from('UserRole')
-        .select(`
-          roleId,
-          role:Role!inner(type)
-        `)
-        .eq('userId', userData.id)
-        .is('revokedAt', null);
-
-      if (!rolesError && userRoles && Array.isArray(userRoles)) {
-        roles = userRoles
-          .map((ur: any) => ur.role?.type)
-          .filter((type: string | undefined) => type !== undefined);
-      }
-
-      user = {
-        id: userData.id,
-        email: userData.email,
-        passwordHash: userData.passwordHash,
-        status: userData.status,
-      };
+    if (passwordError) {
+      throw new Error(passwordError.message);
     }
 
-    // If user doesn't exist, try to auto-create from API
-    if (!user) {
-      const syncResult = await syncUserProfile(normalizedEmail);
-      
-      if (!syncResult.success || !syncResult.created) {
-        return NextResponse.json(
-          { error: 'Account not found. Please contact IT support to create your account.' },
-          { status: 401 }
-        );
-      }
-
-      // User was created, fetch them again
-      const { data: newUser } = await supabaseServer
-        .from('User')
-        .select('id, email, "passwordHash", status')
-        .eq('email', normalizedEmail)
-        .single();
-
-      if (newUser) {
-        const { data: userRoles } = await supabaseServer
-          .from('UserRole')
-          .select(`
-            roleId,
-            role:Role!inner(type)
-          `)
-          .eq('userId', newUser.id)
-          .is('revokedAt', null);
-
-        if (userRoles && Array.isArray(userRoles)) {
-          roles = userRoles
-            .map((ur: any) => ur.role?.type)
-            .filter((type: string | undefined) => type !== undefined);
-        }
-
-        user = {
-          id: newUser.id,
-          email: newUser.email,
-          passwordHash: newUser.passwordHash,
-          status: newUser.status,
-        };
-      }
-
-      // If still no user after sync attempt, return error
-      if (!user) {
-        return NextResponse.json(
-          { error: 'Account not found. Please contact IT support.' },
-          { status: 401 }
-        );
-      }
-    }
-
-    if (user.status !== 'ACTIVE') {
-      return NextResponse.json(
-        { error: 'Account is not active. Please contact support.' },
-        { status: 403 }
-      );
-    }
-
-    // Verify password
-    if (!user.passwordHash) {
+    if (!passwordData?.passwordHash) {
       return NextResponse.json(
         { error: 'Password not set. Please use SSO or contact support.' },
         { status: 401 }
       );
     }
 
-    const isValidPassword = await verifyPassword(password, user.passwordHash);
+    const isValidPassword = await verifyPassword(password, passwordData.passwordHash);
     if (!isValidPassword) {
       return NextResponse.json(
         { error: 'Invalid email or password' },
@@ -127,18 +45,14 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Create session
     await createSession({
       userId: user.id,
       email: user.email,
-      roles,
+      roles: user.roles,
     });
 
-    // Sync user profile from external API (non-blocking)
-    // This runs in the background and won't block login if it fails
     syncUserProfile(normalizedEmail).catch((error) => {
       console.error('Background profile sync failed:', error);
-      // Don't throw - login should succeed even if sync fails
     });
 
     return NextResponse.json({
@@ -146,15 +60,23 @@ export async function POST(req: NextRequest) {
       user: {
         id: user.id,
         email: user.email,
-        roles,
+        roles: user.roles,
       },
     });
   } catch (error: any) {
+    const message = error?.message || 'An error occurred during login. Please try again.';
     console.error('Login error:', error);
+
+    if (message.includes('Account not found')) {
+      return NextResponse.json({ error: message }, { status: 401 });
+    }
+    if (message.includes('Account is not active')) {
+      return NextResponse.json({ error: message }, { status: 403 });
+    }
+
     return NextResponse.json(
       { error: 'An error occurred during login. Please try again.' },
       { status: 500 }
     );
   }
 }
-
