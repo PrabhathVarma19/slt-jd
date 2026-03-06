@@ -38,6 +38,12 @@ interface GraphDriveChildrenResponse {
   '@odata.nextLink'?: string;
 }
 
+interface GraphShareDriveItemResponse {
+  parentReference?: {
+    siteId?: string;
+  };
+}
+
 export interface SharePointFileRef {
   id: string;
   name: string;
@@ -123,13 +129,20 @@ function extractSitePathCandidate(raw: string | null | undefined): string | null
 
   decoded = decoded.replace(/\\/g, '/').trim();
 
-  // Handle shared-link shapes like /:f:/r/sites/assurance/... or /:u:/s/... with site path in query params.
+  // Handle shared-link shapes like /:f:/r/sites/assurance/... or /:u:/s/assurance/...
   decoded = decoded.replace(/^\/:[^/]+:\/[a-z]\//i, '/');
 
-  const match = decoded.match(/\/(sites|teams)\/[^/?#]+/i);
-  if (!match) return null;
+  const siteLikeMatch = decoded.match(/\/(sites|teams)\/[^/?#]+/i);
+  if (siteLikeMatch) {
+    return siteLikeMatch[0].replace(/\/+$/g, '');
+  }
 
-  return match[0].replace(/\/+$/g, '');
+  const shortShareMatch = decoded.match(/^\/s\/([^/?#]+)/i);
+  if (shortShareMatch?.[1]) {
+    return `/sites/${shortShareMatch[1]}`;
+  }
+
+  return null;
 }
 
 function resolveSharePointSitePath(parsed: URL): string | null {
@@ -147,6 +160,25 @@ function resolveSharePointSitePath(parsed: URL): string | null {
   return null;
 }
 
+function toGraphShareToken(rawUrl: string): string {
+  const base64 = Buffer.from(rawUrl, 'utf8').toString('base64');
+  const base64Url = base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
+  return `u!${base64Url}`;
+}
+
+async function tryResolveSiteIdFromShareUrl(siteUrl: string, token: string): Promise<string | null> {
+  const shareToken = toGraphShareToken(siteUrl);
+  const endpoint = `https://graph.microsoft.com/v1.0/shares/${shareToken}/driveItem?$select=parentReference`;
+
+  try {
+    const shareItem = await graphGet<GraphShareDriveItemResponse>(endpoint, token);
+    const siteId = shareItem.parentReference?.siteId;
+    return typeof siteId === 'string' && siteId.trim() ? siteId : null;
+  } catch {
+    return null;
+  }
+}
+
 export async function getSharePointSiteId(siteUrl: string): Promise<string> {
   let parsed: URL;
   try {
@@ -155,22 +187,29 @@ export async function getSharePointSiteId(siteUrl: string): Promise<string> {
     throw new Error('Invalid SharePoint site URL.');
   }
 
-  const sitePath = resolveSharePointSitePath(parsed);
-  if (!sitePath) {
-    throw new Error(
-      'Unable to derive SharePoint site path from URL. Use site URL like https://<tenant>.sharepoint.com/sites/<site-name>.'
-    );
-  }
-
   const token = await getGraphAccessToken();
-  const endpoint = `https://graph.microsoft.com/v1.0/sites/${parsed.hostname}:${sitePath}`;
-  const site = await graphGet<GraphSiteResponse>(endpoint, token);
+  const sitePath = resolveSharePointSitePath(parsed);
 
-  if (!site.id) {
-    throw new Error('Unable to resolve SharePoint site ID from the provided URL.');
+  if (sitePath) {
+    try {
+      const endpoint = `https://graph.microsoft.com/v1.0/sites/${parsed.hostname}:${sitePath}`;
+      const site = await graphGet<GraphSiteResponse>(endpoint, token);
+      if (site.id) {
+        return site.id;
+      }
+    } catch {
+      // Fall back to share-link resolution below.
+    }
   }
 
-  return site.id;
+  const siteIdFromShare = await tryResolveSiteIdFromShareUrl(siteUrl, token);
+  if (siteIdFromShare) {
+    return siteIdFromShare;
+  }
+
+  throw new Error(
+    'Unable to derive SharePoint site ID from URL. Use site URL like https://<tenant>.sharepoint.com/sites/<site-name> or a valid SharePoint share link.'
+  );
 }
 
 export async function getSharePointDriveId(siteId: string, libraryName: string): Promise<string> {
@@ -372,3 +411,5 @@ export async function sendMailViaGraph(options: GraphMailOptions): Promise<{ ok:
     return { ok: false, error: error?.message || 'Unknown Graph error' };
   }
 }
+
+
