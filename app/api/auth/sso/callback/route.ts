@@ -101,7 +101,6 @@ export async function GET(req: NextRequest) {
     const codeVerifier = req.cookies.get(SSO_VERIFIER_COOKIE)?.value;
     const params = new URLSearchParams({
       client_id: config.clientId,
-      client_secret: config.clientSecret,
       code,
       grant_type: 'authorization_code',
       redirect_uri: config.redirectUri,
