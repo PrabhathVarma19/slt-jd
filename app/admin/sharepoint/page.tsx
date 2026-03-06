@@ -97,7 +97,7 @@ export default function AdminSharePointPage() {
     try {
       setLoading(true);
       setError(null);
-      const response = await fetch('/api/admin/sharepoint/sources');
+      const response = await fetch('/api/admin/sharepoint/sources', { credentials: 'include', cache: 'no-store' });
       const payload = await parseApiResponse(response);
 
       if (!response.ok) {
@@ -126,6 +126,8 @@ export default function AdminSharePointPage() {
       setSubmitting(true);
       const response = await fetch('/api/admin/sharepoint/sources', {
         method: 'POST',
+        credentials: 'include',
+        cache: 'no-store',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name,
@@ -168,6 +170,8 @@ export default function AdminSharePointPage() {
       setSyncingId(sourceId);
       const response = await fetch(`/api/admin/sharepoint/sources/${sourceId}/sync`, {
         method: 'POST',
+        credentials: 'include',
+        cache: 'no-store',
       });
       const payload = await parseApiResponse(response);
 
@@ -196,6 +200,8 @@ export default function AdminSharePointPage() {
       setSyncAllLoading(true);
       const response = await fetch('/api/admin/sharepoint/sync-all', {
         method: 'POST',
+        credentials: 'include',
+        cache: 'no-store',
       });
       const payload = await parseApiResponse(response);
 
@@ -222,6 +228,8 @@ export default function AdminSharePointPage() {
       setDeletingId(sourceId);
       const response = await fetch(`/api/admin/sharepoint/sources/${sourceId}`, {
         method: 'DELETE',
+        credentials: 'include',
+        cache: 'no-store',
       });
       const payload = await parseApiResponse(response);
 
@@ -414,3 +422,10 @@ export default function AdminSharePointPage() {
     </div>
   );
 }
+
+
+
+
+
+
+
