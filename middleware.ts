@@ -33,6 +33,10 @@ export async function middleware(request: NextRequest) {
   const sessionCookie = request.cookies.get('beacon_session');
 
   if (!sessionCookie) {
+    if (pathname.startsWith('/api/')) {
+      return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
+    }
+
     // Redirect to login, preserving the intended destination
     const loginUrl = new URL('/login', request.url);
     loginUrl.searchParams.set('redirect', pathname);
@@ -56,4 +60,3 @@ export const config = {
     '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 };
-
