@@ -88,20 +88,71 @@ export async function getGraphAccessToken(): Promise<string> {
   return json.access_token;
 }
 
-async function graphGet<T>(url: string, token: string): Promise<T> {
-  const response = await fetch(url, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: 'application/json',
-    },
-  });
+const GRAPH_RETRYABLE_STATUS = new Set([429, 503, 504]);
+const GRAPH_MAX_RETRIES = 3;
 
-  if (!response.ok) {
-    const body = await response.text().catch(() => '');
-    throw new Error(`Graph request failed (${response.status}): ${body}`);
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function parseRetryAfterSeconds(response: Response, body: string): number | null {
+  const headerValue = response.headers.get('retry-after');
+  if (headerValue) {
+    const asNumber = Number(headerValue);
+    if (Number.isFinite(asNumber) && asNumber >= 0) {
+      return asNumber;
+    }
+
+    const retryDate = Date.parse(headerValue);
+    if (!Number.isNaN(retryDate)) {
+      const seconds = Math.ceil((retryDate - Date.now()) / 1000);
+      if (seconds > 0) {
+        return seconds;
+      }
+    }
   }
 
-  return (await response.json()) as T;
+  try {
+    const payload = JSON.parse(body) as { error?: { retryAfterSeconds?: number | string } };
+    const retryAfterRaw = payload?.error?.retryAfterSeconds;
+    const retryAfter = Number(retryAfterRaw);
+    if (Number.isFinite(retryAfter) && retryAfter > 0) {
+      return retryAfter;
+    }
+  } catch {
+    // Ignore non-JSON response bodies.
+  }
+
+  return null;
+}
+
+async function graphGet<T>(url: string, token: string): Promise<T> {
+  for (let attempt = 0; attempt <= GRAPH_MAX_RETRIES; attempt += 1) {
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+      },
+    });
+
+    if (response.ok) {
+      return (await response.json()) as T;
+    }
+
+    const body = await response.text().catch(() => '');
+    const shouldRetry =
+      GRAPH_RETRYABLE_STATUS.has(response.status) && attempt < GRAPH_MAX_RETRIES;
+
+    if (!shouldRetry) {
+      throw new Error(`Graph request failed (${response.status}): ${body}`);
+    }
+
+    const retryAfterSeconds = parseRetryAfterSeconds(response, body);
+    const backoffSeconds = retryAfterSeconds ?? Math.min(2 ** attempt, 30);
+    await sleep(backoffSeconds * 1000);
+  }
+
+  throw new Error('Graph request failed after retry attempts.');
 }
 
 function encodeGraphPath(pathValue: string): string {
@@ -432,6 +483,3 @@ export async function sendMailViaGraph(options: GraphMailOptions): Promise<{ ok:
     return { ok: false, error: error?.message || 'Unknown Graph error' };
   }
 }
-
-
-
