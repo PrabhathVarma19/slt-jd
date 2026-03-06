@@ -2,26 +2,17 @@ import { NextRequest, NextResponse } from 'next/server';
 import { requireAuth } from '@/lib/auth/require-auth';
 import fs from 'fs';
 import path from 'path';
+import {
+  PolicyChunk,
+  getKbCachedChunks,
+  setKbCachedChunks,
+} from '@/app/api/service-desk/kb/search/cache';
 
 const KB_DIR =
   process.env.POLICY_SOURCE_DIR || path.join(process.cwd(), 'data', 'policies', 'it');
 const MAX_FILES = 200;
 const MAX_CHUNKS = 6;
 const CHUNK_CHAR_LIMIT = 1000;
-
-type PolicyChunk = {
-  id: string;
-  filePath: string;
-  title: string;
-  content: string;
-  index: number;
-};
-
-let cachedChunks: PolicyChunk[] | null = null;
-
-export function resetKbCache() {
-  cachedChunks = null;
-}
 
 function listPolicyFiles(dir: string): string[] {
   if (!fs.existsSync(dir)) return [];
@@ -147,6 +138,7 @@ function extractSectionTitle(text: string): string | null {
 }
 
 function getPolicyChunks(): PolicyChunk[] {
+  const cachedChunks = getKbCachedChunks();
   if (cachedChunks) return cachedChunks;
 
   const files = listPolicyFiles(KB_DIR).slice(0, MAX_FILES);
@@ -175,7 +167,7 @@ function getPolicyChunks(): PolicyChunk[] {
     }
   });
 
-  cachedChunks = allChunks;
+  setKbCachedChunks(allChunks);
   return allChunks;
 }
 
@@ -189,7 +181,7 @@ function rankChunks(question: string, chunks: PolicyChunk[]): PolicyChunk[] {
       let score = 0;
       for (const term of terms) {
         if (!term) continue;
-        const re = new RegExp(`\\b${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'g');
+        const re = new RegExp(`\\b${term.replace(/[.*+?^${}()|[\\]\\]/g, '\\\\$&')}\\b`, 'g');
         const matches = text.match(re);
         if (matches) score += matches.length;
       }
@@ -257,5 +249,3 @@ export async function POST(req: NextRequest) {
     );
   }
 }
-
-

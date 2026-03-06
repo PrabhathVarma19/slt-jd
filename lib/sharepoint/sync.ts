@@ -6,7 +6,7 @@ import {
   listSharePointFiles,
   SharePointFileRef,
 } from '@/lib/graph';
-import { resetKbCache } from '@/app/api/service-desk/kb/search/route';
+import { resetKbCache } from '@/app/api/service-desk/kb/search/cache';
 
 const POLICY_ROOT = path.join(process.cwd(), 'data', 'policies');
 
@@ -146,3 +146,4 @@ export async function syncSharePointSource(source: SharePointSource): Promise<Sh
     files,
   };
 }
+

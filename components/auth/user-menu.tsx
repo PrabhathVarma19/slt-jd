@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
@@ -16,7 +16,6 @@ type UserData = {
   roles?: string[];
 };
 
-// Get user from localStorage synchronously for immediate display
 function getCachedUser(): UserData | null {
   if (typeof window === 'undefined') return null;
   try {
@@ -33,7 +32,6 @@ function getCachedUser(): UserData | null {
   return null;
 }
 
-// Save user to localStorage
 function saveUserToCache(user: UserData): void {
   if (typeof window === 'undefined') return;
   try {
@@ -43,7 +41,6 @@ function saveUserToCache(user: UserData): void {
   }
 }
 
-// Clear user from localStorage
 function clearUserCache(): void {
   if (typeof window === 'undefined') return;
   try {
@@ -56,102 +53,99 @@ function clearUserCache(): void {
 export function UserMenu() {
   const router = useRouter();
   const pathname = usePathname();
-  
-  // Initialize from localStorage for immediate display
+
   const cachedUser = getCachedUser();
   const [user, setUser] = useState<UserData | null>(cachedUser);
   const [loading, setLoading] = useState(!cachedUser);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [portalReady, setPortalReady] = useState(false);
+  const userRef = useRef<UserData | null>(cachedUser);
 
-  // Fetch session from API and update state
-  const fetchSession = async (showLoading = false): Promise<void> => {
-    if (pathname === '/login') {
-      setLoading(false);
-      return;
-    }
+  useEffect(() => {
+    userRef.current = user;
+  }, [user]);
 
-    try {
-      if (showLoading) {
-        setLoading(true);
-      }
-
-      const res = await fetch('/api/auth/session', {
-        credentials: 'include',
-        cache: 'no-store',
-      });
-
-      if (!res.ok) {
-        // If we have cached user, keep it; otherwise clear
-        if (!user) {
-          setUser(null);
-          clearUserCache();
-        }
+  const fetchSession = useCallback(
+    async (showLoading = false): Promise<void> => {
+      if (pathname === '/login') {
+        setLoading(false);
         return;
       }
 
-      const data = await res.json() as {
-        isAuthenticated?: boolean;
-        authenticated?: boolean;
-        user?: UserData;
-      };
+      try {
+        if (showLoading) {
+          setLoading(true);
+        }
 
-      const isAuthenticated = data.isAuthenticated || data.authenticated;
-      
-      if (isAuthenticated && data.user?.email && data.user?.id) {
-        // Update state and cache
-        setUser(data.user);
-        saveUserToCache(data.user);
-      } else {
-        // Not authenticated - clear everything
-        setUser(null);
-        clearUserCache();
-      }
-    } catch (error) {
-      console.error('[USER_MENU] Session fetch error:', error);
-      // On error, keep cached user if it exists
-      if (!user) {
-        setUser(null);
-        clearUserCache();
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
+        const res = await fetch('/api/auth/session', {
+          credentials: 'include',
+          cache: 'no-store',
+        });
 
-  // Initial load: fetch session on mount
+        if (!res.ok) {
+          if (!userRef.current) {
+            setUser(null);
+            clearUserCache();
+          }
+          return;
+        }
+
+        const data = (await res.json()) as {
+          isAuthenticated?: boolean;
+          authenticated?: boolean;
+          user?: UserData;
+        };
+
+        const isAuthenticated = data.isAuthenticated || data.authenticated;
+
+        if (isAuthenticated && data.user?.email && data.user?.id) {
+          setUser(data.user);
+          saveUserToCache(data.user);
+        } else {
+          setUser(null);
+          clearUserCache();
+        }
+      } catch (error) {
+        console.error('[USER_MENU] Session fetch error:', error);
+        if (!userRef.current) {
+          setUser(null);
+          clearUserCache();
+        }
+      } finally {
+        setLoading(false);
+      }
+    },
+    [pathname]
+  );
+
   useEffect(() => {
     fetchSession();
-  }, []); // Only run once on mount
+  }, [fetchSession]);
 
   useEffect(() => {
     setPortalReady(true);
   }, []);
 
-  // Listen for login success event
   useEffect(() => {
     const handleLoginSuccess = (event: Event) => {
       const customEvent = event as CustomEvent;
       const userData = customEvent.detail?.user as UserData | undefined;
-      
+
       if (userData?.email && userData?.id) {
-        // Update immediately from event data
         setUser(userData);
         saveUserToCache(userData);
         setLoading(false);
-        
-        // Verify session in background after a short delay
+
         setTimeout(() => {
           fetchSession(false);
         }, 300);
       } else {
-        // Fallback: check localStorage
         const cached = getCachedUser();
         if (cached) {
           setUser(cached);
           setLoading(false);
         }
-        // Fetch session to verify
+
         setTimeout(() => {
           fetchSession(true);
         }, 300);
@@ -162,32 +156,28 @@ export function UserMenu() {
     return () => {
       window.removeEventListener('beacon:login-success', handleLoginSuccess);
     };
-  }, []); // Only run once
+  }, [fetchSession]);
 
-  // Silent background check on pathname change (only if we have user)
   useEffect(() => {
     if (pathname === '/login') {
       setLoading(false);
       return;
     }
 
-    // If we have a user, verify silently in background
-    // If we don't have a user, fetch normally
     if (user) {
       fetchSession(false);
-    } else {
-      // Check localStorage first before fetching
-      const cached = getCachedUser();
-      if (cached) {
-        setUser(cached);
-        setLoading(false);
-        // Verify in background
-        fetchSession(false);
-      } else {
-        fetchSession(true);
-      }
+      return;
     }
-  }, [pathname]); // Re-run when pathname changes
+
+    const cached = getCachedUser();
+    if (cached) {
+      setUser(cached);
+      setLoading(false);
+      fetchSession(false);
+    } else {
+      fetchSession(true);
+    }
+  }, [pathname, user, fetchSession]);
 
   const handleLogout = async () => {
     try {
@@ -203,12 +193,10 @@ export function UserMenu() {
     }
   };
 
-  // Hide on login page
   if (pathname === '/login') {
     return null;
   }
 
-  // Show loading spinner
   if (loading) {
     return (
       <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-200">
@@ -230,7 +218,6 @@ export function UserMenu() {
         )
       : null;
 
-  // Show sign in button if no user
   if (!user) {
     return (
       <a
