@@ -207,6 +207,14 @@ const ADMIN_TOOLS: Tool[] = [
 
 const SUPER_ADMIN_TOOLS: Tool[] = [
   {
+    title: 'SharePoint Sources',
+    description: 'Register SharePoint libraries/folders and run policy sync.',
+    href: '/admin/sharepoint',
+    bucket: 'Admin',
+    initials: 'SP',
+    accent: 'bg-emerald-100 text-emerald-700',
+  },
+  {
     title: 'Agent Logs',
     description: 'Audit AI decisions, tools, and responses.',
     href: '/admin/agent-logs',

@@ -51,6 +51,19 @@ export interface SharePointFileRef {
   mimeType: string;
 }
 
+function buildGraphDriveItemContentUrl(siteId: string, driveId: string, itemId: string): string {
+  return `https://graph.microsoft.com/v1.0/sites/${encodeURIComponent(siteId)}/drives/${encodeURIComponent(driveId)}/items/${encodeURIComponent(itemId)}/content`;
+}
+
+function isGraphApiUrl(urlValue: string): boolean {
+  try {
+    const parsed = new URL(urlValue);
+    return parsed.hostname.toLowerCase() === 'graph.microsoft.com';
+  } catch {
+    return false;
+  }
+}
+
 export function getGraphConfigError(): string | null {
   if (!tenantId || !clientId || !clientSecret || !senderUpn) {
     return 'Missing Graph configuration. Please set AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET and GRAPH_SENDER_UPN.';
@@ -339,10 +352,13 @@ async function listDriveFolderFiles(
         continue;
       }
 
-      const downloadUrl = item['@microsoft.graph.downloadUrl'];
-      if (!item.file || !downloadUrl) {
+      if (!item.file || !item.id) {
         continue;
       }
+
+      const downloadUrl =
+        item['@microsoft.graph.downloadUrl'] ||
+        buildGraphDriveItemContentUrl(siteId, driveId, item.id);
 
       files.push({
         id: item.id,
@@ -389,7 +405,19 @@ export async function downloadSharePointFileAsText(
   const loweredMime = (mimeType || '').toLowerCase();
   const loweredName = fileName.toLowerCase();
 
-  const response = await fetch(downloadUrl);
+  let response: Response;
+  if (isGraphApiUrl(downloadUrl)) {
+    const token = await getGraphAccessToken();
+    response = await fetch(downloadUrl, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      redirect: 'follow',
+    });
+  } else {
+    response = await fetch(downloadUrl);
+  }
+
   if (!response.ok) {
     throw new Error(`Failed to download file (${response.status})`);
   }
