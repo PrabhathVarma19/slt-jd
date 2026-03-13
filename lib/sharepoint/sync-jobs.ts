@@ -71,14 +71,25 @@ function asQueuedFiles(value: unknown): QueuedSharePointFile[] {
 function asFileResults(value: unknown): SharePointSyncFileResult[] {
   const raw = asArray<any>(value);
   return raw
-    .map((item) => ({
-      id: typeof item?.id === 'string' ? item.id : '',
-      name: typeof item?.name === 'string' ? item.name : '',
-      status: item?.status === 'synced' ? 'synced' : 'skipped',
-      reason: typeof item?.reason === 'string' ? item.reason : undefined,
-      outputFile: typeof item?.outputFile === 'string' ? item.outputFile : undefined,
-    }))
-    .filter((item) => Boolean(item.id) && Boolean(item.name));
+    .map((item): SharePointSyncFileResult | null => {
+      const id = typeof item?.id === 'string' ? item.id : '';
+      const name = typeof item?.name === 'string' ? item.name : '';
+      if (!id || !name) {
+        return null;
+      }
+
+      const status: SharePointSyncFileResult['status'] =
+        item?.status === 'synced' ? 'synced' : 'skipped';
+
+      return {
+        id,
+        name,
+        status,
+        reason: typeof item?.reason === 'string' ? item.reason : undefined,
+        outputFile: typeof item?.outputFile === 'string' ? item.outputFile : undefined,
+      };
+    })
+    .filter((item): item is SharePointSyncFileResult => item !== null);
 }
 
 function usedOutputNames(results: SharePointSyncFileResult[]): Set<string> {
