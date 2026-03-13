@@ -41,7 +41,7 @@ export interface SharePointSyncResult {
   files: SharePointSyncFileResult[];
 }
 
-function normalizeCategory(category: string): string {
+export function normalizeCategory(category: string): string {
   return category.trim().toLowerCase().replace(/[^a-z0-9_-]/g, '-');
 }
 
@@ -66,7 +66,7 @@ function getTextFileName(originalName: string, used: Set<string>): string {
   return candidate;
 }
 
-function ensureSourceConfigured(source: SharePointSource): { siteId: string; driveId: string } {
+export function ensureSourceConfigured(source: SharePointSource): { siteId: string; driveId: string } {
   const siteId = (source.site_id || '').trim();
   const driveId = (source.drive_id || '').trim();
   if (!siteId || !driveId) {
@@ -75,11 +75,19 @@ function ensureSourceConfigured(source: SharePointSource): { siteId: string; dri
   return { siteId, driveId };
 }
 
-async function processFile(
+export function getPolicyCategoryDir(category: string): string {
+  const normalizedCategory = normalizeCategory(category);
+  const targetDir = path.join(POLICY_ROOT, normalizedCategory);
+  fs.mkdirSync(targetDir, { recursive: true });
+  return targetDir;
+}
+
+export async function processSharePointFile(
   file: SharePointFileRef,
-  targetDir: string,
+  category: string,
   usedFileNames: Set<string>
 ): Promise<SharePointSyncFileResult> {
+  const targetDir = getPolicyCategoryDir(category);
   try {
     const extractedText = await downloadSharePointFileAsText(file.downloadUrl, file.mimeType, file.name);
     if (!extractedText) {
@@ -111,19 +119,19 @@ async function processFile(
   }
 }
 
-export async function syncSharePointSource(source: SharePointSource): Promise<SharePointSyncResult> {
+export async function listSourceSharePointFiles(source: SharePointSource): Promise<SharePointFileRef[]> {
   const { siteId, driveId } = ensureSourceConfigured(source);
+  return listSharePointFiles(siteId, driveId, source.folder_path || null);
+}
+
+export async function syncSharePointSource(source: SharePointSource): Promise<SharePointSyncResult> {
   const category = normalizeCategory(source.category);
-  const targetDir = path.join(POLICY_ROOT, category);
-
-  fs.mkdirSync(targetDir, { recursive: true });
-
-  const sharePointFiles = await listSharePointFiles(siteId, driveId, source.folder_path || null);
+  const sharePointFiles = await listSourceSharePointFiles(source);
   const usedFileNames = new Set<string>();
   const files: SharePointSyncFileResult[] = [];
 
   for (const file of sharePointFiles) {
-    const result = await processFile(file, targetDir, usedFileNames);
+    const result = await processSharePointFile(file, category, usedFileNames);
     files.push(result);
   }
 

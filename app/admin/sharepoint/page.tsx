@@ -21,6 +21,20 @@ type SharePointSource = {
   created_at: string;
 };
 
+type SyncJobStatus = 'queued' | 'running' | 'succeeded' | 'failed';
+
+type SyncJobPayload = {
+  id: string;
+  sourceId: string;
+  status: SyncJobStatus;
+  totalFiles: number;
+  processedFiles: number;
+  syncedFiles: number;
+  skippedFiles: number;
+  lastError: string | null;
+  nextRunAt: string | null;
+  finishedAt: string | null;
+};
 
 const CATEGORY_OPTIONS = ['it', 'hr', 'infosec'];
 
@@ -87,6 +101,8 @@ export default function AdminSharePointPage() {
 
   const [lastCreatedIds, setLastCreatedIds] = useState<{ siteId: string; driveId: string } | null>(null);
   const [rowStatus, setRowStatus] = useState<Record<string, string>>({});
+
+  const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
   const sortedSources = useMemo(
     () => [...sources].sort((a, b) => a.name.localeCompare(b.name)),
@@ -181,9 +197,67 @@ export default function AdminSharePointPage() {
         throw new Error(payload?.error || 'Failed to sync source');
       }
 
-      const summary = `Synced ${payload.synced} file(s), skipped ${payload.skipped}.`;
+      if (payload?.jobId) {
+        const jobId = payload.jobId.toString();
+        let attempt = 0;
+
+        while (attempt < 300) {
+          attempt += 1;
+          const statusResponse = await fetch(
+            `/api/admin/sharepoint/sync?jobId=${encodeURIComponent(jobId)}&advance=1`,
+            {
+              credentials: 'include',
+              cache: 'no-store',
+            }
+          );
+          const statusPayload = await parseApiResponse(statusResponse);
+
+          if (!statusResponse.ok) {
+            throw new Error(statusPayload?.error || 'Failed to read sync status');
+          }
+
+          const job = statusPayload?.job as SyncJobPayload;
+          if (!job) {
+            throw new Error('Sync job status payload was empty');
+          }
+
+          const progressSummary = `Synced ${job.syncedFiles} file(s), skipped ${job.skippedFiles}. (${job.processedFiles}/${job.totalFiles})`;
+          if (job.nextRunAt) {
+            const waitMs = Math.max(0, new Date(job.nextRunAt).getTime() - Date.now());
+            const waitSeconds = Math.max(1, Math.ceil(waitMs / 1000));
+            setRowStatus((prev) => ({
+              ...prev,
+              [sourceId]: `Waiting ${waitSeconds}s for Graph retry window. ${progressSummary}`,
+            }));
+            await sleep(Math.min(waitMs + 500, 15000));
+            continue;
+          }
+
+          if (job.status === 'succeeded') {
+            setRowStatus((prev) => ({ ...prev, [sourceId]: progressSummary }));
+            setFeedback(progressSummary);
+            await fetchSources();
+            return;
+          }
+
+          if (job.status === 'failed') {
+            throw new Error(job.lastError || 'Sync job failed');
+          }
+
+          setRowStatus((prev) => ({
+            ...prev,
+            [sourceId]: `Sync in progress. ${progressSummary}`,
+          }));
+          await sleep(2000);
+        }
+
+        throw new Error('Sync job timed out while polling. Please check again in a minute.');
+      }
+
+      // Backward-compatible fallback if older API still returns direct sync summary.
+      const summary = `Synced ${payload.synced || 0} file(s), skipped ${payload.skipped || 0}.`;
       setRowStatus((prev) => ({ ...prev, [sourceId]: summary }));
-      setFeedback(`${payload.sourceName}: ${summary}`);
+      setFeedback(summary);
       await fetchSources();
     } catch (syncError: any) {
       const message = syncError?.message || 'Failed to sync source';
